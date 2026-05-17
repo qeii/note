@@ -535,7 +535,51 @@
     transition: background 0.35s ease, border-color 0.35s ease;
   }
 
-  /* ── Grain Overlay ── */
+  .sidebar-backup {
+    padding: 10px 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+    transition: border-color 0.35s ease;
+  }
+
+  .btn-backup, .btn-restore {
+    flex: 1;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 7px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    white-space: nowrap;
+  }
+
+  .btn-backup {
+    background: var(--accent-glow);
+    border: 1px solid var(--accent-dim);
+    color: var(--accent);
+  }
+
+  .btn-backup:hover {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+  }
+
+  .btn-restore {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+
+  .btn-restore:hover {
+    background: var(--surface-hover);
+    color: var(--text);
+    border-color: var(--text-dim);
+  }
   body::after {
     content: '';
     position: fixed;
@@ -615,6 +659,11 @@
     <div class="sidebar-footer">
       <span id="noteCount">0 notes</span>
       <span id="totalWords">0 words</span>
+    </div>
+    <div class="sidebar-backup">
+      <button class="btn-backup" onclick="backupNotes()" title="Save all notes to a .json file on your laptop">⬇ Backup</button>
+      <button class="btn-restore" onclick="$('restoreFile').click()" title="Load notes from a backup .json file">⬆ Restore</button>
+      <input type="file" id="restoreFile" accept=".json,application/json" style="display:none" onchange="restoreNotes(event)">
     </div>
   </aside>
 
@@ -953,6 +1002,59 @@
 
   function filterNotes() {
     renderNotesList();
+  }
+
+  // ── Backup & Restore ──
+  function backupNotes() {
+    const backup = {
+      version: 1,
+      exported: new Date().toISOString(),
+      notes: notes
+    };
+    const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    const date = new Date().toISOString().slice(0, 10);
+    a.href = URL.createObjectURL(blob);
+    a.download = `notepad-backup-${date}.json`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  function restoreNotes(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      try {
+        const backup = JSON.parse(event.target.result);
+        const incoming = Array.isArray(backup) ? backup : (backup.notes || []);
+        if (!Array.isArray(incoming) || incoming.length === 0) {
+          alert('No notes found in this backup file.');
+          return;
+        }
+        const action = confirm(
+          `Found ${incoming.length} note(s) in backup.\n\n` +
+          `OK = Merge with current notes (keeps both)\n` +
+          `Cancel = Replace all current notes`
+        );
+        if (action) {
+          // Merge: add only notes whose id doesn't already exist
+          const existingIds = new Set(notes.map(n => n.id));
+          const toAdd = incoming.filter(n => !existingIds.has(n.id));
+          notes = [...toAdd, ...notes];
+        } else {
+          notes = incoming;
+        }
+        save();
+        renderNotesList();
+        if (notes.length > 0) selectNote(notes[0].id);
+        updateFooter();
+      } catch {
+        alert('Could not read backup file. Make sure it is a valid notepad backup.');
+      }
+      e.target.value = '';
+    };
+    reader.readAsText(file);
   }
 
   // ── Import ──
