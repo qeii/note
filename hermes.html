@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hermes-Lite v3 · Affiliate Video Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+  <!-- Umami: <script defer src="https://analytics.yourdomain.com/script.js" data-website-id="YOUR-UMAMI-ID"></script> -->
+  <style>
+    :root {
+      --bg:#080a0e; --surface:#0f1218; --surface2:#161b24;
+      --border:#1e2535; --border-bright:#2e3d55;
+      --text:#dde4f0; --text-muted:#6b7a99;
+      --accent:#00e5ff; --accent2:#7c3aed;
+      --success:#00e096; --warning:#fbbf24; --danger:#f43f5e;
+      --r:10px; --mono:'Space Mono',monospace; --sans:'Syne',sans-serif;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    ::selection{background:var(--accent);color:#000}
+    body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,255,.03)1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.03)1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+    .wrap{position:relative;z-index:1;max-width:1160px;margin:0 auto;padding:24px 20px 80px}
+
+    /* Header */
+    header{padding:48px 0 36px;border-bottom:1px solid var(--border);margin-bottom:32px}
+    .header-top{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px}
+    .logo-eyebrow{font-family:var(--mono);font-size:.65rem;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px}
+    h1{font-family:var(--sans);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.1;color:#fff}
+    h1 span{color:var(--accent)}
+    .subtitle{color:var(--text-muted);font-size:.9rem;margin-top:10px;max-width:560px}
+    .infra-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+    .ibadge{font-family:var(--mono);font-size:.65rem;padding:4px 10px;border-radius:20px;border:1px solid;letter-spacing:.05em}
+    .ibadge.cf{border-color:#f6821f44;color:#f6821f;background:#f6821f11}
+    .ibadge.kit{border-color:#7c3aed44;color:#a78bfa;background:#7c3aed11}
+    .ibadge.uma{border-color:#00e5ff44;color:var(--accent);background:#00e5ff11}
+    .ibadge.ai{border-color:#00e09644;color:var(--success);background:#00e09611}
+
+    /* Tabs */
+    .tab-bar{display:flex;gap:4px;margin-bottom:28px;border-bottom:1px solid var(--border);padding-bottom:0;flex-wrap:wrap}
+    .tab-btn{font-family:var(--mono);font-size:.72rem;background:transparent;border:none;color:var(--text-muted);padding:10px 18px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;letter-spacing:.06em;text-transform:uppercase}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+    .tab-panel{display:none}.tab-panel.active{display:block}
+
+    /* Product Bar */
+    .product-bar{background:var(--surface);border:1px solid var(--border-bright);border-radius:var(--r);padding:20px 24px;margin-bottom:28px;display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap}
+    .field{flex:1;min-width:170px}
+    .field label{display:block;font-family:var(--mono);font-size:.65rem;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+    .field input,.field select{width:100%;background:var(--bg);border:1px solid var(--border-bright);color:var(--text);padding:9px 12px;border-radius:6px;font-family:var(--mono);font-size:.8rem;outline:none;transition:border-color .2s}
+    .field input:focus,.field select:focus{border-color:var(--accent)}
+    .field select option{background:var(--surface2)}
+    #applyProduct{background:var(--accent);color:#000;border:none;padding:10px 20px;border-radius:6px;font-family:var(--mono);font-size:.8rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:opacity .2s;letter-spacing:.04em}
+    #applyProduct:hover{opacity:.85}
+    #productStatus{font-family:var(--mono);font-size:.7rem;color:var(--success);display:none;align-self:center}
+
+    /* Controls */
+    .controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+    .ctrl-btn{font-family:var(--mono);font-size:.72rem;background:var(--surface);color:var(--text);border:1px solid var(--border-bright);padding:7px 14px;border-radius:6px;cursor:pointer;transition:all .2s;letter-spacing:.04em}
+    .ctrl-btn:hover{background:var(--surface2);border-color:var(--accent);color:var(--accent)}
+    .ctrl-btn.accent{background:var(--accent2);border-color:var(--accent2);color:#fff}
+
+    /* Section / Workflow */
+    .section-label{font-family:var(--mono);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+    .workflow-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px 24px;margin-bottom:28px}
+    .workflow-block h2{font-size:1rem;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+    .step-row{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+    .step-row:last-child{border-bottom:none}
+    .step-num{background:var(--accent);color:#000;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.7rem;font-weight:700;flex-shrink:0}
+    .step-text{font-size:.87rem;color:var(--text-muted);padding-top:2px}
+    .step-text b{color:var(--text)}
+    .tip-box{background:#1c1500;border-left:3px solid var(--warning);padding:10px 14px;border-radius:0 6px 6px 0;font-size:.82rem;color:#d4a017;margin-top:14px}
+    .info-box{background:#001a10;border-left:3px solid var(--success);padding:10px 14px;border-radius:0 6px 6px 0;font-size:.82rem;color:#00c070;margin-top:14px}
+
+    /* Skills grid */
+    .skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;margin-bottom:28px}
+    .skill-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:border-color .2s,transform .2s}
+    .skill-card:hover{border-color:var(--border-bright);transform:translateY(-2px)}
+    summary{cursor:pointer;list-style:none;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;user-select:none}
+    summary::-webkit-details-marker{display:none}
+    .summary-left{display:flex;align-items:center;gap:10px}
+    .skill-badge{font-family:var(--mono);font-size:.65rem;font-weight:700;background:var(--accent);color:#000;padding:2px 7px;border-radius:3px;flex-shrink:0}
+    .skill-name{font-size:.88rem;font-weight:600}
+    .skill-meta{font-family:var(--mono);font-size:.62rem;color:var(--text-muted);flex-shrink:0}
+    .chevron{transition:transform .25s;color:var(--text-muted);font-size:.7rem}
+    details[open] .chevron{transform:rotate(90deg)}
+    .skill-body{padding:0 16px 16px}
+    .prompt-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    .input-tag{font-family:var(--mono);font-size:.62rem;background:var(--surface2);border:1px solid var(--border-bright);color:var(--text-muted);padding:2px 7px;border-radius:3px}
+    .copy-btn{font-family:var(--mono);font-size:.7rem;background:transparent;border:1px solid var(--border-bright);color:var(--text-muted);padding:4px 10px;border-radius:4px;cursor:pointer;transition:all .2s}
+    .copy-btn:hover{border-color:var(--accent);color:var(--accent)}
+    .copy-btn.copied{background:var(--success);color:#000;border-color:var(--success)}
+    .prompt-box{background:#040507;border:1px solid var(--border);border-radius:6px;padding:14px;font-family:var(--mono);font-size:.75rem;white-space:pre-wrap;overflow-x:auto;max-height:280px;overflow-y:auto;line-height:1.5;color:#9dc4e0}
+    .prompt-box .ph{color:#f6821f;font-style:italic}
+    .prompt-box .kw{color:var(--accent)}
+
+    /* Full card (batch) */
+    .full-card{background:var(--surface);border:1px solid var(--border-bright);border-radius:var(--r);padding:20px 24px;margin-bottom:28px}
+    .full-card h2{font-size:1rem;font-weight:600;margin-bottom:14px}
+
+    /* Compliance */
+    .compliance-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:14px}
+    .comp-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;font-size:.82rem}
+    .comp-card h4{font-size:.8rem;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+    .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .dot.g{background:var(--success)}.dot.y{background:var(--warning)}.dot.r{background:var(--danger)}
+    .comp-card p{color:var(--text-muted);line-height:1.5;font-size:.8rem}
+
+    /* Tables */
+    table{width:100%;border-collapse:collapse;margin-top:14px;font-size:.82rem}
+    th,td{border:1px solid var(--border);padding:9px 12px;text-align:left}
+    th{background:var(--surface2);font-family:var(--mono);font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);font-weight:400}
+    td{color:var(--text-muted)}
+    td:first-child{font-family:var(--mono);color:var(--accent);font-weight:700}
+    tr:hover td{background:var(--surface2)}
+    .log-table input{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:5px 8px;border-radius:4px;font-family:var(--mono);font-size:.75rem;width:100%}
+    .log-table input:focus{outline:none;border-color:var(--accent)}
+    #addLogRow{margin-top:10px;font-family:var(--mono);font-size:.7rem;background:transparent;border:1px dashed var(--border-bright);color:var(--text-muted);padding:6px 14px;border-radius:6px;cursor:pointer;transition:all .2s}
+    #addLogRow:hover{border-color:var(--accent);color:var(--accent)}
+
+    /* Log controls */
+    .log-controls{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+    .log-ctrl{font-family:var(--mono);font-size:.68rem;background:transparent;border:1px solid var(--border-bright);color:var(--text-muted);padding:5px 12px;border-radius:5px;cursor:pointer;transition:all .2s}
+    .log-ctrl:hover{border-color:var(--accent);color:var(--accent)}
+    .log-ctrl.danger:hover{border-color:var(--danger);color:var(--danger)}
+
+    /* Platform tabs */
+    .plat-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+    .plat-btn{font-family:var(--mono);font-size:.68rem;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:5px 12px;border-radius:20px;cursor:pointer;transition:all .2s;letter-spacing:.05em}
+    .plat-btn.active{background:var(--accent);color:#000;border-color:var(--accent)}
+    .plat-panel{display:none}.plat-panel.active{display:block}
+    .plat-spec{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:6px}
+    .spec-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px}
+    .spec-card h5{font-family:var(--mono);font-size:.65rem;color:var(--accent);margin-bottom:8px;letter-spacing:.08em;text-transform:uppercase}
+    .spec-card ul{list-style:none;padding:0}
+    .spec-card ul li{font-size:.8rem;color:var(--text-muted);padding:3px 0;border-bottom:1px solid var(--border)}
+    .spec-card ul li:last-child{border:none}
+    .spec-card ul li b{color:var(--text)}
+
+    /* Bridge builder */
+    .bridge-form{background:var(--surface);border:1px solid var(--border-bright);border-radius:var(--r);padding:20px 24px;margin-bottom:20px}
+    .bridge-form h3{font-size:.95rem;font-weight:700;margin-bottom:16px;color:var(--accent)}
+    .bridge-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-bottom:16px}
+    .bf-field label{display:block;font-family:var(--mono);font-size:.62rem;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
+    .bf-field input,.bf-field textarea,.bf-field select{width:100%;background:var(--bg);border:1px solid var(--border-bright);color:var(--text);padding:9px 12px;border-radius:6px;font-family:var(--mono);font-size:.78rem;outline:none;transition:border-color .2s}
+    .bf-field textarea{resize:vertical;min-height:70px}
+    .bf-field input:focus,.bf-field textarea:focus,.bf-field select:focus{border-color:var(--accent)}
+    .bf-field select option{background:var(--surface2)}
+    #buildBridge{background:var(--accent);color:#000;border:none;padding:11px 24px;border-radius:6px;font-family:var(--mono);font-size:.8rem;font-weight:700;cursor:pointer;transition:opacity .2s;letter-spacing:.04em}
+    #buildBridge:hover{opacity:.85}
+    #bridgePreview{background:#040507;border:1px solid var(--border);border-radius:8px;padding:0;margin-top:16px;overflow:hidden;display:none}
+    #bridgePreview iframe{width:100%;height:520px;border:none;display:block}
+    .bridge-actions{display:flex;gap:8px;padding:12px 14px;background:var(--surface2);flex-wrap:wrap}
+    .ba-btn{font-family:var(--mono);font-size:.7rem;background:transparent;border:1px solid var(--border-bright);color:var(--text-muted);padding:6px 14px;border-radius:5px;cursor:pointer;transition:all .2s}
+    .ba-btn:hover{border-color:var(--accent);color:var(--accent)}
+    .ba-btn.primary{background:var(--success);color:#000;border-color:var(--success)}
+    .ba-btn.primary:hover{opacity:.85}
+
+    /* Kit block */
+    .kit-block{background:linear-gradient(135deg,#0d1a2e 0%,#0f1218 100%);border:1px solid var(--accent);border-radius:var(--r);padding:28px 30px;margin-bottom:28px;position:relative;overflow:hidden}
+    .kit-block::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(0,229,255,.08)0%,transparent 70%);pointer-events:none}
+    .kit-block h3{font-size:1.1rem;font-weight:800;margin-bottom:6px}
+    .kit-block p{color:var(--text-muted);font-size:.85rem;margin-bottom:18px}
+    .kit-placeholder{background:var(--surface2);border:1px dashed var(--border-bright);border-radius:8px;padding:20px;text-align:center;font-family:var(--mono);font-size:.75rem;color:var(--text-muted)}
+    .kit-placeholder code{color:var(--accent);display:block;margin-top:8px}
+
+    @media(max-width:640px){
+      .skills-grid{grid-template-columns:1fr}
+      .product-bar{flex-direction:column}
+      h1{font-size:1.7rem}
+      .plat-spec{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="header-top">
+    <div class="logo-block">
+      <div class="logo-eyebrow">// Hermes-Lite v3 · Self-Improving Affiliate Engine</div>
+      <h1>Hermes-Lite <span>v3</span></h1>
+      <p class="subtitle">Bridge page builder · Platform-optimized video assembly · AI prompt pipeline · Self-improving loop with persistent tracking.</p>
+      <div class="infra-badges">
+        <span class="ibadge cf">☁ Cloudflare Pages</span>
+        <span class="ibadge kit">✉ Kit (ConvertKit)</span>
+        <span class="ibadge uma">📊 Umami Analytics</span>
+        <span class="ibadge ai">🤖 AI Prompt Pipeline</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- GLOBAL PRODUCT BAR -->
+<div class="product-bar">
+  <div class="field"><label>Product Name</label><input id="pName" placeholder="e.g. ProDentim"></div>
+  <div class="field"><label>Niche</label><input id="pNiche" placeholder="e.g. dental health"></div>
+  <div class="field"><label>Pain Point</label><input id="pPain" placeholder="e.g. bad breath, gum issues"></div>
+  <div class="field"><label>Platform</label>
+    <select id="pPlatform">
+      <option>TikTok</option><option>YouTube Shorts</option>
+      <option>Instagram Reels</option><option>Pinterest</option>
+    </select>
+  </div>
+  <div class="field"><label>Sales Page URL</label><input id="pSalesUrl" placeholder="https://vendor-salespage.com"></div>
+  <div class="field"><label>Affiliate Link</label><input id="pAffUrl" placeholder="https://hop.clickbank.net/..."></div>
+  <button id="applyProduct">▶ Apply to All</button>
+  <span id="productStatus">✓ Applied</span>
+</div>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('workflow')">① Workflow</button>
+  <button class="tab-btn" onclick="switchTab('skills')">② Prompt Skills</button>
+  <button class="tab-btn" onclick="switchTab('platforms')">③ Platform Guide</button>
+  <button class="tab-btn" onclick="switchTab('bridge')">④ Bridge Builder</button>
+  <button class="tab-btn" onclick="switchTab('assembly')">⑤ Assembly Guide</button>
+  <button class="tab-btn" onclick="switchTab('tracker')">⑥ Evolution Log</button>
+  <button class="tab-btn" onclick="switchTab('infra')">⑦ Infrastructure</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- TAB 1: WORKFLOW -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div id="tab-workflow" class="tab-panel active">
+  <div class="section-label">// Daily Operating Loop</div>
+  <div class="workflow-block">
+    <h2>🔄 Daily Workflow (30–60 min)</h2>
+    <div class="step-row"><div class="step-num">1</div><div class="step-text"><b>Fill Product Bar above</b> — include the actual sales page URL. This grounds all prompts in real copy.</div></div>
+    <div class="step-row"><div class="step-num">2</div><div class="step-text"><b>Run SKILL 00</b> (Audience Analyzer) — paste sales page URL into prompt. Save JSON.</div></div>
+    <div class="step-row"><div class="step-num">3</div><div class="step-text"><b>Run SKILL 01 → 06</b> or use the One-Shot Orchestrator. Save each JSON output.</div></div>
+    <div class="step-row"><div class="step-num">4</div><div class="step-text"><b>Run SKILL 10</b> (Human Readable Converter) — get plain copy-paste blocks for voice, captions, images.</div></div>
+    <div class="step-row"><div class="step-num">5</div><div class="step-text"><b>Tab ③ Platform Guide</b> — select your platform. Follow spec exactly for format, caption, CTA, hashtags.</div></div>
+    <div class="step-row"><div class="step-num">6</div><div class="step-text"><b>Tab ④ Bridge Builder</b> — generate + download your bridge page HTML. Deploy to Cloudflare Pages.</div></div>
+    <div class="step-row"><div class="step-num">7</div><div class="step-text"><b>Tab ⑤ Assembly Guide</b> — build video in CapCut/Canva using text-motion style. Export and post.</div></div>
+    <div class="step-row"><div class="step-num">8</div><div class="step-text"><b>24h later:</b> Tab ⑥ Evolution Log → enter metrics → run SKILL 08 → paste improvement JSON → update prompts.</div></div>
+    <div class="tip-box">💡 The loop compounds. Each SKILL 08 run makes the next batch better. In 30 days you own a playbook nobody else has.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- TAB 2: SKILLS -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div id="tab-skills" class="tab-panel">
+  <div class="controls">
+    <button class="ctrl-btn" onclick="expandAll()">⊞ Expand All</button>
+    <button class="ctrl-btn" onclick="collapseAll()">⊟ Collapse All</button>
+    <button class="ctrl-btn accent" onclick="copyAllPrompts()">📋 Copy All Prompts</button>
+  </div>
+
+  <div class="section-label">// Micro-Skills Library</div>
+  <div class="skills-grid" id="skillsGrid">
+
+    <!-- SKILL 00 -->
+    <div class="skill-card"><details open>
+      <summary><div class="summary-left"><span class="skill-badge">00</span><span class="skill-name">Audience & Pain Analyzer</span></div><div style="display:flex;align-items:center;gap:8px"><span class="skill-meta">Product + Sales URL</span><span class="chevron">▶</span></div></summary>
+      <div class="skill-body">
+        <div class="prompt-meta"><span class="input-tag">→ Targeting JSON</span><button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button></div>
+        <pre class="prompt-box" data-skill="00">You are a market research analyst for affiliate marketers.
+
+Product: [PRODUCT] | Niche: [NICHE] | Pain: [PAIN]
+Sales page URL (read and extract key angles): [SALES_URL]
+
+Task: Analyze the product and output a targeting brief.
+- Mirror the sales page headline and proof points in your output
+- Who buys this? (age, gender, mindset)
+- What do they search at 2 AM? (urgent pain around [PAIN])
+- What objections stop them buying?
+- What angles do top affiliates use?
+- 1 "unexpected angle" most affiliates miss
+- Platform nuances: TikTok=fast hooks, Reels=aesthetic, Shorts=search, Pinterest=visual/evergreen
+
+Rules: NO made-up stats. Use "commonly", "users report". Focus emotional drivers.
+
+Output (JSON only):
+{
+  "target_audience": {"primary_persona":"string","mindset":"string","where_they_hang_out":["TikTok","Facebook groups"]},
+  "top_pain_points": [{"pain":"string","emotional_driver":"fear|shame|frustration|hope","urgency_level":"high|medium|low"}],
+  "sales_page_key_angles": ["angle from actual sales page copy"],
+  "proven_ad_angles": [{"angle":"string","why_it_works":"string","best_platform":"[PLATFORM]|Reels|Shorts|Pinterest"}],
+  "competitor_gap": "1 angle most affiliates overlook",
+  "platform_notes": {"TikTok":"Hook &lt;3s, trending audio","Instagram_Reels":"Aesthetic, softer CTA","YouTube_Shorts":"Searchable title, longer hooks ok","Pinterest":"Evergreen keyword title, 2:3 ratio"}
+}</pre>
+      </div>
+    </details></div>
+
+    <!-- SKILL 01 -->
+    <div class="skill-card"><details>
+      <summary><div class="summary-left"><span class="skill-badge">01</span><span class="skill-name">Hook Generator</span></div><div style="display:flex;align-items:center;gap:8px"><span class="skill-meta">Audience JSON</span><span class="chevron">▶</span></div></summary>
+      <div class="skill-body">
+        <div class="prompt-meta"><span class="input-tag">→ 3 hooks JSON</span><button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button></div>
+        <pre class="prompt-box" data-skill="01">You are a short-form hook specialist for health affiliates.
+Product: [PRODUCT] | Pain: [PAIN] | Platform: [PLATFORM]
+Input: {{AUDIENCE_JSON}}
+
+Generate 3 hooks (&lt;8 words each).
+Rules:
+- ONE trigger per hook: curiosity|urgency|surprise|secret
+- NO emojis, NO hashtags in hook text
+- Tone: friend warning you, not salesperson
+- TikTok: pattern interrupt opener | Reels: aspirational | Shorts: question-based | Pinterest: benefit-first
+
+Output (JSON only):
+{
+  "hooks": [
+    {"text":"string","trigger":"curiosity|urgency|surprise|secret","why_it_works":"1 sentence","best_for_platform":"string"}
+  ],
+  "recommended": 0
+}</pre>
+      </div>
+    </details></div>
+
+    <!-- SKILL 02 -->
+    <div class="skill-card"><details>
+      <summary><div class="summary-left"><span class="skill-badge">02</span><span class="skill-name">Script Structurer (14-20s)</span></div><div style="display:flex;align-items:center;gap:8px"><span class="skill-meta">Hook JSON</span><span class="chevron">▶</span></div></summary>
+      <div class="skill-body">
+        <div class="prompt-meta"><span class="input-tag">→ Script segments JSON</span><button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button></div>
+        <pre class="prompt-box" data-skill="02">You are a short-form scriptwriter for faceless health content.
+Product: [PRODUCT] | Platform: [PLATFORM] | Niche: [NICHE]
+Input hook: {{HOOK_TEXT}}
+
+Rules:
+- 4 segments: Hook(0-3s) → Problem(3-7s) → Solution(7-14s) → CTA(14-20s)
+- Style: TEXT-MOTION first (words on screen driving narrative), not just AI images
+- Include [PAUSE] markers. Max 12 words per on-screen text line.
+- NO medical claims — say "users report" not "proven to"
+- CTA directs to bridge page, NOT directly to offer
+
+Output (JSON only):
+{
+  "script_segments": [
+    {"time":"0-3s","spoken_text":"string","on_screen_text":"max 12 words","tone":"string","pause_after":true},
+    {"time":"3-7s","spoken_text":"string","on_screen_text":"string","tone":"string","pause_after":true},
+    {"time":"7-14s","spoken_text":"string","on_screen_text":"string","tone":"string","pause_after":true},
+    {"time":"14-20s","spoken_text":"string","on_screen_text":"BRIDGE CTA text","tone":"string","pause_after":false}
+  ],
+  "total_words": 0,
+  "estimated_speaking_time_sec": 18,
+  "bridge_cta_text": "what on-screen text points to bridge"
+}</pre>
+      </div>
+    </details></div>
+
+    <!-- SKILL 03 -->
+    <div class="skill-card"><details>
+      <summary><div class="summary-left"><span class="skill-badge">03</span><span class="skill-name">Visual Director (Text-Motion First)</span></div><div style="display:flex;align-items:center;gap:8px"><span class="skill-meta">Script JSON</span><span class="chevron">▶</span></div></summary>
+      <div class="skill-body">
+        <div class="prompt-meta"><span class="input-tag">→ Visual plan JSON</span><button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button></div>
+        <pre class="prompt-box" data-skill="03">You are a visual director for health affiliate shorts in 2026.
+Product: [PRODUCT] | Niche: [NICHE] | Platform: [PLATFORM]
+Input: {{SCRIPT_JSON}}
+
+IMPORTANT: Prefer text-motion style over AI image slideshows.
+Text-motion = bold kinetic text as the primary visual, backed by simple backgrounds or stock.
+Only use AI image prompts as SECONDARY background elements.
+
+Rules:
+- CapCut text templates or Canva animations are primary delivery
+- AI images (if used): "cinematic health" soft lighting, no faces, 9:16
+- Each segment: specify text animation style + background type
+
+Output (JSON only):
+{
+  "visual_plan": [
+    {
+      "segment_time": "0-3s",
+      "primary_type": "text_motion|ai_image|stock_video|canva_template",
+      "text_animation": "word_pop|slide_up|typewriter|kinetic_bounce|none",
+      "background": "solid_dark|gradient|blurred_stock|ai_image",
+      "ai_image_prompt": "only if primary_type=ai_image: full prompt",
+      "canva_template_hint": "e.g. Bold Statement template, dark bg",
+      "color_accent": "#hex"
+    }
+  ],
+  "overall_style": "string",
+  "consistency_tip": "string"
+}</pre>
+      </div>
+    </details></div>
+
+    <!-- SKILL 04 -->
+    <div class="skill-card"><details>
+      <summary><div class="summary-left"><span class="skill-badge">04</span><span class="skill-name">Motion & Pacing Director</span></div><div style="display:flex;align-items:center;gap:8px"><span class="skill-meta">Visuals + Script</span><span class="chevron">▶</span></div></summary>
+      <div class="skill-body">
+        <div class="prompt-meta"><span class="input-tag">→ Keyframe instructions JSON</span><button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button></div>
+        <pre class="prompt-box" data-skill="04">You are a CapCut motion designer for short-form affiliate content.
+Platform: [PLATFORM]
+Input: {{SCRIPT_JSON}} + {{VISUALS_JSON}}
+
+Rules:
+- Motion types: slow_zoom_in|gentle_pan_left|gentle_pan_right|static|text_fly_in
+- Scale delta ≤ 10 (100→108 max) — no dizzying effects
+- TikTok: faster cuts (avg 2s/clip) | Reels: slightly slower, smoother | Shorts: match spoken pace | Pinterest: slower, elegant
+- Specify cut timing per segment
+
+Output (JSON only):
+{
+  "motion_instructions": [
+    {
+      "segment_time":"0-3s",
+      "motion_type":"slow_zoom_in",
+      "start_scale":100,"end_scale":108,
+      "easing":"ease-in-out",
+      "cut_to_next_at_sec":3,
+      "why":"creates urgency for hook"
+    }
+  ],
+  "avg_clip_duration_sec": 3,
+  "capcut_tip": "string"
+}</pre>
+      </div>
+    </details></div>
+
+    <!-- SKILL 05 -->
+    <div class="skill-card"><details>
+      <summary><div class="summary-left"><span class="skill-badge">05</span><span class="skill-name">Caption Stylist</span></div><div style="display:flex;align-items:center;gap:8px"><span class="skill-meta">Script JSON</span><span class="chevron">▶</span></div></summary>
+      <div class="skill-body">
+        <div class="prompt-meta"><span class="input-tag">→ Caption overlay JSON</span><button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button></div>
+        <pre class="prompt-box" data-skill="05">You are a caption designer for health affiliate shorts.
+Platform: [PLATFORM] | Niche: [NICHE]
+Input: {{SCRIPT_JSON}}
+
+Rules:
+- Max 6 words per caption line
+- Bold 1-2 power words per line using **word**
+- TikTok: white bold, dark bg bar, bottom-third, large font (auto-captions ok)
+- Reels: aesthetic font, semi-transparent bg, center or bottom-third
+- Shorts: white on dark, bottom-third (avoid top 30% — YouTube UI)
+- Pinterest: larger text, minimal caption, top or center placement ok
+
+Output (JSON only):
+{
+  "captions": [
+    {"time":"0-3s","text":"string with **bold**","position":"bottom-third|center","animation":"fade_in_up|word_pop","duration_sec":3,"platform_note":"string"}
+  ],
+  "style": {"platform":"[PLATFORM]","font_style":"bold_sans","safe_zone":"bottom 20% of frame"},
+  "accessibility_note": "Contrast ratio > 4.5:1"
+}</pre>
+      </div>
+    </details></div>
+
+    <!-- SKILL 06 -->
+    <div class="skill-card"><details>
+      <summary><div class="summary-left"><span class="skill-badge">06</span><span class="skill-name">CTA Optimizer</span></div><div style="display:flex;align-items:center;gap:8px"><span class="skill-meta">Product + Platform</span><span class="chevron">▶</span></div></summary>
+      <div class="skill-body">
+        <div class="prompt-meta"><span class="input-tag">→ 3 compliant CTAs</span><button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button></div>
+        <pre class="prompt-box" data-skill="06">You are a compliance-aware CTA specialist for ClickBank/Impact/BuyGoods affiliates.
+Product: [PRODUCT] | Platform: [PLATFORM] | Bridge URL: [AFF_URL]
+
+Rules:
+- CTA goes to BRIDGE PAGE, not direct affiliate link
+- Include disclosure: "#ad" or "I may earn a commission"
+- NO false urgency ("Only 3 left!") unless vendor confirms
+- TikTok: "Link in bio 👆" (no text overlay with link — TikTok flags this)
+- YouTube Shorts: "Check description below"
+- Reels: "Link in bio" or "Tap the link"
+- Pinterest: "Click for details" (pin description has the link)
+- Tone: helpful, curious, not pushy
+
+Output (JSON only):
+{
+  "cta_options": [
+    {
+      "text":"string","platform":"[PLATFORM]",
+      "disclosure_included":true,
+      "goes_to":"bridge_page",
+      "compliance_notes":"string"
+    }
+  ],
+  "recommended":0,
+  "ftc_reminder":"Always disclose affiliate relationship clearly"
+}</pre>
+      </div>
+    </details></div>
+
+    <!-- SKILL 07 -->
+    <div class="skill-card"><details>
+      <summary><div class="summary-left"><span class="skill-badge">07</span><span class="skill-name">Compliance Checker</span></div><div style="display:flex;align-items:center;gap:8px"><span class="skill-meta">Full Video Plan</span><span class="chevron">▶</span></div></summary>
+      <div class="skill-body">
+        <div class="prompt-meta"><span class="input-tag">→ Auto-fix JSON</span><button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button></div>
+        <pre class="prompt-box" data-skill="07">You are a ClickBank/Impact/BuyGoods affiliate compliance auditor.
+Product: [PRODUCT] | Platform: [PLATFORM]
+Input plan: {{VIDEO_PLAN_JSON}}
+
+Check for:
+❌ Medical claims ("cures", "treats", "proven", "clinically")
+❌ Before/after photos (if vendor prohibits)
+❌ Missing affiliate disclosure (#ad or commission disclosure)
+❌ Platform violations (TikTok: no link overlay text, no direct offer links)
+❌ False scarcity / income claims ("I made $500 today")
+❌ Hard redirect to offer (must go to bridge page first)
+❌ AI content disclosure (platforms increasingly require labeling)
+
+Output (JSON only):
+{
+  "compliance_status":"PASS|NEEDS_REVISION|MANUAL_REVIEW_REQUIRED",
+  "issues": [{"location":"string","problem":"string","severity":"critical|warning","auto_fix_suggestion":"exact replacement","skill_to_rerun":"SKILL_02|SKILL_06"}],
+  "auto_fix_applied":false,
+  "fixed_video_plan":{},
+  "manual_review_instructions":"string if MANUAL_REVIEW_REQUIRED"
+}</pre>
+      </div>
+    </details></div>
+
+    <!-- SKILL 08 -->
+    <div class="skill-card"><details>
+      <summary><div class="summary-left"><span class="skill-badge">08</span><span class="skill-name">Analytics Interpreter</span></div><div style="display:flex;align-items:center;gap:8px"><span class="skill-meta">24h Metrics</span><span class="chevron">▶</span></div></summary>
+      <div class="skill-body">
+        <div class="prompt-meta"><span class="input-tag">→ Prompt improvement JSON</span><button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button></div>
+        <pre class="prompt-box" data-skill="08">You are a growth analyst for faceless affiliate videos.
+Product: [PRODUCT] | Platform: [PLATFORM]
+
+Analytics (fill in from your dashboard):
+- Hook retention at 3s: [X]%  (find in TikTok/IG/YT analytics → audience retention)
+- Average watch time: [Y]s
+- CTR on bridge link: [Z]%    (Cloudflare Pages analytics → clicks)
+- Bridge-to-offer click rate: [W]%  (Umami analytics on bridge page)
+- Top 3 comments: ["comment1","comment2","comment3"]
+- Drop-off point: [timestamp]s
+
+Where to find metrics:
+- TikTok: Creator Tools → Video Analytics → Audience Retention
+- Reels: Professional Dashboard → Insights → Reach
+- Shorts: YouTube Studio → Analytics → Audience tab
+- Bridge clicks: Cloudflare Pages → Analytics → Requests
+- Umami: your self-hosted dashboard
+
+Rules:
+- Focus ONE biggest leverage point only
+- Tie insights to specific SKILLs
+- Suggest exact prompt edits
+- Surface comment objections → feed into SKILL 00
+
+Output (JSON only):
+{
+  "diagnostic": {"biggest_opportunity":"string","evidence":"string","hypothesis":"string"},
+  "prompt_tweaks": [{"skill_to_update":"SKILL_01","current_snippet":"string","suggested_edit":"string","expected_impact":"string"}],
+  "next_test_idea": "A/B test: [Hook A] vs [Hook B]",
+  "comment_insights": [{"comment":"string","objection":"string","address_in_next_video":"string"}],
+  "bridge_insight": "what the bridge click rate tells you"
+}</pre>
+      </div>
+    </details></div>
+
+    <!-- SKILL 09 -->
+    <div class="skill-card" style="border-color:#7c3aed44"><details>
+      <summary style="background:linear-gradient(90deg,#7c3aed08,transparent)"><div class="summary-left"><span class="skill-badge" style="background:var(--accent2)">09</span><span class="skill-name">Thumbnail Generator</span></div><div style="display:flex;align-items:center;gap:8px"><span class="skill-meta">Hook + Script</span><span class="chevron">▶</span></div></summary>
+      <div class="skill-body">
+        <div class="prompt-meta"><span class="input-tag">→ Platform-specific thumbnail</span><button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button></div>
+        <pre class="prompt-box" data-skill="09">You are a thumbnail strategist for health affiliate shorts.
+Product: [PRODUCT] | Platform: [PLATFORM] | Niche: [NICHE]
+Hook: {{HOOK_TEXT}}
+
+Platform rules:
+- YouTube Shorts: cover frame = strong first frame. Bold text overlay ok.
+- Reels: grid thumbnail = clean aesthetic. Readable text overlay. 1:1 crop for grid.
+- TikTok: choose cover timestamp OR suggest static image. Max 5 word overlay.
+- Pinterest: 2:3 ratio (1000×1500). Title text MUST be in image. Evergreen wording.
+
+Rules:
+- Emotion: curiosity or mild shock — scroll stopper
+- Text overlay: max 5 words, high contrast, large
+- Pinterest specifically: keyword-rich title in image (acts as SEO)
+
+Output (JSON only):
+{
+  "thumbnail_concept": {
+    "platform":"[PLATFORM]",
+    "image_prompt":"AI image gen prompt OR canva template description",
+    "text_overlay":"max 5 words",
+    "color_scheme":["#hex1","#hex2"],
+    "emotion_target":"curiosity|shock|hope|fear",
+    "why_it_stops_scroll":"1 sentence",
+    "pinterest_seo_title":"keyword-rich if Pinterest, else null"
+  },
+  "capcut_tip":"string"
+}</pre>
+      </div>
+    </details></div>
+
+    <!-- SKILL 10 — NEW: Human Readable Converter -->
+    <div class="skill-card" style="border-color:#00e09644"><details>
+      <summary style="background:linear-gradient(90deg,#00e09608,transparent)"><div class="summary-left"><span class="skill-badge" style="background:var(--success);color:#000">10</span><span class="skill-name">Human Readable Converter ✦ new</span></div><div style="display:flex;align-items:center;gap:8px"><span class="skill-meta">Full Video Plan JSON</span><span class="chevron">▶</span></div></summary>
+      <div class="skill-body">
+        <div class="prompt-meta"><span class="input-tag">→ Copy-paste production sheet</span><button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button></div>
+        <pre class="prompt-box" data-skill="10">You are a production assistant converting a JSON video plan into a human-readable assembly sheet.
+
+Input: {{FULL_VIDEO_PLAN_JSON}}
+
+Task: Convert every field into plain copy-paste blocks for manual production.
+DO NOT explain structure. Output clean blocks only.
+
+Format EXACTLY like this:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎙 VOICEOVER SCRIPT (read to ElevenLabs or record yourself)
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+[0-3s] {spoken text here}
+[3-7s] {spoken text here}
+[7-14s] {spoken text here}
+[14-20s] {spoken text here}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+📝 ON-SCREEN TEXT (type into CapCut / Canva text boxes)
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+[0-3s] {on-screen text} | Animation: {animation type}
+[3-7s] {on-screen text} | Animation: {animation type}
+[7-14s] {on-screen text} | Animation: {animation type}
+[14-20s] {on-screen text} | Animation: {animation type}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+🖼 VISUALS (generate or search — 1 per segment)
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+[0-3s] TYPE: {text_motion|ai_image|stock}
+PROMPT: {exact prompt to paste into Leonardo/Bing Creator}
+BACKGROUND: {color/style}
+
+[3-7s] ... (repeat)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎬 CAPCUT ASSEMBLY ORDER
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Import visuals. Set each clip duration to match time range.
+2. Add voiceover audio. Sync to clip start.
+3. Apply motion: {motion type} — scale {start}→{end}.
+4. Add captions from On-Screen Text above.
+5. Insert CTA frame at 14s: "{cta text}"
+6. Add #ad disclosure at bottom.
+7. Export: {resolution} {fps}fps H.264.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+📌 POST CAPTION + HASHTAGS
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+{post caption here — platform-optimized}
+{hashtags on new line}</pre>
+      </div>
+    </details></div>
+
+  </div><!-- /skills-grid -->
+
+  <!-- BATCH ORCHESTRATOR -->
+  <div class="section-label">// One-Shot Orchestrator</div>
+  <div class="full-card" style="border-color:var(--accent)">
+    <h2>⚡ One-Shot Video Generator <span style="font-size:.7rem;font-weight:400;color:var(--text-muted);margin-left:8px;font-family:var(--mono)">SKILL 00→09 · autonomous</span></h2>
+    <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+      <span style="font-family:var(--mono);font-size:.65rem;color:var(--success);background:#00e09611;border:1px solid #00e09633;padding:3px 9px;border-radius:3px">✓ Sales page aware</span>
+      <span style="font-family:var(--mono);font-size:.65rem;color:var(--accent);background:#00e5ff11;border:1px solid #00e5ff33;padding:3px 9px;border-radius:3px">✓ Text-motion first</span>
+      <span style="font-family:var(--mono);font-size:.65rem;color:#a78bfa;background:#7c3aed11;border:1px solid #7c3aed33;padding:3px 9px;border-radius:3px">✓ Bridge-CTA only</span>
+      <span style="font-family:var(--mono);font-size:.65rem;color:var(--warning);background:#fbbf2411;border:1px solid #fbbf2433;padding:3px 9px;border-radius:3px">✓ 14-20s video</span>
+    </div>
+    <div class="prompt-meta"><span class="input-tag">Input: Product · Niche · Platform · Pain · Sales URL → Full JSON plan</span><button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button></div>
+    <pre class="prompt-box" data-skill="batch">You are my autonomous affiliate video production system.
+Execute SKILL_00 through SKILL_09 sequentially. Output only final JSON.
+DO NOT ask questions. DO NOT explain reasoning.
+
+PRODUCT: [PRODUCT]
+NICHE: [NICHE]
+PRIMARY PLATFORM: [PLATFORM]
+PRIMARY PAIN POINT: [PAIN]
+SALES PAGE URL: [SALES_URL]
+BRIDGE PAGE URL: [AFF_URL]
+
+SYSTEM RULES:
+1. Read the sales page URL above — mirror its headlines and proof points.
+2. Perform internally: audience research, hook generation, script, visuals (text-motion first), motion, captions, CTA, thumbnail, compliance check.
+3. Video style: text-motion primary, cinematic bg if needed, NO face, NO cringe effects.
+4. CTA must point to BRIDGE PAGE, never direct affiliate link.
+5. Compliance: no medical claims, no fake scarcity, #ad disclosure always.
+6. Duration: 14-20s max.
+7. Platform adaptation: TikTok=fastest cuts, Reels=aesthetic, Shorts=search-intent title, Pinterest=evergreen 2:3.
+
+OUTPUT FORMAT — valid JSON only:
+{
+  "product_info":{"name":"string","niche":"string","platform":"string","pain_point":"string","bridge_url":"string"},
+  "audience_research":{"primary_persona":"string","mindset":"string","top_pain":"string","emotional_driver":"fear|shame|frustration|hope","unexpected_angle":"string","sales_page_angle_used":"string"},
+  "hooks":[{"text":"string","trigger":"string","why":"string"}],
+  "selected_hook":{"text":"string","trigger":"string"},
+  "video_script":{"segments":[
+    {"time":"0-3s","spoken_text":"string","on_screen_text":"string","tone":"string"},
+    {"time":"3-7s","spoken_text":"string","on_screen_text":"string","tone":"string"},
+    {"time":"7-14s","spoken_text":"string","on_screen_text":"string","tone":"string"},
+    {"time":"14-20s","spoken_text":"string","on_screen_text":"bridge CTA","tone":"string"}
+  ],"total_duration_sec":0,"word_count":0},
+  "visual_plan":[{"segment_time":"string","primary_type":"text_motion|ai_image|stock_video","text_animation":"string","background":"string","ai_image_prompt":"string or null"}],
+  "motion_plan":[{"segment_time":"string","motion_type":"string","start_scale":100,"end_scale":108}],
+  "caption_plan":[{"time":"string","text":"string with **bold**","position":"bottom-third","animation":"fade_in_up"}],
+  "cta_options":[{"text":"string","disclosure_included":true,"goes_to":"bridge_page","compliance_note":"string"}],
+  "thumbnail_concept":{"image_prompt":"string","text_overlay":"max 5 words","emotion_target":"string","why_it_stops_scroll":"string"},
+  "compliance_check":{"status":"PASS|NEEDS_REVISION","issues":[]},
+  "final_post_caption":"string",
+  "hashtags":["string"]
+}</pre>
+  </div>
+
+  <!-- COMPLIANCE LOOP -->
+  <div class="section-label">// Compliance Loop</div>
+  <div class="workflow-block" style="margin-bottom:28px">
+    <h2>🛡️ When SKILL 07 Returns an Issue</h2>
+    <div class="compliance-grid">
+      <div class="comp-card"><h4><div class="dot g"></div>auto_fix_applied: true</h4><p>Use <code>fixed_video_plan</code> directly. Skip back to assembly. Done.</p></div>
+      <div class="comp-card"><h4><div class="dot y"></div>NEEDS_REVISION</h4><p>Apply <code>auto_fix_suggestion</code>. Re-paste into SKILL 07. Run once more max.</p></div>
+      <div class="comp-card"><h4><div class="dot r"></div>MANUAL_REVIEW_REQUIRED</h4><p>Pause. Check vendor terms. Fix angle, or regenerate from SKILL 00 with safer hook.</p></div>
+    </div>
+    <div class="tip-box">⚠️ Never run SKILL 07 more than 2× per video plan. If still failing, pivot the angle entirely.</div>
+  </div>
+</div><!-- /tab-skills -->
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- TAB 3: PLATFORM GUIDE -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div id="tab-platforms" class="tab-panel">
+  <div class="section-label">// Platform-Specific Optimization</div>
+  <div class="workflow-block">
+    <h2>📱 Choose Your Platform</h2>
+    <div class="plat-tabs">
+      <button class="plat-btn active" onclick="switchPlat('tiktok',this)">TikTok</button>
+      <button class="plat-btn" onclick="switchPlat('reels',this)">Instagram Reels</button>
+      <button class="plat-btn" onclick="switchPlat('shorts',this)">YouTube Shorts</button>
+      <button class="plat-btn" onclick="switchPlat('pins',this)">Pinterest</button>
+    </div>
+
+    <!-- TikTok -->
+    <div class="plat-panel active" id="pp-tiktok">
+      <div class="plat-spec">
+        <div class="spec-card"><h5>📐 Format</h5><ul>
+          <li><b>Ratio:</b> 9:16 vertical only</li>
+          <li><b>Resolution:</b> 1080×1920</li>
+          <li><b>Duration:</b> 15–30s sweet spot (60s max for shorts)</li>
+          <li><b>File:</b> H.264 .mp4, &lt;287MB</li>
+          <li><b>Safe zone:</b> Avoid bottom 20% (UI) + top 10% (nav)</li>
+        </ul></div>
+        <div class="spec-card"><h5>🎵 Audio Strategy</h5><ul>
+          <li><b>Trending sound:</b> Browse FYP for current trend, overlay lightly</li>
+          <li><b>Voiceover:</b> ElevenLabs "Adam" or "Rachel" — clear, warm</li>
+          <li><b>Music vol:</b> 15–20% if adding trend audio under VO</li>
+          <li><b>No audio:</b> Use captions — 40% watch muted</li>
+          <li><b>Tip:</b> TikTok boosts videos using trending sounds</li>
+        </ul></div>
+        <div class="spec-card"><h5>📝 Caption Style</h5><ul>
+          <li><b>Auto-captions:</b> Yes — enable in CapCut</li>
+          <li><b>Font:</b> Bold, white, dark background bar</li>
+          <li><b>Position:</b> Bottom-third (below center)</li>
+          <li><b>Size:</b> Large — 70–80px equivalent</li>
+          <li><b>Words per line:</b> Max 4–5 for mobile readability</li>
+        </ul></div>
+        <div class="spec-card"><h5>🖼 Thumbnail</h5><ul>
+          <li><b>Method:</b> Choose cover frame in TikTok upload</li>
+          <li><b>Best frame:</b> 0.5–1s mark — strong visual moment</li>
+          <li><b>Text overlay:</b> Max 5 words, high contrast</li>
+          <li><b>Tip:</b> Cover text appears in search results</li>
+          <li><b>Avoid:</b> Blurry frames, mid-transition moments</li>
+        </ul></div>
+        <div class="spec-card"><h5>📣 CTA</h5><ul>
+          <li><b>Say:</b> "Link in bio 👆"</li>
+          <li><b>Don't overlay:</b> TikTok flags link-text overlays</li>
+          <li><b>Bio link:</b> Use Linktree or direct bridge page URL</li>
+          <li><b>Disclosure:</b> #ad in caption (not optional)</li>
+          <li><b>Pin comment:</b> Add bridge link in pinned comment</li>
+        </ul></div>
+        <div class="spec-card"><h5>📅 Posting Cadence</h5><ul>
+          <li><b>Frequency:</b> 1–3 videos/day ideal</li>
+          <li><b>Best times:</b> 7–9am, 12–2pm, 7–9pm (local)</li>
+          <li><b>Hashtags:</b> 3–5 only (niche + 1 trending)</li>
+          <li><b>Trend window:</b> Post within 24–48h of trend peak</li>
+          <li><b>Evergreen:</b> 1 evergreen per 2 trend videos</li>
+        </ul></div>
+      </div>
+      <div class="tip-box">🎯 TikTok tip: Pattern interrupt in first 0.5s is mandatory. Start mid-action, never with a title card. The algorithm decides in 3 seconds.</div>
+    </div>
+
+    <!-- Reels -->
+    <div class="plat-panel" id="pp-reels">
+      <div class="plat-spec">
+        <div class="spec-card"><h5>📐 Format</h5><ul>
+          <li><b>Ratio:</b> 9:16 for feed (4:5 safe zone for grid preview)</li>
+          <li><b>Resolution:</b> 1080×1920</li>
+          <li><b>Duration:</b> 15–30s best, up to 90s</li>
+          <li><b>File:</b> H.264 .mp4, &lt;650MB</li>
+          <li><b>Grid crop:</b> Center-frame your key visual (4:5 crop visible)</li>
+        </ul></div>
+        <div class="spec-card"><h5>🎵 Audio Strategy</h5><ul>
+          <li><b>Original audio:</b> Always keep — Reels rewards original</li>
+          <li><b>Trending audio:</b> Use Instagram's audio library (not TikTok audio)</li>
+          <li><b>Voiceover:</b> Clear, slightly warmer tone than TikTok</li>
+          <li><b>Music vol:</b> 20% bg music under VO</li>
+          <li><b>Tip:</b> Instagram-native trending audio = bigger reach boost</li>
+        </ul></div>
+        <div class="spec-card"><h5>📝 Caption Style</h5><ul>
+          <li><b>Style:</b> Aesthetic — cleaner than TikTok</li>
+          <li><b>Font:</b> Rounded sans, semi-transparent bg</li>
+          <li><b>Position:</b> Center or lower-third</li>
+          <li><b>Size:</b> Medium — readable but not dominant</li>
+          <li><b>Avoid:</b> Cluttered text — Reels audience values visual</li>
+        </ul></div>
+        <div class="spec-card"><h5>🖼 Thumbnail</h5><ul>
+          <li><b>Grid thumbnail:</b> Choose frame before uploading</li>
+          <li><b>Aspect for grid:</b> 1:1 center crop matters</li>
+          <li><b>Style:</b> Clean, aesthetic, brand-consistent</li>
+          <li><b>Text overlay:</b> OK for grid — 3–5 words</li>
+          <li><b>Tip:</b> Cohesive grid = more profile follows from Reels</li>
+        </ul></div>
+        <div class="spec-card"><h5>📣 CTA</h5><ul>
+          <li><b>Say:</b> "Link in bio" or "Tap the link 🔗"</li>
+          <li><b>Bio link:</b> Linktree or bridge page</li>
+          <li><b>Sticker:</b> Use Link sticker if account eligible</li>
+          <li><b>Disclosure:</b> #ad or "Paid partnership" tag</li>
+          <li><b>Caption:</b> Longer caption OK — IG rewards description</li>
+        </ul></div>
+        <div class="spec-card"><h5>📅 Posting Cadence</h5><ul>
+          <li><b>Frequency:</b> 4–7 Reels/week</li>
+          <li><b>Best times:</b> 9–11am, 2–4pm, 8–10pm</li>
+          <li><b>Hashtags:</b> 5–10 (mix niche + broad)</li>
+          <li><b>Carousel:</b> Alternate Reels with carousels for reach</li>
+          <li><b>Stories:</b> Repost Reel to Stories with "swipe up" CTA</li>
+        </ul></div>
+      </div>
+      <div class="tip-box">🎯 Reels tip: Instagram rewards aesthetic. Your visual quality matters more than TikTok. Use Canva text-motion templates — they look polished and drive saves (saves = massive reach signal).</div>
+    </div>
+
+    <!-- Shorts -->
+    <div class="plat-panel" id="pp-shorts">
+      <div class="plat-spec">
+        <div class="spec-card"><h5>📐 Format</h5><ul>
+          <li><b>Ratio:</b> 9:16 strictly</li>
+          <li><b>Resolution:</b> 1080×1920</li>
+          <li><b>Duration:</b> Under 60s (under 30s sweet spot)</li>
+          <li><b>File:</b> H.264 .mp4</li>
+          <li><b>Safe zone:</b> Avoid bottom 25% (subscribe button, comments)</li>
+        </ul></div>
+        <div class="spec-card"><h5>🎵 Audio Strategy</h5><ul>
+          <li><b>Original audio:</b> Preferred — YouTube rewards it</li>
+          <li><b>Music:</b> YouTube Audio Library only (avoid copyright strikes)</li>
+          <li><b>Voiceover:</b> ElevenLabs or natural — clear pronunciation</li>
+          <li><b>Captions:</b> Critical — many Shorts viewers are on mute</li>
+          <li><b>Tip:</b> Shorts with clear spoken words rank better in search</li>
+        </ul></div>
+        <div class="spec-card"><h5>📝 Caption Style</h5><ul>
+          <li><b>Auto-captions:</b> Enable in YouTube Studio after upload</li>
+          <li><b>In-video text:</b> White on dark, bottom-third</li>
+          <li><b>Avoid top 30%:</b> YouTube subscribe UI lives there</li>
+          <li><b>Size:</b> Large — Shorts are watched at arm's length</li>
+          <li><b>Font:</b> Bold, no decorative — readability first</li>
+        </ul></div>
+        <div class="spec-card"><h5>🖼 Thumbnail / Title</h5><ul>
+          <li><b>First frame:</b> IS your thumbnail — make it strong</li>
+          <li><b>Title:</b> KEYWORD-RICH (Shorts rank in YouTube search)</li>
+          <li><b>Title format:</b> "[Pain point] solution | [Product] review"</li>
+          <li><b>Description:</b> 150-200 chars with affiliate link + #ad</li>
+          <li><b>Tags:</b> 3–5 niche tags</li>
+        </ul></div>
+        <div class="spec-card"><h5>📣 CTA</h5><ul>
+          <li><b>Say:</b> "Check the description below"</li>
+          <li><b>Description link:</b> Bridge page URL goes here</li>
+          <li><b>No clickable overlays:</b> YouTube Shorts doesn't support them</li>
+          <li><b>Disclosure:</b> "#ad" or "affiliate link" in description</li>
+          <li><b>Pin comment:</b> Pin bridge link as first comment</li>
+        </ul></div>
+        <div class="spec-card"><h5>📅 Posting Cadence</h5><ul>
+          <li><b>Frequency:</b> 1/day minimum, 2–3 for growth</li>
+          <li><b>Best times:</b> 3–5pm and 7–9pm (YouTube primetime)</li>
+          <li><b>Hashtags:</b> #Shorts in title + 2 niche tags</li>
+          <li><b>Search intent:</b> Title should match what people type</li>
+          <li><b>Tip:</b> Shorts feed long-form channel — builds subscribers too</li>
+        </ul></div>
+      </div>
+      <div class="tip-box">🎯 Shorts tip: Title = SEO. Unlike TikTok/Reels, Shorts rank in YouTube search results. Write your title like someone Googling their pain point, not like a viral hook.</div>
+    </div>
+
+    <!-- Pinterest -->
+    <div class="plat-panel" id="pp-pins">
+      <div class="plat-spec">
+        <div class="spec-card"><h5>📐 Format</h5><ul>
+          <li><b>Ratio:</b> 2:3 (1000×1500) for static pins</li>
+          <li><b>Video pins:</b> 9:16 or 2:3, up to 15min</li>
+          <li><b>File:</b> .mp4 or .mov, &lt;2GB</li>
+          <li><b>Static pin:</b> .jpg or .png — often outperforms video</li>
+          <li><b>Text in image:</b> REQUIRED for click-through</li>
+        </ul></div>
+        <div class="spec-card"><h5>🎵 Audio Strategy</h5><ul>
+          <li><b>Pinterest auto-plays muted:</b> Captions are everything</li>
+          <li><b>Audio irrelevant:</b> Focus on visual text motion</li>
+          <li><b>Static pin:</b> No audio — use a strong image + text overlay</li>
+          <li><b>Idea Pin (multi-slide):</b> Works like a carousel, no outbound link</li>
+          <li><b>Tip:</b> Standard Pins (not Idea Pins) = clickable to bridge</li>
+        </ul></div>
+        <div class="spec-card"><h5>📝 Caption Style</h5><ul>
+          <li><b>Text IN the image:</b> Headline + benefit (large, bold)</li>
+          <li><b>Style:</b> Clean, editorial, premium feel</li>
+          <li><b>Font:</b> Serif or strong sans — no CapCut default fonts</li>
+          <li><b>Position:</b> Center or top (2:3 ratio — text at top)</li>
+          <li><b>Canva:</b> Use Pinterest-specific templates</li>
+        </ul></div>
+        <div class="spec-card"><h5>🖼 Visual / SEO</h5><ul>
+          <li><b>Pinterest IS a search engine:</b> Keywords > trends</li>
+          <li><b>Pin title:</b> Keyword-rich, "how to X" or "best X for Y"</li>
+          <li><b>Description:</b> 150+ words with niche keywords</li>
+          <li><b>Board name:</b> Match niche keyword exactly</li>
+          <li><b>Alt text:</b> Fill in — used for search ranking</li>
+        </ul></div>
+        <div class="spec-card"><h5>📣 CTA</h5><ul>
+          <li><b>Destination URL:</b> Bridge page (clickable directly from pin)</li>
+          <li><b>In-image text:</b> "Click for details" or benefit phrase</li>
+          <li><b>Disclosure:</b> "Affiliate link" in pin description</li>
+          <li><b>Rich Pins:</b> Enable for automatic metadata pull</li>
+          <li><b>Tip:</b> Pinterest traffic is warm and buyer-intent</li>
+        </ul></div>
+        <div class="spec-card"><h5>📅 Posting Cadence</h5><ul>
+          <li><b>Frequency:</b> 3–5 pins/day (Pinterest rewards volume)</li>
+          <li><b>Best times:</b> 8–11pm, Saturday mornings</li>
+          <li><b>Mix:</b> 70% curated repins, 30% original</li>
+          <li><b>Evergreen:</b> Pins surface for months — keyword focus pays off long term</li>
+          <li><b>Boards:</b> One board per sub-niche, keyword-named</li>
+        </ul></div>
+      </div>
+      <div class="tip-box">🎯 Pinterest tip: Pinterest is not social media — it's a visual search engine. One well-optimized pin can send traffic for 12+ months. Prioritize keyword research over trends. Use a Standard Pin (not Idea Pin) so the link is clickable.</div>
+    </div>
+  </div>
+</div><!-- /tab-platforms -->
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- TAB 4: BRIDGE BUILDER -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div id="tab-bridge" class="tab-panel">
+  <div class="section-label">// Bridge Page Generator</div>
+  <div class="bridge-form">
+    <h3>⚡ Generate Bridge Page HTML</h3>
+    <div class="tip-box" style="margin-bottom:16px">💡 A bridge page sits between your video and the offer. It warms the viewer, captures email leads via Kit, and then sends them to your affiliate link. Deploy as <code>index.html</code> on Cloudflare Pages.</div>
+    <div class="bridge-grid">
+      <div class="bf-field"><label>Product Name</label><input id="bp-name" placeholder="ProDentim"></div>
+      <div class="bf-field"><label>Niche / Category</label><input id="bp-niche" placeholder="Dental health supplement"></div>
+      <div class="bf-field"><label>Headline (from sales page)</label><input id="bp-headline" placeholder="The Real Reason Your Teeth Won't Stop Hurting"></div>
+      <div class="bf-field"><label>Sub-headline / Proof</label><input id="bp-sub" placeholder="Over 95,000 people have already tried this..."></div>
+      <div class="bf-field"><label>Benefit 1</label><input id="bp-b1" placeholder="Supports healthy gums naturally"></div>
+      <div class="bf-field"><label>Benefit 2</label><input id="bp-b2" placeholder="Freshens breath at the source"></div>
+      <div class="bf-field"><label>Benefit 3</label><input id="bp-b3" placeholder="Probiotic formula — no harsh chemicals"></div>
+      <div class="bf-field"><label>Affiliate Link</label><input id="bp-aff" placeholder="https://hop.clickbank.net/..."></div>
+      <div class="bf-field"><label>CTA Button Text</label><input id="bp-cta" placeholder="See Full Details →"></div>
+      <div class="bf-field"><label>Kit Form ID (optional)</label><input id="bp-kit" placeholder="your-kit-form-id"></div>
+      <div class="bf-field"><label>Platform (for tone)</label>
+        <select id="bp-plat">
+          <option>TikTok</option><option>Instagram Reels</option>
+          <option>YouTube Shorts</option><option>Pinterest</option>
+        </select>
+      </div>
+      <div class="bf-field"><label>Accent Color</label><input id="bp-color" type="color" value="#00e5ff" style="height:42px;padding:4px"></div>
+    </div>
+    <button id="buildBridge" onclick="generateBridge()">⚡ Generate Bridge Page</button>
+  </div>
+
+  <div id="bridgePreview">
+    <div class="bridge-actions">
+      <span style="font-family:var(--mono);font-size:.7rem;color:var(--text-muted);align-self:center">Preview:</span>
+      <button class="ba-btn primary" onclick="downloadBridge()">⬇ Download index.html</button>
+      <button class="ba-btn" onclick="copyBridgeHTML()">📋 Copy HTML</button>
+    </div>
+    <iframe id="bridgeFrame" title="Bridge Page Preview"></iframe>
+  </div>
+</div><!-- /tab-bridge -->
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- TAB 5: ASSEMBLY GUIDE -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div id="tab-assembly" class="tab-panel">
+  <div class="section-label">// CapCut / Canva Assembly — Text-Motion First</div>
+  <div class="workflow-block" style="margin-bottom:28px">
+    <h2>🎬 Text-Motion Assembly (Recommended in 2026)</h2>
+    <div class="info-box">✅ Text-motion videos outperform AI image slideshows on all platforms in 2026. CapCut's built-in text templates or Canva's animated text are free, fast, and platform-native looking.</div>
+    <table>
+      <thead><tr><th>#</th><th>Action</th><th>Tool</th><th>Platform Note</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Open new 9:16 project (1080×1920)</td><td>CapCut / Canva</td><td>Pinterest: use 2:3 (1000×1500) for static pin</td></tr>
+        <tr><td>2</td><td>Add solid or gradient background — dark preferred</td><td>CapCut</td><td>Reels: can use aesthetic image bg. TikTok: dark converts better</td></tr>
+        <tr><td>3</td><td>Import voiceover (ElevenLabs export)</td><td>CapCut Audio</td><td>Sync audio timeline first, then build visuals around it</td></tr>
+        <tr><td>4</td><td>Add TEXT layers for each segment from SKILL 10 output</td><td>CapCut Text</td><td>Use "Word Pop" or "Slide Up" template animations</td></tr>
+        <tr><td>5</td><td>Bold 1–2 power words per line — increase size 20–30%</td><td>CapCut Text</td><td>Reels: aesthetic styling. TikTok: maximum contrast</td></tr>
+        <tr><td>6</td><td>Add AI background image (optional) — blur 30–50%</td><td>CapCut</td><td>Text must remain readable — background is secondary</td></tr>
+        <tr><td>7</td><td>Apply auto-captions if VO used</td><td>CapCut Captions</td><td>Shorts: bottom-third only. Avoid top 30%.</td></tr>
+        <tr><td>8</td><td>Insert CTA frame at 14s — large text + #ad</td><td>CapCut</td><td>TikTok: "Link in bio 👆". Shorts: "Check description"</td></tr>
+        <tr><td>9</td><td>Add trending audio track (15–20% volume)</td><td>CapCut Audio</td><td>TikTok: trending sound boosts reach. Reels: Instagram-native only</td></tr>
+        <tr><td>10</td><td>Export: 1080×1920 H.264, 30fps, high bitrate</td><td>CapCut Export</td><td>Pinterest video: can export 2:3 separately</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="workflow-block" style="margin-bottom:28px">
+    <h2>🎨 Canva Text-Motion Alternative</h2>
+    <div class="step-row"><div class="step-num">1</div><div class="step-text">Open Canva → New Design → <b>TikTok Video (1080×1920)</b></div></div>
+    <div class="step-row"><div class="step-num">2</div><div class="step-text">Search templates: "Bold Statement", "Kinetic Text", "Announcement" — pick dark/high contrast</div></div>
+    <div class="step-row"><div class="step-num">3</div><div class="step-text">Replace template text with SKILL 10 on-screen text output — one slide per segment</div></div>
+    <div class="step-row"><div class="step-num">4</div><div class="step-text">Set each slide duration to match script timing (0-3s = 3s, etc.)</div></div>
+    <div class="step-row"><div class="step-num">5</div><div class="step-text">Add voiceover via Canva's audio upload or record in-app</div></div>
+    <div class="step-row"><div class="step-num">6</div><div class="step-text">Apply page transitions: "Fade" or "Slide" — avoid flashy effects</div></div>
+    <div class="step-row"><div class="step-num">7</div><div class="step-text">Download as MP4 → upload directly to platform</div></div>
+    <div class="tip-box">💡 Canva Pro's "Brand Kit" lets you set colors/fonts once and apply across all videos. Consistency builds brand recognition even in faceless content.</div>
+  </div>
+</div><!-- /tab-assembly -->
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- TAB 6: EVOLUTION LOG -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div id="tab-tracker" class="tab-panel">
+  <div class="section-label">// Prompt Evolution Log — Persistent Storage</div>
+  <div class="workflow-block" style="margin-bottom:28px">
+    <h2>📊 Performance Tracker <span style="font-family:var(--mono);font-size:.65rem;font-weight:400;color:var(--success);margin-left:8px">● Auto-saved to browser</span></h2>
+    <div class="info-box" style="margin-bottom:14px">✅ Your log is saved automatically. It survives tab close and browser restart. Use the Export button to backup before clearing.</div>
+    <table class="log-table" id="logTable">
+      <thead><tr><th>Date</th><th>Product</th><th>Platform</th><th>Hook Ret%</th><th>Avg Watch</th><th>Bridge CTR%</th><th>SKILL Tweaked</th><th>Result / Impact</th></tr></thead>
+      <tbody id="logBody"></tbody>
+    </table>
+    <div class="log-controls">
+      <button id="addLogRow" onclick="addRow()">+ Add Row</button>
+      <button class="log-ctrl" onclick="exportLog()">⬇ Export CSV</button>
+      <button class="log-ctrl" onclick="backupLog()">💾 Backup JSON</button>
+      <button class="log-ctrl" onclick="importLog()">⬆ Import JSON</button>
+      <input type="file" id="logImportFile" accept=".json" style="display:none" onchange="restoreLog(event)">
+      <button class="log-ctrl danger" onclick="clearLog()">🗑 Clear All</button>
+    </div>
+    <div class="tip-box" style="margin-top:14px">📝 Update after every SKILL 08 run. In 30 days, you own a proprietary playbook — nobody else has your exact data.</div>
+  </div>
+</div><!-- /tab-tracker -->
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- TAB 7: INFRASTRUCTURE -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div id="tab-infra" class="tab-panel">
+  <div class="section-label">// Infrastructure Setup</div>
+  <div class="workflow-block" style="margin-bottom:28px">
+    <h2>⚙️ Cloudflare + Kit + Umami Stack</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:4px">
+      <div class="comp-card">
+        <h4 style="color:#f6821f">☁ Cloudflare Pages (Bridge Host)</h4>
+        <p>1. Go to <b>pages.cloudflare.com</b> → Create Project → Upload (drag your bridge index.html).<br><br>
+        2. Your bridge is live at <code>yourproject.pages.dev</code>. Add custom domain free.<br><br>
+        3. Add redirect: <code>/go/product → affiliate link</code> in a <code>_redirects</code> file.<br><br>
+        <b>Analytics:</b> Enable Cloudflare Pages Analytics (free) — tracks bridge page visits + clicks.</p>
+      </div>
+      <div class="comp-card">
+        <h4 style="color:#a78bfa">✉ Kit (ConvertKit) Email</h4>
+        <p>1. Sign up at <b>kit.com</b> (free up to 10,000 subscribers).<br><br>
+        2. Create a Form → get your embed script tag.<br><br>
+        3. Bridge Builder above already includes the Kit form slot — paste your form ID.<br><br>
+        <b>Sequence:</b> Email 1: Free tip. Email 2: Deepen the problem. Email 3: Product pitch with your affiliate link.</p>
+      </div>
+      <div class="comp-card">
+        <h4 style="color:var(--accent)">📊 Umami Analytics</h4>
+        <p>1. Deploy free at <b>umami.is</b> or self-host on a $5/mo VPS.<br><br>
+        2. Get your <code>data-website-id</code>.<br><br>
+        3. Uncomment the Umami script in the bridge page &lt;head&gt;.<br><br>
+        <b>Track:</b> Page views, CTA button clicks, Kit form submissions, offer link clicks. GDPR-friendly, no cookies.</p>
+      </div>
+      <div class="comp-card">
+        <h4 style="color:var(--success)">🔗 Link Flow</h4>
+        <p><b>Video</b> → "Link in bio" / "Check description"<br>↓<br>
+        <b>Bio link / Description</b> → Bridge page URL<br>↓<br>
+        <b>Bridge page</b> → Kit form (email capture) + CTA button<br>↓<br>
+        <b>CTA button</b> → Your affiliate link (ClickBank/Impact/BuyGoods)<br><br>
+        <b>Never</b> link video directly to affiliate offer.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="kit-block">
+    <h3>📬 Get Weekly Winning Hooks</h3>
+    <p>New high-converting hooks, skill updates, and winning video breakdowns. Every Tuesday.</p>
+    <div class="kit-placeholder">
+      Replace this div with your Kit form embed code<br>
+      <code>&lt;script src="https://f.convertkit.com/YOUR-FORM-ID/index.js"&gt;&lt;/script&gt;</code>
+    </div>
+  </div>
+</div><!-- /tab-infra -->
+
+</div><!-- /wrap -->
+
+<script>
+// ─── Tab switching ───
+function switchTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ─── Platform tab switching ───
+function switchPlat(name, btn) {
+  document.querySelectorAll('.plat-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.plat-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('pp-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ─── Product token injection ───
+const TOKENS = {
+  '[PRODUCT]':  () => document.getElementById('pName').value || 'YOUR_PRODUCT',
+  '[NICHE]':    () => document.getElementById('pNiche').value || 'YOUR_NICHE',
+  '[PLATFORM]': () => document.getElementById('pPlatform').value || 'TikTok',
+  '[PAIN]':     () => document.getElementById('pPain').value || 'YOUR_PAIN_POINT',
+  '[SALES_URL]':() => document.getElementById('pSalesUrl').value || 'YOUR_SALES_PAGE_URL',
+  '[AFF_URL]':  () => document.getElementById('pAffUrl').value || 'YOUR_AFFILIATE_URL',
+};
+document.getElementById('applyProduct').addEventListener('click', () => {
+  document.querySelectorAll('.prompt-box').forEach(box => {
+    let html = box.innerHTML;
+    for (const [token, getter] of Object.entries(TOKENS)) {
+      const escaped = token.replace(/\[/g,'\\[').replace(/\]/g,'\\]');
+      html = html.replace(new RegExp(escaped,'g'), `<span class="ph">${getter()}</span>`);
+    }
+    box.innerHTML = html;
+  });
+  const s = document.getElementById('productStatus');
+  s.style.display = 'inline';
+  setTimeout(() => s.style.display = 'none', 3000);
+});
+
+// ─── Copy prompt ───
+function copyPrompt(btn) {
+  const box = btn.closest('.prompt-meta').nextElementSibling;
+  navigator.clipboard.writeText(box.innerText).then(() => {
+    btn.textContent = '✅ Copied!'; btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+function copyAllPrompts() {
+  const all = [...document.querySelectorAll('.prompt-box')]
+    .map((b,i) => `=== SKILL ${String(i).padStart(2,'0')} ===\n${b.innerText}`).join('\n\n');
+  navigator.clipboard.writeText(all).then(() => {
+    const btn = event.target;
+    btn.textContent = '✅ All Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy All Prompts', 2500);
+  });
+}
+function expandAll()  { document.querySelectorAll('details').forEach(d => d.open = true); }
+function collapseAll(){ document.querySelectorAll('details').forEach(d => d.open = false); }
+
+// ─── Evolution Log with localStorage ───
+const LOG_KEY = 'hermes_evolution_log_v3';
+
+function saveLog() {
+  const rows = [];
+  document.querySelectorAll('#logBody tr').forEach(tr => {
+    const cells = [...tr.querySelectorAll('td input')].map(i => i.value);
+    rows.push(cells);
+  });
+  localStorage.setItem(LOG_KEY, JSON.stringify(rows));
+}
+
+function loadLog() {
+  const saved = localStorage.getItem(LOG_KEY);
+  if (!saved) return;
+  const rows = JSON.parse(saved);
+  const tb = document.getElementById('logBody');
+  tb.innerHTML = '';
+  rows.forEach(cells => {
+    const row = createLogRow(cells);
+    tb.appendChild(row);
+  });
+}
+
+function createLogRow(values) {
+  const cols = ['YYYY-MM-DD','Product','Platform','Hook %','Avg Watch','Bridge CTR %','SKILL_0X','Result/Impact'];
+  const row = document.createElement('tr');
+  cols.forEach((ph, i) => {
+    const td = document.createElement('td');
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = ph;
+    if (values && values[i]) input.value = values[i];
+    input.addEventListener('input', saveLog);
+    td.appendChild(input);
+    row.appendChild(td);
+  });
+  return row;
+}
+
+function addRow() {
+  const today = new Date().toISOString().slice(0,10);
+  const row = createLogRow([today,'','','','','','','']);
+  document.getElementById('logBody').appendChild(row);
+  saveLog();
+}
+
+function exportLog() {
+  const rows = [['Date','Product','Platform','Hook Ret%','Avg Watch','Bridge CTR%','SKILL Tweaked','Result']];
+  document.querySelectorAll('#logBody tr').forEach(tr => {
+    rows.push([...tr.querySelectorAll('input')].map(i => i.value));
+  });
+  const csv = rows.map(r => r.map(c => `"${c}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
+  a.download = `hermes-log-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+}
+
+function backupLog() {
+  const data = localStorage.getItem(LOG_KEY) || '[]';
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([data], {type:'application/json'}));
+  a.download = `hermes-log-backup-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+}
+
+function importLog() { document.getElementById('logImportFile').click(); }
+
+function restoreLog(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const rows = JSON.parse(ev.target.result);
+      const arr = Array.isArray(rows) ? rows : JSON.parse(rows);
+      localStorage.setItem(LOG_KEY, JSON.stringify(arr));
+      loadLog();
+    } catch { alert('Invalid backup file.'); }
+    e.target.value = '';
+  };
+  reader.readAsText(file);
+}
+
+function clearLog() {
+  if (!confirm('Clear all log entries? Export a backup first.')) return;
+  localStorage.removeItem(LOG_KEY);
+  document.getElementById('logBody').innerHTML = '';
+}
+
+// ─── Bridge Page Generator ───
+let currentBridgeHTML = '';
+
+function generateBridge() {
+  const name    = document.getElementById('bp-name').value || 'Product';
+  const niche   = document.getElementById('bp-niche').value || 'health';
+  const hl      = document.getElementById('bp-headline').value || 'Discover What Really Works';
+  const sub     = document.getElementById('bp-sub').value || 'Thousands have already tried this...';
+  const b1      = document.getElementById('bp-b1').value || 'Benefit one';
+  const b2      = document.getElementById('bp-b2').value || 'Benefit two';
+  const b3      = document.getElementById('bp-b3').value || 'Benefit three';
+  const aff     = document.getElementById('bp-aff').value || '#';
+  const cta     = document.getElementById('bp-cta').value || 'See Full Details →';
+  const kitId   = document.getElementById('bp-kit').value;
+  const plat    = document.getElementById('bp-plat').value;
+  const color   = document.getElementById('bp-color').value;
+
+  const kitBlock = kitId
+    ? `<div class="kit-section"><p class="kit-label">Get the free guide first 👇</p><script src="https://f.convertkit.com/${kitId}/index.js"><\/script></div>`
+    : '';
+
+  const platNote = {
+    'TikTok': 'As seen on TikTok',
+    'Instagram Reels': 'As seen on Instagram',
+    'YouTube Shorts': 'As seen on YouTube Shorts',
+    'Pinterest': 'Pinned for you'
+  }[plat] || '';
+
+  currentBridgeHTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>${name} — ${niche}</title>
+<!-- Umami: <script defer src="https://analytics.yourdomain.com/script.js" data-website-id="YOUR-ID"><\/script> -->
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0a0f;color:#e8eaf0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+  .card{max-width:480px;width:100%;background:#13151e;border:1px solid #1f2435;border-radius:16px;overflow:hidden}
+  .top-bar{background:${color}18;border-bottom:1px solid ${color}33;padding:10px 20px;font-size:.72rem;color:${color};font-family:monospace;letter-spacing:.1em;text-transform:uppercase;text-align:center}
+  .body{padding:32px 28px}
+  .badge{display:inline-block;background:${color}22;border:1px solid ${color}44;color:${color};font-size:.7rem;font-family:monospace;padding:4px 12px;border-radius:20px;margin-bottom:18px;letter-spacing:.08em}
+  h1{font-size:1.6rem;font-weight:800;line-height:1.2;margin-bottom:12px;color:#fff}
+  h1 em{color:${color};font-style:normal}
+  .sub{font-size:.9rem;color:#8892a4;margin-bottom:24px;line-height:1.6}
+  .benefits{list-style:none;margin-bottom:28px}
+  .benefits li{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #1a1f2e;font-size:.88rem;color:#c8d0e0}
+  .benefits li:last-child{border:none}
+  .check{color:${color};font-size:1rem;flex-shrink:0;margin-top:1px}
+  .kit-section{background:#0d1018;border:1px solid #1a1f2e;border-radius:10px;padding:16px 18px;margin-bottom:20px}
+  .kit-label{font-size:.8rem;color:#8892a4;margin-bottom:10px;text-align:center}
+  .cta-btn{display:block;width:100%;background:${color};color:#000;border:none;padding:16px;border-radius:10px;font-size:1rem;font-weight:800;cursor:pointer;text-decoration:none;text-align:center;letter-spacing:.02em;transition:opacity .2s;margin-bottom:12px}
+  .cta-btn:hover{opacity:.88}
+  .disclosure{font-size:.68rem;color:#4a5268;text-align:center;line-height:1.5}
+  .footer{padding:16px 28px;background:#0d0f18;text-align:center;font-size:.68rem;color:#3a4158}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="top-bar">${platNote} · #ad</div>
+  <div class="body">
+    <span class="badge">${niche}</span>
+    <h1>${hl.replace(/([A-Z][a-z]+(?:\s+[A-Z]?[a-z]*)*)/g, (m,i) => i < 3 ? `<em>${m}</em>` : m)}</h1>
+    <p class="sub">${sub}</p>
+    <ul class="benefits">
+      <li><span class="check">✓</span> ${b1}</li>
+      <li><span class="check">✓</span> ${b2}</li>
+      <li><span class="check">✓</span> ${b3}</li>
+    </ul>
+    ${kitBlock}
+    <a href="${aff}" class="cta-btn" onclick="if(typeof umami!='undefined')umami.track('cta_click')">${cta}</a>
+    <p class="disclosure">I may earn a commission if you purchase through this link, at no extra cost to you. Results vary. This is not medical advice.</p>
+  </div>
+  <div class="footer">${name} · Affiliate disclosure: This page contains affiliate links.</div>
+</div>
+</body>
+</html>`;
+
+  const preview = document.getElementById('bridgePreview');
+  preview.style.display = 'block';
+  const frame = document.getElementById('bridgeFrame');
+  frame.srcdoc = currentBridgeHTML;
+}
+
+function downloadBridge() {
+  if (!currentBridgeHTML) { alert('Generate a bridge page first.'); return; }
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([currentBridgeHTML], {type:'text/html'}));
+  a.download = 'index.html';
+  a.click();
+}
+
+function copyBridgeHTML() {
+  if (!currentBridgeHTML) { alert('Generate a bridge page first.'); return; }
+  navigator.clipboard.writeText(currentBridgeHTML).then(() => {
+    const btn = event.target;
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy HTML', 2000);
+  });
+}
+
+// ─── Init ───
+loadLog();
+</script>
+</body>
+</html>
