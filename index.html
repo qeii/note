@@ -98,7 +98,7 @@
     flex-direction: column;
     position: relative;
     z-index: 10;
-    transition: background 0.35s ease, border-color 0.35s ease;
+    transition: background 0.35s ease, border-color 0.35s ease, width 0.35s cubic-bezier(0.4, 0, 0.2, 1), min-width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .sidebar-header {
@@ -107,7 +107,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    transition: border-color 0.35s ease;
+    transition: border-color 0.35s ease, padding 0.3s ease;
+    overflow: hidden;
   }
 
   .sidebar-header h1 {
@@ -119,7 +120,9 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    transition: color 0.35s ease;
+    transition: color 0.35s ease, opacity 0.25s ease, width 0.3s ease;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   .sidebar-header h1 span {
@@ -188,6 +191,7 @@
     padding: 12px 16px;
     display: flex;
     gap: 8px;
+    transition: padding 0.3s ease;
   }
 
   .btn-new {
@@ -201,9 +205,15 @@
     padding: 8px 12px;
     border-radius: 4px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.2s ease, width 0.3s ease, padding 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 0.08em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    overflow: hidden;
+    white-space: nowrap;
   }
 
   .btn-new:hover {
@@ -223,9 +233,15 @@
     padding: 8px 12px;
     border-radius: 4px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.2s ease, width 0.3s ease, padding 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 0.08em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    overflow: hidden;
+    white-space: nowrap;
   }
 
   .btn-import:hover {
@@ -236,6 +252,8 @@
 
   .search-box {
     padding: 0 16px 12px;
+    transition: opacity 0.25s ease, height 0.3s ease, padding 0.3s ease;
+    overflow: hidden;
   }
 
   .search-box input {
@@ -258,13 +276,14 @@
     flex: 1;
     overflow-y: auto;
     padding: 4px 8px;
+    transition: padding 0.3s ease;
   }
 
   .note-item {
     padding: 12px 14px;
     border-radius: 4px;
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: all 0.15s ease, padding 0.3s ease, min-height 0.3s ease;
     margin-bottom: 2px;
     position: relative;
     border: 1px solid transparent;
@@ -302,7 +321,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
     padding-right: 20px;
-    transition: color 0.35s ease;
+    transition: color 0.35s ease, opacity 0.2s ease, max-height 0.3s ease, margin 0.3s ease;
+    max-height: 100px;
   }
 
   .note-item-preview {
@@ -311,14 +331,16 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    transition: color 0.35s ease;
+    transition: color 0.35s ease, opacity 0.2s ease, max-height 0.3s ease, margin 0.3s ease;
+    max-height: 100px;
   }
 
   .note-item-date {
     font-size: 10px;
     color: var(--text-dim);
     margin-top: 4px;
-    transition: color 0.35s ease;
+    transition: color 0.35s ease, opacity 0.2s ease, max-height 0.3s ease, margin 0.3s ease;
+    max-height: 100px;
   }
 
   .note-item .delete-btn {
@@ -336,7 +358,7 @@
     text-align: center;
     border-radius: 3px;
     opacity: 0;
-    transition: all 0.15s ease;
+    transition: all 0.15s ease, opacity 0.15s ease;
   }
 
   .note-item:hover .delete-btn { opacity: 1; }
@@ -348,7 +370,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: border-color 0.35s ease;
+    transition: border-color 0.35s ease, opacity 0.25s ease, height 0.3s ease, padding 0.3s ease;
+    overflow: hidden;
   }
 
   .sidebar-footer span {
@@ -377,7 +400,7 @@
     justify-content: space-between;
     background: var(--bg);
     min-height: 48px;
-    transition: background 0.35s ease, border-color 0.35s ease;
+    transition: background 0.35s ease, border-color 0.35s ease, width 0.35s cubic-bezier(0.4, 0, 0.2, 1), min-width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .editor-title-wrap {
@@ -447,13 +470,21 @@
 
   .editor-area {
     flex: 1;
-    position: relative;
-    overflow: hidden;
+    overflow-y: auto;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .editor-content {
+    width: 100%;
+    max-width: 920px;
+    padding-left: clamp(40px, 6vw, 120px);
+    padding-right: 40px;
   }
 
   .editor-textarea {
     width: 100%;
-    height: 100%;
+    min-height: 100%;
     background: var(--bg);
     color: var(--text);
     font-family: 'DM Mono', monospace;
@@ -462,9 +493,7 @@
     border: none;
     outline: none;
     resize: none;
-    padding: 32px 40px;
-    tab-size: 4;
-    transition: background 0.35s ease, color 0.35s ease;
+    padding: 32px 0;
   }
 
   .editor-textarea::placeholder {
@@ -548,7 +577,7 @@
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     margin: 0 2px;
-    transition: background 0.35s ease, border-color 0.35s ease;
+    transition: background 0.35s ease, border-color 0.35s ease, width 0.35s cubic-bezier(0.4, 0, 0.2, 1), min-width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .sidebar-backup {
@@ -556,7 +585,7 @@
     border-top: 1px solid var(--border);
     display: flex;
     gap: 8px;
-    transition: border-color 0.35s ease;
+    transition: border-color 0.35s ease, padding 0.3s ease, gap 0.3s ease;
   }
 
   .btn-backup, .btn-restore {
@@ -567,10 +596,15 @@
     padding: 7px 8px;
     border-radius: 4px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.2s ease, width 0.3s ease, padding 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 0.07em;
     white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    overflow: hidden;
   }
 
   .btn-backup {
@@ -615,26 +649,201 @@
     to { opacity: 1; }
   }
 
+  /* ── Sidebar Collapsed State ── */
+  .sidebar.collapsed {
+    width: 56px;
+    min-width: 56px;
+  }
+
+  .sidebar.collapsed .sidebar-header {
+    padding: 16px 4px;
+    justify-content: center;
+  }
+
+  .sidebar.collapsed .sidebar-header h1 {
+    opacity: 0;
+    width: 0;
+    margin: 0;
+  }
+
+  .sidebar.collapsed .theme-toggle {
+    margin: 0 auto;
+  }
+
+  .sidebar.collapsed .sidebar-actions {
+    padding: 8px;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .sidebar.collapsed .btn-new,
+  .sidebar.collapsed .btn-import,
+  .sidebar.collapsed .btn-backup,
+  .sidebar.collapsed .btn-restore {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    font-size: 18px;
+  }
+
+  .btn-label {
+    display: inline-block;
+    transition: opacity 0.2s ease, max-width 0.3s ease;
+    max-width: 200px;
+    opacity: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  
+  .sidebar.collapsed .btn-icon {
+    margin: 0;
+    transform: translateX(0.5px);
+  }
+
+  .sidebar.collapsed .btn-label {
+    display: none;
+  }
+
+  .sidebar.collapsed .search-box {
+    opacity: 0;
+    height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    pointer-events: none;
+  }
+
+  .sidebar.collapsed .notes-list {
+    padding: 4px;
+  }
+
+  .sidebar.collapsed .note-item {
+    padding: 10px 2px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 48px;
+    gap: 0;
+  }
+
+  .sidebar.collapsed .note-item-title,
+  .sidebar.collapsed .note-item-preview,
+  .sidebar.collapsed .note-item-date {
+    opacity: 0;
+    max-height: 0;
+    min-height: 0;
+    margin: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .sidebar.collapsed .note-item .delete-btn {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .note-abbrev {
+    display: none;
+    font-family: 'Syne', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-align: center;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    transition: color 0.2s ease;
+  }
+
+  .sidebar.collapsed .note-abbrev {
+    display: block;
+  }
+
+  .sidebar.collapsed .note-item.active .note-abbrev {
+    color: var(--accent);
+  }
+
+  .sidebar.collapsed .sidebar-footer {
+    opacity: 0;
+    height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    pointer-events: none;
+  }
+
+  .sidebar.collapsed .sidebar-backup {
+    padding: 8px;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
   /* ── Responsive ── */
   @media (max-width: 700px) {
-    .sidebar { width: 100%; min-width: 100%; position: absolute; z-index: 100; transform: translateX(-100%); transition: transform 0.25s ease, background 0.35s ease; }
-    .sidebar.open { transform: translateX(0); }
-    .mobile-toggle { display: block !important; }
+    .sidebar, .sidebar.collapsed { width: 100%; min-width: 100%; position: absolute; z-index: 100; transform: translateX(-100%); transition: transform 0.25s ease, background 0.35s ease; }
+    .sidebar.open, .sidebar.collapsed.open { transform: translateX(0); }
+    .sidebar-toggle-mobile { display: flex !important; }
+    .sidebar-toggle-header { display: none !important; }
     .editor-textarea { padding: 20px; font-size: 13px; }
     .editor-toolbar { padding: 10px 16px; }
     .status-bar { padding: 6px 16px; }
   }
 
-  .mobile-toggle {
+  .sidebar-toggle-mobile {
     display: none;
+    align-items: center;
+    justify-content: center;
     background: none;
     border: 1px solid var(--border);
     color: var(--text-muted);
     font-size: 16px;
-    padding: 4px 8px;
+    width: 32px;
+    height: 32px;
     border-radius: 3px;
     cursor: pointer;
     margin-right: 8px;
+    transition: all 0.2s ease;
+  }
+  .sidebar-toggle-mobile:hover {
+    color: var(--accent);
+    border-color: var(--accent-dim);
+    background: var(--accent-glow);
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: flex-direction 0.3s ease, gap 0.3s ease;
+  }
+
+  .sidebar.collapsed .header-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .sidebar-toggle-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 16px;
+    width: 34px;
+    height: 34px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .sidebar-toggle-header:hover {
+    color: var(--accent);
+    border-color: var(--accent-dim);
+    background: var(--accent-glow);
   }
 
   /* ── Overlay for mobile ── */
@@ -656,20 +865,23 @@
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <h1><span>/</span> notepad</h1>
-      <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle light/dark mode">
+      <div class="header-actions">
+        <button class="sidebar-toggle-header" data-action="toggle-sidebar" title="Toggle sidebar">☰</button>
+        <button class="theme-toggle" id="themeToggle" data-action="toggle-theme" title="Toggle light/dark mode">
         <!-- Moon icon (shown in light mode — click to go dark) -->
         <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <!-- Sun icon (shown in dark mode — click to go light) -->
         <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
       </button>
+      </div>
     </div>
     <div class="sidebar-actions">
-      <button class="btn-new" onclick="createNote()" title="Ctrl+N">+ New Note</button>
-      <button class="btn-import" onclick="$('importFile').click()" title="Import .txt or .html">Import</button>
-      <input type="file" id="importFile" accept=".txt,.html,text/plain,text/html" style="display:none" onchange="handleImport(event)">
+      <button class="btn-new" data-action="new-note" title="Ctrl+N"><span class="btn-icon">+</span><span class="btn-label"> New Note</span></button>
+      <button class="btn-import" data-action="import" title="Import .txt or .html"><span class="btn-icon">↓</span><span class="btn-label"> Import</span></button>
+      <input type="file" id="importFile" accept=".txt,.html,text/plain,text/html" style="display:none">
     </div>
     <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Search notes..." oninput="filterNotes()">
+      <input type="text" id="searchInput" placeholder="Search notes...">
     </div>
     <div class="notes-list" id="notesList"></div>
     <div class="sidebar-footer">
@@ -677,9 +889,9 @@
       <span id="totalWords">0 words</span>
     </div>
     <div class="sidebar-backup">
-      <button class="btn-backup" onclick="backupNotes()" title="Save all notes to a .json file on your laptop">⬇ Backup</button>
-      <button class="btn-restore" onclick="$('restoreFile').click()" title="Load notes from a backup .json file">⬆ Restore</button>
-      <input type="file" id="restoreFile" accept=".json,application/json" style="display:none" onchange="restoreNotes(event)">
+      <button class="btn-backup" data-action="backup" title="Save all notes to a .json file on your laptop"><span class="btn-icon">⬇</span><span class="btn-label"> Backup</span></button>
+      <button class="btn-restore" data-action="restore" title="Load notes from a backup .json file"><span class="btn-icon">⬆</span><span class="btn-label"> Restore</span></button>
+      <input type="file" id="restoreFile" accept=".json,application/json" style="display:none">
     </div>
   </aside>
 
@@ -693,17 +905,19 @@
     <div id="editorContainer" style="display:none; flex:1; flex-direction:column; height:100%;">
       <div class="editor-toolbar">
         <div class="editor-title-wrap">
-          <button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
-          <input type="text" class="editor-title" id="editorTitle" placeholder="Untitled" oninput="onTitleChange()">
+          <button class="sidebar-toggle-mobile" data-action="toggle-sidebar" title="Toggle sidebar">☰</button>
+          <input type="text" class="editor-title" id="editorTitle" placeholder="Untitled">
         </div>
         <div class="toolbar-actions">
-          <button class="toolbar-btn" onclick="duplicateNote()" title="Duplicate">Dup</button>
-          <button class="toolbar-btn" onclick="exportNote()" title="Export as .txt">Export .txt</button>
-          <button class="toolbar-btn accent" onclick="exportNoteHtml()" title="Export as .html">Export .html</button>
+          <button class="toolbar-btn" data-action="duplicate" title="Duplicate">Dup</button>
+          <button class="toolbar-btn" data-action="export-txt" title="Export as .txt">Export .txt</button>
+          <button class="toolbar-btn accent" data-action="export-html" title="Export as .html">Export .html</button>
         </div>
       </div>
       <div class="editor-area">
-        <textarea class="editor-textarea" id="editorTextarea" placeholder="Start writing..." oninput="onContentChange()"></textarea>
+        <div class="editor-content">
+          <textarea class="editor-textarea" id="editorTextarea" placeholder="Start writing..."></textarea>
+        </div>
       </div>
       <div class="status-bar">
         <div class="status-left">
@@ -754,36 +968,92 @@
 
   // ── Init ──
   function init() {
+    // Apply saved sidebar collapse state (desktop only)
+    const savedCollapsed = localStorage.getItem('notepad_sidebar_collapsed');
+    if (savedCollapsed === '1' && window.innerWidth > 700) {
+      $('sidebar').classList.add('collapsed');
+    }
+
+    setupEventListeners();
     renderNotesList();
     if (notes.length > 0) {
       selectNote(notes[0].id);
     }
     updateFooter();
+  }
 
-    // Cursor position tracking
-    $('editorTextarea').addEventListener('click', updateCursorPos);
-    $('editorTextarea').addEventListener('keyup', updateCursorPos);
+  function setupEventListeners() {
+    // Global button delegation
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('[data-action]');
+      if (!btn) return;
 
-    // Drag & drop listeners on list container
+      switch (btn.dataset.action) {
+        case 'new-note': createNote(); break;
+        case 'import': $('importFile').click(); break;
+        case 'toggle-theme': toggleTheme(); break;
+        case 'toggle-sidebar': toggleSidebar(); break;
+        case 'backup': backupNotes(); break;
+        case 'restore': $('restoreFile').click(); break;
+        case 'duplicate': duplicateNote(); break;
+        case 'export-txt': exportNote(); break;
+        case 'export-html': exportNoteHtml(); break;
+      }
+    });
+
+    // Notes list delegation
+    $('notesList').addEventListener('click', e => {
+      const deleteBtn = e.target.closest('.delete-btn');
+      if (deleteBtn) {
+        const item = deleteBtn.closest('.note-item');
+        if (item) deleteNote(item.dataset.id, e);
+        return;
+      }
+
+      const item = e.target.closest('.note-item');
+      if (item) selectNote(item.dataset.id);
+    });
+
+    // Drag & drop
+    $('notesList').addEventListener('dragstart', handleDragStart);
+    $('notesList').addEventListener('dragend', handleDragEnd);
     $('notesList').addEventListener('dragover', handleDragOver);
     $('notesList').addEventListener('dragleave', handleDragLeave);
     $('notesList').addEventListener('drop', handleDrop);
+
+    // Inputs
+    $('searchInput').addEventListener('input', filterNotes);
+    $('editorTitle').addEventListener('input', onTitleChange);
+    $('editorTextarea').addEventListener('input', onContentChange);
+    $('importFile').addEventListener('change', handleImport);
+    $('restoreFile').addEventListener('change', restoreNotes);
+
+    // Overlay
+    $('overlay').addEventListener('click', closeSidebar);
+
+    // Cursor tracking
+    $('editorTextarea').addEventListener('click', updateCursorPos);
+    $('editorTextarea').addEventListener('keyup', updateCursorPos);
   }
 
   // ── Drag & Drop Reorder ──
-  function handleDragStart(e, id) {
+  function handleDragStart(e) {
+    const item = e.target.closest('.note-item');
+    if (!item) return;
+
     if (e.target.closest('.delete-btn')) {
       e.preventDefault();
       return;
     }
-    draggedId = id;
+    draggedId = item.dataset.id;
     e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/plain', id);
-    e.currentTarget.classList.add('dragging');
+    e.dataTransfer.setData('text/plain', draggedId);
+    item.classList.add('dragging');
   }
 
   function handleDragEnd(e) {
-    e.currentTarget.classList.remove('dragging');
+    const item = e.target.closest('.note-item');
+    if (item) item.classList.remove('dragging');
     draggedId = null;
     document.querySelectorAll('.note-item').forEach(el => el.classList.remove('drag-over'));
   }
@@ -980,6 +1250,26 @@
   }
 
   // ── Render List ──
+  function renderNoteItem(note, isActive) {
+    const title = note.title || 'Untitled';
+    const preview = (note.content || '').replace(/\n/g, ' ').substring(0, 60) || 'Empty note';
+    const date = formatDate(note.updated);
+    const abbrev = escapeHtml(title.slice(0, 3));
+
+    return `
+      <div class="note-item ${isActive ? 'active' : ''}"
+           data-id="${note.id}"
+           title="${escapeHtml(title)}"
+           draggable="true">
+        <span class="note-abbrev">${abbrev}</span>
+        <div class="note-item-title">${escapeHtml(title)}</div>
+        <div class="note-item-preview">${escapeHtml(preview)}</div>
+        <div class="note-item-date">${date}</div>
+        <button class="delete-btn" title="Delete">×</button>
+      </div>
+    `;
+  }
+
   function renderNotesList() {
     const list = $('notesList');
     const query = $('searchInput').value.toLowerCase().trim();
@@ -994,26 +1284,9 @@
       return;
     }
 
-    list.innerHTML = filtered.map(note => {
-      const title = note.title || 'Untitled';
-      const preview = (note.content || '').replace(/\n/g, ' ').substring(0, 60) || 'Empty note';
-      const date = formatDate(note.updated);
-      const isActive = note.id === activeNoteId;
-
-      return `
-        <div class="note-item ${isActive ? 'active' : ''}" 
-             data-id="${note.id}"
-             onclick="selectNote('${note.id}')" 
-             draggable="true" 
-             ondragstart="handleDragStart(event, '${note.id}')" 
-             ondragend="handleDragEnd(event)">
-          <div class="note-item-title">${escapeHtml(title)}</div>
-          <div class="note-item-preview">${escapeHtml(preview)}</div>
-          <div class="note-item-date">${date}</div>
-          <button class="delete-btn" onclick="deleteNote('${note.id}', event)" title="Delete">×</button>
-        </div>
-      `;
-    }).join('');
+    list.innerHTML = filtered
+      .map(note => renderNoteItem(note, note.id === activeNoteId))
+      .join('');
   }
 
   function filterNotes() {
@@ -1128,16 +1401,22 @@
 
   // ── Mobile ──
   function toggleSidebar() {
-    $('sidebar').classList.toggle('open');
-    $('overlay').classList.toggle('show');
+    if (window.innerWidth <= 700) {
+      $('sidebar').classList.toggle('open');
+      $('overlay').classList.toggle('show');
+    } else {
+      $('sidebar').classList.toggle('collapsed');
+      const isCollapsed = $('sidebar').classList.contains('collapsed');
+      localStorage.setItem('notepad_sidebar_collapsed', isCollapsed ? '1' : '0');
+    }
   }
 
   function closeSidebar() {
-    $('sidebar').classList.remove('open');
-    $('overlay').classList.remove('show');
+    if (window.innerWidth <= 700) {
+      $('sidebar').classList.remove('open');
+      $('overlay').classList.remove('show');
+    }
   }
-
-  $('overlay').addEventListener('click', closeSidebar);
 
   // ── Helpers ──
   function escapeHtml(text) {
