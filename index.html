@@ -470,21 +470,13 @@
 
   .editor-area {
     flex: 1;
-    overflow-y: auto;
-    display: flex;
-    justify-content: flex-start;
-  }
-
-  .editor-content {
-    width: 100%;
-    max-width: 920px;
-    padding-left: clamp(40px, 6vw, 120px);
-    padding-right: 40px;
+    position: relative;
+    overflow: hidden;
   }
 
   .editor-textarea {
     width: 100%;
-    min-height: 100%;
+    height: 100%;
     background: var(--bg);
     color: var(--text);
     font-family: 'DM Mono', monospace;
@@ -493,7 +485,9 @@
     border: none;
     outline: none;
     resize: none;
-    padding: 32px 0;
+    padding: 32px 40px;
+    tab-size: 4;
+    transition: background 0.35s ease, color 0.35s ease;
   }
 
   .editor-textarea::placeholder {
@@ -915,9 +909,7 @@
         </div>
       </div>
       <div class="editor-area">
-        <div class="editor-content">
-          <textarea class="editor-textarea" id="editorTextarea" placeholder="Start writing..."></textarea>
-        </div>
+        <textarea class="editor-textarea" id="editorTextarea" placeholder="Start writing..."></textarea>
       </div>
       <div class="status-bar">
         <div class="status-left">
