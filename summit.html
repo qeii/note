@@ -1,1170 +1,762 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ship Tracker — Twofold Life</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-abyss: #050810;
-            --bg-deep: #080d18;
-            --bg-base: #0b1221;
-            --bg-mid: #0f1829;
-            --bg-high: #141f33;
-            --bg-surface: #19263d;
-            --bg-elevated: #1e2d48;
-            --border-subtle: rgba(255,255,255,0.05);
-            --border-medium: rgba(255,255,255,0.1);
-            --accent: #d4a44a;
-            --accent-bright: #f0c55e;
-            --accent-dim: #a07830;
-            --accent-glow: rgba(212,164,74,0.15);
-            --text-primary: #e8e2d6;
-            --text-secondary: #8a95a8;
-            --text-muted: #4a5a70;
-            --success: #4ade80;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --info: #60a5fa;
-            --header-h: 70px;
-            --sidebar-w: 500px;
-            --focus-mode-sidebar-w: 60px;
-        }
-        [data-theme="light"] {
-            --bg-abyss: #f5f3ef;
-            --bg-deep: #eae6df;
-            --bg-base: #e0dbd3;
-            --bg-mid: #d5cfc6;
-            --bg-high: #cbc5bb;
-            --bg-surface: #c1bbb0;
-            --bg-elevated: #b7b0a5;
-            --border-subtle: rgba(0,0,0,0.06);
-            --border-medium: rgba(0,0,0,0.12);
-            --accent: #b8860b;
-            --accent-bright: #d4a44a;
-            --accent-dim: #8b6914;
-            --accent-glow: rgba(184,134,11,0.12);
-            --text-primary: #1a1a1a;
-            --text-secondary: #4a4a4a;
-            --text-muted: #8a8a8a;
-            --success: #16a34a;
-            --warning: #ca8a04;
-            --danger: #dc2626;
-            --info: #2563eb;
-        }
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html, body {
-            height: 100%; overflow: hidden;
-            background: var(--bg-abyss); color: var(--text-primary);
-            font-family: 'DM Mono', monospace; font-size: 14px; line-height: 1.6;
-            transition: background 0.3s ease, color 0.3s ease;
-        }
-        body { display: grid; grid-template-rows: var(--header-h) 1fr; }
-        body::after {
-            content: ''; position: fixed; left: 0; right: 0; top: var(--header-h); bottom: 0;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='300'%3E%3Cpath d='M0,60 C125,40 375,80 500,60' stroke='rgba(128,128,128,0.04)' fill='none'/%3E%3Cpath d='M0,120 C125,100 375,140 500,120' stroke='rgba(128,128,128,0.05)' fill='none'/%3E%3Cpath d='M0,180 C125,160 375,200 500,180' stroke='rgba(128,128,128,0.06)' fill='none'/%3E%3Cpath d='M0,240 C125,220 375,260 500,240' stroke='rgba(128,128,128,0.07)' fill='none'/%3E%3C/svg%3E");
-            background-size: 500px 300px; pointer-events: none; z-index: 0;
-        }
-        header {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 0 28px; background: var(--bg-deep);
-            border-bottom: 1px solid var(--border-subtle); z-index: 100;
-            transition: background 0.3s ease;
-        }
-        .header-left { display: flex; align-items: baseline; gap: 16px; }
-        .header-left h1 {
-            font-family: 'Syne', sans-serif; font-weight: 700; font-size: 18px;
-            letter-spacing: 0.02em; color: var(--text-primary);
-        }
-        .header-left .project-name {
-            font-size: 11px; color: var(--text-muted);
-            letter-spacing: 0.06em; text-transform: uppercase;
-        }
-        .header-center { display: flex; align-items: center; gap: 24px; }
-        .countdown { display: flex; align-items: baseline; gap: 8px; }
-        .countdown-number {
-            font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; color: var(--accent);
-        }
-        .countdown-label {
-            font-size: 10px; color: var(--text-secondary);
-            letter-spacing: 0.06em; text-transform: uppercase;
-        }
-        .altitude-badge {
-            font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
-            color: var(--text-secondary); background: var(--bg-base);
-            padding: 5px 12px; border-radius: 4px; border: 1px solid var(--border-subtle);
-            transition: background 0.3s ease;
-        }
-        .header-right { display: flex; align-items: center; gap: 12px; }
-        .progress-container { display: flex; align-items: center; gap: 10px; }
-        .progress-track {
-            width: 120px; height: 5px; background: var(--bg-base);
-            border-radius: 3px; overflow: hidden;
-            transition: background 0.3s ease;
-        }
-        .progress-fill {
-            height: 100%; border-radius: 3px;
-            background: linear-gradient(90deg, var(--accent-dim), var(--accent-bright));
-            transition: width 0.8s cubic-bezier(0.25,0.46,0.45,0.94) 0.1s;
-            box-shadow: 0 0 8px var(--accent-glow);
-        }
-        .progress-label { font-size: 11px; color: var(--text-secondary); min-width: 48px; }
-        .btn {
-            font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500;
-            padding: 7px 14px; border: 1px solid var(--border-medium);
-            background: var(--bg-base); color: var(--text-secondary);
-            border-radius: 6px; cursor: pointer; transition: all 0.2s ease;
-            letter-spacing: 0.03em;
-        }
-        .btn:hover { background: var(--bg-mid); color: var(--text-primary); border-color: var(--accent-dim); }
-        .btn--icon {
-            padding: 7px 10px; display: flex; align-items: center; justify-content: center;
-            font-size: 14px;
-        }
-        .btn--active {
-            background: var(--accent-glow); border-color: var(--accent-dim); color: var(--accent);
-        }
-        main {
-            display: grid; grid-template-columns: 1fr var(--sidebar-w);
-            overflow: hidden; min-height: 0; position: relative; z-index: 1;
-            transition: grid-template-columns 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
-        }
-        main.focus-mode { grid-template-columns: 1fr var(--focus-mode-sidebar-w); }
-        .dashboard {
-            min-height: 0; overflow-y: auto; padding: 32px 48px 80px 48px;
-            background: radial-gradient(ellipse at 50% 0%, var(--accent-glow) 0%, transparent 50%);
-            transition: background 0.3s ease;
-        }
-        .dashboard-section { margin-bottom: 32px; }
-        .dashboard-section h2 {
-            font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700;
-            letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted);
-            margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border-subtle);
-            display: flex; align-items: center; gap: 8px;
-        }
-        .dashboard-section h2 .section-icon { font-size: 14px; }
-        .focus-card {
-            background: var(--bg-base);
-            border: 1px solid var(--border-subtle); border-radius: 12px;
-            padding: 20px; margin-bottom: 12px;
-            transition: all 0.2s ease, background 0.3s ease;
-            position: relative; overflow: hidden;
-        }
-        .focus-card:hover {
-            border-color: var(--accent-dim);
-            box-shadow: 0 2px 12px var(--accent-glow);
-        }
-        .focus-card--priority-1 { border-left: 3px solid var(--danger); }
-        .focus-card--priority-2 { border-left: 3px solid var(--warning); }
-        .focus-card--priority-3 { border-left: 3px solid var(--accent); }
-        .focus-card--priority-4 { border-left: 3px solid var(--success); }
-        .focus-card--blocked { border-left: 3px solid var(--text-muted); opacity: 0.7; }
-        .focus-card--blocked .focus-card-title { text-decoration: line-through; text-decoration-color: var(--text-muted); }
-        .focus-card-header {
-            display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
-        }
-        .focus-card-num {
-            font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 800;
-            color: var(--accent); background: var(--accent-glow);
-            width: 28px; height: 28px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-        }
-        .focus-card-title {
-            font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700;
-            color: var(--text-primary); flex: 1;
-        }
-        .focus-card-phase {
-            font-size: 10px; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase;
-            background: var(--bg-mid); padding: 3px 8px; border-radius: 4px;
-        }
-        .focus-card-status {
-            font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase;
-            padding: 2px 8px; border-radius: 4px; font-weight: 500;
-        }
-        .focus-card-status--todo { background: var(--bg-mid); color: var(--text-secondary); }
-        .focus-card-status--blocked { background: rgba(239,68,68,0.1); color: var(--danger); }
-        .focus-card-status--waiting { background: rgba(245,158,11,0.1); color: var(--warning); }
-        .focus-card-status--researching { background: rgba(96,165,250,0.1); color: var(--info); }
-        .focus-card-status--delegated { background: rgba(74,222,128,0.1); color: var(--success); }
-        .focus-card-why {
-            font-size: 12px; color: var(--text-secondary); line-height: 1.7;
-            margin-bottom: 10px; padding-left: 40px;
-        }
-        .focus-card-unlocks {
-            padding-left: 40px; margin-bottom: 10px;
-        }
-        .focus-card-unlocks-label {
-            font-size: 10px; color: var(--accent-dim); letter-spacing: 0.06em; text-transform: uppercase;
-            margin-bottom: 4px;
-        }
-        .focus-card-unlocks-list {
-            display: flex; flex-wrap: wrap; gap: 6px;
-        }
-        .focus-card-unlock-tag {
-            font-size: 10px; color: var(--accent); background: var(--accent-glow);
-            padding: 3px 10px; border-radius: 12px; border: 1px solid rgba(212,164,74,0.15);
-        }
-        .focus-card-impact {
-            padding-left: 40px;
-            font-size: 11px; color: var(--text-muted); font-style: italic;
-            border-top: 1px solid var(--border-subtle); padding-top: 8px; margin-top: 8px;
-        }
-        .focus-card-impact strong {
-            color: var(--accent-dim); font-style: normal;
-        }
-        .focus-all-done {
-            text-align: center; padding: 40px;
-        }
-        .focus-all-done-icon {
-            font-size: 48px; margin-bottom: 12px;
-        }
-        .focus-all-done-text {
-            font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700;
-            color: var(--accent); margin-bottom: 8px;
-        }
-        .focus-all-done-sub {
-            font-size: 13px; color: var(--text-secondary);
-        }
-        .focus-motivation {
-            font-size: 12px; color: var(--accent-dim); margin-top: 16px;
-            line-height: 1.7; font-style: italic; padding: 14px 16px;
-            background: var(--accent-glow); border-radius: 8px;
-            border: 1px solid rgba(212,164,74,0.1);
-        }
-        .feedback-wrap {
-            background: var(--accent-glow); border: 1px solid rgba(212,164,74,0.1);
-            border-radius: 12px; padding: 20px;
-            border-left: 3px solid var(--accent);
-            transition: background 0.3s ease;
-        }
-        .feedback-wrap h3 {
-            font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700;
-            letter-spacing: 0.1em; text-transform: uppercase;
-            color: var(--accent); margin-bottom: 12px;
-        }
-        .feedback-message { font-size: 13px; color: var(--text-secondary); line-height: 1.8; }
-        .feedback-message strong { color: var(--text-primary); font-weight: 600; }
-        .feedback-message em { color: var(--accent-dim); font-style: italic; }
-        .feedback-priority-list {
-            margin: 12px 0; padding-left: 0; list-style: none;
-        }
-        .feedback-priority-list li {
-            padding: 8px 0 8px 24px; position: relative;
-            font-size: 13px; color: var(--text-secondary); line-height: 1.6;
-            border-bottom: 1px solid var(--border-subtle);
-        }
-        .feedback-priority-list li:last-child { border-bottom: none; }
-        .feedback-priority-list li::before {
-            content: attr(data-num); position: absolute; left: 0; top: 8px;
-            font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700;
-            color: var(--accent); width: 18px; height: 18px;
-            background: var(--accent-glow); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .feedback-priority-list li .reason {
-            display: block; font-size: 11px; color: var(--text-muted); margin-top: 2px;
-        }
-        .log-date { font-size: 12px; color: var(--text-secondary); margin-bottom: 10px; }
-        .log-textarea {
-            width: 100%; min-height: 100px; padding: 12px 14px;
-            background: var(--bg-base); border: 1px solid var(--border-subtle);
-            border-radius: 8px; color: var(--text-primary);
-            font-family: 'DM Mono', monospace; font-size: 12px; line-height: 1.6;
-            resize: vertical; outline: none; transition: border-color 0.2s ease, background 0.3s ease;
-        }
-        .log-textarea:focus { border-color: var(--accent-dim); }
-        .log-textarea::placeholder { color: var(--text-muted); }
-        .log-actions {
-            display: flex; gap: 8px; margin-top: 8px;
-        }
-        .btn-log {
-            flex: 1; padding: 8px;
-            font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
-            letter-spacing: 0.06em; text-transform: uppercase;
-            background: var(--bg-base); border: 1px solid var(--border-medium);
-            color: var(--accent); border-radius: 6px; cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .btn-log:hover { background: var(--accent-glow); border-color: var(--accent-dim); }
-        .btn-log--secondary {
-            flex: 0 0 auto; color: var(--text-secondary); border-color: var(--border-subtle);
-        }
-        .btn-log--secondary:hover { color: var(--text-primary); background: var(--bg-mid); }
-        .log-entries { margin-top: 16px; }
-        .log-entry {
-            padding: 12px 14px; background: var(--bg-base); border-radius: 8px;
-            margin-bottom: 8px; border-left: 2px solid var(--accent-dim);
-            transition: background 0.3s ease;
-        }
-        .log-entry-time { font-size: 10px; color: var(--text-muted); margin-bottom: 4px; }
-        .log-entry-content {
-            font-size: 12px; color: var(--text-secondary); line-height: 1.6; white-space: pre-wrap;
-        }
-        .log-entry-mood {
-            display: inline-block; font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase;
-            padding: 2px 8px; border-radius: 4px; margin-top: 6px;
-        }
-        .log-entry-mood--energized { background: rgba(74,222,128,0.1); color: var(--success); }
-        .log-entry-mood--focused { background: rgba(96,165,250,0.1); color: var(--info); }
-        .log-entry-mood--tired { background: rgba(245,158,11,0.1); color: var(--warning); }
-        .log-entry-mood--blocked { background: rgba(239,68,68,0.1); color: var(--danger); }
-        .log-entry-mood--neutral { background: var(--bg-mid); color: var(--text-muted); }
-        .proof-entry {
-            padding: 12px 14px; background: var(--bg-base); border-radius: 8px;
-            margin-bottom: 8px; border-left: 2px solid var(--success);
-            transition: background 0.3s ease;
-        }
-        .proof-date { font-size: 10px; color: var(--text-muted); margin-bottom: 3px; }
-        .proof-text { font-size: 12px; color: var(--success); line-height: 1.5; }
-        .proof-empty {
-            font-size: 12px; color: var(--text-muted); font-style: italic; line-height: 1.6;
-            padding: 16px; text-align: center;
-        }
-        .roadmap {
-            min-height: 0; overflow-y: auto; padding: 24px 20px;
-            background: var(--bg-deep); border-left: 1px solid var(--border-subtle);
-            transition: background 0.3s ease;
-            display: flex; flex-direction: column;
-        }
-        .roadmap-header {
-            font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700;
-            letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted);
-            margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border-subtle);
-            display: flex; align-items: center; gap: 8px;
-        }
-        .roadmap-header .section-icon { font-size: 14px; }
-        .phase {
-            border: 1px solid var(--border-subtle); border-radius: 12px;
-            margin-bottom: 16px; overflow: hidden;
-            opacity: 0; transform: translateY(12px);
-            animation: phaseIn 0.5s ease forwards;
-            transition: background 0.3s ease;
-        }
-        .phase:nth-child(1) { animation-delay: 0.4s; }
-        .phase:nth-child(2) { animation-delay: 0.3s; }
-        .phase:nth-child(3) { animation-delay: 0.2s; }
-        .phase:nth-child(4) { animation-delay: 0.1s; }
-        @keyframes phaseIn { to { opacity: 1; transform: translateY(0); } }
-        .phase[data-phase="4"] { background: var(--bg-surface); }
-        .phase[data-phase="3"] { background: var(--bg-high); }
-        .phase[data-phase="2"] { background: var(--bg-mid); }
-        .phase[data-phase="1"] { background: var(--bg-base); }
-        .phase--complete { border-left: 3px solid var(--accent); }
-        .phase--active { border-color: var(--accent-dim); box-shadow: 0 0 16px var(--accent-glow); }
-        .phase-header {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 14px 20px; border-bottom: 1px solid var(--border-subtle);
-            cursor: pointer; transition: background 0.15s ease;
-        }
-        .phase-header:hover { background: rgba(255,255,255,0.02); }
-        .phase-info { display: flex; align-items: center; gap: 14px; }
-        .phase-num {
-            font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700;
-            color: var(--text-muted); background: rgba(255,255,255,0.04);
-            padding: 4px 8px; border-radius: 4px; letter-spacing: 0.1em;
-        }
-        .phase-name {
-            font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700;
-            color: var(--text-primary); margin: 0;
-        }
-        .phase-subtitle { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
-        .phase-meta { display: flex; align-items: center; gap: 10px; }
-        .phase-count { font-size: 12px; color: var(--text-secondary); }
-        .phase-complete-badge {
-            font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
-            color: var(--accent); background: var(--accent-glow);
-            padding: 3px 10px; border-radius: 4px; border: 1px solid rgba(212,164,74,0.2);
-        }
-        .phase-tasks { padding: 6px 12px 10px; }
-        .task {
-            display: flex; align-items: flex-start; gap: 12px;
-            padding: 9px 12px; border-radius: 8px; transition: background 0.15s ease;
-        }
-        .task:hover { background: rgba(255,255,255,0.025); }
-        .task-checkbox { position: relative; width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px; }
-        .task-checkbox input {
-            position: absolute; opacity: 0; width: 100%; height: 100%;
-            cursor: pointer; z-index: 2;
-        }
-        .task-checkmark {
-            position: absolute; inset: 0; border: 1.5px solid var(--text-muted);
-            border-radius: 50%; transition: all 0.25s ease;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .task-checkmark::after {
-            content: ''; width: 5px; height: 9px;
-            border: solid transparent; border-width: 0 2px 2px 0;
-            transform: rotate(45deg) translate(-0.5px, -0.5px);
-            transition: all 0.2s ease; opacity: 0;
-        }
-        .task-checkbox input:checked ~ .task-checkmark {
-            background: var(--accent); border-color: var(--accent);
-        }
-        .task-checkbox input:checked ~ .task-checkmark::after { border-color: white; opacity: 1; }
-        .task-content { flex: 1; min-width: 0; }
-        .task-text { font-size: 13px; color: var(--text-primary); line-height: 1.5; }
-        .task--done .task-text {
-            color: var(--text-secondary);
-            text-decoration: line-through; text-decoration-color: rgba(212,164,74,0.3);
-        }
-        .task--blocked .task-text { color: var(--text-muted); }
-        .task-time { display: block; font-size: 10px; color: var(--accent-dim); margin-top: 3px; }
-        .task-status-badge {
-            font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase;
-            padding: 1px 6px; border-radius: 3px; margin-left: 6px;
-        }
-        .task-status-badge--blocked { background: rgba(239,68,68,0.1); color: var(--danger); }
-        .task-status-badge--waiting { background: rgba(245,158,11,0.1); color: var(--warning); }
-        .task-status-badge--researching { background: rgba(96,165,250,0.1); color: var(--info); }
-        .task-status-badge--delegated { background: rgba(74,222,128,0.1); color: var(--success); }
-        .task--pulse { animation: taskPulse 0.6s ease; }
-        @keyframes taskPulse {
-            0% { box-shadow: inset 0 0 0 0 rgba(212,164,74,0.3); }
-            50% { box-shadow: inset 0 0 0 3px rgba(212,164,74,0.08); }
-            100% { box-shadow: inset 0 0 0 0 rgba(212,164,74,0); }
-        }
-        .summit {
-            position: relative; text-align: center; padding: 32px 24px 28px;
-            margin-bottom: 24px; border: 1px solid rgba(212,164,74,0.1);
-            border-radius: 16px; overflow: hidden;
-            background: linear-gradient(180deg, var(--accent-glow) 0%, transparent 100%);
-            transition: background 0.3s ease;
-        }
-        .summit::before {
-            content: ''; position: absolute; top: -40%; left: 50%;
-            transform: translateX(-50%); width: 300px; height: 300px;
-            background: radial-gradient(circle, rgba(212,164,74,0.08) 0%, transparent 60%);
-            pointer-events: none;
-        }
-        .summit-badge {
-            display: inline-block; font-family: 'DM Mono', monospace; font-size: 10px;
-            letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent);
-            margin-bottom: 8px; position: relative;
-        }
-        .summit-live {
-            font-family: 'Syne', sans-serif; font-size: 42px; font-weight: 800;
-            color: var(--text-primary); letter-spacing: 0.08em; line-height: 1;
-            margin-bottom: 6px; position: relative;
-        }
-        .summit-domain { font-size: 13px; color: var(--text-secondary); position: relative; }
-        .summit-tagline { font-size: 11px; color: var(--text-muted); margin-top: 4px; position: relative; }
-        .summit--reached {
-            border-color: var(--accent);
-            animation: summitPulse 3s ease-in-out infinite;
-        }
-        @keyframes summitPulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(212,164,74,0.15); }
-            50% { box-shadow: 0 0 40px rgba(212,164,74,0.3); }
-        }
-        .v-progress {
-            position: fixed; left: 16px; top: calc(var(--header-h) + 20px);
-            bottom: 20px; width: 4px; background: var(--border-subtle);
-            border-radius: 2px; z-index: 90;
-            transition: background 0.3s ease;
-        }
-        .v-progress-fill {
-            position: absolute; bottom: 0; width: 100%; border-radius: 2px;
-            background: linear-gradient(to top, var(--accent-dim), var(--accent-bright));
-            transition: height 1s cubic-bezier(0.25,0.46,0.45,0.94);
-            box-shadow: 0 0 10px rgba(212,164,74,0.3);
-        }
-        .toast {
-            position: fixed; bottom: 32px; left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            background: var(--bg-elevated); border: 1px solid var(--accent-dim);
-            color: var(--text-primary); padding: 12px 24px; border-radius: 8px;
-            font-family: 'DM Mono', monospace; font-size: 12px;
-            opacity: 0; transition: all 0.3s ease; z-index: 1000;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.5); pointer-events: none;
-        }
-        .toast--visible { opacity: 1; transform: translateX(-50%) translateY(0); }
-        .focus-mode .roadmap { padding: 16px 8px; }
-        .focus-mode .phase-header { padding: 10px 12px; }
-        .focus-mode .phase-name,
-        .focus-mode .phase-subtitle,
-        .focus-mode .phase-tasks,
-        .focus-mode .roadmap-header span:not(.section-icon) { display: none; }
-        .focus-mode .phase-info { justify-content: center; width: 100%; }
-        .focus-mode .phase-num { font-size: 14px; padding: 6px 10px; }
-        .focus-mode .phase-meta { display: none; }
-        .focus-mode .phase { margin-bottom: 8px; }
-        .focus-mode .summit-live { font-size: 18px; }
-        .focus-mode .summit-domain,
-        .focus-mode .summit-tagline,
-        .focus-mode .summit-badge { display: none; }
-        .focus-mode .summit { padding: 12px 8px; }
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--border-medium); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
-        .mood-selector {
-            display: flex; gap: 6px; margin-bottom: 8px;
-        }
-        .mood-btn {
-            font-size: 10px; padding: 4px 10px; border-radius: 12px;
-            border: 1px solid var(--border-subtle); background: var(--bg-base);
-            color: var(--text-muted); cursor: pointer; transition: all 0.2s ease;
-            font-family: 'DM Mono', monospace;
-        }
-        .mood-btn:hover { border-color: var(--accent-dim); color: var(--text-secondary); }
-        .mood-btn--selected {
-            background: var(--accent-glow); border-color: var(--accent-dim); color: var(--accent);
-        }
-        .energy-track {
-            display: flex; align-items: center; gap: 8px; margin-top: 8px; margin-bottom: 8px;
-        }
-        .energy-track input[type="range"] {
-            flex: 1; -webkit-appearance: none; height: 4px;
-            background: var(--bg-mid); border-radius: 2px; outline: none;
-        }
-        .energy-track input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none; width: 14px; height: 14px;
-            background: var(--accent); border-radius: 50%; cursor: pointer;
-            box-shadow: 0 0 6px var(--accent-glow);
-        }
-        .energy-track label {
-            font-size: 10px; color: var(--text-muted); min-width: 60px;
-        }
-        .energy-value {
-            font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700;
-            color: var(--accent); min-width: 20px; text-align: center;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ship Tracker — TwoFoldLife</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--bg:#faf9f7;--bg2:#f2f0ec;--bg3:#e8e5df;--bg4:#dedad2;
+--text:#1a1a18;--text2:#4a4a46;--text3:#8a8a84;
+--border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.14);
+--accent:#b8860b;--accent2:#d4a44a;--accent-bg:rgba(184,134,11,0.08);--accent-bg2:rgba(184,134,11,0.14);
+--danger:#c0392b;--danger-bg:rgba(192,57,43,0.08);
+--success:#2e7d52;--success-bg:rgba(46,125,82,0.08);
+--warning:#c07c00;--warning-bg:rgba(192,124,0,0.08);
+--info:#1a5fa8;--info-bg:rgba(26,95,168,0.08);
+--radius:6px;--radius-lg:10px;
+--shadow:0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.04);
+}
+[data-theme=dark]{
+--bg:#0e0e0c;--bg2:#161614;--bg3:#1e1e1b;--bg4:#262622;
+--text:#e8e4dc;--text2:#a8a49c;--text3:#605c54;
+--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+--accent:#d4a44a;--accent2:#f0c55e;--accent-bg:rgba(212,164,74,0.1);--accent-bg2:rgba(212,164,74,0.18);
+--danger:#e05c4a;--danger-bg:rgba(224,92,74,0.1);
+--success:#4ade80;--success-bg:rgba(74,222,128,0.1);
+--warning:#f59e0b;--warning-bg:rgba(245,158,11,0.1);
+--info:#60a5fa;--info-bg:rgba(96,165,250,0.1);
+--shadow:0 1px 3px rgba(0,0,0,0.3);
+}
+html,body{height:100%;font-family:'DM Mono',monospace;font-size:13px;color:var(--text);background:var(--bg);line-height:1.6}
+body{display:flex;flex-direction:column;min-height:100vh}
+
+/* HEADER */
+.header{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px;background:var(--bg2);border-bottom:0.5px solid var(--border2);position:sticky;top:0;z-index:100;gap:12px}
+.header-brand{display:flex;align-items:baseline;gap:10px;flex-shrink:0}
+.header-brand h1{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text);letter-spacing:0.01em}
+.header-brand .sub{font-size:10px;color:var(--text3);letter-spacing:0.06em;text-transform:uppercase}
+.header-center{display:flex;align-items:center;gap:16px}
+.countdown{display:flex;align-items:baseline;gap:5px}
+.countdown-n{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--accent)}
+.countdown-l{font-size:10px;color:var(--text3);letter-spacing:0.05em;text-transform:uppercase}
+.altitude{font-size:10px;color:var(--text3);background:var(--bg3);padding:3px 10px;border-radius:var(--radius);border:0.5px solid var(--border);letter-spacing:0.05em;text-transform:uppercase}
+.header-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.prog-wrap{display:flex;align-items:center;gap:8px}
+.prog-track{width:100px;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 0.6s ease}
+.prog-label{font-size:11px;color:var(--text3);min-width:44px}
+button{cursor:pointer;font-family:'DM Mono',monospace;font-size:11px;padding:5px 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:transparent;color:var(--text2);transition:background 0.15s,color 0.15s;white-space:nowrap;display:inline-flex;align-items:center;gap:5px}
+button:hover{background:var(--bg3);color:var(--text)}
+button.primary{background:var(--accent-bg);border-color:var(--accent);color:var(--accent)}
+button.primary:hover{background:var(--accent-bg2)}
+button.icon-btn{padding:5px 7px}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:1fr 380px;flex:1;min-height:0;overflow:hidden}
+.main{overflow-y:auto;padding:24px 32px 80px}
+.sidebar{overflow-y:auto;padding:20px 16px;background:var(--bg2);border-left:0.5px solid var(--border)}
+
+/* TABS */
+.tabs{display:flex;border-bottom:0.5px solid var(--border2);margin-bottom:20px;gap:0}
+.tab{padding:7px 14px;font-size:12px;color:var(--text3);background:transparent;border:none;border-bottom:2px solid transparent;cursor:pointer;border-radius:0;letter-spacing:0.03em}
+.tab:hover{color:var(--text2);background:var(--bg2)}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.panel{display:none}.panel.active{display:block}
+
+/* FOCUS CARDS */
+.focus-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px}
+.focus-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:14px;border-top:3px solid var(--border2)}
+.focus-card.p1{border-top-color:var(--danger)}
+.focus-card.p2{border-top-color:var(--warning)}
+.focus-card.p3{border-top-color:var(--accent)}
+.fc-num{font-size:10px;color:var(--text3);margin-bottom:5px;letter-spacing:0.04em}
+.fc-title{font-size:12px;font-weight:500;font-family:'Syne',sans-serif;color:var(--text);line-height:1.4;margin-bottom:6px}
+.fc-why{font-size:11px;color:var(--text2);line-height:1.6}
+.fc-note{font-size:10px;color:var(--info);margin-top:6px;padding:4px 7px;background:var(--info-bg);border-radius:var(--radius)}
+.fc-phase{font-size:10px;color:var(--text3);margin-top:8px}
+.fc-blocked{font-size:10px;color:var(--danger);margin-top:4px}
+
+/* GUIDANCE */
+.guidance{background:var(--accent-bg);border:0.5px solid rgba(184,134,11,0.15);border-radius:var(--radius-lg);padding:14px 16px;margin-bottom:20px;border-left:3px solid var(--accent)}
+.guidance-label{font-size:10px;color:var(--accent);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:8px}
+.guidance-text{font-size:12px;color:var(--text2);line-height:1.8}
+.guidance-text strong{color:var(--text);font-weight:500}
+
+/* PHASES / ROADMAP */
+.phase-block{border:0.5px solid var(--border);border-radius:var(--radius-lg);margin-bottom:12px;overflow:hidden;background:var(--bg)}
+.phase-hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg2);cursor:pointer;user-select:none}
+.phase-hdr:hover{background:var(--bg3)}
+.phase-left{display:flex;align-items:center;gap:10px}
+.phase-num-badge{font-size:10px;color:var(--text3);background:var(--bg);padding:2px 6px;border-radius:var(--radius);border:0.5px solid var(--border)}
+.phase-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text)}
+.phase-sub{font-size:10px;color:var(--text3);margin-top:1px}
+.phase-right{display:flex;align-items:center;gap:7px}
+.badge{font-size:10px;padding:2px 7px;border-radius:var(--radius)}
+.badge-done{background:var(--success-bg);color:var(--success)}
+.badge-active{background:var(--accent-bg);color:var(--accent)}
+.badge-blocked{background:var(--danger-bg);color:var(--danger)}
+.phase-count{font-size:11px;color:var(--text3)}
+.chevron{font-size:12px;color:var(--text3);transition:transform 0.2s}
+.phase-block.collapsed .chevron{transform:rotate(-90deg)}
+.phase-tasks{padding:4px 0}
+.phase-block.collapsed .phase-tasks{display:none}
+
+/* TASKS */
+.task-row{display:flex;align-items:flex-start;gap:10px;padding:7px 14px;transition:background 0.1s}
+.task-row:hover{background:var(--bg2)}
+.task-cb{width:16px;height:16px;flex-shrink:0;margin-top:3px;accent-color:var(--accent);cursor:pointer}
+.task-body{flex:1;min-width:0}
+.task-top{display:flex;align-items:flex-start;gap:6px;flex-wrap:wrap}
+.task-text{font-size:12px;color:var(--text);line-height:1.5;flex:1;min-width:0}
+.task-row.done .task-text{color:var(--text3);text-decoration:line-through;text-decoration-color:var(--border2)}
+.task-row.is-blocked .task-text{color:var(--text3)}
+.task-why{font-size:10px;color:var(--text3);line-height:1.5;margin-top:3px}
+.task-note-display{font-size:10px;color:var(--info);background:var(--info-bg);padding:3px 7px;border-radius:var(--radius);margin-top:5px;line-height:1.5}
+.task-note-ta{width:100%;font-size:10px;font-family:'DM Mono',monospace;padding:5px 8px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);resize:none;min-height:40px;margin-top:5px;outline:none}
+.task-note-ta:focus{border-color:var(--accent)}
+.task-actions{display:flex;gap:4px;opacity:0;transition:opacity 0.15s;margin-top:3px}
+.task-row:hover .task-actions{opacity:1}
+.task-btn{padding:2px 7px;font-size:10px;border:0.5px solid var(--border);border-radius:var(--radius);background:transparent;color:var(--text3)}
+.task-btn:hover{background:var(--bg3);color:var(--text2)}
+.task-complete-time{font-size:10px;color:var(--text3);margin-top:2px}
+.unlock-row{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+.unlock-tag{font-size:9px;padding:1px 6px;border-radius:var(--radius);background:var(--accent-bg);color:var(--accent);border:0.5px solid rgba(184,134,11,0.18)}
+
+/* HISTORY */
+.history-list{display:flex;flex-direction:column;gap:0}
+.history-item{display:flex;gap:12px;padding:10px 0;border-bottom:0.5px solid var(--border)}
+.history-item:last-child{border-bottom:none}
+.history-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;cursor:pointer;background:var(--success-bg);color:var(--success);border:0.5px solid rgba(46,125,82,0.2);transition:background 0.15s}
+.history-icon:hover{background:var(--success-bg)}
+.history-body{flex:1;min-width:0}
+.history-title{font-size:12px;font-weight:500;color:var(--success);line-height:1.4}
+.history-meta{font-size:10px;color:var(--text3);margin-top:2px}
+.history-note-preview{font-size:10px;color:var(--text2);font-style:italic;margin-top:3px}
+.history-expand{font-size:10px;color:var(--info);cursor:pointer;margin-top:3px;display:inline-block}
+.history-detail{display:none;font-size:11px;color:var(--text2);line-height:1.6;margin-top:6px;padding:8px 10px;background:var(--bg2);border-radius:var(--radius)}
+.history-detail.open{display:block}
+
+/* LOG */
+.log-mood-row{display:flex;gap:5px;margin-bottom:8px;flex-wrap:wrap}
+.mood-btn{padding:3px 9px;font-size:10px;border-radius:var(--radius);border:0.5px solid var(--border);background:transparent;color:var(--text3)}
+.mood-btn:hover{border-color:var(--accent);color:var(--accent)}
+.mood-btn.sel{background:var(--accent-bg);border-color:var(--accent);color:var(--accent)}
+.log-ta{width:100%;min-height:80px;padding:9px 11px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font-size:12px;resize:vertical;line-height:1.6;outline:none}
+.log-ta:focus{border-color:var(--accent)}
+.log-ta::placeholder{color:var(--text3)}
+.log-actions{display:flex;gap:6px;margin-top:6px}
+.log-entry{padding:9px 11px;background:var(--bg2);border-radius:var(--radius);margin-bottom:7px;border-left:2px solid var(--accent)}
+.log-time{font-size:10px;color:var(--text3);margin-bottom:3px}
+.log-content{font-size:12px;color:var(--text2);line-height:1.6;white-space:pre-wrap}
+
+/* SIDEBAR */
+.summit-box{text-align:center;padding:20px 16px;margin-bottom:16px;border:0.5px solid rgba(184,134,11,0.15);border-radius:var(--radius-lg);background:var(--accent-bg);position:relative;overflow:hidden}
+.summit-label{font-size:10px;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px}
+.summit-live{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;color:var(--text);letter-spacing:0.06em;line-height:1}
+.summit-domain{font-size:12px;color:var(--text2);margin-top:4px}
+.summit-tagline{font-size:10px;color:var(--text3);margin-top:2px}
+.summit-box.reached{border-color:var(--success);background:var(--success-bg)}
+.summit-box.reached .summit-live{color:var(--success)}
+.sidebar-section-label{font-size:10px;color:var(--text3);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:8px;padding-bottom:6px;border-bottom:0.5px solid var(--border)}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;z-index:1000}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg);border-radius:var(--radius-lg);border:0.5px solid var(--border2);padding:20px 24px;max-width:460px;width:92%;max-height:80vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.18)}
+.modal-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
+.modal h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--text);line-height:1.4}
+.modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--text3);padding:0;flex-shrink:0;line-height:1}
+.modal-close:hover{color:var(--text)}
+.modal-label{font-size:10px;color:var(--text3);letter-spacing:0.05em;text-transform:uppercase;margin-top:12px;margin-bottom:3px}
+.modal-value{font-size:12px;color:var(--text);line-height:1.6}
+.modal-note{margin-top:8px;padding:8px 10px;background:var(--info-bg);border-radius:var(--radius);font-size:11px;color:var(--info);line-height:1.6}
+
+/* FEEDBACK IMPORT AREA */
+.feedback-import-box{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:14px;margin-bottom:16px}
+.feedback-import-box h3{font-size:12px;font-family:'Syne',sans-serif;margin-bottom:8px;color:var(--text)}
+.feedback-import-box p{font-size:11px;color:var(--text2);line-height:1.7;margin-bottom:10px}
+.feedback-import-ta{width:100%;min-height:120px;padding:9px 11px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font-size:11px;resize:vertical;outline:none}
+.feedback-import-ta:focus{border-color:var(--accent)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--bg4);border:0.5px solid var(--border2);color:var(--text);padding:9px 18px;border-radius:var(--radius);font-size:12px;opacity:0;transition:all 0.25s;z-index:2000;pointer-events:none;white-space:nowrap;box-shadow:var(--shadow)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* VBAR */
+.v-progress{position:fixed;left:10px;top:60px;bottom:20px;width:3px;background:var(--border);border-radius:2px;z-index:50}
+.v-progress-fill{position:absolute;bottom:0;width:100%;border-radius:2px;background:var(--accent);transition:height 0.8s ease}
+
+/* EMPTY */
+.empty{padding:24px;text-align:center;color:var(--text3);font-size:12px}
+.empty i{font-size:28px;display:block;margin-bottom:8px;color:var(--border2)}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+@media(max-width:700px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .focus-grid{grid-template-columns:1fr}
+}
+</style>
 </head>
 <body>
-    <header>
-        <div class="header-left">
-            <h1>Funnel Ship Tracker</h1>
-            <span class="project-name">Twofold Life</span>
-        </div>
-        <div class="header-center">
-            <div class="countdown">
-                <span class="countdown-number" id="daysLeft">--</span>
-                <span class="countdown-label" id="countdownLabel">days to summit</span>
-            </div>
-            <div class="altitude-badge" id="altitudeBadge">Base Camp</div>
-        </div>
-        <div class="header-right">
-            <button class="btn btn--icon" id="focusModeBtn" title="Focus Mode">&#128293;</button>
-            <button class="btn btn--icon" id="themeToggle" title="Toggle Light/Dark">&#9788;</button>
-            <div class="progress-container">
-                <div class="progress-track">
-                    <div class="progress-fill" id="progressFill" style="width:0%"></div>
-                </div>
-                <span class="progress-label" id="progressLabel">0 / 14</span>
-            </div>
-            <button class="btn" id="exportBtn">Export JSON</button>
-            <button class="btn" id="importBtn">Import JSON</button>
-            <input type="file" id="fileInput" accept=".json" hidden>
-        </div>
-    </header>
 
-    <main id="mainLayout">
-        <div class="dashboard" id="dashboard">
-            <div class="dashboard-section">
-                <h2><span class="section-icon">&#128293;</span> Today's Focus</h2>
-                <div id="focusContent"></div>
-            </div>
-            <div class="dashboard-section">
-                <h2><span class="section-icon">&#129302;</span> Strategic Guidance</h2>
-                <div class="feedback-wrap">
-                    <h3>Today's Priority Analysis</h3>
-                    <div class="feedback-message" id="feedbackMessage"></div>
-                </div>
-            </div>
-            <div class="dashboard-section">
-                <h2><span class="section-icon">&#128221;</span> Daily Log</h2>
-                <div class="log-date" id="logDate"></div>
-                <div class="mood-selector" id="moodSelector">
-                    <button class="mood-btn" data-mood="energized">Energized</button>
-                    <button class="mood-btn" data-mood="focused">Focused</button>
-                    <button class="mood-btn mood-btn--selected" data-mood="neutral">Neutral</button>
-                    <button class="mood-btn" data-mood="tired">Tired</button>
-                    <button class="mood-btn" data-mood="blocked">Blocked</button>
-                </div>
-                <div class="energy-track">
-                    <label>Energy Level</label>
-                    <input type="range" id="energySlider" min="1" max="10" value="5">
-                    <span class="energy-value" id="energyValue">5</span>
-                </div>
-                <textarea class="log-textarea" id="logInput"
-                    placeholder="What did you do today? What blocked you? What did you learn? (Ctrl+Enter to save)"></textarea>
-                <div class="log-actions">
-                    <button class="btn-log" id="saveLogBtn">Log It</button>
-                    <button class="btn-log btn-log--secondary" id="analyzeLogBtn">Analyze & Update Focus</button>
-                </div>
-                <div class="log-entries" id="logEntries"></div>
-            </div>
-            <div class="dashboard-section">
-                <h2><span class="section-icon">&#9989;</span> Ship Proof</h2>
-                <div id="proofContent"></div>
-            </div>
-        </div>
+<header class="header">
+  <div class="header-brand">
+    <h1>Ship Tracker</h1>
+    <span class="sub">TwoFoldLife</span>
+  </div>
+  <div class="header-center">
+    <div class="countdown">
+      <span class="countdown-n" id="daysLeft">--</span>
+      <span class="countdown-l" id="countdownLabel">days left</span>
+    </div>
+    <span class="altitude" id="altitudeText">Base Camp</span>
+  </div>
+  <div class="header-right">
+    <div class="prog-wrap">
+      <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+      <span class="prog-label" id="progLabel">0 / 14</span>
+    </div>
+    <button onclick="toggleTheme()" class="icon-btn" title="Toggle theme"><i class="ti ti-sun"></i></button>
+    <button onclick="exportJSON()"><i class="ti ti-download"></i> Export</button>
+    <button onclick="document.getElementById('fileIn').click()"><i class="ti ti-upload"></i> Import</button>
+    <input type="file" id="fileIn" accept=".json" hidden onchange="handleImport(event)">
+  </div>
+</header>
 
-        <aside class="roadmap" id="roadmap">
-            <div class="roadmap-header">
-                <span class="section-icon">&#127956;</span>
-                <span>Your Mountain</span>
-            </div>
-            <div class="summit" id="summit">
-                <span class="summit-badge">The Summit</span>
-                <h2 class="summit-live">LIVE</h2>
-                <p class="summit-domain">twofoldlife.com</p>
-                <p class="summit-tagline">Finance Tracker for Couples</p>
-            </div>
-            <div id="phasesContainer"></div>
-        </aside>
-    </main>
-
-    <div class="v-progress">
-        <div class="v-progress-fill" id="vProgressFill" style="height:0%"></div>
+<div class="layout">
+  <main class="main">
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('focus',this)">Focus</button>
+      <button class="tab" onclick="switchTab('roadmap',this)">Roadmap</button>
+      <button class="tab" onclick="switchTab('history',this)">History</button>
+      <button class="tab" onclick="switchTab('log',this)">Daily Log</button>
+      <button class="tab" onclick="switchTab('claude',this)">Claude Feedback</button>
     </div>
 
-    <script>
-        const STORAGE_KEY = 'funnel-ship-tracker-v2';
-        const TOTAL_TASKS = 14;
-        const ESTIMATED_DAYS = 15;
+    <div id="tab-focus" class="panel active">
+      <div class="focus-grid" id="focusCards"></div>
+      <div class="guidance" id="guidanceBox">
+        <div class="guidance-label">Strategic guidance</div>
+        <div class="guidance-text" id="guidanceText"></div>
+      </div>
+    </div>
 
-        const defaultfeedback = `You've already done the hardest part — 10 products built, all sales pages written. That's not nothing. That's the foundation of a real business.
+    <div id="tab-roadmap" class="panel">
+      <div id="phasesContainer"></div>
+    </div>
 
-What's left is wiring. Configuration. Connecting things that already exist. It's not creative work — it's assembly work. And assembly work is predictable.
+    <div id="tab-history" class="panel">
+      <div id="historyContainer"></div>
+    </div>
 
-The doubt you feel? Every solo creator building their first funnel feels it. It doesn't mean your niche is bad. It means you haven't tested it yet. The only cure is going live.
+    <div id="tab-log" class="panel">
+      <div style="margin-bottom:14px">
+        <div class="log-mood-row" id="moodRow">
+          <button class="mood-btn sel" data-mood="neutral" onclick="setMood(this)">Neutral</button>
+          <button class="mood-btn" data-mood="energized" onclick="setMood(this)">Energized</button>
+          <button class="mood-btn" data-mood="focused" onclick="setMood(this)">Focused</button>
+          <button class="mood-btn" data-mood="tired" onclick="setMood(this)">Tired</button>
+          <button class="mood-btn" data-mood="blocked" onclick="setMood(this)">Blocked</button>
+        </div>
+        <textarea class="log-ta" id="logInput" placeholder="What did you do today? What's blocking you? What did you learn? (Ctrl+Enter to save)"></textarea>
+        <div class="log-actions">
+          <button class="primary" onclick="saveLog()"><i class="ti ti-check"></i> Log it</button>
+          <button onclick="document.getElementById('logInput').value=''">Clear</button>
+        </div>
+      </div>
+      <div id="logEntries"></div>
+    </div>
 
-One task at a time. One checkbox at a time. You climb this mountain one step at a time.`;
+    <div id="tab-claude" class="panel">
+      <div class="feedback-import-box">
+        <h3>How to get Claude feedback</h3>
+        <p>1. Click <strong>Export</strong> in the header to download your JSON.<br>
+        2. Open a new Claude chat (or continue this one).<br>
+        3. Upload the JSON file and say: <em>"Analyze my progress and output an updated JSON I can import back."</em><br>
+        4. Claude will output a full updated JSON — copy it, paste below, click Import Feedback.</p>
+        <textarea class="feedback-import-ta" id="feedbackImportTa" placeholder="Paste updated JSON from Claude here..."></textarea>
+        <div style="display:flex;gap:6px;margin-top:8px">
+          <button class="primary" onclick="importFeedbackJSON()"><i class="ti ti-robot"></i> Import Claude Feedback</button>
+          <button onclick="document.getElementById('feedbackImportTa').value=''">Clear</button>
+        </div>
+      </div>
+      <div class="guidance" id="claudeFeedbackDisplay">
+        <div class="guidance-label">Last Claude feedback</div>
+        <div class="guidance-text" id="claudeFeedbackText"></div>
+      </div>
+    </div>
+  </main>
 
-        function getDefaultState() {
-            const target = new Date();
-            target.setDate(target.getDate() + ESTIMATED_DAYS);
-            return {
-                meta: {
-                    projectName: 'Twofold Life — Finance Tracker for Couples',
-                    targetDate: target.toISOString().split('T')[0],
-                    createdAt: new Date().toISOString(),
-                    lastUpdated: new Date().toISOString(),
-                    theme: 'dark',
-                    focusMode: false
-                },
-                phases: [
-                    {
-                        id: 1, name: 'Infrastructure',
-                        subtitle: 'Build the foundation everything stands on',
-                        tasks: [
-                            { id: 't1-1', text: 'Domain DNS — point twofoldlife.com to Cloudflare Pages', done: false, completedAt: null, status: 'todo', blocker: null, why: 'DNS propagation takes 24-48 hours. Every day you delay this is a day you cannot go live.', unlocks: ['Live domain', 'SSL certificate', 'Professional presence'], impact: 'Removes 24h propagation delay risk' },
-                            { id: 't1-2', text: 'Gmail forwarder — Namecheap forwarding + send-as setup for kimberly@', done: false, completedAt: null, status: 'todo', blocker: null, why: 'Branded email is non-negotiable for trust. Gmail send-as ensures deliverability.', unlocks: ['Branded communication', 'Email deliverability', 'Professional credibility'], impact: 'Prevents emails landing in spam' },
-                            { id: 't1-3', text: 'Kit From address — set to kimberly@twofoldlife.com', done: false, completedAt: null, status: 'todo', blocker: 't1-2', why: 'Kit requires a verified domain before you can send from a branded address. DNS and Gmail must be done first.', unlocks: ['Branded email sends', 'Higher open rates', 'Kit automation'], impact: 'Blocked until Gmail forwarder is complete' },
-                            { id: 't1-4', text: 'LemonSqueezy — upload PDFs to each product, confirm checkout redirect URLs', done: false, completedAt: null, status: 'todo', blocker: null, why: 'Customers paid for a product. If the download link is wrong, you get a chargeback.', unlocks: ['Product delivery', 'Customer satisfaction', 'Revenue protection'], impact: 'Prevents refunds and chargebacks' },
-                            { id: 't1-5', text: 'LemonSqueezy — connect Kit integration, set purchased tag on completed orders', done: false, completedAt: null, status: 'todo', blocker: 't1-4', why: 'Without the integration, buyers do not get tagged. Without tags, automations do not fire.', unlocks: ['Post-purchase automation', 'Customer segmentation', 'Retention loops'], impact: 'Enables entire post-purchase experience' }
-                        ]
-                    },
-                    {
-                        id: 2, name: 'Connect the Funnel',
-                        subtitle: 'Wire everything together',
-                        tasks: [
-                            { id: 't2-1', text: 'Kit form embed — replace placeholder in _01.html with actual script tag', done: false, completedAt: null, status: 'todo', blocker: null, why: 'This is the entry point. Without a working form, nobody enters your funnel.', unlocks: ['Lead capture', 'Email sequence trigger', 'Automation start'], impact: 'Zero leads without this' },
-                            { id: 't2-2', text: 'Replace all REPLACE_WITH_X_URL placeholders in email sequence', done: false, completedAt: null, status: 'todo', blocker: null, why: 'Broken links in emails destroy trust instantly. Every placeholder is a dead end for a customer.', unlocks: ['Working email flow', 'Product delivery', 'Trust preservation'], impact: 'Prevents customer confusion and churn' },
-                            { id: 't2-3', text: 'Kit sequence — finish emails 4-8 with correct filters', done: false, completedAt: null, status: 'todo', blocker: null, why: 'Incomplete sequences leave money on the table. Emails 4-8 are where conversions happen.', unlocks: ['Full nurture sequence', 'Revenue recovery', 'Segmentation'], impact: 'Maximizes lifetime value per lead' },
-                            { id: 't2-4', text: 'Kit automation — create post-purchase sequences (A, B, C)', done: false, completedAt: null, status: 'todo', blocker: null, why: 'Post-purchase is where you turn buyers into fans. No follow-up = wasted goodwill.', unlocks: ['Customer retention', 'Upsell opportunities', 'Referral engine'], impact: 'Increases customer lifetime value 2-3x' }
-                        ]
-                    },
-                    {
-                        id: 3, name: 'Quality & How-To Guides',
-                        subtitle: 'Prove your $97 product is worth every cent',
-                        tasks: [
-                            { id: 't3-1', text: 'Walk through entire funnel end-to-end as a customer would', done: false, completedAt: null, status: 'todo', blocker: null, why: 'You cannot fix what you have not seen break. Every unchecked assumption is a refund waiting to happen.', unlocks: ['Bug detection', 'Customer experience validation', 'Refund prevention'], impact: 'Prevents revenue loss from broken flows' },
-                            { id: 't3-2', text: 'Umami analytics — install tracking on all pages', done: false, completedAt: null, status: 'todo', blocker: null, why: 'Without data, you are flying blind. You need to know where people drop off before you can fix it.', unlocks: ['Conversion data', 'A/B testing foundation', 'Revenue attribution'], impact: 'Enables data-driven optimization' },
-                            { id: 't3-3', text: 'Write how-to guides for each product ($97 value, customers expect this)', done: false, completedAt: null, status: 'todo', blocker: null, why: 'A product without documentation feels like a scam. Documentation is what justifies the price.', unlocks: ['Customer satisfaction', 'Reduced support burden', 'Higher perceived value'], impact: 'Directly impacts refund rate and reviews' }
-                        ]
-                    },
-					{
-                        id: 4, name: 'Marketing Launch',
-                        subtitle: 'Get eyes on your funnel',
-                        tasks: [
-                            { id: 't4-1', text: 'Pinterest — set up business account, create and upload 15 pins', done: false, completedAt: null, status: 'todo', blocker: null, why: 'Traffic is useless without a working funnel. Do this AFTER everything else is wired.', unlocks: ['Organic traffic', 'Pinterest SEO foundation'], impact: 'Only valuable once conversion tracking is live' },
-                            { id: 't4-2', text: 'TikTok/Reels — content plan and first 3 posts live', done: false, completedAt: null, status: 'todo', blocker: null, why: 'Short-form video drives the cheapest traffic for digital products right now.', unlocks: ['Viral traffic potential', 'Social proof'], impact: 'High effort, high reward — but last in sequence' }
-                        ]
-                    }
-                ],
-                dailyLogs: [],
-                shipProofs: [],
-                feedbackFeedback: { lastUpdate: new Date().toISOString().split('T')[0], message: defaultfeedback },
-                session: {
-                    currentMood: 'neutral',
-                    energyLevel: 5,
-                    lastSessionDate: null
-                }
-            };
+  <aside class="sidebar">
+    <div class="summit-box" id="summitBox">
+      <div class="summit-label">The Summit</div>
+      <div class="summit-live">LIVE</div>
+      <div class="summit-domain">twofoldlife.com</div>
+      <div class="summit-tagline">Finance Tracker for Couples</div>
+    </div>
+    <div class="sidebar-section-label">Your Mountain</div>
+    <div id="sidebarPhases"></div>
+  </aside>
+</div>
+
+<div class="v-progress"><div class="v-progress-fill" id="vFill" style="height:0%"></div></div>
+
+<div class="modal-overlay" id="taskModal">
+  <div class="modal">
+    <div class="modal-top">
+      <h3 id="modalTitle"></h3>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SK='tfl-ship-v4';
+let state=loadState();
+let currentMood=state.session?.currentMood||'neutral';
+
+const ALTITUDES=[[0,'Base Camp'],[15,'Breaking Camp'],[35,'Ascending'],[55,'High Camp'],[75,'Ridge Line'],[95,'Near Summit'],[100,'Summit Reached']];
+function getAlt(p){let a='Base Camp';for(const[t,n]of ALTITUDES){if(p>=t)a=n;}return a;}
+
+function defaultState(){
+  const tgt=new Date();tgt.setDate(tgt.getDate()+15);
+  return{
+    meta:{projectName:'TwoFoldLife',targetDate:'2026-06-09',theme:'light',createdAt:new Date().toISOString(),lastUpdated:new Date().toISOString()},
+    phases:[
+      {id:1,name:'Infrastructure',subtitle:'Build the foundation',tasks:[
+        {id:'t1-1',text:'Domain DNS — point twofoldlife.com to Cloudflare Pages',done:false,completedAt:null,status:'todo',blocker:null,why:'DNS propagation 24-48h. Every day you delay is a day you cannot go live.',unlocks:['Live domain','SSL certificate'],note:''},
+        {id:'t1-2',text:'Gmail forwarder — Namecheap forwarding + Gmail send-as setup',done:false,completedAt:null,status:'todo',blocker:null,why:'Branded email is non-negotiable for trust. Replies to Kit emails land here.',unlocks:['Branded communication','Email deliverability'],note:'Steps: Namecheap > Email Forwarding > forward kimberly@twofoldlife.com to Gmail. Then Gmail > Settings > Accounts > Send mail as.'},
+        {id:'t1-3',text:'Kit From address — set to kimberly@twofoldlife.com',done:false,completedAt:null,status:'blocked',blocker:'t1-2',why:'Requires Gmail forwarder to be live first.',unlocks:['Branded email sends','Higher open rates'],note:''},
+        {id:'t1-4',text:'LemonSqueezy — upload PDFs + confirm redirect URLs (9 products)',done:false,completedAt:null,status:'todo',blocker:null,why:'Wrong download link = chargeback. Confirm redirect URLs match page names.',unlocks:['Product delivery','Revenue protection'],note:'Redirect map: Tracker$9+Scripts$16 → /reset | Reset$37 → /connection | Connection$67 → /workbook | Blueprint$17+others → /thankyou'},
+        {id:'t1-5',text:'LemonSqueezy — connect Kit integration, set purchased tag',done:false,completedAt:null,status:'blocked',blocker:'t1-4',why:'Without this tag, post-purchase automations never fire.',unlocks:['Post-purchase automation','Buyer segmentation'],note:'LemonSqueezy > Settings > Integrations > Kit. Set tag = purchased on any completed order.'}
+      ]},
+      {id:2,name:'Connect the Funnel',subtitle:'Wire everything together',tasks:[
+        {id:'t2-1',text:'Kit form embed — replace placeholder in _01.html with script tag',done:false,completedAt:null,status:'todo',blocker:null,why:'Without this, nobody enters the funnel. Zero leads.',unlocks:['Lead capture','Sequence trigger'],note:'Script: <script async data-uid="474ae1029b" src="https://couple.kit.com/474ae1029b/index.js"><\/script> — delete .native-form block after.'},
+        {id:'t2-2',text:'Kit sequence — finish emails 6, 7, 8 (1-5 in progress)',done:false,completedAt:null,status:'todo',blocker:null,why:'Unfinished sequence = lost conversions on Day 20-35.',unlocks:['Full nurture sequence','Revenue recovery'],note:'Email 6=Day20 no filter. Email 7=Day28 add purchased filter. Email 8=Day35 no filter. Day 5 CTA → twofoldlife.com/tracker (bump handles bundle).'},
+        {id:'t2-3',text:'Kit automation — create post-purchase emails A, B, C',done:false,completedAt:null,status:'todo',blocker:null,why:'Post-purchase is your back-end revenue engine.',unlocks:['Upsell automation','Buyer retention'],note:'Trigger: tag purchased. Wait 14d → Email A Accelerator$47. Wait 30d → Email B Investment$37. Wait 30d → Email C Video$97.'},
+        {id:'t2-4',text:'Replace all REPLACE_WITH_X_URL placeholders in email sequence',done:false,completedAt:null,status:'todo',blocker:null,why:'Broken links destroy trust in seconds.',unlocks:['Working email flow'],note:'tracker→/tracker | reset→/reset | connection→/connection | workbook→/workbook | accelerator→/accelerator | investment→/investment | video→/video | free kit PDF→https://2fold.pages.dev/Couples%20Money%20Date%20Starter%20Kit.pdf'}
+      ]},
+      {id:3,name:'QA & Analytics',subtitle:'Verify before you ship',tasks:[
+        {id:'t3-1',text:'Walk entire funnel end-to-end as a test customer',done:false,completedAt:null,status:'todo',blocker:null,why:'Every unchecked assumption is a refund waiting to happen.',unlocks:['Bug detection','Refund prevention'],note:'Test path: _01 optin → check Kit subscriber added → confirm redirect to _02_03 → test $9 checkout → confirm upsell redirect → check purchased tag fires → check automation triggers.'},
+        {id:'t3-2',text:'Umami analytics — install tracking on all 8 pages',done:false,completedAt:null,status:'todo',blocker:null,why:'Without data you cannot know where people drop off.',unlocks:['Conversion data','Drop-off visibility'],note:'Pages: _01, _02_03, _04_1, _04_2, _05, _thx, and individual Connection Kit pages.'},
+        {id:'t3-3',text:'How-to guides for each product',done:false,completedAt:null,status:'todo',blocker:null,why:'No documentation = product feels unfinished. Increases refund rate.',unlocks:['Customer satisfaction','Reduced support'],note:''}
+      ]},
+      {id:4,name:'Marketing Launch',subtitle:'Get eyes on the funnel',tasks:[
+        {id:'t4-1',text:'Pinterest — business account + upload 15 pins with keywords',done:false,completedAt:null,status:'todo',blocker:null,why:'15 images already ready at 1000x1500. Lowest effort first traffic channel.',unlocks:['Organic traffic','Pinterest SEO'],note:'15 images ready. Priority keywords: how to talk about money with partner, couples budgeting, money date ideas, couples budget template, couples wealth tracker.'},
+        {id:'t4-2',text:'TikTok/Reels — first 3 posts live',done:false,completedAt:null,status:'todo',blocker:null,why:'Short video = fastest feedback loop on content-market fit.',unlocks:['Viral potential','Social proof'],note:'Static images with Ken Burns motion ready. Pick ONE platform first — TikTok or Reels. Authentic > polished for couples finance niche.'}
+      ]}
+    ],
+    dailyLogs:[{date:'2026-05-25',entries:[{time:'06:00 PM',content:'Starter Kit back page links updated (done). 9 more products need link updates. Kit sequence built through Day 5 — emails 6, 7, 8 still to create. Ship tracker rebuilt and hosted on GitHub.',mood:'neutral',energy:5}]}],
+    completedTaskDetails:[],
+    feedback:{lastUpdate:'2026-05-25',message:'You have done the hardest part — 10 products built, all sales pages written, sequence through Day 5.\n\nWhat is left is wiring. Configuration. Connecting things that already exist. It is not creative work — it is assembly work. And assembly work is predictable.\n\nYour immediate next actions:\n1. Finish Kit sequence emails 6-8 (one session)\n2. Create Kit automation A/B/C (one session)\n3. Update 9 product link placeholders\n\nAfter those three, your Tier 1 blocking tasks clear in one sitting.\n\nOne task. One checkbox. Keep climbing.'},
+    session:{currentMood:'neutral',energyLevel:5}
+  };
+}
+
+function loadState(){
+  try{const s=localStorage.getItem(SK);if(s)return JSON.parse(s);}catch(e){}
+  return defaultState();
+}
+function saveState(){
+  state.meta.lastUpdated=new Date().toISOString();
+  try{localStorage.setItem(SK,JSON.stringify(state));}catch(e){}
+}
+
+function getProgress(){
+  let done=0,total=0;
+  state.phases.forEach(p=>p.tasks.forEach(t=>{total++;if(t.done)done++;}));
+  return{done,total,pct:total?Math.round((done/total)*100):0};
+}
+function getDaysLeft(){
+  const t=new Date(state.meta.targetDate+'T00:00:00');
+  const n=new Date();n.setHours(0,0,0,0);t.setHours(0,0,0,0);
+  return Math.max(0,Math.ceil((t-n)/86400000));
+}
+function resolveBlockers(){
+  const map=new Map();
+  state.phases.forEach(p=>p.tasks.forEach(t=>map.set(t.id,t)));
+  state.phases.forEach(p=>p.tasks.forEach(t=>{
+    if(t.blocker&&map.has(t.blocker)){
+      const b=map.get(t.blocker);
+      if(!b.done&&t.status!=='blocked')t.status='blocked';
+      else if(b.done&&t.status==='blocked')t.status='todo';
+    }
+  }));
+}
+function getFocus(){
+  resolveBlockers();
+  const c=[];
+  state.phases.forEach(p=>p.tasks.forEach(t=>{
+    if(!t.done){
+      let s=(5-p.id)*15;
+      if(!t.blocker)s+=20;
+      if(t.status==='blocked')s-=50;
+      if(state.phases.some(ph=>ph.tasks.some(x=>x.blocker===t.id)))s+=20;
+      c.push({...t,phaseName:p.name,phaseId:p.id,score:s});
+    }
+  }));
+  c.sort((a,b)=>b.score-a.score);
+  const res=[];
+  for(const x of c){if(res.length>=3)break;if(res.filter(r=>r.phaseId===x.phaseId).length<2)res.push(x);}
+  return res;
+}
+function esc(t){const d=document.createElement('div');d.textContent=t||'';return d.innerHTML;}
+function fmtDate(iso){
+  if(!iso)return'';
+  const d=new Date(iso);
+  return d.toLocaleDateString('en',{month:'short',day:'numeric',year:'numeric'})+' '+d.toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'});
+}
+function todayStr(){return new Date().toISOString().split('T')[0];}
+
+function render(){
+  resolveBlockers();
+  renderProgress();
+  renderFocus();
+  renderRoadmap();
+  renderSidebar();
+  renderHistory();
+  renderLogs();
+  renderClaudeFeedback();
+  saveState();
+}
+
+function renderProgress(){
+  const{done,total,pct}=getProgress();
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('progLabel').textContent=done+'/'+total;
+  document.getElementById('vFill').style.height=pct+'%';
+  document.getElementById('altitudeText').textContent=getAlt(pct);
+  const dl=getDaysLeft();
+  const dlEl=document.getElementById('daysLeft');
+  const lbEl=document.getElementById('countdownLabel');
+  if(pct>=100){dlEl.textContent='LIVE';lbEl.textContent='funnel is';}
+  else{dlEl.textContent=dl;lbEl.textContent='days to summit';}
+  const sb=document.getElementById('summitBox');
+  pct>=100?sb.classList.add('reached'):sb.classList.remove('reached');
+}
+
+function renderFocus(){
+  const focus=getFocus();
+  const fc=document.getElementById('focusCards');
+  if(!focus.length){
+    fc.innerHTML='<div class="empty"><i class="ti ti-trophy"></i>All tasks complete. You are live.</div>';
+  }else{
+    fc.innerHTML=focus.map((t,i)=>`
+      <div class="focus-card p${i+1}">
+        <div class="fc-num">#${i+1} · Phase ${t.phaseId}: ${esc(t.phaseName)}</div>
+        <div class="fc-title">${esc(t.text)}</div>
+        <div class="fc-why">${esc(t.why||'')}</div>
+        ${t.note?`<div class="fc-note">${esc(t.note.split('\n')[0].substring(0,80))}${t.note.length>80?'…':''}</div>`:''}
+        ${t.status==='blocked'?'<div class="fc-blocked">⚠ Blocked — clear dependency first</div>':''}
+      </div>`).join('');
+  }
+  const{pct}=getProgress();
+  let msg='';
+  if(pct===0)msg='<strong>Day 1.</strong> Infrastructure first. DNS takes 24h — start it today even if you work on other things in parallel.';
+  else if(pct<30)msg='<strong>Foundation phase.</strong> Every blocker you clear now unlocks 2-3 tasks downstream. Prioritize what unblocks others.';
+  else if(pct<60)msg='<strong>Mid-mountain.</strong> Creative work is done. This is assembly — predictable and satisfying.';
+  else if(pct<90)msg='<strong>Final stretch.</strong> One focused day and you are live.';
+  else if(pct<100)msg='<strong>Summit in sight.</strong> These last tasks separate launched from almost-launched.';
+  else msg='<strong>Summit reached.</strong> Funnel is live. Let the market tell you what to fix next.';
+  const blocked=state.phases.flatMap(p=>p.tasks).filter(t=>t.status==='blocked'&&!t.done);
+  if(blocked.length)msg+=`<br><br>${blocked.length} task(s) blocked by dependencies. Clear the root tasks first.`;
+  document.getElementById('guidanceText').innerHTML=msg;
+}
+
+function renderRoadmap(){
+  const c=document.getElementById('phasesContainer');
+  let activeId=null;
+  for(const ph of state.phases){if(ph.tasks.some(t=>!t.done)){activeId=ph.id;break;}}
+  c.innerHTML=state.phases.map(ph=>{
+    const dn=ph.tasks.filter(t=>t.done).length,tt=ph.tasks.length,comp=dn===tt,isAct=ph.id===activeId;
+    return`<div class="phase-block" id="phase-${ph.id}">
+      <div class="phase-hdr" onclick="togglePhase(${ph.id})">
+        <div class="phase-left">
+          <span class="phase-num-badge">0${ph.id}</span>
+          <div><div class="phase-name">${ph.name}</div><div class="phase-sub">${ph.subtitle}</div></div>
+        </div>
+        <div class="phase-right">
+          ${comp?'<span class="badge badge-done">Complete</span>':isAct?'<span class="badge badge-active">Active</span>':''}
+          <span class="phase-count">${dn}/${tt}</span>
+          <i class="ti ti-chevron-down chevron"></i>
+        </div>
+      </div>
+      <div class="phase-tasks">${ph.tasks.map(t=>renderTaskRow(t,ph.id)).join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderTaskRow(t,phaseId){
+  const statusBadge=t.done?'<span class="badge badge-done" style="font-size:10px">done</span>':t.status==='blocked'?'<span class="badge badge-blocked" style="font-size:10px">blocked</span>':'';
+  return`<div class="task-row ${t.done?'done':''} ${t.status==='blocked'?'is-blocked':''}" id="task-${t.id}">
+    <input type="checkbox" class="task-cb" ${t.done?'checked':''} ${t.status==='blocked'&&!t.done?'disabled':''} onchange="toggleTask('${t.id}',${phaseId})">
+    <div class="task-body">
+      <div class="task-top">
+        <span class="task-text">${esc(t.text)}</span>${statusBadge}
+        <div class="task-actions">
+          <button class="task-btn" onclick="openModal('${t.id}')"><i class="ti ti-info-circle"></i> Details</button>
+          <button class="task-btn" onclick="editNote('${t.id}')"><i class="ti ti-notes"></i> Note</button>
+        </div>
+      </div>
+      ${t.why?`<div class="task-why">${esc(t.why)}</div>`:''}
+      ${t.note?`<div class="task-note-display" id="note-display-${t.id}">${esc(t.note)}</div>`:`<div id="note-display-${t.id}"></div>`}
+      ${t.done&&t.completedAt?`<div class="task-complete-time">Completed ${fmtDate(t.completedAt)}</div>`:''}
+      ${t.unlocks&&t.unlocks.length?`<div class="unlock-row">${t.unlocks.map(u=>`<span class="unlock-tag">${esc(u)}</span>`).join('')}</div>`:''}
+    </div>
+  </div>`;
+}
+
+function renderSidebar(){
+  const c=document.getElementById('sidebarPhases');
+  c.innerHTML=state.phases.map(ph=>{
+    const dn=ph.tasks.filter(t=>t.done).length,tt=ph.tasks.length,comp=dn===tt;
+    return`<div style="margin-bottom:10px;padding:8px 10px;background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);${comp?'border-left:3px solid var(--success)':''}">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
+        <span style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--text)">${ph.name}</span>
+        <span style="font-size:10px;color:var(--text3)">${dn}/${tt}</span>
+      </div>
+      <div style="height:3px;background:var(--bg3);border-radius:2px;overflow:hidden">
+        <div style="height:100%;width:${Math.round(dn/tt*100)}%;background:${comp?'var(--success)':'var(--accent)'};border-radius:2px;transition:width 0.5s"></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderHistory(){
+  const c=document.getElementById('historyContainer');
+  const details=(state.completedTaskDetails||[]).sort((a,b)=>new Date(b.completedAt)-new Date(a.completedAt));
+  if(!details.length){
+    c.innerHTML='<div class="empty"><i class="ti ti-history"></i>No completed tasks yet. Check off tasks on the Roadmap to build your history.</div>';
+    return;
+  }
+  c.innerHTML='<div class="history-list">'+details.map((d,i)=>`
+    <div class="history-item">
+      <div class="history-icon" onclick="toggleHistoryDetail('hd-${i}')" title="Click to expand details"><i class="ti ti-check"></i></div>
+      <div class="history-body">
+        <div class="history-title">${esc(d.text)}</div>
+        <div class="history-meta">${fmtDate(d.completedAt)} · Phase ${d.phaseId}: ${esc(d.phaseName)}</div>
+        ${d.note?`<div class="history-note-preview">${esc(d.note.substring(0,100))}${d.note.length>100?'…':''}</div>`:''}
+        <span class="history-expand" onclick="toggleHistoryDetail('hd-${i}')">show details ↓</span>
+        <div class="history-detail" id="hd-${i}">
+          ${d.why?`<div><strong>Why it mattered:</strong> ${esc(d.why)}</div>`:''}
+          ${d.unlocks&&d.unlocks.length?`<div style="margin-top:5px"><strong>Unlocked:</strong> ${d.unlocks.join(', ')}</div>`:''}
+          ${d.note?`<div style="margin-top:5px"><strong>Your note:</strong> ${esc(d.note)}</div>`:''}
+        </div>
+      </div>
+    </div>`).join('')+'</div>';
+}
+
+function renderLogs(){
+  const c=document.getElementById('logEntries');
+  const all=(state.dailyLogs||[]).sort((a,b)=>b.date.localeCompare(a.date));
+  if(!all.length){c.innerHTML='<div class="empty"><i class="ti ti-notes"></i>No logs yet.</div>';return;}
+  c.innerHTML=all.map(dl=>`
+    <div style="margin-bottom:14px">
+      <div style="font-size:10px;color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;padding-bottom:4px;border-bottom:0.5px solid var(--border)">${dl.date}</div>
+      ${dl.entries.map(e=>`
+        <div class="log-entry">
+          <div class="log-time">${e.time}${e.mood?' · '+e.mood:''}${e.energy?' · energy '+e.energy+'/10':''}</div>
+          <div class="log-content">${esc(e.content)}</div>
+        </div>`).join('')}
+    </div>`).join('');
+}
+
+function renderClaudeFeedback(){
+  const fb=state.feedback;
+  if(fb&&fb.message){
+    document.getElementById('claudeFeedbackText').innerHTML=esc(fb.message).replace(/\n/g,'<br>');
+  }
+}
+
+function togglePhase(id){document.getElementById('phase-'+id)?.classList.toggle('collapsed');}
+function toggleHistoryDetail(id){document.getElementById(id)?.classList.toggle('open');}
+
+function toggleTask(id,phaseId){
+  const phase=state.phases.find(p=>p.id===phaseId);
+  if(!phase)return;
+  const task=phase.tasks.find(t=>t.id===id);
+  if(!task)return;
+  task.done=!task.done;
+  task.completedAt=task.done?new Date().toISOString():null;
+  if(task.done){
+    if(!state.completedTaskDetails)state.completedTaskDetails=[];
+    const alreadyLogged=state.completedTaskDetails.find(d=>d.id===id);
+    if(!alreadyLogged){
+      state.completedTaskDetails.push({id:task.id,text:task.text,completedAt:task.completedAt,phaseId,phaseName:phase.name,why:task.why,unlocks:task.unlocks,note:task.note});
+    }
+    showToast('Task complete. Keep climbing.');
+  }else{
+    state.completedTaskDetails=(state.completedTaskDetails||[]).filter(d=>d.id!==id);
+    showToast('Task unchecked.');
+  }
+  render();
+}
+
+function editNote(id){
+  const task=state.phases.flatMap(p=>p.tasks).find(t=>t.id===id);
+  if(!task)return;
+  const row=document.getElementById('task-'+id);
+  const existing=row.querySelector('.task-note-ta');
+  if(existing){existing.remove();row.querySelector('.note-save-row')?.remove();return;}
+  const ta=document.createElement('textarea');
+  ta.className='task-note-ta';
+  ta.value=task.note||'';
+  ta.placeholder='Add a note — what did you learn, what is the status, what is blocking you...';
+  const saveRow=document.createElement('div');
+  saveRow.className='note-save-row';
+  saveRow.style.cssText='display:flex;gap:5px;margin-top:4px';
+  saveRow.innerHTML=`<button class="task-btn primary" onclick="saveNote('${id}')">Save note</button><button class="task-btn" onclick="cancelNote('${id}')">Cancel</button>`;
+  const body=row.querySelector('.task-body');
+  const noteDisplay=document.getElementById('note-display-'+id);
+  body.insertBefore(ta,noteDisplay);
+  body.insertBefore(saveRow,noteDisplay);
+  ta.focus();
+}
+
+function saveNote(id){
+  const ta=document.querySelector(`#task-${id} .task-note-ta`);
+  if(!ta)return;
+  const val=ta.value.trim();
+  state.phases.forEach(p=>p.tasks.forEach(t=>{if(t.id===id)t.note=val;}));
+  if(state.completedTaskDetails){
+    const d=state.completedTaskDetails.find(d=>d.id===id);
+    if(d)d.note=val;
+  }
+  render();showToast('Note saved.');
+}
+function cancelNote(id){render();}
+
+function openModal(id){
+  const task=state.phases.flatMap(p=>p.tasks).find(t=>t.id===id);
+  const phase=state.phases.find(p=>p.tasks.some(t=>t.id===id));
+  if(!task)return;
+  document.getElementById('modalTitle').textContent=task.text;
+  document.getElementById('modalBody').innerHTML=`
+    <div class="modal-label">Phase</div><div class="modal-value">${phase?phase.name:''}</div>
+    <div class="modal-label">Status</div><div class="modal-value">${task.done?'Completed '+fmtDate(task.completedAt):task.status}</div>
+    <div class="modal-label">Why it matters</div><div class="modal-value">${esc(task.why||'—')}</div>
+    ${task.unlocks&&task.unlocks.length?`<div class="modal-label">Unlocks</div><div class="modal-value">${task.unlocks.join(', ')}</div>`:''}
+    ${task.note?`<div class="modal-label">Your note</div><div class="modal-note">${esc(task.note)}</div>`:'<div class="modal-label">Note</div><div class="modal-value" style="color:var(--text3)">No note yet — hover task and click Note to add one.</div>'}
+    <div style="margin-top:14px;display:flex;gap:6px">
+      <button class="task-btn" onclick="closeModal();editNote('${id}')"><i class="ti ti-notes"></i> Edit note</button>
+    </div>`;
+  document.getElementById('taskModal').classList.add('open');
+}
+function closeModal(){document.getElementById('taskModal').classList.remove('open');}
+document.getElementById('taskModal').addEventListener('click',e=>{if(e.target===document.getElementById('taskModal'))closeModal();});
+
+function setMood(btn){
+  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  currentMood=btn.dataset.mood;
+  state.session.currentMood=currentMood;
+  saveState();
+}
+
+function saveLog(){
+  const inp=document.getElementById('logInput');
+  const txt=inp.value.trim();if(!txt)return;
+  const d=todayStr();
+  if(!state.dailyLogs)state.dailyLogs=[];
+  let dl=state.dailyLogs.find(l=>l.date===d);
+  if(!dl){dl={date:d,entries:[]};state.dailyLogs.push(dl);}
+  dl.entries.push({time:new Date().toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'}),content:txt,mood:currentMood});
+  inp.value='';
+  render();showToast('Logged.');
+}
+document.getElementById('logInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey))saveLog();});
+
+function exportJSON(){
+  state.meta.lastExported=new Date().toISOString();
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;
+  a.download='ship-tracker-'+todayStr()+'.json';
+  a.click();URL.revokeObjectURL(url);
+  showToast('Exported. Paste to Claude for analysis.');
+}
+
+function handleImport(e){
+  const file=e.target.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    try{
+      const imp=JSON.parse(ev.target.result);
+      if(imp.phases&&imp.meta){
+        if(confirm('Replace all current data with imported version?')){
+          state=imp;
+          if(!state.completedTaskDetails)state.completedTaskDetails=[];
+          render();
+          showToast('Progress imported.');
         }
+      }else showToast('Invalid format.');
+    }catch(err){showToast('Could not read file.');}
+  };
+  r.readAsText(file);e.target.value='';
+}
 
-        let state = loadState();
-        function loadState() {
-            try { const s = localStorage.getItem(STORAGE_KEY); if (s) return JSON.parse(s); }
-            catch(e) {}
-            return getDefaultState();
-        }
-        function saveState() {
-            state.meta.lastUpdated = new Date().toISOString();
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        }
+function importFeedbackJSON(){
+  const ta=document.getElementById('feedbackImportTa');
+  const txt=ta.value.trim();
+  if(!txt){showToast('Paste Claude JSON first.');return;}
+  try{
+    const imp=JSON.parse(txt);
+    if(!imp.phases||!imp.meta){showToast('Does not look like a valid tracker JSON.');return;}
+    if(confirm('This will replace your current tracker data with Claude\'s updated version. Continue?')){
+      state=imp;
+      if(!state.completedTaskDetails)state.completedTaskDetails=[];
+      ta.value='';
+      render();
+      switchTab('focus',document.querySelector('.tab'));
+      showToast('Claude feedback imported. Roadmap updated.');
+    }
+  }catch(err){showToast('Could not parse JSON. Make sure you copied it completely.');}
+}
 
-        function getProgress() {
-            let done = 0, total = 0;
-            state.phases.forEach(p => p.tasks.forEach(t => { total++; if (t.done) done++; }));
-            return { done, total, percent: total ? Math.round((done / total) * 100) : 0 };
-        }
-        function getAltitude(pct) {
-            if (pct === 0) return 'Base Camp';
-            if (pct <= 15) return 'Breaking Camp';
-            if (pct <= 35) return 'Ascending';
-            if (pct <= 55) return 'High Camp';
-            if (pct <= 75) return 'Ridge Line';
-            if (pct <= 95) return 'Near Summit';
-            return 'Summit Reached';
-        }
-        function getDaysLeft() {
-            const t = new Date(state.meta.targetDate + 'T00:00:00');
-            const n = new Date(); n.setHours(0,0,0,0); t.setHours(0,0,0,0);
-            return Math.max(0, Math.ceil((t - n) / 86400000));
-        }
-        function fmtDate(iso) {
-            if (!iso) return '';
-            const d = new Date(iso);
-            return d.toLocaleDateString('en',{month:'short',day:'numeric'}) + ' at ' +
-                   d.toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'});
-        }
-        function todayStr() { return new Date().toISOString().split('T')[0]; }
-        function todayPretty() { return new Date().toLocaleDateString('en',{weekday:'long',month:'long',day:'numeric',year:'numeric'}); }
-        function esc(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+function switchTab(name,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  if(btn)btn.classList.add('active');
+  else{
+    const tabs=document.querySelectorAll('.tab');
+    const names=['focus','roadmap','history','log','claude'];
+    const idx=names.indexOf(name);
+    if(idx>=0)tabs[idx].classList.add('active');
+  }
+}
 
-        // ─── DEPENDENCY & PRIORITY ENGINE ───
-        function resolveBlockers() {
-            const taskMap = new Map();
-            state.phases.forEach(p => p.tasks.forEach(t => taskMap.set(t.id, t)));
-            state.phases.forEach(p => {
-                p.tasks.forEach(t => {
-                    if (t.blocker && taskMap.has(t.blocker)) {
-                        const blockerTask = taskMap.get(t.blocker);
-                        if (!blockerTask.done) {
-                            t.status = 'blocked';
-                        } else if (t.status === 'blocked') {
-                            t.status = 'todo';
-                        }
-                    }
-                });
-            });
-        }
+function toggleTheme(){
+  state.meta.theme=state.meta.theme==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',state.meta.theme);
+  saveState();
+  showToast(state.meta.theme==='light'?'Light mode.':'Dark mode.');
+}
 
-        function computePriorityScore(task, phaseId) {
-            let score = 0;
-            if (task.blocker) {
-                const blockerDone = state.phases.some(p => p.tasks.some(t => t.id === task.blocker && t.done));
-                if (blockerDone) score += 30;
-                else score -= 50;
-            } else {
-                score += 20;
-            }
-            score += (5 - phaseId) * 15;
-            if (phaseId === 1) score += 25;
-            if (phaseId === 2) score += 15;
-            if (phaseId === 3) score += 5;
-            const blocksOthers = state.phases.some(p => p.tasks.some(t => t.blocker === task.id));
-            if (blocksOthers) score += 20;
-            if (task.status === 'blocked') score -= 40;
-            if (task.status === 'waiting') score -= 30;
-            if (task.status === 'delegated') score -= 20;
-            if (task.status === 'researching') score -= 10;
-            const energy = state.session?.energyLevel || 5;
-            if (energy <= 3 && phaseId <= 2) score += 10;
-            if (energy >= 8 && phaseId >= 3) score += 10;
-            return score;
-        }
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2500);
+}
 
-        function getFocus() {
-            resolveBlockers();
-            const candidates = [];
-            state.phases.forEach(p => {
-                p.tasks.forEach(t => {
-                    if (!t.done) {
-                        candidates.push({
-                            ...t,
-                            phaseName: p.name,
-                            phaseId: p.id,
-                            priorityScore: computePriorityScore(t, p.id)
-                        });
-                    }
-                });
-            });
-            candidates.sort((a, b) => b.priorityScore - a.priorityScore);
-            const result = [];
-            for (const c of candidates) {
-                if (result.length >= 3) break;
-                const samePhaseCount = result.filter(r => r.phaseId === c.phaseId).length;
-                if (samePhaseCount < 2) {
-                    result.push(c);
-                }
-            }
-            return result;
-        }
-
-        function generateStrategicFeedback() {
-            const focus = getFocus();
-            if (!focus.length) {
-                return `<strong>All tasks complete.</strong> Your funnel is ready to go live. The market will tell you the rest.`;
-            }
-            const progress = getProgress();
-            let feedback = '';
-            if (progress.percent === 0) {
-                feedback += `<strong>Today is Day 1.</strong> The hardest part is starting. Your first priority is Infrastructure — everything else depends on it.<br><br>`;
-            } else if (progress.percent < 30) {
-                feedback += `<strong>Foundation phase.</strong> You are building the bedrock. Resist the urge to skip ahead to marketing.<br><br>`;
-            } else if (progress.percent < 60) {
-                feedback += `<strong>Mid-mountain.</strong> The hard creative work is done. This is assembly now — predictable and satisfying.<br><br>`;
-            } else if (progress.percent < 90) {
-                feedback += `<strong>Final stretch.</strong> You can see the summit. One focused push and you are LIVE.<br><br>`;
-            } else {
-                feedback += `<strong>Summit in sight.</strong> These last tasks are what separate launched from almost-launched.<br><br>`;
-            }
-            feedback += `<strong>TODAY PRIORITY:</strong><br>`;
-            feedback += `<ul class="feedback-priority-list">`;
-            focus.forEach((task, i) => {
-                const statusLabel = task.status === 'blocked' ? ' [BLOCKED]' : task.status === 'waiting' ? ' [WAITING]' : '';
-                feedback += `<li data-num="${i + 1}"><strong>${esc(task.text)}</strong>${statusLabel}`;
-                if (task.why) {
-                    feedback += `<span class="reason">${esc(task.why)}</span>`;
-                }
-                if (task.blocker && task.status === 'blocked') {
-                    const blockerTask = state.phases.flatMap(p => p.tasks).find(t => t.id === task.blocker);
-                    if (blockerTask) {
-                        feedback += `<span class="reason">Blocked by: ${esc(blockerTask.text)}</span>`;
-                    }
-                }
-                feedback += `</li>`;
-            });
-            feedback += `</ul>`;
-            const blockedTasks = state.phases.flatMap(p => p.tasks).filter(t => t.status === 'blocked' && !t.done);
-            if (blockedTasks.length > 0) {
-                feedback += `<br><strong>Blockers detected:</strong> ${blockedTasks.length} task(s) are waiting on dependencies. Clear the blockers first — they unlock downstream work.<br>`;
-            }
-            const energy = state.session?.energyLevel || 5;
-            if (energy <= 3) {
-                feedback += `<br><em>Your energy is low today. Pick ONE small task and finish it. Momentum beats perfection.</em>`;
-            } else if (energy >= 8) {
-                feedback += `<br><em>High energy detected. This is a great day to tackle complex wiring tasks. Ride the wave.</em>`;
-            }
-            return feedback;
-        }
-
-        function motivation(pct) {
-            if (pct === 0) return 'The hardest part is starting. Open your first task.';
-            if (pct <= 20) return 'You started. That puts you ahead of everyone who only thinks about it.';
-            if (pct <= 40) return 'Foundation work. Every checkbox is a brick. Keep stacking.';
-            if (pct <= 60) return 'Halfway up the mountain. You can see the summit from here.';
-            if (pct <= 80) return 'The hard part is behind you. This is assembly now. Ship it.';
-            if (pct < 100) return 'You are so close. One more push and you are LIVE.';
-            return 'You did it. The funnel is live. The market will tell you the rest.';
-        }
-
-        function render() {
-            applyTheme();
-            renderProgress();
-            renderPhases();
-            renderFocus();
-            renderLogs();
-            renderProofs();
-            renderFeedback();
-            renderSummit();
-            renderFocusMode();
-            saveState();
-        }
-
-        function applyTheme() {
-            const theme = state.meta.theme || 'dark';
-            document.documentElement.setAttribute('data-theme', theme);
-        }
-
-        function renderProgress() {
-            const { done, total, percent } = getProgress();
-            document.getElementById('progressFill').style.width = percent + '%';
-            document.getElementById('progressLabel').textContent = done + ' / ' + total;
-            document.getElementById('vProgressFill').style.height = percent + '%';
-            document.getElementById('altitudeBadge').textContent = getAltitude(percent);
-            const dl = getDaysLeft();
-            const el = document.getElementById('daysLeft');
-            const lb = document.getElementById('countdownLabel');
-            if (percent >= 100) { el.textContent = 'LIVE'; lb.textContent = 'funnel is'; }
-            else { el.textContent = dl; lb.textContent = 'days to summit'; }
-        }
-
-        function renderSummit() {
-            const s = document.getElementById('summit');
-            getProgress().percent >= 100 ? s.classList.add('summit--reached') : s.classList.remove('summit--reached');
-        }
-
-        function renderFocusMode() {
-            const main = document.getElementById('mainLayout');
-            const btn = document.getElementById('focusModeBtn');
-            if (state.meta.focusMode) {
-                main.classList.add('focus-mode');
-                btn.classList.add('btn--active');
-            } else {
-                main.classList.remove('focus-mode');
-                btn.classList.remove('btn--active');
-            }
-        }
-
-        function renderPhases() {
-            const c = document.getElementById('phasesContainer');
-            const vis = [...state.phases].sort((a, b) => b.id - a.id);
-            let activePhaseId = null;
-            for (const ph of [...state.phases].sort((a, b) => a.id - b.id)) {
-                const incomplete = ph.tasks.some(t => !t.done);
-                if (incomplete) { activePhaseId = ph.id; break; }
-            }
-            c.innerHTML = vis.map(ph => {
-                const dn = ph.tasks.filter(t => t.done).length;
-                const tt = ph.tasks.length;
-                const comp = dn === tt;
-                const isActive = ph.id === activePhaseId && !comp;
-                return `<div class="phase ${comp ? 'phase--complete' : ''} ${isActive ? 'phase--active' : ''}" data-phase="${ph.id}">
-                    <div class="phase-header">
-                        <div class="phase-info">
-                            <span class="phase-num">${String(ph.id).padStart(2,'0')}</span>
-                            <div><h3 class="phase-name">${ph.name}</h3>
-                            <p class="phase-subtitle">${ph.subtitle}</p></div>
-                        </div>
-                        <div class="phase-meta">
-                            <span class="phase-count">${dn}/${tt}</span>
-                            ${comp ? '<span class="phase-complete-badge">Complete</span>' : ''}
-                            ${isActive ? '<span class="phase-complete-badge" style="background:rgba(212,164,74,0.15);">Active</span>' : ''}
-                        </div>
-                    </div>
-                    <div class="phase-tasks">${ph.tasks.map(t => {
-                        const statusBadge = t.status && t.status !== 'todo' 
-                            ? `<span class="task-status-badge task-status-badge--${t.status}">${t.status}</span>` 
-                            : '';
-                        return `
-                        <div class="task ${t.done ? 'task--done' : ''} ${t.status === 'blocked' ? 'task--blocked' : ''}" data-tid="${t.id}">
-                            <label class="task-checkbox">
-                                <input type="checkbox" ${t.done ? 'checked' : ''} ${t.status === 'blocked' ? 'disabled' : ''}>
-                                <span class="task-checkmark"></span>
-                            </label>
-                            <div class="task-content">
-                                <span class="task-text">${esc(t.text)}${statusBadge}</span>
-                                ${t.done && t.completedAt ? `<span class="task-time">Done: ${fmtDate(t.completedAt)}</span>` : ''}
-                            </div>
-                        </div>`;
-                    }).join('')}
-                    </div>
-                </div>`;
-            }).join('');
-        }
-
-        function renderFocus() {
-            const c = document.getElementById('focusContent');
-            const f = getFocus();
-            if (!f.length) {
-                c.innerHTML = `
-                    <div class="focus-all-done">
-                        <div class="focus-all-done-icon">&#127942;</div>
-                        <div class="focus-all-done-text">Summit Reached</div>
-                        <div class="focus-all-done-sub">Your funnel is live. The market will tell you the rest.</div>
-                    </div>`;
-                return;
-            }
-            c.innerHTML = f.map((t, i) => {
-                const priorityClass = i === 0 ? 'focus-card--priority-1' : i === 1 ? 'focus-card--priority-2' : i === 2 ? 'focus-card--priority-3' : 'focus-card--priority-4';
-                const blockedClass = t.status === 'blocked' ? 'focus-card--blocked' : '';
-                const statusLabel = t.status === 'todo' ? 'To Do' : t.status === 'blocked' ? 'Blocked' : t.status === 'waiting' ? 'Waiting' : t.status === 'researching' ? 'Researching' : t.status === 'delegated' ? 'Delegated' : t.status;
-                return `
-                <div class="focus-card ${priorityClass} ${blockedClass}">
-                    <div class="focus-card-header">
-                        <span class="focus-card-num">${i + 1}</span>
-                        <span class="focus-card-title">${esc(t.text)}</span>
-                        <span class="focus-card-phase">Phase ${t.phaseId}</span>
-                        <span class="focus-card-status focus-card-status--${t.status}">${statusLabel}</span>
-                    </div>
-                    ${t.why ? `<div class="focus-card-why">${esc(t.why)}</div>` : ''}
-                    ${t.unlocks && t.unlocks.length ? `
-                    <div class="focus-card-unlocks">
-                        <div class="focus-card-unlocks-label">Unlocks</div>
-                        <div class="focus-card-unlocks-list">
-                            ${t.unlocks.map(u => `<span class="focus-card-unlock-tag">${esc(u)}</span>`).join('')}
-                        </div>
-                    </div>` : ''}
-                    ${t.impact ? `<div class="focus-card-impact"><strong>Impact:</strong> ${esc(t.impact)}</div>` : ''}
-                    ${t.blocker && t.status === 'blocked' ? `
-                    <div class="focus-card-impact" style="color:var(--danger);">
-                        <strong>Blocked by:</strong> ${esc(state.phases.flatMap(p => p.tasks).find(x => x.id === t.blocker)?.text || 'Unknown task')}
-                    </div>` : ''}
-                </div>`;
-            }).join('') +
-            `<p class="focus-motivation">${motivation(getProgress().percent)}</p>`;
-        }
-
-        function renderFeedback() {
-            const msg = generateStrategicFeedback();
-            document.getElementById('feedbackMessage').innerHTML = msg;
-        }
-
-        function renderLogs() {
-            document.getElementById('logDate').textContent = todayPretty();
-            const c = document.getElementById('logEntries');
-            const dl = state.dailyLogs.find(l => l.date === todayStr());
-            if (!dl || !dl.entries.length) { c.innerHTML = ''; return; }
-            c.innerHTML = dl.entries.map(e => `
-                <div class="log-entry">
-                    <div class="log-entry-time">${e.time}${e.mood ? ` · ${e.mood}` : ''}${e.energy ? ` · Energy ${e.energy}/10` : ''}</div>
-                    <div class="log-entry-content">${esc(e.content)}</div>
-                    ${e.mood ? `<span class="log-entry-mood log-entry-mood--${e.mood}">${e.mood}</span>` : ''}
-                </div>`).join('');
-        }
-
-        function renderProofs() {
-            const c = document.getElementById('proofContent');
-            if (!state.shipProofs || !state.shipProofs.length) {
-                c.innerHTML = '<div class="proof-empty">Complete tasks and check in to build your ship proof. Each verified step gets documented here.</div>';
-                return;
-            }
-            c.innerHTML = state.shipProofs.map(p => `
-                <div class="proof-entry">
-                    <div class="proof-date">${p.date}</div>
-                    <div class="proof-text">${esc(p.text)}</div>
-                </div>`).join('');
-        }
-
-        // ─── EVENT LISTENERS ───
-        document.getElementById('phasesContainer').addEventListener('change', e => {
-            if (e.target.type !== 'checkbox') return;
-            const el = e.target.closest('.task');
-            const tid = el.dataset.tid;
-            for (const ph of state.phases) {
-                const t = ph.tasks.find(x => x.id === tid);
-                if (t) { t.done = !t.done; t.completedAt = t.done ? new Date().toISOString() : null; break; }
-            }
-            if (e.target.checked) { el.classList.add('task--pulse'); setTimeout(() => el.classList.remove('task--pulse'), 600); }
-            render();
-            if (e.target.checked) {
-                const { percent } = getProgress();
-                if (percent === 100) showToast('You reached the summit. The funnel is ready to go live.');
-                else showToast('Task complete. Keep climbing.');
-            }
-        });
-
-        document.getElementById('saveLogBtn').addEventListener('click', () => {
-            const inp = document.getElementById('logInput');
-            const txt = inp.value.trim();
-            if (!txt) return;
-            const mood = state.session.currentMood;
-            const energy = state.session.energyLevel;
-            const d = todayStr();
-            let dl = state.dailyLogs.find(l => l.date === d);
-            if (!dl) { dl = { date: d, entries: [] }; state.dailyLogs.push(dl); }
-            dl.entries.push({ 
-                time: new Date().toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'}), 
-                content: txt,
-                mood: mood,
-                energy: energy
-            });
-            inp.value = '';
-            render();
-            showToast('Logged. Keep climbing.');
-        });
-
-        document.getElementById('analyzeLogBtn').addEventListener('click', () => {
-            // Simulate AI analysis — in production this would call an API
-            showToast('Analyzing logs and updating priorities...');
-            setTimeout(() => {
-                renderFeedback();
-                showToast('Focus updated based on your session data.');
-            }, 800);
-        });
-
-        document.getElementById('logInput').addEventListener('keydown', e => {
-            if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) document.getElementById('saveLogBtn').click();
-        });
-
-        // Mood selector
-        document.getElementById('moodSelector').addEventListener('click', e => {
-            if (!e.target.classList.contains('mood-btn')) return;
-            document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('mood-btn--selected'));
-            e.target.classList.add('mood-btn--selected');
-            state.session.currentMood = e.target.dataset.mood;
-            saveState();
-        });
-
-        // Energy slider
-        document.getElementById('energySlider').addEventListener('input', e => {
-            const val = parseInt(e.target.value);
-            document.getElementById('energyValue').textContent = val;
-            state.session.energyLevel = val;
-            saveState();
-        });
-
-        // Theme toggle
-        document.getElementById('themeToggle').addEventListener('click', () => {
-            state.meta.theme = state.meta.theme === 'dark' ? 'light' : 'dark';
-            render();
-            showToast(state.meta.theme === 'light' ? 'Light mode activated.' : 'Dark mode activated.');
-        });
-
-        // Focus mode toggle
-        document.getElementById('focusModeBtn').addEventListener('click', () => {
-            state.meta.focusMode = !state.meta.focusMode;
-            render();
-            showToast(state.meta.focusMode ? 'Focus mode ON. Roadmap minimized.' : 'Focus mode OFF. Full view restored.');
-        });
-
-        document.getElementById('exportBtn').addEventListener('click', () => {
-            state.meta.lastExported = new Date().toISOString();
-            const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url;
-            a.download = 'ship-tracker-' + todayStr() + '.json';
-            a.click(); URL.revokeObjectURL(url);
-            showToast('JSON exported. Chat to analyze your progress.');
-        });
-
-        document.getElementById('importBtn').addEventListener('click', () => document.getElementById('fileInput').click());
-        document.getElementById('fileInput').addEventListener('change', e => {
-            const file = e.target.files[0]; if (!file) return;
-            const r = new FileReader();
-            r.onload = ev => {
-                try {
-                    const imp = JSON.parse(ev.target.result);
-                    if (imp.phases && imp.meta) {
-                        if (confirm('Replace all current data with imported version?')) {
-                            state = imp; render();
-                            setTimeout(() => { document.getElementById('dashboard').scrollTop = 0; }, 100);
-                            showToast('Progress imported. Your mountain has been updated.');
-                        }
-                    } else showToast('Invalid format. Expected a Funnel Ship Tracker JSON.');
-                } catch(err) { showToast('Could not read that file. Check the JSON format.'); }
-            };
-            r.readAsText(file); e.target.value = '';
-        });
-
-        function showToast(msg) {
-            const old = document.querySelector('.toast'); if (old) old.remove();
-            const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg;
-            document.body.appendChild(t);
-            requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('toast--visible')));
-            setTimeout(() => { t.classList.remove('toast--visible'); setTimeout(() => t.remove(), 300); }, 2800);
-        }
-
-        (function init() {
-            // Restore session state to UI
-            const moodBtn = document.querySelector(`[data-mood="${state.session?.currentMood || 'neutral'}"]`);
-            if (moodBtn) {
-                document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('mood-btn--selected'));
-                moodBtn.classList.add('mood-btn--selected');
-            }
-            const energy = state.session?.energyLevel || 5;
-            document.getElementById('energySlider').value = energy;
-            document.getElementById('energyValue').textContent = energy;
-            render();
-        })();
-    </script>
+// INIT
+document.documentElement.setAttribute('data-theme',state.meta?.theme||'light');
+const mb=document.querySelector(`[data-mood="${currentMood}"]`);
+if(mb){document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('sel'));mb.classList.add('sel');}
+render();
+</script>
 </body>
 </html>
