@@ -649,20 +649,14 @@ One task at a time. One checkbox at a time. You climb this mountain one step at 
                 },
                 phases: [
                     {
-                        id: 4, name: 'Marketing Launch',
-                        subtitle: 'Get eyes on your funnel',
+                        id: 1, name: 'Infrastructure',
+                        subtitle: 'Build the foundation everything stands on',
                         tasks: [
-                            { id: 't4-1', text: 'Pinterest — set up business account, create and upload 15 pins', done: false, completedAt: null, status: 'todo', blocker: null, why: 'Traffic is useless without a working funnel. Do this AFTER everything else is wired.', unlocks: ['Organic traffic', 'Pinterest SEO foundation'], impact: 'Only valuable once conversion tracking is live' },
-                            { id: 't4-2', text: 'TikTok/Reels — content plan and first 3 posts live', done: false, completedAt: null, status: 'todo', blocker: null, why: 'Short-form video drives the cheapest traffic for digital products right now.', unlocks: ['Viral traffic potential', 'Social proof'], impact: 'High effort, high reward — but last in sequence' }
-                        ]
-                    },
-                    {
-                        id: 3, name: 'Quality & How-To Guides',
-                        subtitle: 'Prove your $97 product is worth every cent',
-                        tasks: [
-                            { id: 't3-1', text: 'Walk through entire funnel end-to-end as a customer would', done: false, completedAt: null, status: 'todo', blocker: null, why: 'You cannot fix what you have not seen break. Every unchecked assumption is a refund waiting to happen.', unlocks: ['Bug detection', 'Customer experience validation', 'Refund prevention'], impact: 'Prevents revenue loss from broken flows' },
-                            { id: 't3-2', text: 'Umami analytics — install tracking on all pages', done: false, completedAt: null, status: 'todo', blocker: null, why: 'Without data, you are flying blind. You need to know where people drop off before you can fix it.', unlocks: ['Conversion data', 'A/B testing foundation', 'Revenue attribution'], impact: 'Enables data-driven optimization' },
-                            { id: 't3-3', text: 'Write how-to guides for each product ($97 value, customers expect this)', done: false, completedAt: null, status: 'todo', blocker: null, why: 'A product without documentation feels like a scam. Documentation is what justifies the price.', unlocks: ['Customer satisfaction', 'Reduced support burden', 'Higher perceived value'], impact: 'Directly impacts refund rate and reviews' }
+                            { id: 't1-1', text: 'Domain DNS — point twofoldlife.com to Cloudflare Pages', done: false, completedAt: null, status: 'todo', blocker: null, why: 'DNS propagation takes 24-48 hours. Every day you delay this is a day you cannot go live.', unlocks: ['Live domain', 'SSL certificate', 'Professional presence'], impact: 'Removes 24h propagation delay risk' },
+                            { id: 't1-2', text: 'Gmail forwarder — Namecheap forwarding + send-as setup for kimberly@', done: false, completedAt: null, status: 'todo', blocker: null, why: 'Branded email is non-negotiable for trust. Gmail send-as ensures deliverability.', unlocks: ['Branded communication', 'Email deliverability', 'Professional credibility'], impact: 'Prevents emails landing in spam' },
+                            { id: 't1-3', text: 'Kit From address — set to kimberly@twofoldlife.com', done: false, completedAt: null, status: 'todo', blocker: 't1-2', why: 'Kit requires a verified domain before you can send from a branded address. DNS and Gmail must be done first.', unlocks: ['Branded email sends', 'Higher open rates', 'Kit automation'], impact: 'Blocked until Gmail forwarder is complete' },
+                            { id: 't1-4', text: 'LemonSqueezy — upload PDFs to each product, confirm checkout redirect URLs', done: false, completedAt: null, status: 'todo', blocker: null, why: 'Customers paid for a product. If the download link is wrong, you get a chargeback.', unlocks: ['Product delivery', 'Customer satisfaction', 'Revenue protection'], impact: 'Prevents refunds and chargebacks' },
+                            { id: 't1-5', text: 'LemonSqueezy — connect Kit integration, set purchased tag on completed orders', done: false, completedAt: null, status: 'todo', blocker: 't1-4', why: 'Without the integration, buyers do not get tagged. Without tags, automations do not fire.', unlocks: ['Post-purchase automation', 'Customer segmentation', 'Retention loops'], impact: 'Enables entire post-purchase experience' }
                         ]
                     },
                     {
@@ -676,14 +670,20 @@ One task at a time. One checkbox at a time. You climb this mountain one step at 
                         ]
                     },
                     {
-                        id: 1, name: 'Infrastructure',
-                        subtitle: 'Build the foundation everything stands on',
+                        id: 3, name: 'Quality & How-To Guides',
+                        subtitle: 'Prove your $97 product is worth every cent',
                         tasks: [
-                            { id: 't1-1', text: 'Domain DNS — point twofoldlife.com to Cloudflare Pages', done: false, completedAt: null, status: 'todo', blocker: null, why: 'DNS propagation takes 24-48 hours. Every day you delay this is a day you cannot go live.', unlocks: ['Live domain', 'SSL certificate', 'Professional presence'], impact: 'Removes 24h propagation delay risk' },
-                            { id: 't1-2', text: 'Gmail forwarder — Namecheap forwarding + send-as setup for kimberly@', done: false, completedAt: null, status: 'todo', blocker: null, why: 'Branded email is non-negotiable for trust. Gmail send-as ensures deliverability.', unlocks: ['Branded communication', 'Email deliverability', 'Professional credibility'], impact: 'Prevents emails landing in spam' },
-                            { id: 't1-3', text: 'Kit From address — set to kimberly@twofoldlife.com', done: false, completedAt: null, status: 'todo', blocker: 't1-2', why: 'Kit requires a verified domain before you can send from a branded address. DNS and Gmail must be done first.', unlocks: ['Branded email sends', 'Higher open rates', 'Kit automation'], impact: 'Blocked until Gmail forwarder is complete' },
-                            { id: 't1-4', text: 'LemonSqueezy — upload PDFs to each product, confirm checkout redirect URLs', done: false, completedAt: null, status: 'todo', blocker: null, why: 'Customers paid for a product. If the download link is wrong, you get a chargeback.', unlocks: ['Product delivery', 'Customer satisfaction', 'Revenue protection'], impact: 'Prevents refunds and chargebacks' },
-                            { id: 't1-5', text: 'LemonSqueezy — connect Kit integration, set purchased tag on completed orders', done: false, completedAt: null, status: 'todo', blocker: 't1-4', why: 'Without the integration, buyers do not get tagged. Without tags, automations do not fire.', unlocks: ['Post-purchase automation', 'Customer segmentation', 'Retention loops'], impact: 'Enables entire post-purchase experience' }
+                            { id: 't3-1', text: 'Walk through entire funnel end-to-end as a customer would', done: false, completedAt: null, status: 'todo', blocker: null, why: 'You cannot fix what you have not seen break. Every unchecked assumption is a refund waiting to happen.', unlocks: ['Bug detection', 'Customer experience validation', 'Refund prevention'], impact: 'Prevents revenue loss from broken flows' },
+                            { id: 't3-2', text: 'Umami analytics — install tracking on all pages', done: false, completedAt: null, status: 'todo', blocker: null, why: 'Without data, you are flying blind. You need to know where people drop off before you can fix it.', unlocks: ['Conversion data', 'A/B testing foundation', 'Revenue attribution'], impact: 'Enables data-driven optimization' },
+                            { id: 't3-3', text: 'Write how-to guides for each product ($97 value, customers expect this)', done: false, completedAt: null, status: 'todo', blocker: null, why: 'A product without documentation feels like a scam. Documentation is what justifies the price.', unlocks: ['Customer satisfaction', 'Reduced support burden', 'Higher perceived value'], impact: 'Directly impacts refund rate and reviews' }
+                        ]
+                    },
+					{
+                        id: 4, name: 'Marketing Launch',
+                        subtitle: 'Get eyes on your funnel',
+                        tasks: [
+                            { id: 't4-1', text: 'Pinterest — set up business account, create and upload 15 pins', done: false, completedAt: null, status: 'todo', blocker: null, why: 'Traffic is useless without a working funnel. Do this AFTER everything else is wired.', unlocks: ['Organic traffic', 'Pinterest SEO foundation'], impact: 'Only valuable once conversion tracking is live' },
+                            { id: 't4-2', text: 'TikTok/Reels — content plan and first 3 posts live', done: false, completedAt: null, status: 'todo', blocker: null, why: 'Short-form video drives the cheapest traffic for digital products right now.', unlocks: ['Viral traffic potential', 'Social proof'], impact: 'High effort, high reward — but last in sequence' }
                         ]
                     }
                 ],
