@@ -103,10 +103,11 @@ body{display:flex;flex-direction:column;min-height:100vh}
 /* Content plan inside day */
 .day-plan{padding:8px 10px 4px;border-bottom:0.5px solid var(--border);display:flex;flex-direction:column;gap:3px}
 .day-plan-tag{font-size:9px;color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:2px}
-.plan-item{display:flex;align-items:flex-start;gap:5px}
+.plan-item{display:flex;align-items:flex-start;gap:5px;overflow:hidden}
 .plan-dot{width:4px;height:4px;border-radius:50%;flex-shrink:0;margin-top:5px}
-.plan-text{font-size:10px;color:var(--text2);line-height:1.45;flex:1}
+.plan-text{font-size:10px;color:var(--text2);line-height:1.45;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .plan-platform{font-size:9px;color:var(--text3);flex-shrink:0;align-self:flex-start;margin-top:2px}
+.plan-overflow{font-size:9px;color:var(--text3);padding:1px 0 0 9px;pointer-events:none;user-select:none}
 
 /* Log preview inside day */
 .day-log-area{flex:1;padding:7px 10px;min-height:0}
@@ -128,16 +129,7 @@ body{display:flex;flex-direction:column;min-height:100vh}
 /* ═══ FEEDBACK & LOG PAGE ════════════════════════════════════════════════════ */
 .log-page{padding:24px 28px 60px;max-width:1100px;margin:0 auto}
 
-/* Day selector */
-.day-selector-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:12px}
-.day-selector-label{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text)}
-.day-selector-controls{display:flex;align-items:center;gap:8px}
-.day-date-nav{display:flex;gap:4px;align-items:center}
-.day-date-nav span{font-size:11px;color:var(--text3);min-width:120px;text-align:center}
-
-/* Add log panel */
-.add-log-panel{background:var(--bg2);border:0.5px solid var(--border2);border-radius:var(--radius-lg);padding:16px 18px;margin-bottom:24px}
-.add-log-title{font-size:10px;color:var(--text3);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:10px}
+/* shared tab styles still needed for modal */
 .log-project-tabs{display:flex;gap:5px;margin-bottom:8px}
 .log-ptab{padding:3px 10px;font-size:11px;border-radius:var(--radius);border:0.5px solid var(--border);background:transparent;color:var(--text3);cursor:pointer;transition:all 0.15s}
 .log-ptab:hover{border-color:var(--border2);color:var(--text2)}
@@ -151,7 +143,6 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .log-ta{width:100%;min-height:80px;padding:8px 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font-size:11px;resize:vertical;line-height:1.6;outline:none;transition:border-color 0.15s}
 .log-ta:focus{border-color:var(--accent)}
 .log-ta::placeholder{color:var(--text3)}
-.log-actions{display:flex;gap:6px;margin-top:7px;align-items:center}
 
 /* ═══ DUAL-COLUMN TIMELINE ═══════════════════════════════════════════════════ */
 .timeline-page{display:flex;flex-direction:column;gap:28px}
@@ -196,10 +187,6 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .feedback-label{font-size:10px;color:var(--p1);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:7px;display:flex;align-items:center;gap:6px}
 .feedback-text{font-size:11px;color:var(--text2);line-height:1.8;white-space:pre-wrap}
 .feedback-date{font-size:10px;color:var(--text3);margin-top:7px}
-.feedback-ta{width:100%;min-height:100px;padding:8px 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font-size:11px;resize:vertical;outline:none;line-height:1.6}
-.feedback-ta:focus{border-color:var(--p1)}
-.feedback-ta::placeholder{color:var(--text3)}
-.feedback-actions{display:flex;gap:6px;margin-top:6px}
 
 /* Auto-delete note */
 .purge-note{font-size:10px;color:var(--text3);margin-bottom:14px;display:flex;align-items:center;gap:5px}
@@ -326,32 +313,10 @@ body{display:flex;flex-direction:column;min-height:100vh}
 <div class="page" id="pageLog">
   <div class="log-page">
 
-    <!-- Add log panel -->
-    <div class="add-log-panel">
-      <div class="add-log-title">Add entry for today — <span id="tlDateLabel" style="color:var(--text2);text-transform:none;letter-spacing:0"></span></div>
-      <div class="log-project-tabs" id="projectTabs">
-        <button class="log-ptab active-general" data-proj="general" onclick="selectProject('general')">General</button>
-        <button class="log-ptab" data-proj="steady" onclick="selectProject('steady')">OurSteady</button>
-        <button class="log-ptab" data-proj="pro" onclick="selectProject('pro')">ProDentim</button>
-      </div>
-      <div class="mood-row" id="moodRow">
-        <button class="mood-btn" data-m="focused" onclick="selectMood('focused')">focused</button>
-        <button class="mood-btn" data-m="productive" onclick="selectMood('productive')">productive</button>
-        <button class="mood-btn" data-m="neutral" onclick="selectMood('neutral')">neutral</button>
-        <button class="mood-btn" data-m="slow" onclick="selectMood('slow')">slow</button>
-        <button class="mood-btn" data-m="blocked" onclick="selectMood('blocked')">blocked</button>
-      </div>
-      <textarea class="log-ta" id="logTa" placeholder="What did you create today? What posted? Any results? Platform, format, mood…"></textarea>
-      <div class="log-actions">
-        <button class="btn accent" onclick="saveLog()"><i class="ti ti-check"></i> Save entry</button>
-        <span style="font-size:10px;color:var(--text3);margin-left:auto" id="logStatus"></span>
-      </div>
-    </div>
-
     <!-- Auto-delete note -->
     <div class="purge-note">
       <i class="ti ti-info-circle"></i>
-      Logs and feedback auto-delete after 30 days. Export JSON regularly to keep records.
+      Progress tracker — logs &amp; feedback auto-delete after 30 days. Export JSON regularly.
     </div>
 
     <!-- Vertical dual timeline (rendered per day) -->
@@ -376,26 +341,7 @@ body{display:flex;flex-direction:column;min-height:100vh}
     </div>
     <div class="modal-body">
 
-      <!-- Content Plan for this day -->
-      <div class="modal-section-label"><i class="ti ti-bulb" style="font-size:11px"></i> Today's content plan</div>
-      <div class="modal-plan-list" id="modalPlanList"></div>
-
-      <!-- Day summary (for past days — from Claude) -->
-      <div id="modalSummarySection" style="display:none">
-        <div class="modal-section-label"><i class="ti ti-robot" style="font-size:11px"></i> Day summary (from Claude)</div>
-        <div id="modalSummaryBox"></div>
-        <textarea class="modal-summary-ta" id="modalSummaryTa" placeholder="Paste Claude's summary for this day after you upload your JSON…"></textarea>
-        <div style="margin-top:6px;display:flex;gap:6px">
-          <button class="btn" style="border-color:var(--success);color:var(--success);font-size:11px" onclick="saveDaySummary()"><i class="ti ti-check"></i> Save summary</button>
-          <button class="btn" style="font-size:11px" onclick="clearDaySummary()">Clear</button>
-        </div>
-      </div>
-
-      <!-- My log entries -->
-      <div class="modal-section-label">My entries</div>
-      <div id="modalLogList"></div>
-
-      <!-- Add entry -->
+      <!-- Add entry (moved to TOP) -->
       <div class="modal-section-label">Add entry</div>
       <div class="log-project-tabs" id="modalProjectTabs" style="margin:0 0 8px">
         <button class="log-ptab active-general" data-proj="general" onclick="selectModalProject('general')">General</button>
@@ -411,9 +357,23 @@ body{display:flex;flex-direction:column;min-height:100vh}
       </div>
       <textarea class="log-ta" id="modalLogTa" style="min-height:90px" placeholder="What did you do? What content did you create/post?"></textarea>
       <div style="margin-top:8px;display:flex;gap:6px">
-        <button class="btn accent" onclick="saveModalLog()"><i class="ti ti-check"></i> Save</button>
+        <button class="btn accent" onclick="saveModalLog()"><i class="ti ti-check"></i> Save entry</button>
         <button class="btn" onclick="closeModal()">Close</button>
       </div>
+
+      <!-- Content Plan for this day -->
+      <div class="modal-section-label"><i class="ti ti-bulb" style="font-size:11px"></i> Today's content plan</div>
+      <div class="modal-plan-list" id="modalPlanList"></div>
+
+      <!-- Day summary (for past days — from JSON import) -->
+      <div id="modalSummarySection" style="display:none">
+        <div class="modal-section-label"><i class="ti ti-robot" style="font-size:11px"></i> Day summary (from Claude)</div>
+        <div id="modalSummaryBox"></div>
+      </div>
+
+      <!-- My log entries -->
+      <div class="modal-section-label">Previous entries</div>
+      <div id="modalLogList"></div>
 
     </div>
   </div>
@@ -441,7 +401,6 @@ const LEO_WARN_DATE   = '2026-07-07'; // 1 week before — cancel reminder
 window.addEventListener('DOMContentLoaded', () => {
   loadState();
   applyTheme();
-  document.getElementById('tlDateLabel').textContent = fmtDate(today());
   renderAll();
   purgeOldData();
 });
@@ -613,16 +572,17 @@ function makeDayCell(date, dayName, tod){
     lbl.className = 'day-plan-tag';
     lbl.textContent = 'Content plan';
     planArea.appendChild(lbl);
-    planItems.slice(0, 3).forEach(item => {
+    const visible = planItems.slice(0, 3);
+    visible.forEach(item => {
       const row = document.createElement('div');
       row.className = 'plan-item';
-      row.innerHTML = `<div class="plan-dot" style="background:${item.color}"></div><span class="plan-text">${item.text}</span><span class="plan-platform">${item.platform}</span>`;
+      row.innerHTML = `<div class="plan-dot" style="background:${item.color}"></div><span class="plan-text" title="${item.text}">${item.text}</span><span class="plan-platform">${item.platform}</span>`;
       planArea.appendChild(row);
     });
     if(planItems.length > 3){
       const more = document.createElement('div');
-      more.style.cssText = 'font-size:9px;color:var(--text3);padding:2px 0 0 9px';
-      more.textContent = `+${planItems.length - 3} more — tap to view`;
+      more.className = 'plan-overflow';
+      more.textContent = `··· +${planItems.length - 3} more`;
       planArea.appendChild(more);
     }
     cell.appendChild(planArea);
@@ -875,7 +835,7 @@ function renderTimeline(){
     colClaude.className = 'tl-col-claude';
     colClaude.innerHTML = '<div class="tl-col-label claude-label"><i class="ti ti-robot"></i> Claude feedback</div>';
 
-    // Day summary (per-day, from modal)
+    // Day summary (per-day, written by Claude via JSON import)
     if(summary){
       const box = document.createElement('div');
       box.className = 'feedback-box';
@@ -884,7 +844,7 @@ function renderTimeline(){
       colClaude.appendChild(box);
     }
 
-    // Weekly feedback (shown on all days of the week)
+    // Weekly feedback (written by Claude via JSON import)
     if(feedback){
       const box = document.createElement('div');
       box.className = 'feedback-box';
@@ -892,30 +852,10 @@ function renderTimeline(){
       colClaude.appendChild(box);
     }
 
-    // Paste feedback area (today or if no feedback for this week)
-    const weekFb = getCurrentWeekFeedback();
-    if(date === tod || (!weekFb && date >= state.currentWeekStart)){
-      if(!weekFb){
-        const lbl = document.createElement('div');
-        lbl.style.cssText='font-size:10px;color:var(--text3);margin-bottom:6px';
-        lbl.textContent = 'No weekly feedback yet. Export JSON → ask Claude → paste here.';
-        colClaude.appendChild(lbl);
-      }
-      const ta = document.createElement('textarea');
-      ta.className = 'feedback-ta';
-      ta.placeholder = 'Paste Claude\'s weekly analysis & next content plan…';
-      ta.id = 'feedbackTa_' + date;
-      colClaude.appendChild(ta);
-      const acts = document.createElement('div');
-      acts.className = 'feedback-actions';
-      acts.innerHTML = `
-        <button class="btn" style="border-color:var(--p1);color:var(--p1);font-size:11px" onclick="saveFeedback('feedbackTa_${date}')"><i class="ti ti-robot"></i> Save</button>
-        ${weekFb?`<button class="btn" style="font-size:11px" onclick="clearFeedback()">Clear</button>`:''}`;
-      colClaude.appendChild(acts);
-    } else if(!feedback && !summary){
+    if(!feedback && !summary){
       const em = document.createElement('div');
       em.className = 'tl-empty';
-      em.textContent = 'No feedback for this day.';
+      em.textContent = 'Export JSON → upload to Claude → import updated JSON to see feedback here.';
       colClaude.appendChild(em);
     }
 
@@ -944,55 +884,7 @@ function deleteLog(date,idx){
   saveState(); renderAll();
 }
 
-// ═══ LOG ENTRY (log page) ════════════════════════════════════════════════
-let selectedProject='general';
-let selectedMood='';
-
-function selectProject(p){
-  selectedProject=p;
-  document.querySelectorAll('#projectTabs .log-ptab').forEach(b=>{
-    b.className='log-ptab'+(b.dataset.proj===p?` active-${p}`:'');
-  });
-}
-function selectMood(m){
-  selectedMood=m;
-  document.querySelectorAll('#moodRow .mood-btn').forEach(b=>{
-    b.classList.toggle('sel',b.dataset.m===m);
-  });
-}
-
-function saveLog(){
-  const date = today();
-  const content = document.getElementById('logTa').value.trim();
-  if(!content){ showToast('Write something first.'); return; }
-  const now=new Date();
-  const time=now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
-  if(!state.logs[date]) state.logs[date]=[];
-  state.logs[date].push({time,project:selectedProject,mood:selectedMood,content});
-  document.getElementById('logTa').value='';
-  document.getElementById('logStatus').textContent='Saved '+time;
-  setTimeout(()=>document.getElementById('logStatus').textContent='',3000);
-  saveState(); renderAll();
-  showToast('Entry saved ✓');
-}
-
-// ═══ FEEDBACK ═══════════════════════════════════════════════════════════
-function saveFeedback(taId){
-  const ta=document.getElementById(taId);
-  if(!ta){ showToast('Field not found.'); return; }
-  const text=ta.value.trim();
-  if(!text){ showToast('Paste feedback first.'); return; }
-  const date=today();
-  const wk=state.currentWeekStart;
-  const weekEnd=addDays(wk,6);
-  if(!state.feedback) state.feedback=[];
-  state.feedback=state.feedback.filter(f=>f.date<wk||f.date>weekEnd);
-  state.feedback.push({date,text});
-  ta.value='';
-  saveState(); renderAll();
-  showToast('Feedback saved ✓');
-}
-
+// ═══ FEEDBACK (cleared by JSON import only) ════════════════════════════
 function clearFeedback(){
   const wk=state.currentWeekStart;
   const weekEnd=addDays(wk,6);
@@ -1044,35 +936,12 @@ function renderModalPlan(date){
 
 function renderModalSummary(date){
   const box=document.getElementById('modalSummaryBox');
-  const ta=document.getElementById('modalSummaryTa');
   const summary=state.daySummaries&&state.daySummaries[date];
   if(summary){
     box.innerHTML=`<div class="modal-summary-box"><div class="modal-summary-label"><i class="ti ti-robot"></i> Claude's day summary</div><div class="modal-summary-text">${escapeHtml(summary)}</div></div>`;
-    ta.placeholder='Update Claude\'s summary…';
-    ta.value='';
   } else {
-    box.innerHTML='';
-    ta.placeholder='After uploading JSON to Claude, paste the day summary here…';
-    ta.value='';
+    box.innerHTML='<div style="font-size:11px;color:var(--text3);font-style:italic;padding:4px 0">No day summary yet — will appear here after you export JSON and import Claude\'s updated version.</div>';
   }
-}
-
-function saveDaySummary(){
-  const ta=document.getElementById('modalSummaryTa');
-  const text=ta.value.trim();
-  if(!text){ showToast('Nothing to save.'); return; }
-  if(!state.daySummaries) state.daySummaries={};
-  state.daySummaries[modalDate]=text;
-  ta.value='';
-  saveState(); renderAll(); renderModalSummary(modalDate);
-  showToast('Day summary saved ✓');
-}
-
-function clearDaySummary(){
-  if(!state.daySummaries) return;
-  delete state.daySummaries[modalDate];
-  saveState(); renderAll(); renderModalSummary(modalDate);
-  showToast('Summary cleared.');
 }
 
 function renderModalLogs(){
