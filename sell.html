@@ -7,22 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-<!-- 🔹 Favicon for Chrome/Firefox/Edge (legacy fallback) -->
-<link rel="icon" type="image/x-icon" href="./favicons/favicon.ico">
-
-<!-- 🔹 Specific sizes for better browser support -->
-<link rel="icon" type="image/png" sizes="16x16" href="./favicons/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="./favicons/favicon-32x32.png">
-
-<!-- 🔹 Apple Touch Icon (for iOS home screen) -->
-<link rel="apple-touch-icon" sizes="180x180" href="./favicons/apple-touch-icon.png">
-
-<!-- 🔹 Android Chrome / PWA Manifest -->
-<link rel="manifest" href="./favicons/site.webmanifest">
-
-<!-- 🔹 Optional: Android Chrome icons (referenced in manifest, but can add directly) -->
-<link rel="icon" type="image/png" sizes="192x192" href="./favicons/android-chrome-192x192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="./favicons/android-chrome-512x512.png">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -369,20 +353,21 @@ body{display:flex;flex-direction:column;min-height:100vh}
 const STORAGE_KEY = 'mktjournal_v1';
 let state = {
   theme: 'light',
-  currentWeekStart: null, // ISO date of Monday
-  logs: {},        // { "2026-06-09": [ {time, project, mood, content} ] }
-  metrics: {},     // { "2026-W23": { steadyPosts: 0, proPosts: 0 } }
+  currentWeekStart: '2026-06-09', // Week of Jun 9–15 — your Day 1 is Sun Jun 14
+  logs: {},        // { "2026-06-14": [ {time, project, mood, content} ] }
+  metrics: {},     // { "2026-06-09": { steadyPosts: 0, proPosts: 0 } }
   feedback: [],    // [ {date, text} ] — auto-purge >14 days
-  marketingWeekStart: '2026-06-08' // Monday they started marketing phase
+  marketingWeekStart: '2026-06-09' // Week 1 = Jun 9 Mon. You start Sun Jun 14.
 };
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
   loadState();
-  if (!state.currentWeekStart) state.currentWeekStart = getMondayOf(today());
+  if (!state.currentWeekStart) state.currentWeekStart = '2026-06-09';
   applyTheme();
-  document.getElementById('logDate').value = today();
-  document.getElementById('tlDate').textContent = fmtDate(today());
+  const defaultDate = today() >= '2026-06-14' ? today() : '2026-06-14';
+  document.getElementById('logDate').value = defaultDate;
+  document.getElementById('tlDate').textContent = fmtDate(defaultDate);
   renderAll();
   purgeFeedback();
 });
