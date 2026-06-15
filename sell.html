@@ -384,13 +384,13 @@ body{display:flex;flex-direction:column;min-height:100vh}
 const STORAGE_KEY = 'mktjournal_v2';
 let state = {
   theme: 'light',
-  currentWeekStart: '2026-06-15', // Mon of week starting Jun 15
-  logs: {},         // { "2026-06-15": [{time,project,mood,content}] }
+  currentWeekStart: '2026-06-16', // Tue of week starting Jun 16
+  logs: {},         // { "2026-06-16": [{time,project,mood,content}] }
   metrics: {},
   feedback: [],     // [{date, text}] weekly feedback — purge >30d
   daySummaries: {}, // {"2026-06-14": "summary text"} — per-day Claude summary
-  contentPlans: {}, // {"2026-06-15": [{platform,color,text,freq}]} — per-day, updatable by Claude
-  marketingWeekStart: '2026-06-15'
+  contentPlans: {}, // {"2026-06-16": [{platform,color,text,freq}]} — per-day, updatable by Claude
+  marketingWeekStart: '2026-06-16'
 };
 
 // Leonardo.ai cycle end: Jul 14, 2026. Warning mark: Jul 7 (one week before).
@@ -1039,7 +1039,7 @@ function buildSummary(){
     projectContext:{
       ourSteady:'Couples personal finance brand at oursteady.com. Products: Tracker $9, Reset Kit $37, Connection Bundle $67, Workbook $17. Funnel built, waiting for LemonSqueezy store approval.',
       proDentim:'ClickBank affiliate product. Lead gen funnel at microbiome.pages.dev. Platform priority: TikTok > YouTube Shorts > Reels > Pinterest.',
-      startDate:'2026-06-15 (marketing starts Mon Jun 15 — Jun 14 was Leonardo cleanup day)'
+      startDate:'2026-06-16 (marketing starts Tue Jun 16 — Jun 15 was Leonardo cleanup day)'
     }
   };
 }
