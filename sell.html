@@ -385,11 +385,47 @@ const STORAGE_KEY = 'mktjournal_v2';
 let state = {
   theme: 'light',
   currentWeekStart: '2026-06-16', // Tue of week starting Jun 16
-  logs: {},         // { "2026-06-16": [{time,project,mood,content}] }
+  logs: {
+    "2026-06-14": [
+      {
+        time: "11:59 PM",
+        project: "general",
+        mood: "productive",
+        content: "Leonardo.ai cleanup day. Organised AI image assets, cleared workspace, prepared visual library ready for week 1 content production. No posts published — full focus on setup."
+      }
+    ],
+    "2026-06-15": [
+      {
+        time: "11:59 PM",
+        project: "pro",
+        mood: "focused",
+        content: "Learned Pinterest scheduling flow end-to-end: how to create pins, set board targets, and queue posts via scheduler.\n\nScheduled 16 ProDentim Pinterest pins across 10 boards for Jun 14–17 publishing:\n\nJun 14 (2 pins):\n• \"Healthy Mouth Microbiome: 7 Common Signs to Watch For\" → Healthy Mouth Microbiome — 3:00 PM\n• \"7 Signs Your Oral Microbiome May Be Out of Balance (Free Guide)\" → Oral Health — 2:00 PM\n\nJun 16 (7 pins, going live today):\n• \"Probiotics for Your Mouth? 3 Science-Backed Benefits...\" → Probiotics for Health — 1:00 AM\n• \"Your Mouth Has Its Own Ecosystem: 6 Factors...\" → Oral Microbiome — 2:00 AM\n• \"What Lives In Your Mouth? The Truth About Your Oral Microbiome\" → Dental Hygiene — 3:00 AM\n• \"Why Mouthwash Makes Bad Breath Worse (And What Actually Works)\" → Bad Breath — 7:00 AM\n• \"The Gut-Mouth Connection: Why Your Digestive Health Shows Up In Your Smile\" → Gut Health — 8:00 AM\n• \"5 Natural Ways To Rebuild Healthy Teeth and Gums From The Inside\" → Healthy Teeth & Gums — 9:00 AM\n• \"Probiotics For Your Mouth: The Science Behind Stronger Teeth and Fresher Breath\" → Healthy Mouth Microbiome — 10:00 AM\n\nJun 17 (7 pins, going live tomorrow):\n• \"7 Signs Your Oral Microbiome Is Out Of Balance\" → Fresh Breath Solutions — 1:00 AM\n• \"Why Mouthwash May Be Making Your Breath Worse\" → Bad Breath Causes — 2:00 AM\n• \"The Hidden Bacteria Affecting Your Teeth\" → Natural Dental Health — 3:00 AM\n• \"Dentists Rarely Talk About This Oral Health Factor\" → Gum Health — 7:00 AM\n• \"Did You Know: Your Mouth Contains Over 700 Species Of Bacteria?\" → Oral Microbiome — 8:00 AM\n• \"What Happens to Your Mouth Microbiome Minute by Minute...\" → Oral Health — 9:00 AM\n• \"Give Your Mouth 90 Days: The Oral Microbiome Reset Most People Never Try\" → Oral Microbiome — 10:00 AM"
+      }
+    ]
+  },
   metrics: {},
-  feedback: [],     // [{date, text}] weekly feedback — purge >30d
-  daySummaries: {}, // {"2026-06-14": "summary text"} — per-day Claude summary
-  contentPlans: {}, // {"2026-06-16": [{platform,color,text,freq}]} — per-day, updatable by Claude
+  feedback: [
+    {
+      date: "2026-06-16",
+      text: "WEEK 1 LAUNCH — CLAUDE FEEDBACK\n\nSolid start. You've done the unglamorous-but-essential groundwork that most people skip: Leonardo cleanup on Day 0, then a full Pinterest workflow session on Day 1 resulting in 16 pins queued across 10 boards before the week even properly began. That's real leverage — content is now publishing automatically while you sleep.\n\nPIN SCHEDULE OVERVIEW (16 pins, 4 days):\n• Jun 14: 2 pins live ✓\n• Jun 16: 7 pins queued (publishing today)\n• Jun 17: 7 pins queued (publishing tomorrow)\n\nBOARD DIVERSITY: Strong. You're hitting Oral Microbiome, Oral Health, Gum Health, Natural Dental Health, Bad Breath (×2), Fresh Breath Solutions, Healthy Mouth Microbiome (×2), Dental Hygiene, Healthy Teeth & Gums, Gut Health, Probiotics for Health — 12 distinct boards. This is exactly right for Pinterest's discovery algorithm.\n\nCONTENT ANGLE ANALYSIS: Your titles are benefit-led and curiosity-driven (\"What Happens Minute by Minute\", \"The Truth About\", \"Dentists Rarely Talk About\"). These perform well on Pinterest. The mix of listicles (7 Signs, 5 Natural Ways, 3 Benefits) and curiosity hooks (The Hidden Bacteria, The Gut-Mouth Connection) is good.\n\nTIMING: Pins spread from 1 AM–10 AM. Pinterest recommends evening slots (8–11 PM) for US audiences too — consider adding evening pins next batch.\n\nNEXT PRIORITY: TikTok + YouTube Shorts need to start this week (Jun 16–17). Pinterest alone won't drive volume fast enough. Even 1 raw talking-head TikTok today keeps momentum. ProDentim target is 35+ posts/week across all platforms.\n\nKEEP GOING."
+    }
+  ],
+  daySummaries: {
+    "2026-06-14": "Leonardo.ai cleanup day ✓ — image library organised, workspace cleared, AI visual assets ready for Week 1 production. No public posts. Setup complete.",
+    "2026-06-15": "Pinterest mastery day ✓ — Learned full scheduling flow. Queued 16 ProDentim pins across 10 boards (Jun 14–17). 2 already live on Jun 14. 7 pins publishing Jun 16, 7 more Jun 17. Strong board diversity across oral health niches. First real content wave now in motion."
+  },
+  contentPlans: {
+    "2026-06-16": [
+      {platform:"Pinterest",color:"#e04a00",text:"7 pins auto-publishing today (1AM–10AM) — queued ✓",freq:"scheduled"},
+      {platform:"TikTok",color:"#0891b2",text:"\"I tried ProDentim for 30 days\" — raw talking head, first video",freq:"1/day"},
+      {platform:"Shorts",color:"#0891b2",text:"\"Is ProDentim a scam?\" — honest 60s review",freq:"priority"}
+    ],
+    "2026-06-17": [
+      {platform:"Pinterest",color:"#e04a00",text:"7 pins auto-publishing tomorrow (1AM–10AM) — queued ✓",freq:"scheduled"},
+      {platform:"Reels",color:"#b8860b",text:"\"Money conversation starter\" tip — 1 idea per Reel",freq:"1/day"},
+      {platform:"Pinterest",color:"#7c3aed",text:"\"5 signs of poor oral microbiome\" infographic — new batch",freq:"2/wk"}
+    ]
+  },
   marketingWeekStart: '2026-06-16'
 };
 
@@ -457,14 +493,25 @@ function saveState(){
 }
 function loadState(){
   try{
+    var defaultLogs      = JSON.parse(JSON.stringify(state.logs));
+    var defaultSummaries = JSON.parse(JSON.stringify(state.daySummaries));
+    var defaultPlans     = JSON.parse(JSON.stringify(state.contentPlans));
+    var defaultFeedback  = JSON.parse(JSON.stringify(state.feedback));
     const raw = localStorage.getItem(STORAGE_KEY);
-    if(raw){ const s = JSON.parse(raw); Object.assign(state, s); }
-    // also check old key
+    if(raw){
+      const s = JSON.parse(raw);
+      Object.assign(state, s);
+      state.logs         = Object.assign({}, defaultLogs, state.logs);
+      state.daySummaries = Object.assign({}, defaultSummaries, state.daySummaries || {});
+      state.contentPlans = Object.assign({}, defaultPlans, state.contentPlans || {});
+      const storedDates  = new Set((state.feedback||[]).map(function(f){return f.date;}));
+      defaultFeedback.forEach(function(f){ if(!storedDates.has(f.date)) state.feedback.push(f); });
+    }
     const oldRaw = localStorage.getItem('mktjournal_v1');
     if(oldRaw && !raw){
       const s = JSON.parse(oldRaw);
-      if(s.logs) state.logs = s.logs;
-      if(s.feedback) state.feedback = s.feedback;
+      if(s.logs) Object.assign(state.logs, s.logs);
+      if(s.feedback) state.feedback = (state.feedback||[]).concat(s.feedback);
       if(s.theme) state.theme = s.theme;
     }
   } catch(e){}
