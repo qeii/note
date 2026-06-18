@@ -39,7 +39,6 @@
 html,body{height:100%;font-family:'DM Mono',monospace;font-size:13px;color:var(--text);background:var(--bg);line-height:1.6}
 body{display:flex;flex-direction:column;min-height:100vh}
 
-/* ═══ HEADER ═══════════════════════════════════════════════════════════════ */
 .header{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:52px;background:var(--bg2);border-bottom:0.5px solid var(--border2);position:sticky;top:0;z-index:200;gap:12px}
 .brand{display:flex;align-items:baseline;gap:8px;flex-shrink:0}
 .brand h1{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--text)}
@@ -52,21 +51,17 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .btn.accent:hover{background:var(--accent-bg2)}
 .btn.icon{padding:4px 7px}
 
-/* ═══ PAGE TABS (centered) ══════════════════════════════════════════════════ */
 .page-tabs{display:flex;align-items:center;justify-content:center;gap:0;background:var(--bg2);border-bottom:0.5px solid var(--border2);padding:0}
 .page-tab{font-family:'DM Mono',monospace;font-size:12px;padding:10px 32px;border:none;background:transparent;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:color 0.15s,border-color 0.15s;display:flex;align-items:center;gap:7px;letter-spacing:0.03em}
 .page-tab:hover{color:var(--text2)}
 .page-tab.active{color:var(--text);border-bottom-color:var(--accent)}
 .page-tab i{font-size:14px}
 
-/* ═══ PAGE CONTAINERS ═══════════════════════════════════════════════════════ */
 .page{display:none;flex:1;overflow-y:auto}
 .page.active{display:block}
 
-/* ═══ CALENDAR PAGE ══════════════════════════════════════════════════════════ */
 .cal-page{padding:24px 28px 60px;max-width:1200px;margin:0 auto}
 
-/* Metrics bar */
 .metrics-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
 .metric-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:10px 12px}
 .metric-label{font-size:10px;color:var(--text3);margin-bottom:3px}
@@ -75,13 +70,11 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .metric-card.steady .metric-val{color:var(--accent)}
 .metric-card.pro .metric-val{color:var(--p2)}
 
-/* Cal navigation */
 .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .cal-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--text)}
 .cal-nav{display:flex;gap:6px;align-items:center}
 .cal-week-range{font-size:11px;color:var(--text3);min-width:140px;text-align:center}
 
-/* 8-box grid: 7 days + 1 claude */
 .cal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 .cal-day{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);min-height:200px;display:flex;flex-direction:column;cursor:pointer;transition:border-color 0.15s,background 0.15s;position:relative;overflow:hidden}
 .cal-day:hover{border-color:var(--border2);box-shadow:0 2px 8px rgba(0,0,0,0.06)}
@@ -91,7 +84,6 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .cal-day.has-log{border-color:var(--border2)}
 .cal-day.leo-warning{border-color:var(--leo)!important;box-shadow:0 0 0 1.5px var(--leo)!important}
 
-/* Leo warning ribbon */
 .leo-ribbon{position:absolute;top:0;right:0;background:var(--leo);color:#fff;font-size:9px;font-weight:700;padding:2px 8px 2px 12px;letter-spacing:0.06em;border-radius:0 var(--radius-lg) 0 10px;text-transform:uppercase}
 
 .day-hdr{padding:9px 11px 7px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
@@ -100,7 +92,6 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .today .day-name,.today .day-num{color:var(--accent)}
 .claude-day .day-name{color:var(--p1)}
 
-/* Content plan inside day */
 .day-plan{padding:8px 10px 4px;border-bottom:0.5px solid var(--border);display:flex;flex-direction:column;gap:3px}
 .day-plan-tag{font-size:9px;color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:2px}
 .plan-item{display:flex;align-items:flex-start;gap:5px;overflow:hidden}
@@ -109,7 +100,6 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .plan-platform{font-size:9px;color:var(--text3);flex-shrink:0;align-self:flex-start;margin-top:2px}
 .plan-overflow{font-size:9px;color:var(--text3);padding:1px 0 0 9px;pointer-events:none;user-select:none}
 
-/* Log preview inside day */
 .day-log-area{flex:1;padding:7px 10px;min-height:0}
 .day-log-preview{font-size:10px;color:var(--text2);line-height:1.5;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
 .day-summary-preview{font-size:10px;color:var(--success);line-height:1.5;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
@@ -126,10 +116,8 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .claude-badge{font-size:9px;padding:1px 6px;border-radius:var(--radius);background:var(--p1-bg);color:var(--p1);border:0.5px solid rgba(124,58,237,0.2)}
 [data-theme=dark] .claude-badge{border-color:rgba(167,139,250,0.2)}
 
-/* ═══ FEEDBACK & LOG PAGE ════════════════════════════════════════════════════ */
 .log-page{padding:24px 28px 60px;max-width:1100px;margin:0 auto}
 
-/* shared tab styles still needed for modal */
 .log-project-tabs{display:flex;gap:5px;margin-bottom:8px}
 .log-ptab{padding:3px 10px;font-size:11px;border-radius:var(--radius);border:0.5px solid var(--border);background:transparent;color:var(--text3);cursor:pointer;transition:all 0.15s}
 .log-ptab:hover{border-color:var(--border2);color:var(--text2)}
@@ -144,7 +132,6 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .log-ta:focus{border-color:var(--accent)}
 .log-ta::placeholder{color:var(--text3)}
 
-/* ═══ DUAL-COLUMN TIMELINE ═══════════════════════════════════════════════════ */
 .timeline-page{display:flex;flex-direction:column;gap:28px}
 
 .timeline-day-block{border:0.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
@@ -152,7 +139,6 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .timeline-day-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text)}
 .timeline-day-meta{font-size:10px;color:var(--text3);display:flex;align-items:center;gap:10px}
 
-/* Three-column layout: MY LOG | SPINE | CLAUDE FEEDBACK */
 .timeline-columns{display:grid;grid-template-columns:1fr 40px 1fr;min-height:120px}
 .tl-col-mine{padding:14px 16px;border-right:0.5px solid var(--border)}
 .tl-col-spine{display:flex;flex-direction:column;align-items:center;padding:14px 0;position:relative;background:var(--bg)}
@@ -161,14 +147,12 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .tl-col-label{font-size:9px;color:var(--text3);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:10px}
 .tl-col-label.claude-label{color:var(--p1)}
 
-/* Spine dots */
 .spine-line{width:1px;background:var(--border2);flex:1;margin:4px 0}
 .spine-dot{width:10px;height:10px;border-radius:50%;background:var(--border2);border:2px solid var(--bg);flex-shrink:0;z-index:1}
 .spine-dot.has-log{background:var(--accent)}
 .spine-dot.has-feedback{background:var(--p1)}
 .spine-dot.has-both{background:linear-gradient(135deg,var(--accent) 50%,var(--p1) 50%)}
 
-/* Log entries inside column */
 .tl-entry{padding:8px 0;border-bottom:0.5px solid var(--border);display:flex;flex-direction:column;gap:3px}
 .tl-entry:last-child{border-bottom:none}
 .tl-entry-meta{font-size:10px;color:var(--text3);display:flex;align-items:center;gap:6px}
@@ -181,18 +165,15 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .tl-entry:hover .tl-delete{opacity:1}
 .tl-empty{font-size:11px;color:var(--text3);font-style:italic;padding:4px 0}
 
-/* Claude feedback inside column */
 .feedback-box{background:var(--p1-bg);border:0.5px solid rgba(124,58,237,0.18);border-radius:var(--radius-lg);padding:12px 13px;margin-bottom:10px}
 [data-theme=dark] .feedback-box{border-color:rgba(167,139,250,0.15)}
 .feedback-label{font-size:10px;color:var(--p1);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:7px;display:flex;align-items:center;gap:6px}
 .feedback-text{font-size:11px;color:var(--text2);line-height:1.8;white-space:pre-wrap}
 .feedback-date{font-size:10px;color:var(--text3);margin-top:7px}
 
-/* Auto-delete note */
 .purge-note{font-size:10px;color:var(--text3);margin-bottom:14px;display:flex;align-items:center;gap:5px}
 .purge-note i{color:var(--warning)}
 
-/* ═══ DAY MODAL ═════════════════════════════════════════════════════════════ */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;z-index:500;padding:20px}
 .modal-overlay.open{display:flex}
 .modal{background:var(--bg);border-radius:var(--radius-lg);border:0.5px solid var(--border2);padding:0;max-width:560px;width:100%;max-height:88vh;overflow-y:auto}
@@ -209,7 +190,6 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .modal-log-time{font-size:10px;color:var(--text3)}
 .modal-log-content{font-size:12px;color:var(--text2);line-height:1.6;white-space:pre-wrap}
 
-/* Content plan inside modal */
 .modal-plan-list{display:flex;flex-direction:column;gap:5px;margin-bottom:6px}
 .modal-plan-item{display:flex;align-items:flex-start;gap:7px;padding:5px 0;border-bottom:0.5px solid var(--border)}
 .modal-plan-item:last-child{border-bottom:none}
@@ -217,7 +197,6 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .modal-plan-text{font-size:11px;color:var(--text2);line-height:1.45;flex:1}
 .modal-plan-platform{font-size:10px;padding:1px 6px;border-radius:var(--radius);background:var(--bg3);color:var(--text3);flex-shrink:0}
 
-/* Claude summary in modal (past days) */
 .modal-summary-box{background:var(--success-bg);border:0.5px solid rgba(46,125,82,0.2);border-radius:var(--radius-lg);padding:10px 12px;margin-bottom:8px}
 .modal-summary-label{font-size:10px;color:var(--success);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:5px;display:flex;align-items:center;gap:5px}
 .modal-summary-text{font-size:11px;color:var(--text2);line-height:1.6;white-space:pre-wrap}
@@ -225,7 +204,6 @@ body{display:flex;flex-direction:column;min-height:100vh}
 .modal-summary-ta:focus{border-color:var(--success)}
 .modal-summary-ta::placeholder{color:var(--text3)}
 
-/* Toast */
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--bg2);border:0.5px solid var(--border2);border-radius:var(--radius-lg);padding:10px 18px;font-size:12px;color:var(--text);z-index:9999;opacity:0;transition:opacity 0.2s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1}
 </style>
@@ -234,7 +212,6 @@ body{display:flex;flex-direction:column;min-height:100vh}
 
 <div class="toast" id="toast"></div>
 
-<!-- ═══ HEADER ═══════════════════════════════════════════════════════════════ -->
 <div class="header">
   <div class="brand">
     <h1>Marketing<span class="brand-dot">.</span>Journal</h1>
@@ -251,7 +228,6 @@ body{display:flex;flex-direction:column;min-height:100vh}
   </div>
 </div>
 
-<!-- ═══ PAGE TABS (centered) ═════════════════════════════════════════════════ -->
 <div class="page-tabs">
   <button class="page-tab active" id="tabCalendar" onclick="switchPage('calendar')">
     <i class="ti ti-calendar-week"></i> Calendar View
@@ -261,13 +237,8 @@ body{display:flex;flex-direction:column;min-height:100vh}
   </button>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     PAGE 1: CALENDAR VIEW
-═══════════════════════════════════════════════════════════════════════════ -->
 <div class="page active" id="pageCalendar">
   <div class="cal-page">
-
-    <!-- Metrics -->
     <div class="metrics-bar" id="metricsBar">
       <div class="metric-card steady">
         <div class="metric-label">OurSteady posts this week</div>
@@ -290,46 +261,26 @@ body{display:flex;flex-direction:column;min-height:100vh}
         <div class="metric-sub">of 12 (phase)</div>
       </div>
     </div>
-
-    <!-- Cal header -->
     <div class="cal-header">
       <div class="cal-title">Weekly View</div>
       <div class="cal-nav">
         <span class="cal-week-range" id="calWeekRange"></span>
       </div>
     </div>
-
-    <!-- 8-box grid -->
-    <div class="cal-grid" id="calGrid">
-      <!-- rendered by JS -->
-    </div>
-
+    <div class="cal-grid" id="calGrid"></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     PAGE 2: FEEDBACK & DAILY LOG
-═══════════════════════════════════════════════════════════════════════════ -->
 <div class="page" id="pageLog">
   <div class="log-page">
-
-    <!-- Auto-delete note -->
     <div class="purge-note">
       <i class="ti ti-info-circle"></i>
       Progress tracker — logs &amp; feedback auto-delete after 30 days. Export JSON regularly.
     </div>
-
-    <!-- Vertical dual timeline (rendered per day) -->
-    <div class="timeline-page" id="timelinePage">
-      <!-- rendered by JS -->
-    </div>
-
+    <div class="timeline-page" id="timelinePage"></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     DAY MODAL (calendar tap)
-═══════════════════════════════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="dayModal">
   <div class="modal">
     <div class="modal-top">
@@ -340,8 +291,6 @@ body{display:flex;flex-direction:column;min-height:100vh}
       <button class="modal-close" onclick="closeModal()">×</button>
     </div>
     <div class="modal-body">
-
-      <!-- Add entry (moved to TOP) -->
       <div class="modal-section-label">Add entry</div>
       <div class="log-project-tabs" id="modalProjectTabs" style="margin:0 0 8px">
         <button class="log-ptab active-general" data-proj="general" onclick="selectModalProject('general')">General</button>
@@ -360,31 +309,24 @@ body{display:flex;flex-direction:column;min-height:100vh}
         <button class="btn accent" onclick="saveModalLog()"><i class="ti ti-check"></i> Save entry</button>
         <button class="btn" onclick="closeModal()">Close</button>
       </div>
-
-      <!-- Content Plan for this day -->
       <div class="modal-section-label"><i class="ti ti-bulb" style="font-size:11px"></i> Today's content plan</div>
       <div class="modal-plan-list" id="modalPlanList"></div>
-
-      <!-- Day summary (for past days — from JSON import) -->
       <div id="modalSummarySection" style="display:none">
         <div class="modal-section-label"><i class="ti ti-robot" style="font-size:11px"></i> Day summary (from Claude)</div>
         <div id="modalSummaryBox"></div>
       </div>
-
-      <!-- My log entries -->
       <div class="modal-section-label">Previous entries</div>
       <div id="modalLogList"></div>
-
     </div>
   </div>
 </div>
 
 <script>
-// ═══ STATE ════════════════════════════════════════════════════════════════════
 const STORAGE_KEY = 'mktjournal_v2';
+
 let state = {
   theme: 'light',
-  currentWeekStart: '2026-06-16', // Tue of week starting Jun 16
+  currentWeekStart: '2026-06-16',
   logs: {
     "2026-06-14": [
       {
@@ -401,6 +343,28 @@ let state = {
         mood: "focused",
         content: "Learned Pinterest scheduling flow end-to-end: how to create pins, set board targets, and queue posts via scheduler.\n\nScheduled 16 ProDentim Pinterest pins across 10 boards for Jun 14–17 publishing:\n\nJun 14 (2 pins):\n• \"Healthy Mouth Microbiome: 7 Common Signs to Watch For\" → Healthy Mouth Microbiome — 3:00 PM\n• \"7 Signs Your Oral Microbiome May Be Out of Balance (Free Guide)\" → Oral Health — 2:00 PM\n\nJun 16 (7 pins, going live today):\n• \"Probiotics for Your Mouth? 3 Science-Backed Benefits...\" → Probiotics for Health — 1:00 AM\n• \"Your Mouth Has Its Own Ecosystem: 6 Factors...\" → Oral Microbiome — 2:00 AM\n• \"What Lives In Your Mouth? The Truth About Your Oral Microbiome\" → Dental Hygiene — 3:00 AM\n• \"Why Mouthwash Makes Bad Breath Worse (And What Actually Works)\" → Bad Breath — 7:00 AM\n• \"The Gut-Mouth Connection: Why Your Digestive Health Shows Up In Your Smile\" → Gut Health — 8:00 AM\n• \"5 Natural Ways To Rebuild Healthy Teeth and Gums From The Inside\" → Healthy Teeth & Gums — 9:00 AM\n• \"Probiotics For Your Mouth: The Science Behind Stronger Teeth and Fresher Breath\" → Healthy Mouth Microbiome — 10:00 AM\n\nJun 17 (7 pins, going live tomorrow):\n• \"7 Signs Your Oral Microbiome Is Out Of Balance\" → Fresh Breath Solutions — 1:00 AM\n• \"Why Mouthwash May Be Making Your Breath Worse\" → Bad Breath Causes — 2:00 AM\n• \"The Hidden Bacteria Affecting Your Teeth\" → Natural Dental Health — 3:00 AM\n• \"Dentists Rarely Talk About This Oral Health Factor\" → Gum Health — 7:00 AM\n• \"Did You Know: Your Mouth Contains Over 700 Species Of Bacteria?\" → Oral Microbiome — 8:00 AM\n• \"What Happens to Your Mouth Microbiome Minute by Minute...\" → Oral Health — 9:00 AM\n• \"Give Your Mouth 90 Days: The Oral Microbiome Reset Most People Never Try\" → Oral Microbiome — 10:00 AM"
       }
+    ],
+    "2026-06-16": [
+      {
+        time: "11:59 PM",
+        project: "steady",
+        mood: "confused",
+        content: "OurSteady LemonSqueezy store activation confusion.\n\nGot an email saying my website was approved on LemonSqueezy. Logged in to check — everything looked the same as before, nothing had changed in the dashboard. Was confused thinking maybe the approval didn't fully go through.\n\nAbout 2 hours later, a second email arrived confirming the store was actually activated. Turns out the first email was just a site approval notice and the store activation is a separate step.\n\nReplied to LemonSqueezy support about the confusing flow (felt like the first email was misleading) — still waiting for their response, 2 days passed now.\n\nStore is now live and active. Funnel at oursteady.com ready to go."
+      },
+      {
+        time: "11:59 PM",
+        project: "pro",
+        mood: "productive",
+        content: "ProDentim Pinterest — scheduled 16 new pins for Jun 18–19 publishing.\n\nJun 18 (8 pins):\n• #17 \"What Your Mouth Is Telling You About Your Whole-Body Health\" → Holistic Health Tips — 1:00 AM\n• #18 \"The Mouth-Gut Connection: What Your Smile Reveals About Your Digestion\" → Gut Health — 2:00 AM\n• #19 \"5 Daily Habits That Support a Healthy Oral Microbiome\" → Natural Dental Care — 3:00 AM\n• #20 \"Best Time to Support Your Oral Microbiome: Daily Habit Guide\" → Probiotics for Health — 7:00 AM\n• #21 \"What Your Daily Oral Care Routine Should Include\" → Healthy Teeth & Gums — 8:00 AM\n• #22 \"Common Causes of Morning Breath: Quick Reference Guide\" → Fresh Breath Solutions — 9:00 AM\n• #23 \"The Oral Microbiome Essentials\" → Healthy Mouth Microbiome — 10:00 AM\n• #24 \"What Influences Fresh Breath?\" → Fresh Breath Solutions — 11:00 AM\n\nJun 19 (8 pins):\n• #25 \"Healthy Gums Checklist\" → Gum Health — 1:00 AM\n• #26 \"The Real Reason Your Breath Smells (It's Not What You Think)\" → Fresh Breath Solutions — 2:00 AM\n• #27 \"700 Bacteria Species Live in Your Mouth — Most Are Actually Good\" → Oral Microbiome — 3:00 AM\n• #28 \"The #1 Overlooked Cause of Bad Breath\" → Bad Breath Causes — 7:00 AM\n• #29 \"The Shocking Mouth-Gut Connection Nobody Ever Taught You\" → Gut Health — 8:00 AM\n• #30 \"5 Daily Habits for Healthy Gums\" → Healthy Gums — 9:00 AM\n• #31 \"Why Your Oral Microbiome Is the Key to Your Whole-Body Health\" → Holistic Health Tips — 10:00 AM\n• #32 \"You're Destroying Your Oral Bacteria Every Morning (Stop Doing This!)\" → Healthy Mouth Microbiome — 11:00 AM\n\nCumulative ProDentim Pinterest total: 32 pins scheduled/live (pins #1–32)."
+      }
+    ],
+    "2026-06-17": [
+      {
+        time: "11:59 PM",
+        project: "pro",
+        mood: "productive",
+        content: "Signed up for Quora and Medium — new content channels for ProDentim organic traffic.\n\nQuora: account created, ready to answer questions in oral health / dental / gut health topics. Plan: find questions with high views, post value answers with soft CTA to microbiome.pages.dev.\n\nMedium: account created, ready to publish long-form articles. Plan: repurpose Pinterest pin content into full articles, link back to lead gen funnel.\n\nAlso scheduled 7 more ProDentim Pinterest pins for Jun 20 publishing:\n\nJun 20 (7 pins):\n• #33 \"Your Toothbrush Isn't the Whole Story: 5 Habits That Support a Healthy Oral Microbiome\" → Healthy Mouth Microbiome — 1:00 AM\n• #34 \"Free Oral Microbiome Guide: Start Here Before Buying Supplements\" → Oral Health — 2:00 AM\n• #35 \"Meet the Good Bacteria That Help Support Oral Health\" → Healthy Mouth Microbiome — 3:00 AM\n• #36 \"What to Expect When Starting an Oral Probiotic Routine\" → Oral Health — 7:00 AM\n• #37 \"Oral Probiotic Shopping Checklist\" → Probiotics for Health — 8:00 AM\n• #38 \"7 Reasons You Might Wake Up With Dry Mouth\" → Bad Breath — 10:00 AM\n• #39 \"Can Oral Health Influence How You Feel Each Day?\" → Gut Health & Wellness — 11:00 AM\n\nCumulative ProDentim Pinterest total: 39 pins scheduled/live (pins #1–39)."
+      }
     ]
   },
   metrics: {},
@@ -412,28 +376,43 @@ let state = {
   ],
   daySummaries: {
     "2026-06-14": "Leonardo.ai cleanup day ✓ — image library organised, workspace cleared, AI visual assets ready for Week 1 production. No public posts. Setup complete.",
-    "2026-06-15": "Pinterest mastery day ✓ — Learned full scheduling flow. Queued 16 ProDentim pins across 10 boards (Jun 14–17). 2 already live on Jun 14. 7 pins publishing Jun 16, 7 more Jun 17. Strong board diversity across oral health niches. First real content wave now in motion."
+    "2026-06-15": "Pinterest mastery day ✓ — Learned full scheduling flow. Queued 16 ProDentim pins across 10 boards (Jun 14–17). 2 already live on Jun 14. 7 pins publishing Jun 16, 7 more Jun 17. Strong board diversity across oral health niches. First real content wave now in motion.",
+    "2026-06-16": "OurSteady store activated ✓ (LemonSqueezy — confusing 2-email flow, still waiting on support reply). ProDentim Pinterest: 16 new pins scheduled for Jun 18–19. Running total: 32 pins live/queued.",
+    "2026-06-17": "Signed up for Quora + Medium ✓ — new organic channels ready for ProDentim content. Scheduled 7 more Pinterest pins for Jun 20. Running total: 39 pins live/queued across 5 days."
   },
   contentPlans: {
     "2026-06-16": [
       {platform:"Pinterest",color:"#e04a00",text:"7 pins auto-publishing today (1AM–10AM) — queued ✓",freq:"scheduled"},
-      {platform:"TikTok",color:"#0891b2",text:"\"I tried ProDentim for 30 days\" — raw talking head, first video",freq:"1/day"},
+      {platform:"TikTok",color:"#0891b2",text:"\"I tried ProDentim for 30 days\" — raw talking head, first video",freq:"priority"},
       {platform:"Shorts",color:"#0891b2",text:"\"Is ProDentim a scam?\" — honest 60s review",freq:"priority"}
     ],
     "2026-06-17": [
-      {platform:"Pinterest",color:"#e04a00",text:"7 pins auto-publishing tomorrow (1AM–10AM) — queued ✓",freq:"scheduled"},
-      {platform:"Reels",color:"#b8860b",text:"\"Money conversation starter\" tip — 1 idea per Reel",freq:"1/day"},
-      {platform:"Pinterest",color:"#7c3aed",text:"\"5 signs of poor oral microbiome\" infographic — new batch",freq:"2/wk"}
+      {platform:"Pinterest",color:"#e04a00",text:"7 pins auto-publishing (1AM–10AM) — queued ✓",freq:"scheduled"},
+      {platform:"Quora",color:"#b8860b",text:"Sign up + answer 1st oral health question",freq:"new channel"},
+      {platform:"Medium",color:"#7c3aed",text:"Sign up + draft first ProDentim article",freq:"new channel"}
+    ],
+    "2026-06-18": [
+      {platform:"Pinterest",color:"#e04a00",text:"8 pins auto-publishing (1AM–11AM) — queued ✓",freq:"scheduled"},
+      {platform:"TikTok",color:"#0891b2",text:"First ProDentim TikTok — raw talking head",freq:"priority"},
+      {platform:"Quora",color:"#b8860b",text:"Answer 2–3 oral health questions",freq:"daily"}
+    ],
+    "2026-06-19": [
+      {platform:"Pinterest",color:"#e04a00",text:"8 pins auto-publishing (1AM–11AM) — queued ✓",freq:"scheduled"},
+      {platform:"Reels",color:"#b8860b",text:"\"5 signs of poor oral microbiome\" — short Reel",freq:"priority"},
+      {platform:"Medium",color:"#7c3aed",text:"Publish first ProDentim article",freq:"2/wk"}
+    ],
+    "2026-06-20": [
+      {platform:"Pinterest",color:"#e04a00",text:"7 pins auto-publishing (1AM–11AM) — queued ✓",freq:"scheduled"},
+      {platform:"TikTok",color:"#0891b2",text:"ProDentim Day 7 update — results check-in",freq:"1/day"},
+      {platform:"Quora",color:"#b8860b",text:"Answer 2–3 oral health questions",freq:"daily"}
     ]
   },
   marketingWeekStart: '2026-06-16'
 };
 
-// Leonardo.ai cycle end: Jul 14, 2026. Warning mark: Jul 7 (one week before).
-const LEO_CYCLE_END   = '2026-07-14';
-const LEO_WARN_DATE   = '2026-07-07'; // 1 week before — cancel reminder
+const LEO_CYCLE_END = '2026-07-14';
+const LEO_WARN_DATE = '2026-07-07';
 
-// ═══ INIT ════════════════════════════════════════════════════════════════════
 window.addEventListener('DOMContentLoaded', () => {
   loadState();
   applyTheme();
@@ -441,7 +420,6 @@ window.addEventListener('DOMContentLoaded', () => {
   purgeOldData();
 });
 
-// ═══ PAGE SWITCHING ════════════════════════════════════════════════════════
 function switchPage(name){
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
@@ -451,7 +429,6 @@ function switchPage(name){
 }
 function cap(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
 
-// ═══ DATE HELPERS ═════════════════════════════════════════════════════════
 function today(){ return new Date().toISOString().slice(0,10); }
 function getMondayOf(dateStr){
   const d = new Date(dateStr + 'T00:00:00');
@@ -473,30 +450,23 @@ function fmtShort(dateStr){
   const d = new Date(dateStr + 'T00:00:00');
   return d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
 }
-function fmtDay(dateStr){
-  const d = new Date(dateStr + 'T00:00:00');
-  return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
-}
 function getMarketingWeek(dateStr){
   const start = new Date(state.marketingWeekStart + 'T00:00:00');
   const cur = new Date(getMondayOf(dateStr) + 'T00:00:00');
   const diff = Math.round((cur - start) / (7*86400000)) + 1;
   return Math.max(1, diff);
 }
-function isPastDay(dateStr){
-  return dateStr < today();
-}
+function isPastDay(dateStr){ return dateStr < today(); }
 
-// ═══ PERSIST ════════════════════════════════════════════════════════════════
 function saveState(){
   try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e){}
 }
 function loadState(){
   try{
-    var defaultLogs      = JSON.parse(JSON.stringify(state.logs));
-    var defaultSummaries = JSON.parse(JSON.stringify(state.daySummaries));
-    var defaultPlans     = JSON.parse(JSON.stringify(state.contentPlans));
-    var defaultFeedback  = JSON.parse(JSON.stringify(state.feedback));
+    const defaultLogs      = JSON.parse(JSON.stringify(state.logs));
+    const defaultSummaries = JSON.parse(JSON.stringify(state.daySummaries));
+    const defaultPlans     = JSON.parse(JSON.stringify(state.contentPlans));
+    const defaultFeedback  = JSON.parse(JSON.stringify(state.feedback));
     const raw = localStorage.getItem(STORAGE_KEY);
     if(raw){
       const s = JSON.parse(raw);
@@ -504,35 +474,23 @@ function loadState(){
       state.logs         = Object.assign({}, defaultLogs, state.logs);
       state.daySummaries = Object.assign({}, defaultSummaries, state.daySummaries || {});
       state.contentPlans = Object.assign({}, defaultPlans, state.contentPlans || {});
-      const storedDates  = new Set((state.feedback||[]).map(function(f){return f.date;}));
-      defaultFeedback.forEach(function(f){ if(!storedDates.has(f.date)) state.feedback.push(f); });
-    }
-    const oldRaw = localStorage.getItem('mktjournal_v1');
-    if(oldRaw && !raw){
-      const s = JSON.parse(oldRaw);
-      if(s.logs) Object.assign(state.logs, s.logs);
-      if(s.feedback) state.feedback = (state.feedback||[]).concat(s.feedback);
-      if(s.theme) state.theme = s.theme;
+      const storedDates  = new Set((state.feedback||[]).map(f => f.date));
+      defaultFeedback.forEach(f => { if(!storedDates.has(f.date)) state.feedback.push(f); });
     }
   } catch(e){}
 }
 
-// ═══ PURGE OLD DATA (30 days) ═════════════════════════════════════════════
 function purgeOldData(){
   const cutoff = addDays(today(), -30);
-  // purge feedback
   if(!state.feedback) state.feedback = [];
   state.feedback = state.feedback.filter(f => f.date >= cutoff);
-  // purge logs
   Object.keys(state.logs).forEach(d => { if(d < cutoff) delete state.logs[d]; });
-  // purge day summaries
   if(state.daySummaries){
     Object.keys(state.daySummaries).forEach(d => { if(d < cutoff) delete state.daySummaries[d]; });
   }
   saveState();
 }
 
-// ═══ THEME ═══════════════════════════════════════════════════════════════
 function applyTheme(){
   document.documentElement.setAttribute('data-theme', state.theme);
   document.getElementById('themeBtn').innerHTML = state.theme === 'dark'
@@ -540,12 +498,10 @@ function applyTheme(){
 }
 function toggleTheme(){ state.theme = state.theme === 'dark' ? 'light' : 'dark'; applyTheme(); saveState(); }
 
-// ═══ WEEK NAV ══════════════════════════════════════════════════════════════
 function prevWeek(){ state.currentWeekStart = addDays(state.currentWeekStart,-7); saveState(); renderAll(); }
 function nextWeek(){ state.currentWeekStart = addDays(state.currentWeekStart,7); saveState(); renderAll(); }
 function goToday(){ state.currentWeekStart = getMondayOf(today()); saveState(); renderAll(); }
 
-// ═══ RENDER ALL ═══════════════════════════════════════════════════════════
 function renderAll(){
   renderWeekLabel();
   renderCalendar();
@@ -563,14 +519,12 @@ function renderWeekLabel(){
   document.getElementById('hdrWeekOf').textContent = range;
 }
 
-// ═══ CALENDAR ═════════════════════════════════════════════════════════════
 const DAY_NAMES = ['MON','TUE','WED','THU','FRI','SAT','SUN'];
 
 function renderCalendar(){
   const grid = document.getElementById('calGrid');
   grid.innerHTML = '';
   const tod = today();
-
   for(let i = 0; i < 7; i++){
     const date = addDays(state.currentWeekStart, i);
     grid.appendChild(makeDayCell(date, DAY_NAMES[i], tod));
@@ -596,7 +550,6 @@ function makeDayCell(date, dayName, tod){
     + (isLeoWarn ? ' leo-warning' : '');
   cell.onclick = () => openDayModal(date);
 
-  // Leo cancel ribbon
   if(isLeoWarn){
     const ribbon = document.createElement('div');
     ribbon.className = 'leo-ribbon';
@@ -604,13 +557,11 @@ function makeDayCell(date, dayName, tod){
     cell.appendChild(ribbon);
   }
 
-  // Header
   const hdr = document.createElement('div');
   hdr.className = 'day-hdr';
   hdr.innerHTML = `<span class="day-name">${dayName}</span><span class="day-num">${dayNum}</span>`;
   cell.appendChild(hdr);
 
-  // Content plan snippets
   const planItems = getDayPlan(date);
   if(planItems.length > 0){
     const planArea = document.createElement('div');
@@ -619,8 +570,7 @@ function makeDayCell(date, dayName, tod){
     lbl.className = 'day-plan-tag';
     lbl.textContent = 'Content plan';
     planArea.appendChild(lbl);
-    const visible = planItems.slice(0, 3);
-    visible.forEach(item => {
+    planItems.slice(0, 3).forEach(item => {
       const row = document.createElement('div');
       row.className = 'plan-item';
       row.innerHTML = `<div class="plan-dot" style="background:${item.color}"></div><span class="plan-text" title="${item.text}">${item.text}</span><span class="plan-platform">${item.platform}</span>`;
@@ -635,7 +585,6 @@ function makeDayCell(date, dayName, tod){
     cell.appendChild(planArea);
   }
 
-  // Log / summary area
   const logArea = document.createElement('div');
   logArea.className = 'day-log-area';
   if(isPast && summary){
@@ -657,7 +606,6 @@ function makeDayCell(date, dayName, tod){
   }
   cell.appendChild(logArea);
 
-  // Footer
   const footer = document.createElement('div');
   footer.className = 'day-footer';
   if(hasLog){
@@ -685,12 +633,10 @@ function makeDayCell(date, dayName, tod){
 function makeClaudeCell(){
   const cell = document.createElement('div');
   cell.className = 'cal-day claude-day';
-
   const hdr = document.createElement('div');
   hdr.className = 'day-hdr';
   hdr.innerHTML = `<span class="day-name" style="color:var(--p1)">CLAUDE</span><span class="claude-badge">AI</span>`;
   cell.appendChild(hdr);
-
   const body = document.createElement('div');
   body.className = 'day-log-area';
   const fb = getCurrentWeekFeedback();
@@ -705,12 +651,10 @@ function makeClaudeCell(){
     body.innerHTML = '<span class="day-empty" style="color:var(--p1)">export JSON → ask Claude → go to Feedback tab to paste</span>';
   }
   cell.appendChild(body);
-
   const footer = document.createElement('div');
   footer.className = 'day-footer';
   footer.innerHTML = '<span style="font-size:9px;color:var(--p1)">weekly feedback</span>';
   cell.appendChild(footer);
-
   return cell;
 }
 
@@ -720,10 +664,6 @@ function getCurrentWeekFeedback(){
   return state.feedback.find(f => f.date >= state.currentWeekStart && f.date <= weekEnd) || null;
 }
 
-// ═══ CONTENT PLANS ═══════════════════════════════════════════════════════
-// Returns array of {platform, color, text, freq} for a given date.
-// First checks state.contentPlans[date] (set by Claude via import),
-// then falls back to generated plan.
 function getDayPlan(date){
   if(state.contentPlans && state.contentPlans[date]) return state.contentPlans[date];
   return generateDayPlan(date);
@@ -732,49 +672,37 @@ function getDayPlan(date){
 function generateDayPlan(date){
   const wn = getMarketingWeek(state.currentWeekStart);
   const d = new Date(date + 'T00:00:00');
-  const dow = d.getDay(); // 0=Sun,1=Mon,...
+  const dow = d.getDay();
   const phase = wn <= 3 ? 'build' : wn <= 8 ? 'grow' : 'scale';
-
-  // Distribute content types across days
   const plans = [];
-
-  // Leonardo.ai focus days: Sun-Mon (week start), batch create AI images
   if(dow === 0 || dow === 1){
     plans.push({platform:'Leonardo',color:'#e04a00',text:'Batch create AI images — use your 25k token quota',freq:'batch'});
   }
-
-  if(dow === 1 || dow === 3 || dow === 5){ // Mon/Wed/Fri
+  if(dow === 1 || dow === 3 || dow === 5){
     plans.push({platform:'TikTok',color:'#0891b2',
-      text: phase === 'build'
-        ? '"I tried ProDentim for 30 days" — raw talking head'
-        : phase === 'grow'
-        ? 'Quick testimonial: 15s, result claim + CTA'
-        : 'Repurpose best-performing video with new hook',
+      text: phase === 'build' ? '"I tried ProDentim for 30 days" — raw talking head'
+          : phase === 'grow' ? 'Quick testimonial: 15s, result claim + CTA'
+          : 'Repurpose best-performing video with new hook',
       freq:'1/day'});
   }
-  if(dow === 2 || dow === 4 || dow === 6){ // Tue/Thu/Sat
+  if(dow === 2 || dow === 4 || dow === 6){
     plans.push({platform:'Reels',color:'#b8860b',
-      text: phase === 'build'
-        ? '"Money conversation starter" tip — 1 idea per Reel'
-        : 'Carousel Reel: 5 money questions couples avoid',
+      text: phase === 'build' ? '"Money conversation starter" tip — 1 idea per Reel'
+          : 'Carousel Reel: 5 money questions couples avoid',
       freq:'1/day'});
   }
-  if(dow === 1 || dow === 4){ // Mon/Thu
-    plans.push({platform:'Shorts',color:'#0891b2',
-      text:'"Is ProDentim a scam?" — honest 60s review',freq:'3/wk'});
+  if(dow === 1 || dow === 4){
+    plans.push({platform:'Shorts',color:'#0891b2',text:'"Is ProDentim a scam?" — honest 60s review',freq:'3/wk'});
   }
-  if(dow === 2 || dow === 5){ // Tue/Fri
-    plans.push({platform:'Pinterest',color:'#7c3aed',
-      text:'"5 signs of poor oral microbiome" infographic',freq:'2/wk'});
+  if(dow === 2 || dow === 5){
+    plans.push({platform:'Pinterest',color:'#7c3aed',text:'"5 signs of poor oral microbiome" infographic',freq:'2/wk'});
   }
-  if(dow === 0 || dow === 3){ // Sun/Wed
-    plans.push({platform:'Pinterest',color:'#b8860b',
-      text:'"Money date ideas for couples" — list pin',freq:'2/wk'});
+  if(dow === 0 || dow === 3){
+    plans.push({platform:'Pinterest',color:'#b8860b',text:'"Money date ideas for couples" — list pin',freq:'2/wk'});
   }
   return plans;
 }
 
-// ═══ METRICS ══════════════════════════════════════════════════════════════
 function renderMetrics(){
   const wk = state.currentWeekStart;
   let steadyPosts=0,proPosts=0,daysLogged=0;
@@ -795,14 +723,10 @@ function renderMetrics(){
   document.getElementById('mDaysLogged').textContent=daysLogged;
 }
 
-// ═══ VERTICAL DUAL TIMELINE (Feedback & Log page) ═════════════════════════
-// Show days of the current week, most recent first
 function renderTimeline(){
   const container = document.getElementById('timelinePage');
   container.innerHTML = '';
   const tod = today();
-
-  // Show last 7 days (today + 6 prior) within current week context
   const days = [];
   for(let i=6;i>=0;i--) days.push(addDays(state.currentWeekStart,i));
 
@@ -810,7 +734,6 @@ function renderTimeline(){
     const logs = state.logs[date] || [];
     const feedback = getFeedbackForDate(date);
     const summary = state.daySummaries && state.daySummaries[date];
-    // Only show days that have content OR are today/future in this week
     const hasContent = logs.length > 0 || feedback || summary;
     const isThisWeek = date >= state.currentWeekStart && date <= addDays(state.currentWeekStart,6);
     if(!hasContent && date !== tod && !isThisWeek) return;
@@ -818,7 +741,6 @@ function renderTimeline(){
     const block = document.createElement('div');
     block.className = 'timeline-day-block';
 
-    // Header
     const hdr = document.createElement('div');
     hdr.className = 'timeline-day-header';
     hdr.innerHTML = `
@@ -830,11 +752,9 @@ function renderTimeline(){
       </div>`;
     block.appendChild(hdr);
 
-    // Three-column
     const cols = document.createElement('div');
     cols.className = 'timeline-columns';
 
-    // MY LOG column
     const colMine = document.createElement('div');
     colMine.className = 'tl-col-mine';
     colMine.innerHTML = '<div class="tl-col-label">My log</div>';
@@ -861,28 +781,21 @@ function renderTimeline(){
     }
     cols.appendChild(colMine);
 
-    // SPINE column
     const spine = document.createElement('div');
     spine.className = 'tl-col-spine';
-    const spineLine1 = document.createElement('div');
-    spineLine1.className = 'spine-line';
-    const spineDot = document.createElement('div');
+    const sl1 = document.createElement('div'); sl1.className = 'spine-line';
+    const sd = document.createElement('div');
     const hasF = !!(feedback || summary);
     const hasL = logs.length > 0;
-    spineDot.className = 'spine-dot' + (hasL&&hasF?' has-both':hasL?' has-log':hasF?' has-feedback':'');
-    const spineLine2 = document.createElement('div');
-    spineLine2.className = 'spine-line';
-    spine.appendChild(spineLine1);
-    spine.appendChild(spineDot);
-    spine.appendChild(spineLine2);
+    sd.className = 'spine-dot' + (hasL&&hasF?' has-both':hasL?' has-log':hasF?' has-feedback':'');
+    const sl2 = document.createElement('div'); sl2.className = 'spine-line';
+    spine.appendChild(sl1); spine.appendChild(sd); spine.appendChild(sl2);
     cols.appendChild(spine);
 
-    // CLAUDE FEEDBACK column
     const colClaude = document.createElement('div');
     colClaude.className = 'tl-col-claude';
     colClaude.innerHTML = '<div class="tl-col-label claude-label"><i class="ti ti-robot"></i> Claude feedback</div>';
 
-    // Day summary (per-day, written by Claude via JSON import)
     if(summary){
       const box = document.createElement('div');
       box.className = 'feedback-box';
@@ -890,15 +803,12 @@ function renderTimeline(){
       box.innerHTML = `<div class="feedback-label" style="color:var(--success)"><i class="ti ti-star"></i> Day summary</div><div class="feedback-text">${escapeHtml(summary)}</div>`;
       colClaude.appendChild(box);
     }
-
-    // Weekly feedback (written by Claude via JSON import)
     if(feedback){
       const box = document.createElement('div');
       box.className = 'feedback-box';
       box.innerHTML = `<div class="feedback-label"><i class="ti ti-robot"></i> Weekly feedback</div><div class="feedback-text">${escapeHtml(feedback.text)}</div><div class="feedback-date">Saved ${fmtDate(feedback.date)}</div>`;
       colClaude.appendChild(box);
     }
-
     if(!feedback && !summary){
       const em = document.createElement('div');
       em.className = 'tl-empty';
@@ -918,7 +828,6 @@ function renderTimeline(){
 
 function getFeedbackForDate(date){
   if(!state.feedback) return null;
-  // Weekly feedback: find feedback saved during the same week
   const weekMon = getMondayOf(date);
   const weekEnd = addDays(weekMon,6);
   return state.feedback.find(f => f.date >= weekMon && f.date <= weekEnd) || null;
@@ -931,16 +840,6 @@ function deleteLog(date,idx){
   saveState(); renderAll();
 }
 
-// ═══ FEEDBACK (cleared by JSON import only) ════════════════════════════
-function clearFeedback(){
-  const wk=state.currentWeekStart;
-  const weekEnd=addDays(wk,6);
-  state.feedback=(state.feedback||[]).filter(f=>f.date<wk||f.date>weekEnd);
-  saveState(); renderAll();
-  showToast('Feedback cleared.');
-}
-
-// ═══ DAY MODAL ════════════════════════════════════════════════════════════
 let modalDate='';
 let modalProject='general';
 let modalMood='';
@@ -951,16 +850,11 @@ function openDayModal(date){
   document.getElementById('modalDayTitle').textContent=
     d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
   document.getElementById('modalDayDate').textContent=date;
-
-  // Content plan
   renderModalPlan(date);
-
-  // Summary section (past days)
   const past = isPastDay(date);
   const summarySection = document.getElementById('modalSummarySection');
   summarySection.style.display = past ? 'block' : 'none';
   if(past) renderModalSummary(date);
-
   renderModalLogs();
   selectModalProject('general');
   document.getElementById('dayModal').classList.add('open');
@@ -1046,7 +940,6 @@ document.getElementById('dayModal').addEventListener('click',function(e){
   if(e.target===this) closeModal();
 });
 
-// ═══ IMPORT / EXPORT ══════════════════════════════════════════════════════
 function exportJSON(){
   const exportData={
     version:3,
@@ -1084,9 +977,10 @@ function buildSummary(){
       note:'25k tokens must be used before Jul 14. Cancel reminder set for Jul 7 to switch to Higgsfield after first sale.'
     },
     projectContext:{
-      ourSteady:'Couples personal finance brand at oursteady.com. Products: Tracker $9, Reset Kit $37, Connection Bundle $67, Workbook $17. Funnel built, waiting for LemonSqueezy store approval.',
-      proDentim:'ClickBank affiliate product. Lead gen funnel at microbiome.pages.dev. Platform priority: TikTok > YouTube Shorts > Reels > Pinterest.',
-      startDate:'2026-06-16 (marketing starts Tue Jun 16 — Jun 15 was Leonardo cleanup day)'
+      ourSteady:'Couples personal finance brand at oursteady.com. Products: Tracker $9, Reset Kit $37, Connection Bundle $67, Workbook $17. LemonSqueezy store now ACTIVATED (Jun 16). Funnel live.',
+      proDentim:'ClickBank affiliate product. Lead gen funnel at microbiome.pages.dev. Pinterest: 39 pins live/queued (pins #1–39). New channels: Quora + Medium (signed up Jun 17). Platform priority: TikTok > YouTube Shorts > Reels > Pinterest > Quora > Medium.',
+      startDate:'2026-06-16 (marketing starts Tue Jun 16 — Jun 15 was Leonardo cleanup day)',
+      pinterestProgress:'39 pins total across 5 publishing dates (Jun 14, 16, 17, 18–19, 20)'
     }
   };
 }
@@ -1100,7 +994,6 @@ function importJSON(event){
       const data=JSON.parse(e.target.result);
       if(data.version>=2&&data.state){
         Object.assign(state,data.state);
-        // If import contains updated content plans, merge them
         if(data.updatedContentPlans){
           if(!state.contentPlans) state.contentPlans={};
           Object.assign(state.contentPlans,data.updatedContentPlans);
@@ -1127,7 +1020,6 @@ function importJSON(event){
   event.target.value='';
 }
 
-// ═══ UTILS ════════════════════════════════════════════════════════════════
 function escapeHtml(str){
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
