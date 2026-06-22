@@ -7,20 +7,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-<!-- 🔹 Favicon for Chrome/Firefox/Edge (legacy fallback) -->
 <link rel="icon" type="image/x-icon" href="./favicons/favicon.ico">
-
-<!-- 🔹 Specific sizes for better browser support -->
 <link rel="icon" type="image/png" sizes="16x16" href="./favicons/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="./favicons/favicon-32x32.png">
-
-<!-- 🔹 Apple Touch Icon (for iOS home screen) -->
 <link rel="apple-touch-icon" sizes="180x180" href="./favicons/apple-touch-icon.png">
-
-<!-- 🔹 Android Chrome / PWA Manifest -->
 <link rel="manifest" href="./favicons/site.webmanifest">
-
-<!-- 🔹 Optional: Android Chrome icons (referenced in manifest, but can add directly) -->
 <link rel="icon" type="image/png" sizes="192x192" href="./favicons/android-chrome-192x192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="./favicons/android-chrome-512x512.png">
 <style>
@@ -395,6 +386,30 @@ let state = {
         mood: "productive",
         content: "Quora activity — ProDentim organic channel.\n\nQuestion targeted: \"Why does your breath smell bad when you wake up, even if you brushed before bed?\"\n\nPosted 2 answers + 1 Quora post on this topic as Willow Foster | Exploring Oral Health, Dental Hygiene & the Oral Microbiome.\n\nNote: First attempt deleted — Quora spam policy flagged direct links. Adapted strategy: no embedded URLs in answers or posts. Value-first content only.\n\nContent focused on oral microbiome education: bacterial metabolism during sleep, reduced saliva flow overnight, mouth breathing effects, and the balance between beneficial vs. harmful bacterial strains. Soft brand mention via profile bio only — no links in post body."
       }
+    ],
+    "2026-06-19": [
+      {
+        time: "11:59 PM",
+        project: "steady",
+        mood: "productive",
+        content: "OurSteady checkout + LemonSqueezy live mode testing.\n\nUpdated salespage checkout button to live mode LemonSqueezy URLs.\n\nTested full checkout flow:\n• Tracker $9 + bump (Tracker Bundle $16)\n• Worker ran correctly — tags applied:\n  - Tracker purchase: customer + purchased_tracker\n  - Bump purchase: customer + purchased_tracker + purchased_sheet\n\nIssue found: only LemonSqueezy receipt email arrived in inbox — no additional nurture/welcome emails triggered for customers.\n\nFatal mistake discovered: big CTA button was incorrectly linking to Reset salespage instead of Tracker checkout.\n\nAlso learned: LemonSqueezy provides a my_order page for customers to download digital products (does NOT auto-attach files to email). Updated all checkout receipts to redirect to my_order page instead of funnel salespage.\n\nNote to action: Ask Claude to draft Email 0 (day 0) triggered by customer tags so new buyers immediately enter the \"OurSteady Nurture\" sequence for engagement."
+      }
+    ],
+    "2026-06-20": [
+      {
+        time: "11:59 PM",
+        project: "pro",
+        mood: "focused",
+        content: "Pinterest results analysis + major content strategy pivot.\n\nReviewed Pinterest performance with Claude:\n• 63 pins published/scheduled\n• Only 46 impressions, 9 engagements — mostly from myself\n• Not healthy — algorithm not distributing content\n\nKit (email) subscribers still empty — only my own test email.\n\nPin schedule adjusted: from 8 pins/day down to 3 pins/day at 1 AM, 7 AM or 9 AM, 11 PM. Remaining scheduled pins kept (not deleted) but approach upgraded.\n\nBIG STRATEGY PIVOT — \"Tell Better Stories\" mode (5 months ahead):\n\nContent funnel priority order:\nShorts → TikTok → Reels → Idea Pins → Carousel → Pins → Medium → Quora → Email broadcast\n\nCore idea: Film one strong UGC-style short video (inspired by 10M+ view 15s UGC ads reviewed with Claude), then use it as the root asset:\n• Polish with CapCut → TikTok, Reels, Idea Pins\n• Extract frames/content → Carousel images, static Pins\n• Use script as base → Medium article\n• Condense → Quora answer + Email broadcast\n\nShift from volume posting to story-first, video-led content with full cross-platform repurposing."
+      }
+    ],
+    "2026-06-21": [
+      {
+        time: "11:59 PM",
+        project: "general",
+        mood: "slow",
+        content: "Caught a flu. Rest day — no work done."
+      }
     ]
   },
   metrics: {},
@@ -409,7 +424,10 @@ let state = {
     "2026-06-15": "Pinterest mastery day ✓ — Learned full scheduling flow. Queued 16 ProDentim pins across 10 boards (Jun 14–17). 2 already live on Jun 14. 7 pins publishing Jun 16, 7 more Jun 17. Strong board diversity across oral health niches. First real content wave now in motion.",
     "2026-06-16": "OurSteady store activated ✓ (LemonSqueezy — confusing 2-email flow, still waiting on support reply). ProDentim Pinterest: 16 new pins scheduled for Jun 18–19. Running total: 32 pins live/queued.",
     "2026-06-17": "Signed up for Quora + Medium ✓ — new organic channels ready for ProDentim content. Scheduled 7 more Pinterest pins for Jun 20. Running total: 39 pins live/queued across 5 days.",
-    "2026-06-18": "LemonSqueezy live mode complete ✓ — all 12 OurSteady products copied from test to live, images & files re-uploaded, live IDs documented (1154505–1155456 range). Quora: 2 answers + 1 post as Willow Foster on morning breath / oral microbiome. No-link strategy after spam policy hit — value-first, profile-only branding."
+    "2026-06-18": "LemonSqueezy live mode complete ✓ — all 12 OurSteady products copied from test to live, images & files re-uploaded, live IDs documented (1154505–1155456 range). Quora: 2 answers + 1 post as Willow Foster on morning breath / oral microbiome. No-link strategy after spam policy hit — value-first, profile-only branding.",
+    "2026-06-19": "LemonSqueezy live checkout tested ✓ — worker tags working (customer + purchased_tracker + purchased_sheet). Found fatal CTA button error (was linking to Reset salespage). Discovered my_order page for downloads — updated all receipts. Issue: no nurture emails triggering post-purchase. Action: need Email 0 for customer tags → OurSteady Nurture sequence.",
+    "2026-06-20": "Pinterest reality check ✓ — 63 pins, only 46 impressions (mostly self). Schedule cut from 8 → 3 pins/day. KIT still empty. Major pivot to \"Tell Better Stories\" video-first strategy: Shorts → TikTok → Reels → Idea Pins → Carousel → Pins → Medium → Quora → Email. One core UGC video repurposed across all channels.",
+    "2026-06-21": "Sick day — flu. Full rest. No output."
   },
   contentPlans: {
     "2026-06-16": [
@@ -429,13 +447,16 @@ let state = {
     ],
     "2026-06-19": [
       {platform:"Pinterest",color:"#e04a00",text:"8 pins auto-publishing (1AM–11AM) — queued ✓",freq:"scheduled"},
-      {platform:"Reels",color:"#b8860b",text:"\"5 signs of poor oral microbiome\" — short Reel",freq:"priority"},
-      {platform:"Medium",color:"#7c3aed",text:"Publish first ProDentim article",freq:"2/wk"}
+      {platform:"LemonSqueezy",color:"#b8860b",text:"Update checkout URLs to live mode + test full flow ✓",freq:"done"},
+      {platform:"Medium",color:"#7c3aed",text:"Publish first ProDentim article",freq:"priority"}
     ],
     "2026-06-20": [
-      {platform:"Pinterest",color:"#e04a00",text:"7 pins auto-publishing (1AM–11AM) — queued ✓",freq:"scheduled"},
-      {platform:"TikTok",color:"#0891b2",text:"ProDentim Day 7 update — results check-in",freq:"1/day"},
-      {platform:"Quora",color:"#b8860b",text:"Answer 2–3 oral health questions",freq:"daily"}
+      {platform:"Pinterest",color:"#e04a00",text:"7 pins publishing (adjusted to 3/day going forward) ✓",freq:"scheduled"},
+      {platform:"Strategy",color:"#0891b2",text:"\"Tell Better Stories\" pivot — video-first content funnel ✓",freq:"done"},
+      {platform:"TikTok",color:"#0891b2",text:"Film first core UGC short — root asset for all channels",freq:"priority"}
+    ],
+    "2026-06-21": [
+      {platform:"Rest",color:"#8a8a84",text:"Sick day — flu recovery",freq:"personal"}
     ]
   },
   marketingWeekStart: '2026-06-16'
@@ -1008,10 +1029,10 @@ function buildSummary(){
       note:'25k tokens must be used before Jul 14. Cancel reminder set for Jul 7 to switch to Higgsfield after first sale.'
     },
     projectContext:{
-      ourSteady:'Couples personal finance brand at oursteady.com. LemonSqueezy store LIVE (Jun 18). All 12 products in live mode with new IDs. Live IDs: Tracker $9→1154505, Tracker Bundle $16→1155440, Reset $37→1155443, Connection $67→1155446, Workbook $17→1155447, Sheet $7→1155448, Deck $27→1155449, Personality $27→1155450, Vault $27→1155451, Accelerator $47→1155454, Investment $37→1155455, Modules $97→1155456.',
-      proDentim:'ClickBank affiliate product. Lead gen funnel at microbiome.pages.dev. Pinterest: 39 pins live/queued (pins #1–39). Quora: active as Willow Foster — no-link strategy after spam policy hit. Medium: account ready. Platform priority: TikTok > YouTube Shorts > Reels > Pinterest > Quora > Medium.',
+      ourSteady:'Couples personal finance brand at oursteady.com. LemonSqueezy store LIVE (Jun 18). All 12 products in live mode. Checkout tested Jun 19 — worker tags confirmed working. Fatal CTA bug fixed (was pointing to Reset instead of Tracker). my_order page used for downloads. Email 0 nurture sequence still to be set up.',
+      proDentim:'ClickBank affiliate product. Lead gen funnel at microbiome.pages.dev. Pinterest: 63 pins total (schedule adjusted to 3/day). Strategy pivot Jun 20: video-first "Tell Better Stories" funnel — Shorts → TikTok → Reels → Idea Pins → Carousel → Pins → Medium → Quora → Email. Quora: active as Willow Foster. Medium: account ready.',
       startDate:'2026-06-16 (marketing starts Tue Jun 16 — Jun 15 was Leonardo cleanup day)',
-      pinterestProgress:'39 pins total across 5 publishing dates (Jun 14, 16, 17, 18–19, 20)'
+      pinterestProgress:'63 pins total — pivoted to 3 pins/day after 46 impressions / 9 engagements on 63 pins (mostly self). Video-first strategy now priority over pin volume.'
     }
   };
 }
