@@ -22,9 +22,9 @@
     --danger: #c45c4a;
     --sidebar-w: 280px;
     --grain-opacity: 0.025;
-    --log-left: #f0ece3;
-    --log-right: #edf2ed;
-    --log-line: #ccc6b8;
+    --accent-2: #5f7d6b;
+    --accent-2-dim: #4f6b5a;
+    --accent-2-glow: rgba(95, 125, 107, 0.12);
   }
 
   [data-theme="dark"] {
@@ -41,9 +41,9 @@
     --text-dim: #4a4640;
     --danger: #c45c4a;
     --grain-opacity: 0.03;
-    --log-left: #181613;
-    --log-right: #111712;
-    --log-line: #2a2825;
+    --accent-2: #8fbf9f;
+    --accent-2-dim: #78a888;
+    --accent-2-glow: rgba(143, 191, 159, 0.10);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -482,9 +482,11 @@
     .editor-textarea { padding: 20px; font-size: 13px; }
     .editor-toolbar { padding: 10px 16px; }
     .status-bar { padding: 6px 16px; }
-    .log-scroll { padding: 16px 10px 100px; }
-    .log-entry { grid-template-columns: 1fr; }
-    .timeline-center { display: none; }
+    #splitContainer { flex-direction: column !important; }
+    .split-divider { width: 100% !important; height: 6px !important; cursor: row-resize; }
+    .split-divider::after { width: 28px; height: 2px; }
+    .split-pane-toolbar { padding: 10px 16px; }
+    .split-pane-textarea { padding: 16px; }
   }
 
   .sidebar-toggle-mobile {
@@ -503,348 +505,170 @@
   .overlay.show { display: block; }
 
   /* ══════════════════════════════════
-     LOG MODE
+     EXPORT MENU
   ══════════════════════════════════ */
 
-  #logContainer {
-    display: none; flex: 1; flex-direction: column;
-    height: 100%; background: var(--bg);
-    transition: background 0.35s ease;
-  }
-
-  /* Log toolbar */
-  .log-toolbar {
-    padding: 0 32px;
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 0;
-    background: var(--bg); min-height: 48px;
-    transition: background 0.35s ease, border-color 0.35s ease;
-  }
-
-  .log-toolbar-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 14px; font-weight: 600;
-    color: var(--text);
-    display: flex; align-items: center; gap: 8px;
-    flex: 1;
-  }
-
-  .log-toolbar-title svg {
-    width: 15px; height: 15px;
-    stroke: var(--accent); fill: none;
-    stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
-    flex-shrink: 0;
-  }
-
-  /* Month navigator */
-  .month-nav {
-    display: flex; align-items: center; gap: 2px;
-  }
-
-  .month-nav-btn {
-    background: none;
+  .btn-export {
+    background: transparent;
     border: 1px solid var(--border);
     color: var(--text-muted);
-    width: 28px; height: 28px;
-    border-radius: 3px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px;
-    transition: all 0.15s ease;
-    line-height: 1;
-  }
-
-  .month-nav-btn:hover { color: var(--accent); border-color: var(--accent-dim); background: var(--accent-glow); }
-  .month-nav-btn:disabled { opacity: 0.3; cursor: default; pointer-events: none; }
-
-  .month-nav-label {
     font-family: 'DM Mono', monospace;
     font-size: 11px; font-weight: 500;
-    color: var(--text);
-    min-width: 90px; text-align: center;
-    letter-spacing: 0.03em;
-    padding: 0 6px;
-  }
-
-  .month-nav-label.is-current { color: var(--accent); }
-
-  .log-badge {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px; color: var(--text-dim);
-    background: var(--surface); border: 1px solid var(--border);
-    padding: 2px 8px; border-radius: 10px;
-    letter-spacing: 0.04em;
-    margin-left: 8px;
-  }
-
-  /* Scrollable area */
-  .log-scroll {
-    flex: 1; overflow-y: auto;
-    padding: 28px 32px 100px;
-  }
-
-  /* New entry box */
-  .log-new-entry {
-    border: 1px dashed var(--border);
-    border-radius: 6px;
-    margin-bottom: 36px;
-    transition: border-color 0.2s ease;
-    overflow: hidden;
-  }
-
-  .log-new-entry:focus-within { border-color: var(--accent-dim); }
-
-  .log-new-header {
-    padding: 10px 14px;
-    display: flex; align-items: center; justify-content: space-between;
-    border-bottom: 1px dashed var(--border);
-    transition: border-color 0.2s ease;
-  }
-
-  .log-new-entry:focus-within .log-new-header { border-color: var(--accent-dim); }
-
-  .log-new-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim);
-  }
-
-  .log-new-date {
-    font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-dim);
-  }
-
-  .log-new-textarea {
-    width: 100%; background: transparent; border: none; outline: none; resize: none;
-    font-family: 'DM Mono', monospace; font-size: 12px; line-height: 1.7; color: var(--text);
-    padding: 14px; min-height: 90px;
-  }
-
-  .log-new-textarea::placeholder { color: var(--text-dim); }
-
-  .log-new-footer {
-    padding: 8px 14px;
-    border-top: 1px dashed var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-    transition: border-color 0.2s ease;
-  }
-
-  .log-new-entry:focus-within .log-new-footer { border-color: var(--accent-dim); }
-
-  .log-hint {
-    font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-dim);
-    letter-spacing: 0.04em;
-  }
-
-  .log-submit-btn {
-    background: var(--accent); border: none; color: var(--bg);
-    font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
+    padding: 7px 12px;
+    border-radius: 4px; cursor: pointer;
+    transition: all 0.2s ease;
     text-transform: uppercase; letter-spacing: 0.08em;
-    padding: 6px 14px; border-radius: 3px; cursor: pointer;
-    transition: all 0.15s ease;
+    display: flex; align-items: center; justify-content: center; gap: 4px;
+    white-space: nowrap; flex-shrink: 0;
   }
 
-  .log-submit-btn:hover { opacity: 0.85; }
-  .log-submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-export:hover { background: var(--surface-hover); color: var(--text); border-color: var(--text-dim); }
+  .btn-export.small { padding: 5px 9px; font-size: 12px; border-radius: 50%; width: 28px; height: 28px; }
 
-  /* Timeline entry */
-  .log-entry {
-    display: grid;
-    grid-template-columns: 1fr 76px 1fr;
-    gap: 0;
-    margin-bottom: 32px;
-    position: relative;
-    align-items: start;
-    animation: entryIn 0.3s ease;
-  }
+  .export-wrap { position: relative; flex-shrink: 0; }
 
-  @keyframes entryIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-  /* Left box */
-  .log-report-box {
-    background: var(--log-left);
-    border: 1px solid var(--border);
-    border-radius: 6px 0 0 6px;
-    min-height: 80px;
-    transition: background 0.35s ease, border-color 0.35s ease;
-  }
-
-  .log-report-box.editing { border-color: var(--accent-dim); box-shadow: 0 0 0 2px var(--accent-glow); }
-
-  .log-box-header {
-    padding: 9px 13px 8px;
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-    transition: border-color 0.35s ease;
-  }
-
-  .log-box-label {
-    font-family: 'DM Mono', monospace; font-size: 9px;
-    text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim);
-  }
-
-  .log-edit-btn {
-    background: none; border: none; cursor: pointer;
-    color: var(--text-dim);
-    font-family: 'DM Mono', monospace; font-size: 9px;
-    text-transform: uppercase; letter-spacing: 0.08em;
-    padding: 2px 6px; border-radius: 3px; transition: all 0.15s ease;
-  }
-
-  .log-edit-btn:hover { color: var(--accent); background: var(--accent-glow); }
-
-  .log-report-content {
-    padding: 11px 13px;
-    font-family: 'DM Mono', monospace; font-size: 12px; line-height: 1.7; color: var(--text);
-    white-space: pre-wrap; word-break: break-word; min-height: 55px;
-  }
-
-  /* Original text toggle */
-  .log-original-toggle {
-    padding: 0 13px 9px;
-    display: flex; align-items: center; gap: 6px;
-  }
-
-  .log-original-btn {
-    background: none; border: none; cursor: pointer;
-    font-family: 'DM Mono', monospace; font-size: 9px;
-    color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.07em;
-    padding: 2px 0; transition: color 0.15s ease;
-    display: flex; align-items: center; gap: 4px;
-  }
-
-  .log-original-btn:hover { color: var(--text-muted); }
-
-  .log-original-btn svg {
-    width: 10px; height: 10px;
-    stroke: currentColor; fill: none;
-    stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
-    transition: transform 0.2s ease;
-  }
-
-  .log-original-btn.open svg { transform: rotate(90deg); }
-
-  .log-original-text {
+  .export-menu {
     display: none;
-    padding: 8px 13px 10px;
-    border-top: 1px dashed var(--border);
-    font-family: 'DM Mono', monospace; font-size: 11px; line-height: 1.65;
-    color: var(--text-muted); white-space: pre-wrap; word-break: break-word;
-    font-style: italic;
+    position: absolute; top: calc(100% + 6px); right: 0;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 4px;
+    min-width: 160px; z-index: 50;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
   }
 
-  .log-original-text.show { display: block; }
+  .export-menu.show { display: block; animation: fadeIn 0.15s ease; }
 
-  .log-report-textarea {
-    width: 100%; background: transparent; border: none; outline: none; resize: none;
-    font-family: 'DM Mono', monospace; font-size: 12px; line-height: 1.7; color: var(--text);
-    padding: 11px 13px; min-height: 70px; display: none;
+  .export-menu-item {
+    display: block; width: 100%; text-align: left;
+    background: none; border: none; cursor: pointer;
+    color: var(--text); font-family: 'DM Mono', monospace;
+    font-size: 11px; padding: 8px 10px; border-radius: 4px;
+    transition: background 0.15s ease, color 0.15s ease;
   }
 
-  .log-report-box.editing .log-report-content { display: none; }
-  .log-report-box.editing .log-original-toggle { display: none; }
-  .log-report-box.editing .log-original-text { display: none !important; }
-  .log-report-box.editing .log-report-textarea { display: block; }
+  .export-menu-item:hover { background: var(--accent-glow); color: var(--accent); }
 
-  .log-report-actions {
-    padding: 7px 13px; display: none; gap: 6px;
-    border-top: 1px solid var(--border);
-  }
+  /* ══════════════════════════════════
+     SPLIT VIEW
+  ══════════════════════════════════ */
 
-  .log-report-box.editing .log-report-actions { display: flex; }
-
-  .log-save-btn {
-    background: var(--accent); border: none; color: var(--bg);
-    font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 500;
-    text-transform: uppercase; letter-spacing: 0.08em;
-    padding: 5px 10px; border-radius: 3px; cursor: pointer; transition: all 0.15s ease;
-  }
-
-  .log-save-btn:hover { opacity: 0.85; }
-
-  .log-cancel-btn {
-    background: none; border: 1px solid var(--border); color: var(--text-muted);
-    font-family: 'DM Mono', monospace; font-size: 9px;
-    text-transform: uppercase; letter-spacing: 0.08em;
-    padding: 5px 10px; border-radius: 3px; cursor: pointer; transition: all 0.15s ease;
-  }
-
-  .log-cancel-btn:hover { background: var(--surface-hover); color: var(--text); }
-
-  /* Center timeline */
-  .timeline-center {
-    display: flex; flex-direction: column; align-items: center;
-    position: relative; padding-top: 14px; z-index: 1;
-  }
-
-  .timeline-line-top { width: 1px; height: 14px; background: var(--log-line); transition: background 0.35s ease; }
-  .timeline-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; margin: 4px 0; box-shadow: 0 0 0 3px var(--accent-glow); }
-
-  .timeline-date {
-    font-family: 'DM Mono', monospace; font-size: 8px; color: var(--text-dim);
-    text-transform: uppercase; letter-spacing: 0.06em;
-    text-align: center; line-height: 1.4; white-space: nowrap; margin-top: 4px;
-  }
-
-  .timeline-line-bottom { flex: 1; min-height: 40px; width: 1px; background: var(--log-line); transition: background 0.35s ease; }
-
-  /* Right box */
-  .log-feedback-box {
-    background: var(--log-right);
-    border: 1px solid var(--border); border-left: none;
-    border-radius: 0 6px 6px 0; min-height: 80px;
-    transition: background 0.35s ease, border-color 0.35s ease;
+  #splitContainer {
+    display: none;
+    flex: 1;
+    height: 100%;
     overflow: hidden;
   }
 
-  .log-feedback-header {
-    padding: 9px 13px 8px;
+  .split-pane {
+    flex: 1 1 50%;
+    min-width: 0;
+    display: flex; flex-direction: column;
+    height: 100%; position: relative;
+    background: var(--bg);
+  }
+
+  .split-pane-toolbar {
+    padding: 10px 20px;
     border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 6px;
-    transition: border-color 0.35s ease;
+    display: flex; align-items: center; gap: 10px;
+    min-height: 48px;
+    background: var(--bg);
+    transition: background 0.35s ease, border-color 0.35s ease;
   }
 
-  .log-feedback-label {
-    font-family: 'DM Mono', monospace; font-size: 9px;
-    text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent);
+  .split-pane.is-active-pane .split-pane-toolbar { border-bottom-color: var(--accent-dim); }
+
+  .split-pane-tag {
+    font-family: 'Syne', sans-serif;
+    font-size: 10px; font-weight: 700;
+    width: 20px; height: 20px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: box-shadow 0.2s ease;
   }
 
-  .log-feedback-content {
-    padding: 11px 13px;
-    font-family: 'DM Mono', monospace; font-size: 12px; line-height: 1.7; color: var(--text);
-    white-space: pre-wrap; word-break: break-word; min-height: 55px;
+  .split-pane-tag.left  { color: var(--accent);   border: 1px solid var(--accent-dim);   background: var(--accent-glow); }
+  .split-pane-tag.right { color: var(--accent-2); border: 1px solid var(--accent-2-dim); background: var(--accent-2-glow); }
+  .split-pane.is-active-pane .split-pane-tag { box-shadow: 0 0 0 3px var(--accent-glow); }
+
+  .split-pane-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px; font-weight: 600;
+    color: var(--text);
+    background: none; border: none; outline: none;
+    padding: 4px 0; flex: 1; min-width: 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease, color 0.35s ease;
   }
 
-  .log-feedback-content.pending { color: var(--text-dim); font-style: italic; }
+  .split-pane-title:focus { border-bottom-color: var(--accent-dim); }
 
-  .feedback-loading { display: flex; align-items: center; gap: 4px; padding: 14px; }
-
-  .feedback-loading span {
-    width: 5px; height: 5px; border-radius: 50%; background: var(--accent);
-    animation: dotPulse 1.2s ease-in-out infinite;
+  .split-pane-textarea {
+    flex: 1; width: 100%;
+    background: var(--bg); color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px; line-height: 1.8;
+    border: none; outline: none; resize: none;
+    padding: 24px 28px; tab-size: 4;
+    transition: background 0.35s ease, color 0.35s ease;
   }
 
-  .feedback-loading span:nth-child(2) { animation-delay: 0.2s; }
-  .feedback-loading span:nth-child(3) { animation-delay: 0.4s; }
+  .split-pane-textarea::placeholder { color: var(--text-dim); }
 
-  @keyframes dotPulse {
-    0%, 80%, 100% { opacity: 0.2; transform: scale(0.85); }
-    40% { opacity: 1; transform: scale(1); }
+  .split-pane-status {
+    padding: 5px 20px;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    font-size: 9px; color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: 0.06em;
+    min-height: 28px; display: flex; align-items: center;
+    transition: background 0.35s ease, border-color 0.35s ease, color 0.35s ease;
   }
 
-  /* Empty / no-entries */
-  .log-empty {
-    text-align: center; padding: 48px 20px; color: var(--text-dim);
+  .split-pane-empty {
+    flex: 1; display: none;
+    flex-direction: column; align-items: center; justify-content: center;
+    color: var(--text-dim); gap: 8px; user-select: none;
   }
 
-  .log-empty-icon { font-family: 'Instrument Serif', serif; font-size: 36px; color: var(--border); margin-bottom: 8px; }
-  .log-empty p { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .split-pane-empty .icon { font-family: 'Instrument Serif', serif; font-size: 36px; color: var(--border); }
+  .split-pane-empty p { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .split-pane.is-empty .split-pane-textarea { display: none; }
+  .split-pane.is-empty .split-pane-empty { display: flex; }
 
-  /* Past-month banner (no new entry) */
-  .log-past-notice {
-    border: 1px solid var(--border);
-    border-radius: 6px; padding: 12px 16px;
-    margin-bottom: 32px;
-    font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-dim);
-    text-align: center; letter-spacing: 0.04em;
+  .split-divider {
+    width: 6px; flex-shrink: 0; cursor: col-resize;
+    background: var(--border); position: relative;
+    transition: background 0.2s ease;
   }
+
+  .split-divider:hover, .split-divider.dragging { background: var(--accent-dim); }
+
+  .split-divider::after {
+    content: ''; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 2px; height: 28px; border-radius: 2px;
+    background: var(--bg);
+  }
+
+  /* Sidebar highlighting while assigning notes to split panes */
+  .note-item.split-left  { background: var(--accent-glow);   border-color: var(--accent-dim); }
+  .note-item.split-right { background: var(--accent-2-glow); border-color: var(--accent-2-dim); }
+
+  .split-badge {
+    display: inline-block;
+    font-family: 'Syne', sans-serif;
+    font-size: 9px; font-weight: 700;
+    padding: 1px 5px; border-radius: 8px;
+    margin-right: 6px; vertical-align: middle;
+  }
+
+  .split-badge.left  { color: var(--accent);   border: 1px solid var(--accent-dim);   background: var(--accent-glow); }
+  .split-badge.right { color: var(--accent-2); border: 1px solid var(--accent-2-dim); background: var(--accent-2-glow); }
+
+  .sidebar.collapsed .note-item.split-left  .note-abbrev { color: var(--accent); }
+  .sidebar.collapsed .note-item.split-right .note-abbrev { color: var(--accent-2); }
+
 </style>
 </head>
 <body>
@@ -859,12 +683,11 @@
       <div class="header-actions">
         <button class="sidebar-toggle-header" data-action="toggle-sidebar" title="Toggle sidebar">☰</button>
 
-        <!-- Log icon -->
-        <button class="icon-btn" id="logToggleBtn" data-action="toggle-log" title="Marketing log">
-          <svg class="icon-log" viewBox="0 0 24 24" style="position:absolute;">
-            <rect x="3" y="3" width="18" height="18" rx="2"/>
-            <line x1="3" y1="9" x2="21" y2="9"/>
-            <line x1="9" y1="21" x2="9" y2="9"/>
+        <!-- Split view toggle -->
+        <button class="icon-btn" id="splitToggleBtn" data-action="toggle-split" title="Compare two notes side by side">
+          <svg viewBox="0 0 24 24" style="position:absolute;">
+            <rect x="3" y="4" width="18" height="16" rx="2"/>
+            <line x1="12" y1="4" x2="12" y2="20"/>
           </svg>
         </button>
 
@@ -880,10 +703,10 @@
       <button class="btn-new" data-action="new-note" title="Ctrl+N">
         <span class="btn-icon">+</span><span class="btn-label"> New Note</span>
       </button>
-      <button class="btn-import" data-action="import" title="Import .txt or .html">
+      <button class="btn-import" data-action="import" title="Import .txt, .md or .html">
         <span class="btn-icon">↓</span><span class="btn-label"> Import</span>
       </button>
-      <input type="file" id="importFile" accept=".txt,.html,text/plain,text/html" style="display:none">
+      <input type="file" id="importFile" accept=".txt,.md,.markdown,.html,text/plain,text/markdown,text/html" style="display:none">
     </div>
 
     <div class="search-box">
@@ -925,6 +748,15 @@
           <button class="sidebar-toggle-mobile" data-action="toggle-sidebar" title="Toggle sidebar">☰</button>
           <input type="text" class="editor-title" id="editorTitle" placeholder="Untitled">
         </div>
+        <div class="export-wrap" id="exportWrap">
+          <button class="btn-export" data-action="toggle-export-menu" title="Export this note">
+            <span class="btn-icon">↑</span><span class="btn-label"> Export</span>
+          </button>
+          <div class="export-menu" id="exportMenu">
+            <button class="export-menu-item" data-export="md">Markdown (.md)</button>
+            <button class="export-menu-item" data-export="txt">Plain text (.txt)</button>
+          </div>
+        </div>
       </div>
       <div class="editor-area">
         <textarea class="editor-textarea" id="editorTextarea" placeholder="Start writing..."></textarea>
@@ -942,47 +774,48 @@
       </div>
     </div>
 
-    <!-- Log view -->
-    <div id="logContainer">
-      <div class="log-toolbar">
-        <div class="log-toolbar-title">
-          <svg viewBox="0 0 24 24">
-            <rect x="3" y="3" width="18" height="18" rx="2"/>
-            <line x1="3" y1="9" x2="21" y2="9"/>
-            <line x1="9" y1="21" x2="9" y2="9"/>
-          </svg>
-          Marketing Log
-          <span class="log-badge" id="logBadge">0 entries</span>
+    <!-- Split view -->
+    <div id="splitContainer">
+      <div class="split-pane" id="splitPaneLeft">
+        <div class="split-pane-toolbar">
+          <span class="split-pane-tag left" id="splitTagLeft">L</span>
+          <input type="text" class="split-pane-title" id="splitTitleLeft" placeholder="Untitled">
+          <div class="export-wrap" id="exportWrapLeft">
+            <button class="btn-export small" data-action="toggle-export-menu-left" title="Export this note">↑</button>
+            <div class="export-menu" id="exportMenuLeft">
+              <button class="export-menu-item" data-export-pane="left" data-export="md">Markdown (.md)</button>
+              <button class="export-menu-item" data-export-pane="left" data-export="txt">Plain text (.txt)</button>
+            </div>
+          </div>
         </div>
-        <!-- Month navigator -->
-        <div class="month-nav">
-          <button class="month-nav-btn" id="monthPrev" title="Previous month">&#8249;</button>
-          <span class="month-nav-label" id="monthLabel"></span>
-          <button class="month-nav-btn" id="monthNext" title="Next month" disabled>&#8250;</button>
+        <textarea class="split-pane-textarea" id="splitTextareaLeft" placeholder="Start writing..."></textarea>
+        <div class="split-pane-empty" id="splitEmptyLeft">
+          <div class="icon">L</div>
+          <p>Click a note in the sidebar</p>
         </div>
+        <div class="split-pane-status" id="splitStatusLeft"></div>
       </div>
 
-      <div class="log-scroll" id="logScroll">
-        <!-- New entry form (only shown for current month) -->
-        <div id="logNewEntry" class="log-new-entry">
-          <div class="log-new-header">
-            <span class="log-new-label">Today's report</span>
-            <span class="log-new-date" id="logNewDate"></span>
-          </div>
-          <textarea class="log-new-textarea" id="logNewTextarea" placeholder="Write your marketing report for today..."></textarea>
-          <div class="log-new-footer">
-            <span class="log-hint">Ctrl+Enter to submit · English auto-corrected on save</span>
-            <button class="log-submit-btn" id="logSubmitBtn" data-action="submit-log">Submit</button>
+      <div class="split-divider" id="splitDivider"></div>
+
+      <div class="split-pane" id="splitPaneRight">
+        <div class="split-pane-toolbar">
+          <span class="split-pane-tag right" id="splitTagRight">R</span>
+          <input type="text" class="split-pane-title" id="splitTitleRight" placeholder="Untitled">
+          <div class="export-wrap" id="exportWrapRight">
+            <button class="btn-export small" data-action="toggle-export-menu-right" title="Export this note">↑</button>
+            <div class="export-menu" id="exportMenuRight">
+              <button class="export-menu-item" data-export-pane="right" data-export="md">Markdown (.md)</button>
+              <button class="export-menu-item" data-export-pane="right" data-export="txt">Plain text (.txt)</button>
+            </div>
           </div>
         </div>
-
-        <!-- Past-month notice (shown when browsing old months) -->
-        <div id="logPastNotice" class="log-past-notice" style="display:none;">
-          Viewing past entries — switch to the current month to add a new report.
+        <textarea class="split-pane-textarea" id="splitTextareaRight" placeholder="Start writing..."></textarea>
+        <div class="split-pane-empty" id="splitEmptyRight">
+          <div class="icon">R</div>
+          <p>Click a note in the sidebar</p>
         </div>
-
-        <!-- Timeline -->
-        <div id="logTimeline"></div>
+        <div class="split-pane-status" id="splitStatusRight"></div>
       </div>
     </div>
 
@@ -993,15 +826,18 @@
 // ══════════════════════════════════
 // STATE
 // ══════════════════════════════════
-let notes      = JSON.parse(localStorage.getItem('notepad_notes') || '[]');
-let logEntries = JSON.parse(localStorage.getItem('notepad_log')   || '[]');
+let notes        = JSON.parse(localStorage.getItem('notepad_notes') || '[]');
 let activeNoteId  = null;
 let saveTimeout   = null;
 let draggedId     = null;
-let isLogMode     = false;
 
-// Month navigator: 0 = current month, -1 = one month back, etc.
-let monthOffset = 0;
+// Split view state
+let isSplitMode      = false;
+let splitLeftId      = null;
+let splitRightId     = null;
+let splitActivePane  = 'left';
+let splitSaveTimeouts = { left: null, right: null };
+let sidebarWasCollapsedBeforeSplit = false;
 
 const $ = id => document.getElementById(id);
 
@@ -1027,30 +863,49 @@ function init() {
   renderNotesList();
   if (notes.length > 0) selectNote(notes[0].id);
   updateFooter();
-  setLogNewDate();
 }
 
 function setupEventListeners() {
   document.addEventListener('click', e => {
     const btn = e.target.closest('[data-action]');
-    if (!btn) return;
-    switch (btn.dataset.action) {
-      case 'new-note':       createNote(); break;
-      case 'import':         $('importFile').click(); break;
-      case 'toggle-theme':   toggleTheme(); break;
-      case 'toggle-sidebar': toggleSidebar(); break;
-      case 'toggle-log':     toggleLogMode(); break;
-      case 'backup':         backupNotes(); break;
-      case 'restore':        $('restoreFile').click(); break;
-      case 'submit-log':     submitLogEntry(); break;
+    if (btn) {
+      switch (btn.dataset.action) {
+        case 'new-note':       createNote(); break;
+        case 'import':         $('importFile').click(); break;
+        case 'toggle-theme':   toggleTheme(); break;
+        case 'toggle-sidebar': toggleSidebar(); break;
+        case 'toggle-split':   toggleSplitMode(); break;
+        case 'backup':         backupNotes(); break;
+        case 'restore':        $('restoreFile').click(); break;
+        case 'toggle-export-menu':       toggleExportMenu('exportMenu'); break;
+        case 'toggle-export-menu-left':  toggleExportMenu('exportMenuLeft'); break;
+        case 'toggle-export-menu-right': toggleExportMenu('exportMenuRight'); break;
+      }
     }
+
+    const exportItem = e.target.closest('.export-menu-item');
+    if (exportItem) {
+      const format = exportItem.dataset.export;
+      const pane   = exportItem.dataset.exportPane;
+      const noteId = pane === 'left' ? splitLeftId : pane === 'right' ? splitRightId : activeNoteId;
+      exportNote(noteId, format);
+      closeAllExportMenus();
+      return;
+    }
+
+    if (!e.target.closest('.export-wrap')) closeAllExportMenus();
   });
 
   $('notesList').addEventListener('click', e => {
     const del = e.target.closest('.delete-btn');
     if (del) { const item = del.closest('.note-item'); if (item) deleteNote(item.dataset.id, e); return; }
     const item = e.target.closest('.note-item');
-    if (item) { selectNote(item.dataset.id); if (isLogMode) toggleLogMode(false); }
+    if (!item) return;
+    if (isSplitMode) {
+      assignNoteToPane(splitActivePane, item.dataset.id);
+    } else {
+      selectNote(item.dataset.id);
+    }
   });
 
   $('notesList').addEventListener('dragstart', handleDragStart);
@@ -1068,303 +923,211 @@ function setupEventListeners() {
   $('editorTextarea').addEventListener('click', updateCursorPos);
   $('editorTextarea').addEventListener('keyup', updateCursorPos);
 
-  $('logNewTextarea').addEventListener('keydown', e => {
-    if (e.ctrlKey && e.key === 'Enter') submitLogEntry();
-  });
+  // Split pane editing
+  $('splitTitleLeft').addEventListener('input', () => onSplitTitleChange('left'));
+  $('splitTitleRight').addEventListener('input', () => onSplitTitleChange('right'));
+  $('splitTextareaLeft').addEventListener('input', () => onSplitContentChange('left'));
+  $('splitTextareaRight').addEventListener('input', () => onSplitContentChange('right'));
+  $('splitPaneLeft').addEventListener('click', () => setSplitActivePane('left'));
+  $('splitPaneRight').addEventListener('click', () => setSplitActivePane('right'));
 
-  $('monthPrev').addEventListener('click', () => { monthOffset--; renderLogView(); });
-  $('monthNext').addEventListener('click', () => { monthOffset++; if (monthOffset > 0) monthOffset = 0; renderLogView(); });
+  setupSplitDivider();
+
+  window.addEventListener('resize', () => {
+    if (isSplitMode) {
+      $('splitContainer').style.flexDirection = window.innerWidth <= 700 ? 'column' : 'row';
+    }
+  });
 }
 
 // ══════════════════════════════════
-// LOG MODE
+// SPLIT VIEW
 // ══════════════════════════════════
 
-function setLogNewDate() {
-  $('logNewDate').textContent = new Date().toLocaleDateString('en-US', {
-    weekday: 'short', month: 'short', day: 'numeric', year: 'numeric'
-  });
-}
+function toggleSplitMode(forceOff) {
+  isSplitMode = forceOff === false ? false : !isSplitMode;
+  $('splitToggleBtn').classList.toggle('active', isSplitMode);
+  closeAllExportMenus();
 
-function toggleLogMode(forceOff) {
-  isLogMode = forceOff === false ? false : !isLogMode;
-  $('logToggleBtn').classList.toggle('active', isLogMode);
-
-  if (isLogMode) {
-    $('logContainer').style.display = 'flex';
-    $('logContainer').style.flexDirection = 'column';
+  if (isSplitMode) {
+    $('splitContainer').style.display = 'flex';
+    $('splitContainer').style.flexDirection = window.innerWidth <= 700 ? 'column' : 'row';
     $('emptyState').style.display = 'none';
     $('editorContainer').style.display = 'none';
-    monthOffset = 0;
-    setLogNewDate();
-    renderLogView();
+
+    // Auto-shrink the sidebar to make room, remembering how it was
+    sidebarWasCollapsedBeforeSplit = $('sidebar').classList.contains('collapsed');
+    if (window.innerWidth > 700) $('sidebar').classList.add('collapsed');
+
+    // Sensible defaults: current note on the left, another note on the right
+    if (!splitLeftId || !notes.find(n => n.id === splitLeftId)) {
+      splitLeftId = (activeNoteId && notes.find(n => n.id === activeNoteId)) ? activeNoteId : (notes[0] ? notes[0].id : null);
+    }
+    if (!splitRightId || !notes.find(n => n.id === splitRightId) || splitRightId === splitLeftId) {
+      const alt = notes.find(n => n.id !== splitLeftId);
+      splitRightId = alt ? alt.id : null;
+    }
+
+    splitActivePane = 'left';
+    renderSplitPane('left');
+    renderSplitPane('right');
+    updateSplitActivePaneUI();
   } else {
-    $('logContainer').style.display = 'none';
-    activeNoteId ? ($('editorContainer').style.display = 'flex') : ($('emptyState').style.display = 'flex');
-  }
-}
+    $('splitContainer').style.display = 'none';
+    if (!sidebarWasCollapsedBeforeSplit && window.innerWidth > 700) $('sidebar').classList.remove('collapsed');
 
-// Derive year/month from offset
-function getViewMonth() {
-  const d = new Date();
-  d.setDate(1);
-  d.setMonth(d.getMonth() + monthOffset);
-  return { year: d.getFullYear(), month: d.getMonth() }; // month 0-indexed
-}
-
-function renderLogView() {
-  const { year, month } = getViewMonth();
-  const isCurrentMonth = monthOffset === 0;
-
-  // Month label
-  const labelEl = $('monthLabel');
-  labelEl.textContent = new Date(year, month, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-  labelEl.className = 'month-nav-label' + (isCurrentMonth ? ' is-current' : '');
-
-  // Next button disabled if already at current month
-  $('monthNext').disabled = isCurrentMonth;
-
-  // Show/hide new-entry form vs past notice
-  if (isCurrentMonth) {
-    $('logNewEntry').style.display = '';
-    $('logPastNotice').style.display = 'none';
-  } else {
-    $('logNewEntry').style.display = 'none';
-    $('logPastNotice').style.display = '';
+    if (splitLeftId && notes.find(n => n.id === splitLeftId)) selectNote(splitLeftId);
+    else if (notes.length > 0) selectNote(notes[0].id);
+    else showEmpty();
   }
 
-  // Filter entries for this month
-  const monthEntries = logEntries.filter(e => {
-    const d = new Date(e.date);
-    return d.getFullYear() === year && d.getMonth() === month;
-  });
-
-  // Badge shows total across all months
-  $('logBadge').textContent = logEntries.length + ' total · ' + monthEntries.length + ' this view';
-
-  renderLogTimeline(monthEntries);
+  renderNotesList();
 }
 
-async function submitLogEntry() {
-  const raw = $('logNewTextarea').value.trim();
-  if (!raw) return;
-
-  const btn = $('logSubmitBtn');
-  btn.disabled = true;
-  btn.textContent = 'Sending...';
-
-  // Entry starts with raw text; will be polished async
-  const entry = {
-    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
-    reportOriginal: raw,   // always keep original
-    report: raw,           // will be replaced with polished version
-    feedback: null,
-    date: new Date().toISOString(),
-    loadingFeedback: true,
-    polishing: true
-  };
-
-  logEntries.unshift(entry);
-  saveLog();
-  renderLogView();
-  $('logNewTextarea').value = '';
-  btn.disabled = false;
-  btn.textContent = 'Submit';
-
-  // Run polish + feedback in parallel
-  const [polished, feedback] = await Promise.allSettled([
-    polishEnglish(raw),
-    getFeedback(raw)
-  ]);
-
-  entry.report    = polished.status === 'fulfilled' ? polished.value : raw;
-  entry.feedback  = feedback.status  === 'fulfilled' ? feedback.value  : 'Could not get feedback. You can edit and re-save to try again.';
-  entry.loadingFeedback = false;
-  entry.polishing       = false;
-
-  saveLog();
-  renderLogView();
+function setSplitActivePane(pane) {
+  splitActivePane = pane;
+  updateSplitActivePaneUI();
 }
 
-async function polishEnglish(text) {
-  const response = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-6",
-      max_tokens: 1000,
-      system: `You are an English copy-editor. The user writes in informal or broken English.
-Rewrite their text with correct grammar, clear phrasing, and natural flow.
-Keep the meaning and all details exactly the same — do not add, remove, or change any facts.
-Keep the same tone (casual or formal, however the user wrote it).
-Return ONLY the corrected text. No explanations, no quotes, no preamble.`,
-      messages: [{ role: "user", content: text }]
-    })
-  });
-  if (!response.ok) throw new Error('polish API error');
-  const data = await response.json();
-  return data.content.filter(b => b.type === 'text').map(b => b.text).join('').trim();
+function updateSplitActivePaneUI() {
+  $('splitPaneLeft').classList.toggle('is-active-pane', splitActivePane === 'left');
+  $('splitPaneRight').classList.toggle('is-active-pane', splitActivePane === 'right');
 }
 
-async function getFeedback(reportText) {
-  const response = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-6",
-      max_tokens: 1000,
-      system: `You are a sharp, concise marketing coach reviewing daily marketing reports.
-Give direct, actionable feedback in 3–5 sentences.
-- Acknowledge what went well (if anything).
-- Point out gaps or missed opportunities.
-- Give one specific, concrete suggestion for tomorrow.
-Be honest but constructive. Write in short, punchy prose — no bullet lists, no bold, no markdown.`,
-      messages: [{ role: "user", content: `Here is my marketing report for today:\n\n${reportText}` }]
-    })
-  });
-  if (!response.ok) throw new Error('feedback API error');
-  const data = await response.json();
-  return data.content.filter(b => b.type === 'text').map(b => b.text).join('').trim();
+function assignNoteToPane(pane, noteId) {
+  if (pane === 'left') splitLeftId = noteId; else splitRightId = noteId;
+  renderSplitPane(pane);
+  renderNotesList();
+  // Auto-advance so the next sidebar click fills the other pane
+  splitActivePane = pane === 'left' ? 'right' : 'left';
+  updateSplitActivePaneUI();
 }
 
-function renderLogTimeline(entries) {
-  const container = $('logTimeline');
+function renderSplitPane(pane) {
+  const id      = pane === 'left' ? splitLeftId : splitRightId;
+  const paneEl  = $(pane === 'left' ? 'splitPaneLeft' : 'splitPaneRight');
+  const titleEl = $(pane === 'left' ? 'splitTitleLeft' : 'splitTitleRight');
+  const taEl    = $(pane === 'left' ? 'splitTextareaLeft' : 'splitTextareaRight');
+  const note    = notes.find(n => n.id === id);
 
-  if (entries.length === 0) {
-    container.innerHTML = `
-      <div class="log-empty">
-        <div class="log-empty-icon">◎</div>
-        <p>${monthOffset === 0 ? 'No entries yet — write your first report above' : 'No entries for this month'}</p>
-      </div>`;
+  if (!note) {
+    paneEl.classList.add('is-empty');
+    titleEl.value = '';
+    taEl.value = '';
+    updateSplitStatus(pane);
     return;
   }
 
-  container.innerHTML = entries.map((entry, idx) => {
-    const d = new Date(entry.date);
-    const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    const timeStr = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-    const isLast  = idx === entries.length - 1;
-    const hasOriginal = entry.reportOriginal && entry.reportOriginal !== entry.report;
-
-    // Feedback cell
-    let feedbackHTML = '';
-    if (entry.loadingFeedback) {
-      feedbackHTML = `<div class="feedback-loading"><span></span><span></span><span></span></div>`;
-    } else if (entry.feedback) {
-      feedbackHTML = `<div class="log-feedback-content">${escapeHtml(entry.feedback)}</div>`;
-    } else {
-      feedbackHTML = `<div class="log-feedback-content pending">Awaiting feedback…</div>`;
-    }
-
-    // Original text toggle (only if it differs from polished)
-    const origToggle = hasOriginal ? `
-      <div class="log-original-toggle">
-        <button class="log-original-btn" data-orig="${entry.id}">
-          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-          Original
-        </button>
-      </div>
-      <div class="log-original-text" id="orig-${entry.id}">${escapeHtml(entry.reportOriginal)}</div>
-    ` : '';
-
-    return `
-      <div class="log-entry" data-entry-id="${entry.id}">
-        <div class="log-report-box" id="box-${entry.id}">
-          <div class="log-box-header">
-            <span class="log-box-label">My report</span>
-            <button class="log-edit-btn" data-edit="${entry.id}">Edit</button>
-          </div>
-          <div class="log-report-content">${escapeHtml(entry.report)}${entry.polishing ? ' <span style="color:var(--text-dim);font-size:10px;">(polishing…)</span>' : ''}</div>
-          <textarea class="log-report-textarea" data-ta="${entry.id}">${escapeHtml(entry.report)}</textarea>
-          <div class="log-report-actions">
-            <button class="log-save-btn" data-save="${entry.id}">Save &amp; Refresh</button>
-            <button class="log-cancel-btn" data-cancel="${entry.id}">Cancel</button>
-          </div>
-          ${origToggle}
-        </div>
-
-        <div class="timeline-center">
-          <div class="timeline-line-top"></div>
-          <div class="timeline-dot"></div>
-          <div class="timeline-date">${dateStr}<br>${timeStr}</div>
-          ${!isLast ? '<div class="timeline-line-bottom"></div>' : ''}
-        </div>
-
-        <div class="log-feedback-box">
-          <div class="log-feedback-header">
-            <span class="log-feedback-label">Claude's feedback</span>
-          </div>
-          ${feedbackHTML}
-        </div>
-      </div>`;
-  }).join('');
-
-  // Wire buttons
-  container.querySelectorAll('[data-edit]').forEach(btn =>
-    btn.addEventListener('click', () => startEditEntry(btn.dataset.edit)));
-  container.querySelectorAll('[data-save]').forEach(btn =>
-    btn.addEventListener('click', () => saveEditEntry(btn.dataset.save)));
-  container.querySelectorAll('[data-cancel]').forEach(btn =>
-    btn.addEventListener('click', () => cancelEditEntry(btn.dataset.cancel)));
-  container.querySelectorAll('[data-orig]').forEach(btn =>
-    btn.addEventListener('click', () => toggleOriginal(btn.dataset.orig, btn)));
+  paneEl.classList.remove('is-empty');
+  titleEl.value = note.title;
+  taEl.value = note.content;
+  updateSplitStatus(pane);
 }
 
-function toggleOriginal(id, btn) {
-  const el = document.getElementById('orig-' + id);
-  if (!el) return;
-  const open = el.classList.toggle('show');
-  btn.classList.toggle('open', open);
+function updateSplitStatus(pane) {
+  const id      = pane === 'left' ? splitLeftId : splitRightId;
+  const statusEl = $(pane === 'left' ? 'splitStatusLeft' : 'splitStatusRight');
+  const note    = notes.find(n => n.id === id);
+  if (!note) { statusEl.textContent = ''; return; }
+  const words = note.content.trim() === '' ? 0 : note.content.trim().split(/\s+/).length;
+  statusEl.textContent = words + ' words · updated ' + formatDate(note.updated);
 }
 
-function startEditEntry(id) {
-  const box = document.getElementById('box-' + id);
-  if (!box) return;
-  box.classList.add('editing');
-  const ta = box.querySelector('[data-ta]');
-  if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }
+function onSplitTitleChange(pane) {
+  const id = pane === 'left' ? splitLeftId : splitRightId;
+  const note = notes.find(n => n.id === id);
+  if (!note) return;
+  note.title = $(pane === 'left' ? 'splitTitleLeft' : 'splitTitleRight').value;
+  note.updated = Date.now();
+  debounceSplitSave(pane);
+  renderNotesList();
 }
 
-function cancelEditEntry(id) {
-  const box = document.getElementById('box-' + id);
-  if (box) box.classList.remove('editing');
+function onSplitContentChange(pane) {
+  const id = pane === 'left' ? splitLeftId : splitRightId;
+  const note = notes.find(n => n.id === id);
+  if (!note) return;
+  note.content = $(pane === 'left' ? 'splitTextareaLeft' : 'splitTextareaRight').value;
+  note.updated = Date.now();
+  updateSplitStatus(pane);
+  debounceSplitSave(pane);
+  renderNotesList();
 }
 
-async function saveEditEntry(id) {
-  const box = document.getElementById('box-' + id);
-  if (!box) return;
-  const ta = box.querySelector('[data-ta]');
-  if (!ta) return;
-  const newText = ta.value.trim();
-  if (!newText) return;
-
-  const entry = logEntries.find(e => e.id === id);
-  if (!entry) return;
-
-  entry.reportOriginal  = newText;
-  entry.report          = newText;
-  entry.feedback        = null;
-  entry.loadingFeedback = true;
-  entry.polishing       = true;
-  saveLog();
-  renderLogView();
-
-  const [polished, feedback] = await Promise.allSettled([
-    polishEnglish(newText),
-    getFeedback(newText)
-  ]);
-
-  entry.report          = polished.status === 'fulfilled' ? polished.value : newText;
-  entry.feedback        = feedback.status  === 'fulfilled' ? feedback.value  : 'Could not get feedback. Try again later.';
-  entry.loadingFeedback = false;
-  entry.polishing       = false;
-
-  saveLog();
-  renderLogView();
+function debounceSplitSave(pane) {
+  clearTimeout(splitSaveTimeouts[pane]);
+  splitSaveTimeouts[pane] = setTimeout(() => { save(); updateSplitStatus(pane); }, 400);
 }
 
-function saveLog() {
-  localStorage.setItem('notepad_log', JSON.stringify(logEntries));
+function setupSplitDivider() {
+  const divider   = $('splitDivider');
+  const container = $('splitContainer');
+  const leftPane  = $('splitPaneLeft');
+  let dragging = false;
+
+  divider.addEventListener('mousedown', e => {
+    dragging = true;
+    divider.classList.add('dragging');
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const rect  = container.getBoundingClientRect();
+    const isRow = getComputedStyle(container).flexDirection !== 'column';
+    let pct = isRow
+      ? ((e.clientX - rect.left) / rect.width) * 100
+      : ((e.clientY - rect.top) / rect.height) * 100;
+    pct = Math.min(80, Math.max(20, pct));
+    leftPane.style.flex = `0 0 ${pct}%`;
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (!dragging) return;
+    dragging = false;
+    divider.classList.remove('dragging');
+  });
+}
+
+// ══════════════════════════════════
+// EXPORT (.md / .txt)
+// ══════════════════════════════════
+
+function toggleExportMenu(id) {
+  const menu = $(id);
+  const isOpen = menu.classList.contains('show');
+  closeAllExportMenus();
+  if (!isOpen) menu.classList.add('show');
+}
+
+function closeAllExportMenus() {
+  document.querySelectorAll('.export-menu.show').forEach(m => m.classList.remove('show'));
+}
+
+function exportNote(noteId, format) {
+  const note = notes.find(n => n.id === noteId);
+  if (!note) return;
+
+  const title    = note.title || 'Untitled';
+  const safeName = title.replace(/[\\/:*?"<>|]+/g, '').trim() || 'untitled';
+
+  let text, mime, ext;
+  if (format === 'md') {
+    text = `# ${title}\n\n${note.content}`;
+    mime = 'text/markdown';
+    ext  = 'md';
+  } else {
+    text = `${title}\n${'-'.repeat(Math.max(title.length, 3))}\n\n${note.content}`;
+    mime = 'text/plain';
+    ext  = 'txt';
+  }
+
+  const blob = new Blob([text], { type: mime });
+  const a    = document.createElement('a');
+  a.href     = URL.createObjectURL(blob);
+  a.download = `${safeName}.${ext}`;
+  a.click();
+  URL.revokeObjectURL(a.href);
 }
 
 // ══════════════════════════════════
@@ -1434,9 +1197,15 @@ function createNote() {
   notes.unshift(note);
   save();
   renderNotesList();
-  selectNote(note.id);
-  if (isLogMode) toggleLogMode(false);
-  $('editorTitle').focus();
+
+  if (isSplitMode) {
+    const targetPane = splitActivePane;
+    assignNoteToPane(targetPane, note.id);
+    $(targetPane === 'left' ? 'splitTitleLeft' : 'splitTitleRight').focus();
+  } else {
+    selectNote(note.id);
+    $('editorTitle').focus();
+  }
   closeSidebar();
 }
 
@@ -1447,7 +1216,18 @@ function deleteNote(id, e) {
   if (!confirm(`Delete "${note.title || 'Untitled'}"?`)) return;
   notes = notes.filter(n => n.id !== id);
   save();
-  if (activeNoteId === id) { activeNoteId = null; notes.length > 0 ? selectNote(notes[0].id) : showEmpty(); }
+
+  if (isSplitMode) {
+    if (splitLeftId === id)  splitLeftId  = (notes.find(n => n.id !== splitRightId) || {}).id || null;
+    if (splitRightId === id) splitRightId = (notes.find(n => n.id !== splitLeftId) || {}).id || null;
+    renderSplitPane('left');
+    renderSplitPane('right');
+  }
+
+  if (activeNoteId === id) {
+    activeNoteId = null;
+    if (!isSplitMode) { notes.length > 0 ? selectNote(notes[0].id) : showEmpty(); }
+  }
   renderNotesList();
   updateFooter();
 }
@@ -1545,11 +1325,21 @@ function renderNotesList() {
   list.innerHTML = filtered.map(note => {
     const title   = note.title || 'Untitled';
     const preview = (note.content || '').replace(/\n/g, ' ').substring(0, 60) || 'Empty note';
+
+    let cls = '';
+    let badge = '';
+    if (isSplitMode) {
+      if (note.id === splitLeftId)       { cls = 'split-left';  badge = '<span class="split-badge left">L</span>'; }
+      else if (note.id === splitRightId) { cls = 'split-right'; badge = '<span class="split-badge right">R</span>'; }
+    } else if (note.id === activeNoteId) {
+      cls = 'active';
+    }
+
     return `
-      <div class="note-item ${note.id === activeNoteId && !isLogMode ? 'active' : ''}"
+      <div class="note-item ${cls}"
            data-id="${note.id}" title="${escapeHtml(title)}" draggable="true">
         <span class="note-abbrev">${escapeHtml(title.slice(0, 3))}</span>
-        <div class="note-item-title">${escapeHtml(title)}</div>
+        <div class="note-item-title">${badge}${escapeHtml(title)}</div>
         <div class="note-item-preview">${escapeHtml(preview)}</div>
         <div class="note-item-date">${formatDate(note.updated)}</div>
         <button class="delete-btn" title="Delete">×</button>
@@ -1563,7 +1353,7 @@ function filterNotes() { renderNotesList(); }
 // BACKUP / RESTORE / IMPORT
 // ══════════════════════════════════
 function backupNotes() {
-  const backup = { version: 1, exported: new Date().toISOString(), notes, log: logEntries };
+  const backup = { version: 1, exported: new Date().toISOString(), notes };
   const blob   = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
   const a      = document.createElement('a');
   a.href       = URL.createObjectURL(blob);
@@ -1577,30 +1367,24 @@ function restoreNotes(e) {
   const reader = new FileReader();
   reader.onload = function(ev) {
     try {
-      const backup     = JSON.parse(ev.target.result);
-      const incoming   = Array.isArray(backup) ? backup : (backup.notes || []);
-      const incomingLog = backup.log || [];
+      const backup   = JSON.parse(ev.target.result);
+      const incoming = Array.isArray(backup) ? backup : (backup.notes || []);
 
       if (!Array.isArray(incoming) || incoming.length === 0) { alert('No notes found in this backup file.'); return; }
 
-      const merge = confirm(
-        `Found ${incoming.length} note(s)${incomingLog.length ? ` and ${incomingLog.length} log entr${incomingLog.length === 1 ? 'y' : 'ies'}` : ''} in backup.\n\nOK = Merge · Cancel = Replace all`
-      );
+      const merge = confirm(`Found ${incoming.length} note(s) in backup.\n\nOK = Merge · Cancel = Replace all`);
 
       if (merge) {
-        const existIds    = new Set(notes.map(n => n.id));
-        const existLogIds = new Set(logEntries.map(e => e.id));
-        notes      = [...incoming.filter(n => !existIds.has(n.id)),    ...notes];
-        logEntries = [...incomingLog.filter(e => !existLogIds.has(e.id)), ...logEntries];
+        const existIds = new Set(notes.map(n => n.id));
+        notes = [...incoming.filter(n => !existIds.has(n.id)), ...notes];
       } else {
-        notes      = incoming;
-        if (incomingLog.length) logEntries = incomingLog;
+        notes = incoming;
       }
 
-      save(); saveLog();
+      save();
       renderNotesList();
-      if (isLogMode) renderLogView();
-      if (notes.length > 0) selectNote(notes[0].id);
+      if (isSplitMode) { renderSplitPane('left'); renderSplitPane('right'); }
+      else if (notes.length > 0) selectNote(notes[0].id);
       updateFooter();
     } catch { alert('Could not read backup file. Make sure it is a valid notepad backup.'); }
     e.target.value = '';
@@ -1663,20 +1447,24 @@ function formatDate(ts) {
 // ══════════════════════════════════
 document.addEventListener('keydown', e => {
   if (e.ctrlKey && e.key === 'n') { e.preventDefault(); createNote(); }
-  if (e.ctrlKey && e.key === 's' && !isLogMode) {
+  if (e.ctrlKey && e.key === 's') {
     e.preventDefault();
     save();
-    $('saveStatus').textContent = 'Saved';
-    $('saveIndicator').classList.add('show');
-    setTimeout(() => $('saveIndicator').classList.remove('show'), 1200);
+    if (!isSplitMode) {
+      $('saveStatus').textContent = 'Saved';
+      $('saveIndicator').classList.add('show');
+      setTimeout(() => $('saveIndicator').classList.remove('show'), 1200);
+    }
   }
-  if (e.key === 'Tab' && e.target === $('editorTextarea')) {
+  if (e.key === 'Tab' && (e.target === $('editorTextarea') || e.target === $('splitTextareaLeft') || e.target === $('splitTextareaRight'))) {
     e.preventDefault();
-    const ta = $('editorTextarea');
-    const s  = ta.selectionStart, end = ta.selectionEnd;
-    ta.value = ta.value.substring(0, s) + '    ' + ta.value.substring(end);
+    const ta  = e.target;
+    const s   = ta.selectionStart, end = ta.selectionEnd;
+    ta.value  = ta.value.substring(0, s) + '    ' + ta.value.substring(end);
     ta.selectionStart = ta.selectionEnd = s + 4;
-    onContentChange();
+    if (ta === $('editorTextarea')) onContentChange();
+    else if (ta === $('splitTextareaLeft')) onSplitContentChange('left');
+    else onSplitContentChange('right');
   }
 });
 
