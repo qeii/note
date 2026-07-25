@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Couples Money Personality System</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sage:#4A7C6B; --sage-dark:#2E5248; --sage-mid:#5D8B7A;
+    --sage-lite:#EAF2EE; --sage-pale:#F4FAF7;
+    --cream:#FDFAF5; --warm:#F2EAD8; --warm-mid:#E8DCC8;
+    --gold:#C9963C; --gold-lite:#F5E6C8; --gold-pale:#FDF6E8; --plum:#7B5EA7; --plum-lite:#F2EBF8; --teal:#2A7B6E; --teal-dark:#164F46; --teal-lite:#E2F4F1; --amber:#B85C2E; --amber-lite:#FAF0E8;
+    --charcoal:#2C2C2C; --mid:#6B6B6B; --light:#E0DCD4; --pale:#F0EDE8;
+    --coral:#D4795A; --coral-lite:#FAEDE8;
+    --blue:#5B6F8E; --blue-lite:#EBF0F6;
+    --teal:#1F6B5E; --teal-mid:#2E7D6E; --teal-lite:#E2F4F1; --teal-pale:#F0FAF8;
+    --teal-dark:#164F46;
+    /* personality type colors */
+    --architect:#5B6F8E; --architect-lite:#EBF0F6;
+    --dreamer:#8B5EA7; --dreamer-lite:#F2EBF8;
+    --guardian:#C9963C; --guardian-lite:#F5E6C8;
+    --explorer:#D4795A; --explorer-lite:#FAEDE8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:#ccd9d6;color:var(--charcoal);font-size:10pt;}
+  .page{width:816px;min-height:1056px;margin:0 auto 32px;background:var(--cream);position:relative;overflow:hidden;page-break-after:always;}
+  @media print{.page{margin:0;page-break-after:always;}body{background:#fff;}}
+
+  /* shared */
+  .hdr{background:var(--teal-dark);padding:10px 28px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--gold);}
+  .hdr .hl{font-size:7.5pt;font-weight:700;color:var(--gold);letter-spacing:.08em;}
+  .hdr .hc{font-size:8pt;color:rgba(255,255,255,.8);}
+  .hdr .hr{font-size:7pt;color:rgba(255,255,255,.5);}
+  .ftr{background:var(--teal-dark);padding:5px 28px;text-align:center;font-size:7pt;color:rgba(255,255,255,.6);position:absolute;bottom:0;left:0;right:0;}
+  .body{padding:16px 28px 52px;}
+  .tag{display:inline-block;padding:3px 11px;border-radius:20px;font-size:7.5pt;font-weight:700;letter-spacing:.06em;}
+  .card{background:#fff;border:.5px solid var(--light);border-radius:8px;overflow:hidden;}
+  .col-hdr{padding:9px 14px;font-size:8.5pt;font-weight:700;letter-spacing:.05em;color:#fff;}
+  .iline{border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8.5pt;outline:none;}
+  .section-lbl{font-size:7.5pt;font-weight:700;letter-spacing:.08em;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+  .section-lbl::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+  .note{background:var(--teal-lite);border-left:3px solid var(--teal-mid);border-radius:0 6px 6px 0;padding:10px 14px;font-size:8.5pt;color:var(--charcoal);line-height:1.6;}
+  .note strong{color:var(--teal);}
+  textarea{width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8.5pt;resize:none;outline:none;line-height:1.6;}
+
+  /* COVER */
+  #p1{min-height:1056px;display:flex;flex-direction:column;background:var(--teal-dark);}
+  #p1 .tbar{height:5px;background:var(--gold);}
+  #p1 .hero{flex:1;background:radial-gradient(ellipse at 38% 38%,#2E7D6E 0%,#164F46 55%,#0F3830 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 80px 30px;position:relative;}
+  #p1 .price{background:var(--gold);color:#fff;font-size:8pt;font-weight:700;padding:4px 20px;border-radius:20px;letter-spacing:.1em;margin-bottom:18px;}
+  #p1 h1{font-family:'Playfair Display',serif;font-size:38pt;color:#fff;text-align:center;line-height:1.15;}
+  #p1 h1 em{color:var(--gold);font-style:normal;display:block;}
+  #p1 h1 span{font-size:20pt;color:rgba(180,230,220,.7);display:block;font-weight:400;}
+  #p1 .rule{width:120px;height:2px;background:var(--gold);margin:16px auto;}
+  #p1 .sub{font-size:10.5pt;color:rgba(180,230,220,.88);text-align:center;line-height:1.65;margin-bottom:6px;}
+  #p1 .inside{background:rgba(18,60,52,.55);border:1px solid rgba(46,125,110,.4);border-radius:12px;padding:20px 26px;margin:20px 0;width:100%;}
+  #p1 .ititle{font-size:7.5pt;font-weight:700;color:var(--gold);letter-spacing:.1em;text-align:center;margin-bottom:12px;}
+  #p1 .igrid{display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;}
+  #p1 .iitem{display:flex;gap:8px;align-items:flex-start;}
+  #p1 .inum{color:var(--gold);font-size:7pt;font-weight:700;flex-shrink:0;margin-top:2px;}
+  #p1 .iname{font-size:8.5pt;font-weight:600;color:#fff;}
+  #p1 .idesc{font-size:7.5pt;color:rgba(160,220,210,.8);}
+  #p1 .type-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin:18px 0;width:100%;}
+  #p1 .type-badge{border-radius:8px;padding:10px 12px;text-align:center;}
+  #p1 .type-badge .t-icon{font-size:16pt;margin-bottom:4px;}
+  #p1 .type-badge .t-name{font-size:8pt;font-weight:700;color:#fff;}
+  #p1 .type-badge .t-tag{font-size:7pt;color:rgba(255,255,255,.7);}
+  #p1 .quote-box{background:rgba(201,150,60,.13);border:.5px solid rgba(201,150,60,.4);border-radius:8px;padding:13px 20px;width:100%;text-align:center;}
+  #p1 .quote-text{font-family:'Playfair Display',serif;font-size:11pt;color:rgba(240,235,210,.9);font-style:italic;line-height:1.7;}
+  #p1 .bbar{height:5px;background:var(--gold);}
+
+  /* ASSESSMENT QUIZ */
+  .q-block{background:#fff;border:.5px solid var(--light);border-radius:10px;overflow:hidden;margin-bottom:9px;}
+  .q-head{padding:8px 14px;font-size:8.5pt;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px;}
+  .q-num{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:7.5pt;font-weight:700;flex-shrink:0;}
+  .q-body{padding:8px 14px 10px;}
+  .q-situation{font-size:8pt;color:var(--mid);font-style:italic;margin-bottom:8px;}
+  .q-options{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+  .q-opt{display:flex;align-items:flex-start;gap:6px;background:var(--pale);border-radius:5px;padding:7px 10px;font-size:8pt;color:var(--charcoal);line-height:1.5;}
+  .q-opt .opt-letter{background:var(--light);color:var(--mid);font-size:7pt;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .score-box{border-radius:6px;padding:8px 12px;margin-bottom:6px;}
+
+  /* PERSONALITY TYPE CARDS */
+  .type-card{border-radius:10px;overflow:hidden;margin-bottom:10px;}
+  .type-card-hdr{padding:12px 16px;display:flex;align-items:flex-start;gap:12px;}
+  .type-card-body{padding:10px 16px 14px;background:#fff;border:.5px solid var(--light);border-top:none;}
+  .type-icon-big{font-size:22pt;flex-shrink:0;}
+  .type-name-big{font-family:'Playfair Display',serif;font-size:14pt;color:#fff;margin-bottom:2px;}
+  .type-tagline{font-size:8.5pt;color:rgba(255,255,255,.8);}
+  .type-traits{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0;}
+  .trait-pill{padding:3px 10px;border-radius:20px;font-size:7.5pt;font-weight:700;}
+  .trait-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
+  .trait-col{border-radius:6px;padding:8px 12px;}
+  .trait-col-lbl{font-size:7pt;font-weight:700;letter-spacing:.07em;margin-bottom:4px;}
+  .trait-item{font-size:8pt;color:var(--charcoal);line-height:1.55;padding-left:10px;position:relative;}
+  .trait-item::before{content:'·';position:absolute;left:0;color:var(--gold);}
+
+  /* COMPATIBILITY MAP */
+  .compat-card{background:#fff;border:.5px solid var(--light);border-radius:8px;padding:10px 14px;margin-bottom:7px;display:flex;gap:12px;align-items:flex-start;}
+  .compat-pair{flex-shrink:0;text-align:center;width:72px;}
+  .compat-pair-types{font-size:7.5pt;font-weight:700;color:var(--charcoal);}
+  .compat-meter{height:8px;border-radius:4px;margin:4px 0;}
+  .compat-score{font-size:7pt;color:var(--mid);}
+  .compat-body{flex:1;}
+  .compat-name{font-size:9pt;font-weight:700;color:var(--charcoal);margin-bottom:3px;}
+  .compat-cols{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:5px;}
+  .compat-col{border-radius:5px;padding:6px 10px;font-size:8pt;line-height:1.5;}
+
+  /* CONFLICT PATTERN */
+  .conflict-card{background:#fff;border:.5px solid var(--light);border-radius:10px;overflow:hidden;margin-bottom:9px;display:flex;}
+  .conflict-tab{width:5px;flex-shrink:0;}
+  .conflict-inner{flex:1;padding:10px 14px;}
+  .conflict-meta{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+  .conflict-num{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7.5pt;font-weight:700;color:#fff;flex-shrink:0;}
+  .conflict-title{font-size:9pt;font-weight:700;color:var(--charcoal);}
+  .conflict-trigger{font-size:8pt;color:var(--mid);font-style:italic;margin-bottom:7px;}
+  .conflict-cols{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+  .conflict-col{border-radius:5px;padding:8px 10px;font-size:9pt;}
+  .conflict-col-lbl{font-size:7.5pt;font-weight:700;letter-spacing:.06em;margin-bottom:4px;}
+
+  /* ═══ BACK COVER BP STYLES ═══ */
+.bp {
+  /* override per-product via class: .bp-sage / .bp-plum / etc */
+  --pa: var(--sage-dark);   /* primary accent — header + bars */
+  --pa-mid: var(--sage-mid);
+  --pa-lite: var(--sage-lite);
+  --pa-pale: var(--sage-pale);
+  --tag-have-bg: var(--gold);
+  --tag-next-bg: var(--pa);
+
+  min-height:1056px;
+  display:flex; flex-direction:column;
+  background:var(--pa);
+}
+
+/* product-specific accent overrides */
+.bp-sage    { --pa:var(--sage-dark); --pa-mid:var(--sage-mid); --pa-lite:var(--sage-lite); --pa-pale:var(--sage-pale); }
+.bp-plum    { --pa:#5B3F8A; --pa-mid:#7B5EA7; --pa-lite:#F2EBF8; --pa-pale:#F8F4FC; }
+.bp-teal    { --pa:var(--teal-dark); --pa-mid:var(--teal); --pa-lite:var(--teal-lite); --pa-pale:#F0FAF8; }
+.bp-amber   { --pa:#8A3F18; --pa-mid:var(--amber); --pa-lite:var(--amber-lite); --pa-pale:#FDF6F0; }
+.bp-sagedark{ --pa:#1E3D33; --pa-mid:var(--sage-dark); --pa-lite:var(--sage-lite); --pa-pale:var(--sage-pale); }
+/* Deck/Invest/Vault all sage but differentiated by inner stripe color below */
+
+.bp-topbar  { height:4px; background:linear-gradient(90deg,var(--gold),var(--pa-mid),var(--pa)); }
+.bp-botbar  { height:4px; background:linear-gradient(90deg,var(--pa),var(--pa-mid),var(--gold)); }
+
+.bp-inner {
+  flex:1;
+  display:flex; align-items:stretch; justify-content:center;
+  padding:26px 32px 22px;
+}
+
+/* ─────────────────────────────────────────────
+   CARD
+───────────────────────────────────────────── */
+.bp .card {
+  background:var(--cream);
+  border-radius:14px;
+  border:none;
+  width:100%;
+  display:flex; flex-direction:column;
+  overflow:hidden;
+  box-shadow:0 10px 50px rgba(0,0,0,.22);
+}
+
+/* card header */
+.bp .card-hdr {
+  background:var(--pa);
+  padding:18px 24px 14px;
+  border-bottom:2.5px solid var(--gold);
+  text-align:center;
+}
+.bp .card-hdr .eyebrow {
+  font-size:6.5pt; font-weight:700; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--gold);
+  margin-bottom:7px;
+}
+.bp .card-hdr h2 {
+  font-family:'Playfair Display',serif;
+  font-size:18pt; color:#fff; line-height:1.2;
+  margin-bottom:4px;
+}
+.bp .card-hdr h2 em { color:var(--gold); font-style:italic; }
+.bp .card-hdr .sub {
+  font-size:7.5pt; color:rgba(200,232,220,.72); line-height:1.5;
+}
+.bp .card-hdr .rule {
+  width:44px; height:2px; background:var(--gold);
+  margin:9px auto 0; border-radius:2px;
+}
+
+/* product-specific header stripe (top edge inside card header)
+   gives Deck/Invest/Vault a visual tell even though all use sage */
+.bp .card-hdr-stripe {
+  height:3px; margin:-18px -24px 14px; /* bleeds to edges */
+}
+.stripe-sage     { background:var(--sage); }
+.stripe-sage2    { background:linear-gradient(90deg,var(--sage),var(--sage-mid)); } /* Deck */
+.stripe-sage3    { background:linear-gradient(90deg,var(--sage-mid),var(--teal)); } /* Invest */
+.stripe-sage4    { background:linear-gradient(90deg,var(--sage-dark),var(--sage)); } /* Vault */
+.stripe-plum     { background:var(--plum); }
+.stripe-teal     { background:var(--teal); }
+.stripe-amber    { background:var(--amber); }
+.stripe-sagedark { background:var(--sage-dark); }
+
+/* ─────────────────────────────────────────────
+   PRODUCT LIST BODY
+───────────────────────────────────────────── */
+.bp .card-body {
+  flex:1; padding:14px 20px 12px;
+  display:flex; flex-direction:column; gap:0;
+}
+
+/* tier dividers */
+.tier-lbl {
+  font-size:6pt; font-weight:700; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--mid);
+  margin:9px 0 4px;
+  display:flex; align-items:center; gap:6px;
+}
+.tier-lbl::before,.tier-lbl::after {
+  content:''; flex:1; height:.5px; background:var(--light);
+}
+
+/* product rows */
+.pr {
+  display:flex; align-items:center; gap:10px;
+  padding:7px 9px; border-radius:7px;
+  border:.5px solid transparent;
+  margin-bottom:1px;
+}
+.pr.have {
+  background:var(--gold-pale);
+  border-color:rgba(201,150,60,.35);
+}
+.pr.next {
+  background:var(--pa-pale);
+  border-color:rgba(74,124,107,.3);
+}
+.pr.soon {
+  background:#fff;
+  border-color:var(--light);
+  opacity:.65;
+}
+.pr.locked {
+  background:#fff;
+  border-color:var(--light);
+  opacity:.55;
+}
+
+/* price badge */
+.badge {
+  flex-shrink:0; font-size:6.5pt; font-weight:700;
+  padding:2px 8px; border-radius:16px;
+  white-space:nowrap; min-width:34px; text-align:center;
+  line-height:1.5;
+}
+.b-free  { background:var(--sage);      color:#fff; }
+.b-7     { background:#8B9BAD;          color:#fff; }
+.b-9     { background:var(--gold);      color:#fff; }
+.b-17    { background:var(--coral);     color:#fff; }
+.b-27    { background:var(--plum);      color:#fff; }
+.b-37    { background:var(--amber);     color:#fff; }
+.b-47    { background:var(--sage-dark); color:#fff; }
+.b-67    { background:#5B3F8A;          color:#fff; }
+.b-97    { background:var(--charcoal);  color:#fff; }
+
+/* product info */
+.pinfo { flex:1; min-width:0; }
+.pname { font-size:8.5pt; font-weight:600; color:var(--charcoal); line-height:1.2; }
+.pdesc { font-size:7pt; color:var(--mid); margin-top:1px; line-height:1.35; }
+
+/* state tag */
+.ptag {
+  flex-shrink:0; font-size:6pt; font-weight:700;
+  letter-spacing:.07em; text-transform:uppercase;
+  padding:2px 7px; border-radius:9px; white-space:nowrap;
+}
+.tag-have  { background:var(--gold);      color:#fff; }
+.tag-next  { background:var(--pa);        color:#fff; }
+.tag-soon  { background:var(--light);     color:var(--mid); font-style:italic; }
+.tag-lock  { background:var(--pale);      color:var(--mid); }
+
+/* ─────────────────────────────────────────────
+   CONNECTION KIT GROUP
+───────────────────────────────────────────── */
+.ck-group {
+  border:.5px solid var(--plum);
+  border-radius:8px; overflow:hidden;
+  margin-bottom:1px;
+  opacity:.72;
+}
+.ck-group.next { opacity:1; border-color:var(--plum); }
+.ck-label {
+  background:var(--plum); padding:4px 10px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.ck-label .cktitle {
+  font-size:7pt; font-weight:700; color:#fff; letter-spacing:.06em;
+}
+.ck-label .ckprice {
+  font-size:7pt; font-weight:700;
+  background:rgba(255,255,255,.18); color:#fff;
+  padding:1px 8px; border-radius:10px;
+}
+.ck-items { padding:5px 8px; background:var(--plum-lite); display:flex; flex-direction:column; gap:3px; }
+.ck-item  { font-size:7.5pt; color:var(--charcoal); display:flex; gap:6px; align-items:center; }
+.ck-item::before { content:'·'; color:var(--plum); font-weight:700; }
+
+/* ─────────────────────────────────────────────
+   CTA STRIP
+───────────────────────────────────────────── */
+.bp .card-cta {
+  margin:10px 20px 14px;
+  background:var(--pa);
+  border-radius:9px; padding:12px 16px;
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+}
+.bp .cta-l .clbl { font-size:6.5pt; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); margin-bottom:2px; }
+.bp .cta-l .ctxt { font-size:8pt; color:rgba(200,232,220,.9); line-height:1.45; }
+.bp .cta-r { font-size:8.5pt; font-weight:700; color:var(--gold); white-space:nowrap; flex-shrink:0; }
+
+/* card footer */
+.bp .card-foot {
+  padding:7px 20px;
+  border-top:.5px solid var(--light);
+  display:flex; justify-content:space-between; align-items:center;
+}
+.bp .card-foot .fl { font-size:6.5pt; color:var(--mid); }
+.bp .card-foot .fr { font-size:6.5pt; font-weight:600; color:var(--pa-mid); }
+
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     P1 · COVER
+══════════════════════════════════════════════ -->
+<div class="page" id="p1">
+  <div class="tbar"></div>
+  <div class="hero">
+    <div class="price">COMPLETE SYSTEM — $37</div>
+    <h1>Couples Money<em>Personality</em><span>System</span></h1>
+    <div class="rule"></div>
+    <p class="sub">Discover your money type, understand your partner's,<br>and build a financial life that works for <em style="color:var(--gold);font-style:normal;">both</em> of you.</p>
+
+    <div class="type-row">
+      <div class="type-badge" style="background:rgba(91,111,142,.5);border:1px solid rgba(91,111,142,.6);">
+        <div class="t-icon">🏛️</div>
+        <div class="t-name">The Architect</div>
+        <div class="t-tag">Planner · Systematic</div>
+      </div>
+      <div class="type-badge" style="background:rgba(139,94,167,.5);border:1px solid rgba(139,94,167,.6);">
+        <div class="t-icon">✨</div>
+        <div class="t-name">The Dreamer</div>
+        <div class="t-tag">Visionary · Optimistic</div>
+      </div>
+      <div class="type-badge" style="background:rgba(201,150,60,.45);border:1px solid rgba(201,150,60,.5);">
+        <div class="t-icon">🛡️</div>
+        <div class="t-name">The Guardian</div>
+        <div class="t-tag">Protector · Cautious</div>
+      </div>
+      <div class="type-badge" style="background:rgba(212,121,90,.5);border:1px solid rgba(212,121,90,.6);">
+        <div class="t-icon">🧭</div>
+        <div class="t-name">The Explorer</div>
+        <div class="t-tag">Spontaneous · Present</div>
+      </div>
+    </div>
+
+    <div class="inside">
+      <div class="ititle">WHAT'S INSIDE — 10 PAGES</div>
+      <div class="igrid">
+        <div class="iitem"><span class="inum">01</span><div><div class="iname">4 Money Personality Types</div><div class="idesc">Full profiles: strengths, blind spots, triggers</div></div></div>
+        <div class="iitem"><span class="inum">02</span><div><div class="iname">Partner Assessments (×2)</div><div class="idesc">Separate scored quizzes — fill in independently</div></div></div>
+        <div class="iitem"><span class="inum">03</span><div><div class="iname">Compatibility Map</div><div class="idesc">All 10 type combinations — your unique dynamic</div></div></div>
+        <div class="iitem"><span class="inum">04</span><div><div class="iname">5 Money Conflict Patterns</div><div class="idesc">Root causes + resolution scripts for each</div></div></div>
+        <div class="iitem"><span class="inum">05</span><div><div class="iname">Conflict Resolution Framework</div><div class="idesc">The 4-step process that works for any fight</div></div></div>
+        <div class="iitem"><span class="inum">06</span><div><div class="iname">Your Rules by Design</div><div class="idesc">Build agreements that fit your actual personalities</div></div></div>
+      </div>
+    </div>
+
+    <div class="quote-box">
+      <p class="quote-text">"Most money fights aren't about money.<br>They're about two different people, wired differently, trying to build one life."</p>
+    </div>
+  </div>
+  <div class="bbar"></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     P2 · HOW TO USE + OVERVIEW OF 4 TYPES
+══════════════════════════════════════════════ -->
+<div class="page">
+  <div class="hdr"><span class="hl">HOW TO USE THIS SYSTEM</span><span class="hc">Couples Money Personality System</span><span class="hr">2</span></div>
+  <div class="body">
+<div style="background:var(--sage-pale,#f4faf7);border:.5px solid var(--sage-mid,#5d8b7a);border-left:3px solid var(--sage,#4a7c6b);border-radius:6px;padding:9px 14px 9px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:14px;font-size:8pt;color:var(--sage-dark,#2e5248);">
+  <span><strong style="font-size:8pt;letter-spacing:.06em;color:var(--sage-dark,#2e5248);">NEW TO OURSTEADY?</strong>&nbsp; To get the most from this product, read the companion How-To Guide first — it walks through every section step-by-step.</span>
+  <a href="https://2fold.pages.dev/howto/How%20to%20Use_%20Couples%20Money%20Personality%20System.pdf" target="_blank" rel="noopener" style="display:inline-block;flex-shrink:0;background:var(--sage,#4a7c6b);color:#fff;font-family:inherit;font-size:7.5pt;font-weight:700;letter-spacing:.06em;text-decoration:none;padding:5px 13px;border-radius:4px;white-space:nowrap;">How-To Guide</a>
+</div>
+
+
+    <div style="background:var(--teal-lite);border-radius:8px;padding:12px 18px;margin-bottom:16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+      <div style="text-align:center;">
+        <div style="font-size:18pt;margin-bottom:4px;">✏️</div>
+        <div style="font-size:8.5pt;font-weight:700;color:var(--teal);margin-bottom:3px;">Step 1 · Do it alone first</div>
+        <div style="font-size:8pt;color:var(--mid);">Each partner completes pages 3 and 4 separately before comparing results.</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:18pt;margin-bottom:4px;">🔍</div>
+        <div style="font-size:8.5pt;font-weight:700;color:var(--teal);margin-bottom:3px;">Step 2 · Score & identify</div>
+        <div style="font-size:8pt;color:var(--mid);">Use page 5 to total your scores and find your dominant type.</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:18pt;margin-bottom:4px;">💬</div>
+        <div style="font-size:8.5pt;font-weight:700;color:var(--teal);margin-bottom:3px;">Step 3 · Compare together</div>
+        <div style="font-size:8pt;color:var(--mid);">Find your pair in the compatibility map and work through pages 7–10 together.</div>
+      </div>
+    </div>
+
+    <div class="section-lbl">THE 4 MONEY PERSONALITY TYPES — QUICK OVERVIEW</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px;">
+
+      <div style="background:var(--architect-lite);border:1px solid #c0cad8;border-radius:9px;padding:12px 14px;">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:7px;">
+          <div style="font-size:20pt;">🏛️</div>
+          <div>
+            <div style="font-size:9.5pt;font-weight:700;color:var(--architect);">The Architect</div>
+            <div style="font-size:8pt;color:var(--mid);">Methodical · Data-driven · Control-oriented</div>
+          </div>
+        </div>
+        <div style="font-size:8pt;color:var(--charcoal);line-height:1.6;margin-bottom:7px;">You think in systems, spreadsheets, and long-term projections. You find security in having a plan. Spontaneous spending feels unsafe — not because you're cheap, but because the unknown is genuinely stressful for you.</div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;">
+          <span style="background:#c0cad8;color:var(--architect);font-size:7pt;font-weight:700;padding:2px 8px;border-radius:20px;">Plans ahead</span>
+          <span style="background:#c0cad8;color:var(--architect);font-size:7pt;font-weight:700;padding:2px 8px;border-radius:20px;">Tracks everything</span>
+          <span style="background:#c0cad8;color:var(--architect);font-size:7pt;font-weight:700;padding:2px 8px;border-radius:20px;">Avoids surprises</span>
+        </div>
+      </div>
+
+      <div style="background:var(--dreamer-lite);border:1px solid #d4bce8;border-radius:9px;padding:12px 14px;">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:7px;">
+          <div style="font-size:20pt;">✨</div>
+          <div>
+            <div style="font-size:9.5pt;font-weight:700;color:var(--dreamer);">The Dreamer</div>
+            <div style="font-size:8pt;color:var(--mid);">Visionary · Optimistic · Future-focused</div>
+          </div>
+        </div>
+        <div style="font-size:8pt;color:var(--charcoal);line-height:1.6;margin-bottom:7px;">You're motivated by big possibilities — the house, the trip, the life you're building toward. Numbers feel constraining. You'd rather focus on why you're saving than how much exactly. Your optimism is a genuine asset, but details sometimes slip.</div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;">
+          <span style="background:#d4bce8;color:var(--dreamer);font-size:7pt;font-weight:700;padding:2px 8px;border-radius:20px;">Big picture</span>
+          <span style="background:#d4bce8;color:var(--dreamer);font-size:7pt;font-weight:700;padding:2px 8px;border-radius:20px;">Goal-inspired</span>
+          <span style="background:#d4bce8;color:var(--dreamer);font-size:7pt;font-weight:700;padding:2px 8px;border-radius:20px;">Emotionally driven</span>
+        </div>
+      </div>
+
+      <div style="background:var(--guardian-lite);border:1px solid #e0c888;border-radius:9px;padding:12px 14px;">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:7px;">
+          <div style="font-size:20pt;">🛡️</div>
+          <div>
+            <div style="font-size:9.5pt;font-weight:700;color:#8B6020;">The Guardian</div>
+            <div style="font-size:8pt;color:var(--mid);">Risk-averse · Protective · Debt-averse</div>
+          </div>
+        </div>
+        <div style="font-size:8pt;color:var(--charcoal);line-height:1.6;margin-bottom:7px;">Safety is your primary financial value. You think about what could go wrong before you think about what could go right. An emergency fund isn't just smart — it's emotional armour. You struggle when your partner wants to take financial risks you can't see a way back from.</div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;">
+          <span style="background:#e0c888;color:#6B4A10;font-size:7pt;font-weight:700;padding:2px 8px;border-radius:20px;">Emergency fund first</span>
+          <span style="background:#e0c888;color:#6B4A10;font-size:7pt;font-weight:700;padding:2px 8px;border-radius:20px;">Hates debt</span>
+          <span style="background:#e0c888;color:#6B4A10;font-size:7pt;font-weight:700;padding:2px 8px;border-radius:20px;">Needs a safety net</span>
+        </div>
+      </div>
+
+      <div style="background:var(--explorer-lite);border:1px solid #e8b8a8;border-radius:9px;padding:12px 14px;">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:7px;">
+          <div style="font-size:20pt;">🧭</div>
+          <div>
+            <div style="font-size:9.5pt;font-weight:700;color:var(--coral);">The Explorer</div>
+            <div style="font-size:8pt;color:var(--mid);">Spontaneous · Experience-led · Present-focused</div>
+          </div>
+        </div>
+        <div style="font-size:8pt;color:var(--charcoal);line-height:1.6;margin-bottom:7px;">You live for experiences, not accumulation. Budgets feel like cages. You spend to enjoy life now and trust that future-you will figure things out. You're generous, social, and genuinely happy with less — as long as the present feels rich.</div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;">
+          <span style="background:#e8b8a8;color:#8B3A20;font-size:7pt;font-weight:700;padding:2px 8px;border-radius:20px;">Present-focused</span>
+          <span style="background:#e8b8a8;color:#8B3A20;font-size:7pt;font-weight:700;padding:2px 8px;border-radius:20px;">Experience over savings</span>
+          <span style="background:#e8b8a8;color:#8B3A20;font-size:7pt;font-weight:700;padding:2px 8px;border-radius:20px;">Hates restriction</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Important:</strong> No type is "good" or "bad." Every type has genuine financial strengths. The Architect's discipline, the Dreamer's motivation, the Guardian's resilience, the Explorer's freedom from anxiety — all are assets. The goal is not to change your type. It's to understand it, communicate it, and design a system that works for both types in your relationship.
+    </div>
+  </div>
+  <div class="ftr">Couples Money Personality System · OurSteady.com</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     P3 · PARTNER 1 ASSESSMENT
+══════════════════════════════════════════════ -->
+<div class="page">
+  <div class="hdr"><span class="hl">PARTNER 1 — MONEY PERSONALITY ASSESSMENT</span><span class="hc">Couples Money Personality System</span><span class="hr">3</span></div>
+  <div class="body">
+
+    <div style="background:var(--teal-lite);border-radius:7px;padding:10px 16px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;">
+      <div style="font-size:8.5pt;color:var(--teal-dark);"><strong>Partner 1:</strong> <input class="iline" type="text" style="width:160px;" placeholder="Your name"> &nbsp;&nbsp; <strong>Date:</strong> <input class="iline" type="text" style="width:100px;" placeholder="Today's date"></div>
+      <div style="font-size:8pt;color:var(--mid);">Complete this page alone. Circle or fill in the letter that feels most like you.</div>
+    </div>
+
+    <div style="font-size:8pt;color:var(--mid);margin-bottom:10px;font-style:italic;">For each scenario, choose the response that feels most natural — not what you think you <em>should</em> do, but what you actually do (or feel like doing).</div>
+
+    <!-- Q1 -->
+    <div class="q-block">
+      <div class="q-head" style="background:var(--teal-mid);">
+        <div class="q-num">1</div>
+        <div>It's the end of the month and you have $300 left over. What do you do?</div>
+      </div>
+      <div class="q-body">
+        <div class="q-options">
+          <div class="q-opt"><div class="opt-letter">A</div><div>Allocate it immediately — split between specific savings categories you've already mapped out.</div></div>
+          <div class="q-opt"><div class="opt-letter">B</div><div>Put it toward that big goal you've been dreaming about — it feels like progress.</div></div>
+          <div class="q-opt"><div class="opt-letter">C</div><div>Add it to the emergency fund. You can never have too much of a safety buffer.</div></div>
+          <div class="q-opt"><div class="opt-letter">D</div><div>Treat yourselves — you worked hard. Life is short and you can save again next month.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-block">
+      <div class="q-head" style="background:var(--teal-mid);">
+        <div class="q-num">2</div>
+        <div>Your partner suggests a last-minute $800 weekend away. You haven't budgeted for it. Your gut reaction?</div>
+      </div>
+      <div class="q-body">
+        <div class="q-options">
+          <div class="q-opt"><div class="opt-letter">A</div><div>Immediately want to check the numbers — what would we have to cut? Can we afford this without derailing anything?</div></div>
+          <div class="q-opt"><div class="opt-letter">B</div><div>Feel excited — experiences matter, and memories like this are what we're working for.</div></div>
+          <div class="q-opt"><div class="opt-letter">C</div><div>Feel anxious — unplanned spending makes you uncomfortable, even if you can technically afford it.</div></div>
+          <div class="q-opt"><div class="opt-letter">D</div><div>Say yes immediately. Money comes back; spontaneous adventures don't.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-block">
+      <div class="q-head" style="background:var(--teal-mid);">
+        <div class="q-num">3</div>
+        <div>When you think about your financial future, what motivates you most?</div>
+      </div>
+      <div class="q-body">
+        <div class="q-options">
+          <div class="q-opt"><div class="opt-letter">A</div><div>Watching the numbers grow on a plan you built — the satisfaction of executing well and being on track.</div></div>
+          <div class="q-opt"><div class="opt-letter">B</div><div>A vivid picture of the life you want — the house, the travel, the retirement that looks like freedom.</div></div>
+          <div class="q-opt"><div class="opt-letter">C</div><div>The peace of mind of knowing you're protected — no debt, solid savings, covered if something goes wrong.</div></div>
+          <div class="q-opt"><div class="opt-letter">D</div><div>Not thinking too far ahead — you want to enjoy the present and trust yourself to adapt as things evolve.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-block">
+      <div class="q-head" style="background:var(--teal-mid);">
+        <div class="q-num">4</div>
+        <div>You and your partner disagree on a major purchase. How do you typically handle it?</div>
+      </div>
+      <div class="q-body">
+        <div class="q-options">
+          <div class="q-opt"><div class="opt-letter">A</div><div>Present the data — compare the cost against your financial plan and let the numbers make the case.</div></div>
+          <div class="q-opt"><div class="opt-letter">B</div><div>Make an emotional case for why this matters for your shared future and try to get them to see the vision.</div></div>
+          <div class="q-opt"><div class="opt-letter">C</div><div>Express your concerns clearly and want reassurance it won't affect your safety net before agreeing.</div></div>
+          <div class="q-opt"><div class="opt-letter">D</div><div>Try to convince them to just go for it — life is too short to overthink every purchase.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-block">
+      <div class="q-head" style="background:var(--teal-mid);">
+        <div class="q-num">5</div>
+        <div>How do you feel about debt?</div>
+      </div>
+      <div class="q-body">
+        <div class="q-options">
+          <div class="q-opt"><div class="opt-letter">A</div><div>It's a variable in the plan — manageable if the interest rate is reasonable and there's a clear payoff timeline.</div></div>
+          <div class="q-opt"><div class="opt-letter">B</div><div>Uncomfortable but acceptable if it's in service of a big goal (a house, education, a business).</div></div>
+          <div class="q-opt"><div class="opt-letter">C</div><div>Deeply uncomfortable — you want it gone as fast as possible and losing sleep over it is normal for you.</div></div>
+          <div class="q-opt"><div class="opt-letter">D</div><div>Part of life — you're not thrilled about it, but you don't let it dominate your thinking.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-block">
+      <div class="q-head" style="background:var(--teal-mid);">
+        <div class="q-num">6</div>
+        <div>Your honest relationship with budgets and tracking:</div>
+      </div>
+      <div class="q-body">
+        <div class="q-options">
+          <div class="q-opt"><div class="opt-letter">A</div><div>You love it. A good budget feels like freedom, not restriction. You probably have a system already.</div></div>
+          <div class="q-opt"><div class="opt-letter">B</div><div>You like the idea of it but struggle to keep up with the details. Goals motivate you more than categories.</div></div>
+          <div class="q-opt"><div class="opt-letter">C</div><div>You track what matters most — especially debt balances and savings buffers. The rest is secondary.</div></div>
+          <div class="q-opt"><div class="opt-letter">D</div><div>You find it tedious. You have a rough sense of your money and prefer to keep it flexible.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Score tally -->
+    <div style="background:var(--warm);border-radius:8px;padding:10px 16px;margin-top:4px;">
+      <div class="section-lbl" style="margin-bottom:7px;">PARTNER 1 — TALLY YOUR ANSWERS</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;">
+        <div style="background:#fff;border-radius:6px;padding:8px 12px;text-align:center;">
+          <div style="font-size:10pt;margin-bottom:3px;">🏛️</div>
+          <div style="font-size:7.5pt;font-weight:700;color:var(--architect);">A — Architect</div>
+          <div style="font-size:8pt;color:var(--mid);margin-top:3px;">Count of A's: <input class="iline" type="text" style="width:24px;text-align:center;"></div>
+        </div>
+        <div style="background:#fff;border-radius:6px;padding:8px 12px;text-align:center;">
+          <div style="font-size:10pt;margin-bottom:3px;">✨</div>
+          <div style="font-size:7.5pt;font-weight:700;color:var(--dreamer);">B — Dreamer</div>
+          <div style="font-size:8pt;color:var(--mid);margin-top:3px;">Count of B's: <input class="iline" type="text" style="width:24px;text-align:center;"></div>
+        </div>
+        <div style="background:#fff;border-radius:6px;padding:8px 12px;text-align:center;">
+          <div style="font-size:10pt;margin-bottom:3px;">🛡️</div>
+          <div style="font-size:7.5pt;font-weight:700;color:#8B6020;">C — Guardian</div>
+          <div style="font-size:8pt;color:var(--mid);margin-top:3px;">Count of C's: <input class="iline" type="text" style="width:24px;text-align:center;"></div>
+        </div>
+        <div style="background:#fff;border-radius:6px;padding:8px 12px;text-align:center;">
+          <div style="font-size:10pt;margin-bottom:3px;">🧭</div>
+          <div style="font-size:7.5pt;font-weight:700;color:var(--coral);">D — Explorer</div>
+          <div style="font-size:8pt;color:var(--mid);margin-top:3px;">Count of D's: <input class="iline" type="text" style="width:24px;text-align:center;"></div>
+        </div>
+      </div>
+      <div style="font-size:8pt;color:var(--mid);margin-top:8px;text-align:center;">Your dominant type = the letter with the most answers. If tied, read both profiles on page 5 — you may be a blend.</div>
+    </div>
+  </div>
+  <div class="ftr">Couples Money Personality System · OurSteady.com</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     P4 · PARTNER 2 ASSESSMENT
+══════════════════════════════════════════════ -->
+<div class="page">
+  <div class="hdr"><span class="hl">PARTNER 2 — MONEY PERSONALITY ASSESSMENT</span><span class="hc">Couples Money Personality System</span><span class="hr">4</span></div>
+  <div class="body">
+
+    <div style="background:var(--gold-lite);border-radius:7px;padding:10px 16px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;">
+      <div style="font-size:8.5pt;color:var(--charcoal);"><strong>Partner 2:</strong> <input class="iline" type="text" style="width:160px;" placeholder="Your name"> &nbsp;&nbsp; <strong>Date:</strong> <input class="iline" type="text" style="width:100px;" placeholder="Today's date"></div>
+      <div style="font-size:8pt;color:var(--mid);">Complete this page alone before comparing with your partner.</div>
+    </div>
+
+    <div style="font-size:8pt;color:var(--mid);margin-bottom:10px;font-style:italic;">Choose the response that reflects how you actually behave or feel — not the ideal answer, your real one.</div>
+
+    <div class="q-block">
+      <div class="q-head" style="background:#8B6020;">
+        <div class="q-num">1</div>
+        <div>It's the end of the month and you have $300 left over. What do you do?</div>
+      </div>
+      <div class="q-body">
+        <div class="q-options">
+          <div class="q-opt"><div class="opt-letter">A</div><div>Allocate it immediately — split between specific savings categories you've already mapped out.</div></div>
+          <div class="q-opt"><div class="opt-letter">B</div><div>Put it toward that big goal you've been dreaming about — it feels like progress.</div></div>
+          <div class="q-opt"><div class="opt-letter">C</div><div>Add it to the emergency fund. You can never have too much of a safety buffer.</div></div>
+          <div class="q-opt"><div class="opt-letter">D</div><div>Treat yourselves — you worked hard. Life is short and you can save again next month.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-head" style="background:#8B6020;">
+        <div class="q-num">2</div>
+        <div>Your partner suggests a last-minute $800 weekend away. You haven't budgeted for it. Your gut reaction?</div>
+      </div>
+      <div class="q-body">
+        <div class="q-options">
+          <div class="q-opt"><div class="opt-letter">A</div><div>Immediately want to check the numbers — what would we have to cut? Can we afford this without derailing anything?</div></div>
+          <div class="q-opt"><div class="opt-letter">B</div><div>Feel excited — experiences matter, and memories like this are what we're working for.</div></div>
+          <div class="q-opt"><div class="opt-letter">C</div><div>Feel anxious — unplanned spending makes you uncomfortable, even if you can technically afford it.</div></div>
+          <div class="q-opt"><div class="opt-letter">D</div><div>Say yes immediately. Money comes back; spontaneous adventures don't.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-head" style="background:#8B6020;">
+        <div class="q-num">3</div>
+        <div>When you think about your financial future, what motivates you most?</div>
+      </div>
+      <div class="q-body">
+        <div class="q-options">
+          <div class="q-opt"><div class="opt-letter">A</div><div>Watching the numbers grow on a plan you built — the satisfaction of executing well and being on track.</div></div>
+          <div class="q-opt"><div class="opt-letter">B</div><div>A vivid picture of the life you want — the house, the travel, the retirement that looks like freedom.</div></div>
+          <div class="q-opt"><div class="opt-letter">C</div><div>The peace of mind of knowing you're protected — no debt, solid savings, covered if something goes wrong.</div></div>
+          <div class="q-opt"><div class="opt-letter">D</div><div>Not thinking too far ahead — you want to enjoy the present and trust yourself to adapt as things evolve.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-head" style="background:#8B6020;">
+        <div class="q-num">4</div>
+        <div>You and your partner disagree on a major purchase. How do you typically handle it?</div>
+      </div>
+      <div class="q-body">
+        <div class="q-options">
+          <div class="q-opt"><div class="opt-letter">A</div><div>Present the data — compare the cost against your financial plan and let the numbers make the case.</div></div>
+          <div class="q-opt"><div class="opt-letter">B</div><div>Make an emotional case for why this matters for your shared future and try to get them to see the vision.</div></div>
+          <div class="q-opt"><div class="opt-letter">C</div><div>Express your concerns clearly and want reassurance it won't affect your safety net before agreeing.</div></div>
+          <div class="q-opt"><div class="opt-letter">D</div><div>Try to convince them to just go for it — life is too short to overthink every purchase.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-head" style="background:#8B6020;">
+        <div class="q-num">5</div>
+        <div>How do you feel about debt?</div>
+      </div>
+      <div class="q-body">
+        <div class="q-options">
+          <div class="q-opt"><div class="opt-letter">A</div><div>It's a variable in the plan — manageable if the interest rate is reasonable and there's a clear payoff timeline.</div></div>
+          <div class="q-opt"><div class="opt-letter">B</div><div>Uncomfortable but acceptable if it's in service of a big goal (a house, education, a business).</div></div>
+          <div class="q-opt"><div class="opt-letter">C</div><div>Deeply uncomfortable — you want it gone as fast as possible and losing sleep over it is normal for you.</div></div>
+          <div class="q-opt"><div class="opt-letter">D</div><div>Part of life — you're not thrilled about it, but you don't let it dominate your thinking.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-head" style="background:#8B6020;">
+        <div class="q-num">6</div>
+        <div>Your honest relationship with budgets and tracking:</div>
+      </div>
+      <div class="q-body">
+        <div class="q-options">
+          <div class="q-opt"><div class="opt-letter">A</div><div>You love it. A good budget feels like freedom, not restriction. You probably have a system already.</div></div>
+          <div class="q-opt"><div class="opt-letter">B</div><div>You like the idea of it but struggle to keep up with the details. Goals motivate you more than categories.</div></div>
+          <div class="q-opt"><div class="opt-letter">C</div><div>You track what matters most — especially debt balances and savings buffers. The rest is secondary.</div></div>
+          <div class="q-opt"><div class="opt-letter">D</div><div>You find it tedious. You have a rough sense of your money and prefer to keep it flexible.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:var(--warm);border-radius:8px;padding:10px 16px;margin-top:4px;">
+      <div class="section-lbl" style="margin-bottom:7px;">PARTNER 2 — TALLY YOUR ANSWERS</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;">
+        <div style="background:#fff;border-radius:6px;padding:8px 12px;text-align:center;">
+          <div style="font-size:10pt;margin-bottom:3px;">🏛️</div>
+          <div style="font-size:7.5pt;font-weight:700;color:var(--architect);">A — Architect</div>
+          <div style="font-size:8pt;color:var(--mid);margin-top:3px;">Count of A's: <input class="iline" type="text" style="width:24px;text-align:center;"></div>
+        </div>
+        <div style="background:#fff;border-radius:6px;padding:8px 12px;text-align:center;">
+          <div style="font-size:10pt;margin-bottom:3px;">✨</div>
+          <div style="font-size:7.5pt;font-weight:700;color:var(--dreamer);">B — Dreamer</div>
+          <div style="font-size:8pt;color:var(--mid);margin-top:3px;">Count of B's: <input class="iline" type="text" style="width:24px;text-align:center;"></div>
+        </div>
+        <div style="background:#fff;border-radius:6px;padding:8px 12px;text-align:center;">
+          <div style="font-size:10pt;margin-bottom:3px;">🛡️</div>
+          <div style="font-size:7.5pt;font-weight:700;color:#8B6020;">C — Guardian</div>
+          <div style="font-size:8pt;color:var(--mid);margin-top:3px;">Count of C's: <input class="iline" type="text" style="width:24px;text-align:center;"></div>
+        </div>
+        <div style="background:#fff;border-radius:6px;padding:8px 12px;text-align:center;">
+          <div style="font-size:10pt;margin-bottom:3px;">🧭</div>
+          <div style="font-size:7.5pt;font-weight:700;color:var(--coral);">D — Explorer</div>
+          <div style="font-size:8pt;color:var(--mid);margin-top:3px;">Count of D's: <input class="iline" type="text" style="width:24px;text-align:center;"></div>
+        </div>
+      </div>
+      <div style="font-size:8pt;color:var(--mid);margin-top:8px;text-align:center;">Now go to page 5 to read your full type profile, then find your combination on the compatibility map (pages 6–7).</div>
+    </div>
+  </div>
+  <div class="ftr">Couples Money Personality System · OurSteady.com</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     P5 · FULL TYPE PROFILES
+══════════════════════════════════════════════ -->
+<div class="page">
+  <div class="hdr"><span class="hl">YOUR MONEY PERSONALITY — FULL PROFILES</span><span class="hc">Couples Money Personality System</span><span class="hr">5</span></div>
+  <div class="body">
+
+    <!-- Architect -->
+    <div class="type-card" style="margin-bottom:10px;">
+      <div class="type-card-hdr" style="background:var(--architect);">
+        <div class="type-icon-big">🏛️</div>
+        <div>
+          <div class="type-name-big">The Architect</div>
+          <div class="type-tagline">Methodical · Systematic · Control-oriented · Detail-driven</div>
+        </div>
+        <div style="margin-left:auto;background:rgba(255,255,255,.2);border-radius:6px;padding:5px 12px;text-align:center;">
+          <div style="font-size:10pt;font-weight:700;color:#fff;">A</div>
+          <div style="font-size:7pt;color:rgba(255,255,255,.8);">Dominant</div>
+        </div>
+      </div>
+      <div class="type-card-body">
+        <div style="font-size:8.5pt;color:var(--charcoal);line-height:1.65;margin-bottom:8px;">You are at your most comfortable when there's a plan. You tend to research financial decisions thoroughly, maintain structured systems (spreadsheets, trackers, budgets), and feel anxiety when finances feel out of control. Precision is both your gift and your blind spot — you can sometimes get so focused on optimising the system that you lose sight of the emotions your partner brings to money.</div>
+        <div class="trait-row">
+          <div class="trait-col" style="background:var(--architect-lite);">
+            <div class="trait-col-lbl" style="color:var(--architect);">✦ YOUR STRENGTHS</div>
+            <div class="trait-item">Builds robust financial systems and sticks to them</div>
+            <div class="trait-item">Excellent at long-term planning and projecting</div>
+            <div class="trait-item">Can make dispassionate financial decisions when needed</div>
+            <div class="trait-item">Tracks progress diligently and catches problems early</div>
+          </div>
+          <div class="trait-col" style="background:var(--coral-lite);">
+            <div class="trait-col-lbl" style="color:var(--coral);">⚠ YOUR BLIND SPOTS</div>
+            <div class="trait-item">Can seem controlling or inflexible to partners who need freedom</div>
+            <div class="trait-item">May prioritise the plan over the relationship during conflict</div>
+            <div class="trait-item">Struggles to enjoy the present when the numbers aren't perfect</div>
+            <div class="trait-item">Can create anxiety in partners with shame around money</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dreamer -->
+    <div class="type-card" style="margin-bottom:10px;">
+      <div class="type-card-hdr" style="background:var(--dreamer);">
+        <div class="type-icon-big">✨</div>
+        <div>
+          <div class="type-name-big">The Dreamer</div>
+          <div class="type-tagline">Visionary · Optimistic · Emotionally-motivated · Big-picture</div>
+        </div>
+        <div style="margin-left:auto;background:rgba(255,255,255,.2);border-radius:6px;padding:5px 12px;text-align:center;">
+          <div style="font-size:10pt;font-weight:700;color:#fff;">B</div>
+          <div style="font-size:7pt;color:rgba(255,255,255,.8);">Dominant</div>
+        </div>
+      </div>
+      <div class="type-card-body">
+        <div style="font-size:8.5pt;color:var(--charcoal);line-height:1.65;margin-bottom:8px;">You are energised by possibility. The "why" of saving motivates you far more than the "how." You're often the partner who initiates big financial goals and gets others excited — but follow-through on the detail can be where you struggle. You spend emotionally and can underestimate costs when you're excited about something.</div>
+        <div class="trait-row">
+          <div class="trait-col" style="background:var(--dreamer-lite);">
+            <div class="trait-col-lbl" style="color:var(--dreamer);">✦ YOUR STRENGTHS</div>
+            <div class="trait-item">Natural goal-setter who keeps the couple moving forward</div>
+            <div class="trait-item">High motivation makes saving feel meaningful, not punishing</div>
+            <div class="trait-item">Brings energy and excitement to financial conversations</div>
+            <div class="trait-item">Open to risk in ways that can generate real wealth</div>
+          </div>
+          <div class="trait-col" style="background:var(--coral-lite);">
+            <div class="trait-col-lbl" style="color:var(--coral);">⚠ YOUR BLIND SPOTS</div>
+            <div class="trait-item">Optimism bias — tendency to underestimate costs or timelines</div>
+            <div class="trait-item">Detail-avoidance can create gaps that cause real problems</div>
+            <div class="trait-item">Can make large unilateral decisions when excited</div>
+            <div class="trait-item">May feel personally rejected when the plan is questioned</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Guardian -->
+    <div class="type-card" style="margin-bottom:10px;">
+      <div class="type-card-hdr" style="background:#8B6020;">
+        <div class="type-icon-big">🛡️</div>
+        <div>
+          <div class="type-name-big">The Guardian</div>
+          <div class="type-tagline">Risk-averse · Protective · Security-driven · Debt-averse</div>
+        </div>
+        <div style="margin-left:auto;background:rgba(255,255,255,.2);border-radius:6px;padding:5px 12px;text-align:center;">
+          <div style="font-size:10pt;font-weight:700;color:#fff;">C</div>
+          <div style="font-size:7pt;color:rgba(255,255,255,.8);">Dominant</div>
+        </div>
+      </div>
+      <div class="type-card-body">
+        <div style="font-size:8.5pt;color:var(--charcoal);line-height:1.65;margin-bottom:8px;">Safety is not just a preference for you — it's a deep emotional need. You're the partner who insists on the emergency fund before investing, who wants debt gone before spending, who lies awake thinking about "what ifs." Your caution has real value: you protect the household from financial catastrophe. The tension comes when your risk-aversion blocks worthwhile progress.</div>
+        <div class="trait-row">
+          <div class="trait-col" style="background:var(--guardian-lite);">
+            <div class="trait-col-lbl" style="color:#8B6020;">✦ YOUR STRENGTHS</div>
+            <div class="trait-item">Protects the household from financial emergencies and overextension</div>
+            <div class="trait-item">Pays down debt aggressively — often frees up cash flow faster</div>
+            <div class="trait-item">Rarely makes impulsive decisions that hurt future security</div>
+            <div class="trait-item">Excellent at insurance, wills, and long-term resilience planning</div>
+          </div>
+          <div class="trait-col" style="background:var(--coral-lite);">
+            <div class="trait-col-lbl" style="color:var(--coral);">⚠ YOUR BLIND SPOTS</div>
+            <div class="trait-item">Over-caution can lead to under-investment and missed growth</div>
+            <div class="trait-item">Financial anxiety can feel controlling or suffocating to partners</div>
+            <div class="trait-item">May struggle to celebrate financial wins — always looking at risk</div>
+            <div class="trait-item">Can veto good opportunities because they feel unfamiliar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Explorer -->
+    <div class="type-card">
+      <div class="type-card-hdr" style="background:var(--coral);">
+        <div class="type-icon-big">🧭</div>
+        <div>
+          <div class="type-name-big">The Explorer</div>
+          <div class="type-tagline">Spontaneous · Present-focused · Experience-driven · Flexible</div>
+        </div>
+        <div style="margin-left:auto;background:rgba(255,255,255,.2);border-radius:6px;padding:5px 12px;text-align:center;">
+          <div style="font-size:10pt;font-weight:700;color:#fff;">D</div>
+          <div style="font-size:7pt;color:rgba(255,255,255,.8);">Dominant</div>
+        </div>
+      </div>
+      <div class="type-card-body">
+        <div style="font-size:8.5pt;color:var(--charcoal);line-height:1.65;margin-bottom:8px;">You're wired for the present. You spend on experiences and moments because they genuinely matter more to you than balance sheet numbers. You're adaptable, generous, and genuinely free from financial anxiety in a way that some partners envy. The challenge is that your present-focus can create future problems — especially when partnered with someone who's counting on you to engage with the long game.</div>
+        <div class="trait-row">
+          <div class="trait-col" style="background:var(--explorer-lite);">
+            <div class="trait-col-lbl" style="color:var(--coral);">✦ YOUR STRENGTHS</div>
+            <div class="trait-item">Low financial anxiety — doesn't stress about money, which is genuinely healthy</div>
+            <div class="trait-item">Generous and spontaneous — keeps the relationship feeling alive</div>
+            <div class="trait-item">Highly adaptable when circumstances change unexpectedly</div>
+            <div class="trait-item">Unattached to accumulation — avoids lifestyle inflation naturally</div>
+          </div>
+          <div class="trait-col" style="background:var(--coral-lite);">
+            <div class="trait-col-lbl" style="color:var(--coral);">⚠ YOUR BLIND SPOTS</div>
+            <div class="trait-item">Under-engages with long-term planning, which burdens partners</div>
+            <div class="trait-item">Impulse spending can derail shared goals without realising it</div>
+            <div class="trait-item">Avoids difficult money conversations — can seem dismissive</div>
+            <div class="trait-item">May mistake financial planning for lack of trust in the future</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="ftr">Couples Money Personality System · OurSteady.com</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     P6 · COMPATIBILITY MAP
+══════════════════════════════════════════════ -->
+<div class="page">
+  <div class="hdr"><span class="hl">COMPATIBILITY MAP — ALL 10 TYPE COMBINATIONS</span><span class="hc">Couples Money Personality System</span><span class="hr">6</span></div>
+  <div class="body">
+
+    <div style="background:var(--teal-lite);border-radius:7px;padding:9px 14px;margin-bottom:12px;font-size:8.5pt;color:var(--teal-dark);line-height:1.6;">
+      Find your combination below. If your types are listed in the opposite order (e.g. you're Dreamer + Architect but you see Architect + Dreamer), the profile is the same — just read both partners' roles. Highlight or circle your combination.
+    </div>
+
+    <!-- Row 1 -->
+    <div class="compat-card">
+      <div class="compat-pair">
+        <div style="font-size:14pt;">🏛️🏛️</div>
+        <div class="compat-pair-types">Architect + Architect</div>
+        <div class="compat-meter" style="background:linear-gradient(to right,#5B6F8E,#5B6F8E);"></div>
+        <div class="compat-score">High alignment · Low tension</div>
+      </div>
+      <div class="compat-body">
+        <div class="compat-name">"The Blueprint Couple" — Two systems thinkers in agreement</div>
+        <div style="font-size:8pt;color:var(--charcoal);line-height:1.5;margin-bottom:5px;">Strong on planning and execution. The risk is getting so focused on the plan that you forget to enjoy the journey — and neither of you will naturally challenge the other to loosen up or take joyful risks.</div>
+        <div class="compat-cols">
+          <div class="compat-col" style="background:var(--sage-lite);"><span style="font-size:7pt;font-weight:700;color:var(--sage-dark);">✦ SUPERPOWER:</span> Executes financial plans with exceptional precision and discipline.</div>
+          <div class="compat-col" style="background:var(--coral-lite);"><span style="font-size:7pt;font-weight:700;color:var(--coral);">⚠ WATCH FOR:</span> Over-optimising at the expense of present enjoyment. Schedule guilt-free spending.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compat-card">
+      <div class="compat-pair">
+        <div style="font-size:14pt;">🏛️✨</div>
+        <div class="compat-pair-types">Architect + Dreamer</div>
+        <div class="compat-meter" style="background:linear-gradient(to right,#5B6F8E 50%,#8B5EA7 50%);"></div>
+        <div class="compat-score">High tension · High potential</div>
+      </div>
+      <div class="compat-body">
+        <div class="compat-name">"The Blueprint & the Vision" — The classic planner-dreamer dynamic</div>
+        <div style="font-size:8pt;color:var(--charcoal);line-height:1.5;margin-bottom:5px;">The most common and most creative pairing. The Dreamer supplies goals the Architect can build systems around. Tension arises when the Architect feels the Dreamer is reckless, and the Dreamer feels the Architect is killing the joy.</div>
+        <div class="compat-cols">
+          <div class="compat-col" style="background:var(--sage-lite);"><span style="font-size:7pt;font-weight:700;color:var(--sage-dark);">✦ SUPERPOWER:</span> Big goals with real execution — neither gets stuck in either extreme alone.</div>
+          <div class="compat-col" style="background:var(--coral-lite);"><span style="font-size:7pt;font-weight:700;color:var(--coral);">⚠ WATCH FOR:</span> Architect dismissing emotion; Dreamer dismissing the details. Both need to translate into the other's language.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compat-card">
+      <div class="compat-pair">
+        <div style="font-size:14pt;">🏛️🛡️</div>
+        <div class="compat-pair-types">Architect + Guardian</div>
+        <div class="compat-meter" style="background:linear-gradient(to right,#5B6F8E 50%,#8B6020 50%);"></div>
+        <div class="compat-score">Low tension · High security</div>
+      </div>
+      <div class="compat-body">
+        <div class="compat-name">"The Fortress" — Two safety-oriented types with slightly different methods</div>
+        <div style="font-size:8pt;color:var(--charcoal);line-height:1.5;margin-bottom:5px;">Highly aligned on risk tolerance and caution. Potential friction: the Architect is more comfortable with debt as a tool (mortgage, investment), while the Guardian wants everything gone. Conflict emerges around investment risk.</div>
+        <div class="compat-cols">
+          <div class="compat-col" style="background:var(--sage-lite);"><span style="font-size:7pt;font-weight:700;color:var(--sage-dark);">✦ SUPERPOWER:</span> Financial resilience. Will build a rock-solid foundation over time.</div>
+          <div class="compat-col" style="background:var(--coral-lite);"><span style="font-size:7pt;font-weight:700;color:var(--coral);">⚠ WATCH FOR:</span> Under-investing due to mutual risk-aversion. Consider a "growth budget" you both agree to invest without second-guessing.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compat-card">
+      <div class="compat-pair">
+        <div style="font-size:14pt;">🏛️🧭</div>
+        <div class="compat-pair-types">Architect + Explorer</div>
+        <div class="compat-meter" style="background:linear-gradient(to right,#5B6F8E 50%,#D4795A 50%);"></div>
+        <div class="compat-score">High tension · Requires structure</div>
+      </div>
+      <div class="compat-body">
+        <div class="compat-name">"The Map vs the Journey" — Fundamentally different relationships with control</div>
+        <div style="font-size:8pt;color:var(--charcoal);line-height:1.5;margin-bottom:5px;">The Architect needs structure; the Explorer finds it suffocating. Neither is wrong — but without deliberate agreements, the Architect feels undermined and the Explorer feels controlled. A generous personal spending allowance is essential.</div>
+        <div class="compat-cols">
+          <div class="compat-col" style="background:var(--sage-lite);"><span style="font-size:7pt;font-weight:700;color:var(--sage-dark);">✦ SUPERPOWER:</span> The Explorer helps the Architect live; the Architect helps the Explorer build something lasting.</div>
+          <div class="compat-col" style="background:var(--coral-lite);"><span style="font-size:7pt;font-weight:700;color:var(--coral);">⚠ WATCH FOR:</span> Architect creating rules that feel punishing. Explorer disengaging entirely. Build freedom INTO the plan.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compat-card">
+      <div class="compat-pair">
+        <div style="font-size:14pt;">✨✨</div>
+        <div class="compat-pair-types">Dreamer + Dreamer</div>
+        <div class="compat-meter" style="background:linear-gradient(to right,#8B5EA7,#8B5EA7);"></div>
+        <div class="compat-score">High energy · Needs detail</div>
+      </div>
+      <div class="compat-body">
+        <div class="compat-name">"The Vision Board Couple" — Two big-picture thinkers with abundant goals</div>
+        <div style="font-size:8pt;color:var(--charcoal);line-height:1.5;margin-bottom:5px;">Endless motivation and excitement — but without a system, you'll keep planning without executing. Someone needs to be the designated "detail person" or you'll find yourselves still talking about the same goals in five years.</div>
+        <div class="compat-cols">
+          <div class="compat-col" style="background:var(--sage-lite);"><span style="font-size:7pt;font-weight:700;color:var(--sage-dark);">✦ SUPERPOWER:</span> Mutual ambition — you'll aim higher than any other type combination.</div>
+          <div class="compat-col" style="background:var(--coral-lite);"><span style="font-size:7pt;font-weight:700;color:var(--coral);">⚠ WATCH FOR:</span> Goal proliferation, under-tracking. One of you must own the numbers — or hire someone who will.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compat-card">
+      <div class="compat-pair">
+        <div style="font-size:14pt;">✨🛡️</div>
+        <div class="compat-pair-types">Dreamer + Guardian</div>
+        <div class="compat-meter" style="background:linear-gradient(to right,#8B5EA7 50%,#8B6020 50%);"></div>
+        <div class="compat-score">Productive tension</div>
+      </div>
+      <div class="compat-body">
+        <div class="compat-name">"Ambition meets Armour" — The most emotionally charged pairing</div>
+        <div style="font-size:8pt;color:var(--charcoal);line-height:1.5;margin-bottom:5px;">The Dreamer wants to leap; the Guardian needs a safety net first. Both are right. The key is sequencing — build the security the Guardian needs, then fund the goals the Dreamer wants. Without that agreement, every purchase becomes a conflict.</div>
+        <div class="compat-cols">
+          <div class="compat-col" style="background:var(--sage-lite);"><span style="font-size:7pt;font-weight:700;color:var(--sage-dark);">✦ SUPERPOWER:</span> Safe ambition — big goals with a cushion underneath them.</div>
+          <div class="compat-col" style="background:var(--coral-lite);"><span style="font-size:7pt;font-weight:700;color:var(--coral);">⚠ WATCH FOR:</span> Guardian always vetoing. Dreamer steamrolling over safety needs. Agree on the non-negotiable baseline first.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compat-card">
+      <div class="compat-pair">
+        <div style="font-size:14pt;">✨🧭</div>
+        <div class="compat-pair-types">Dreamer + Explorer</div>
+        <div class="compat-meter" style="background:linear-gradient(to right,#8B5EA7 50%,#D4795A 50%);"></div>
+        <div class="compat-score">High joy · Low structure</div>
+      </div>
+      <div class="compat-body">
+        <div class="compat-name">"The Adventure Fund" — Fun together, disorganised by default</div>
+        <div style="font-size:8pt;color:var(--charcoal);line-height:1.5;margin-bottom:5px;">Delightful to be around, but financial follow-through is the shared weak spot. Neither partner naturally plays the "responsible one." Automation is your best friend — set it up and remove decision fatigue from the equation.</div>
+        <div class="compat-cols">
+          <div class="compat-col" style="background:var(--sage-lite);"><span style="font-size:7pt;font-weight:700;color:var(--sage-dark);">✦ SUPERPOWER:</span> Incredible life quality and shared enjoyment — if you build the foundations.</div>
+          <div class="compat-col" style="background:var(--coral-lite);"><span style="font-size:7pt;font-weight:700;color:var(--coral);">⚠ WATCH FOR:</span> Both avoiding the financial admin. Automate everything: savings, investing, bills. Check in quarterly at minimum.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compat-card">
+      <div class="compat-pair">
+        <div style="font-size:14pt;">🛡️🛡️</div>
+        <div class="compat-pair-types">Guardian + Guardian</div>
+        <div class="compat-meter" style="background:linear-gradient(to right,#8B6020,#8B6020);"></div>
+        <div class="compat-score">Very stable · Under-invested</div>
+      </div>
+      <div class="compat-body">
+        <div class="compat-name">"The Safe House" — Two people who prioritise security above all else</div>
+        <div style="font-size:8pt;color:var(--charcoal);line-height:1.5;margin-bottom:5px;">Exceptional at protecting wealth. The shared risk is extreme caution — holding too much cash, under-investing, and delaying life enjoyment indefinitely. You need a permission structure to take calculated risks and spend on experiences guilt-free.</div>
+        <div class="compat-cols">
+          <div class="compat-col" style="background:var(--sage-lite);"><span style="font-size:7pt;font-weight:700;color:var(--sage-dark);">✦ SUPERPOWER:</span> Will never be blindsided by a financial emergency. Resilient and steady.</div>
+          <div class="compat-col" style="background:var(--coral-lite);"><span style="font-size:7pt;font-weight:700;color:var(--coral);">⚠ WATCH FOR:</span> Hoarding at the expense of living. Schedule annual "permission to spend" reviews once targets are hit.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compat-card">
+      <div class="compat-pair">
+        <div style="font-size:14pt;">🛡️🧭</div>
+        <div class="compat-pair-types">Guardian + Explorer</div>
+        <div class="compat-meter" style="background:linear-gradient(to right,#8B6020 50%,#D4795A 50%);"></div>
+        <div class="compat-score">Highest friction pairing</div>
+      </div>
+      <div class="compat-body">
+        <div class="compat-name">"The Anchor and the Sail" — Opposite instincts, need deliberate design</div>
+        <div style="font-size:8pt;color:var(--charcoal);line-height:1.5;margin-bottom:5px;">The Guardian is terrified by what the Explorer is unbothered by, and vice versa. Both interpret the other's approach as irresponsible. The solution: non-negotiable safety minimums the Guardian owns, and non-negotiable freedom money the Explorer controls. Separate lanes prevent constant collision.</div>
+        <div class="compat-cols">
+          <div class="compat-col" style="background:var(--sage-lite);"><span style="font-size:7pt;font-weight:700;color:var(--sage-dark);">✦ SUPERPOWER:</span> The Guardian builds the net; the Explorer reminds both why you're living.</div>
+          <div class="compat-col" style="background:var(--coral-lite);"><span style="font-size:7pt;font-weight:700;color:var(--coral);">⚠ WATCH FOR:</span> Guardian treating the Explorer like a child; Explorer treating the Guardian's fears as irrational. Both are valid.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compat-card">
+      <div class="compat-pair">
+        <div style="font-size:14pt;">🧭🧭</div>
+        <div class="compat-pair-types">Explorer + Explorer</div>
+        <div class="compat-meter" style="background:linear-gradient(to right,#D4795A,#D4795A);"></div>
+        <div class="compat-score">Joyful · Structureless</div>
+      </div>
+      <div class="compat-body">
+        <div class="compat-name">"The Freedom Couple" — Two people who live richly in the present</div>
+        <div style="font-size:8pt;color:var(--charcoal);line-height:1.5;margin-bottom:5px;">Wonderful quality of life, genuine contentment — and a real risk of arriving at 55 with very little saved. No one in this pairing naturally plays the long-term role. Automation and an annual financial review with an advisor are not optional for this type combination.</div>
+        <div class="compat-cols">
+          <div class="compat-col" style="background:var(--sage-lite);"><span style="font-size:7pt;font-weight:700;color:var(--sage-dark);">✦ SUPERPOWER:</span> Low financial anxiety, high life satisfaction, strong present-moment connection.</div>
+          <div class="compat-col" style="background:var(--coral-lite);"><span style="font-size:7pt;font-weight:700;color:var(--coral);">⚠ WATCH FOR:</span> Nobody checking the long-term picture. Automate retirement contributions immediately. Consider annual advisor check-ins.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="ftr">Couples Money Personality System · OurSteady.com</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     P7 · OUR COMBINATION PROFILE
+══════════════════════════════════════════════ -->
+<div class="page">
+  <div class="hdr"><span class="hl">OUR COMBINATION PROFILE</span><span class="hc">Couples Money Personality System</span><span class="hr">7</span></div>
+  <div class="body">
+
+    <div style="background:var(--teal-dark);border-radius:10px;padding:16px 20px;margin-bottom:16px;display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;">
+      <div style="text-align:center;">
+        <div style="font-size:8pt;font-weight:700;color:rgba(180,230,220,.8);letter-spacing:.07em;margin-bottom:6px;">PARTNER 1</div>
+        <div style="font-size:9pt;color:#fff;margin-bottom:3px;"><input style="background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.3);color:#fff;font-family:'DM Sans',sans-serif;font-size:9pt;width:140px;outline:none;text-align:center;" type="text" placeholder="Name"></div>
+        <div style="margin-top:6px;"><input style="background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.3);color:var(--gold);font-family:'DM Sans',sans-serif;font-size:10pt;font-weight:700;width:120px;outline:none;text-align:center;" type="text" placeholder="Type (e.g. Guardian)"></div>
+      </div>
+      <div style="text-align:center;font-family:'Playfair Display',serif;font-size:18pt;color:var(--gold);">+</div>
+      <div style="text-align:center;">
+        <div style="font-size:8pt;font-weight:700;color:rgba(180,230,220,.8);letter-spacing:.07em;margin-bottom:6px;">PARTNER 2</div>
+        <div style="font-size:9pt;color:#fff;margin-bottom:3px;"><input style="background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.3);color:#fff;font-family:'DM Sans',sans-serif;font-size:9pt;width:140px;outline:none;text-align:center;" type="text" placeholder="Name"></div>
+        <div style="margin-top:6px;"><input style="background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.3);color:var(--gold);font-family:'DM Sans',sans-serif;font-size:10pt;font-weight:700;width:120px;outline:none;text-align:center;" type="text" placeholder="Type (e.g. Dreamer)"></div>
+      </div>
+    </div>
+
+    <div class="section-lbl">WHAT THIS COMBINATION MEANS FOR US</div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:12px 16px;margin-bottom:12px;">
+      <div style="font-size:8pt;color:var(--mid);margin-bottom:5px;">Our combination name / how we'd describe our dynamic:</div>
+      <textarea style="height:30px;" placeholder="e.g. 'The Blueprint & the Vision' — we bring structure and ambition together"></textarea>
+      <div style="font-size:8pt;color:var(--mid);margin-bottom:5px;margin-top:8px;">The biggest financial strength our combination brings:</div>
+      <textarea style="height:30px;" placeholder="What we do better together than either of us would alone…"></textarea>
+      <div style="font-size:8pt;color:var(--mid);margin-bottom:5px;margin-top:8px;">Our most predictable friction point:</div>
+      <textarea style="height:30px;" placeholder="Where we most often get stuck or argue about money…"></textarea>
+    </div>
+
+    <div class="section-lbl">WHAT EACH OF US NEEDS THE OTHER TO UNDERSTAND</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:12px 14px;">
+        <div style="font-size:8.5pt;font-weight:700;color:var(--teal);margin-bottom:7px;">Partner 1 needs Partner 2 to know:</div>
+        <div style="font-size:8pt;color:var(--mid);margin-bottom:5px;">When I react to money this way…</div>
+        <textarea style="height:28px;" placeholder="e.g. When I go quiet after you suggest a big expense…"></textarea>
+        <div style="font-size:8pt;color:var(--mid);margin-bottom:5px;margin-top:6px;">What I actually need is…</div>
+        <textarea style="height:28px;" placeholder="e.g. I need a few minutes to check the numbers before I respond…"></textarea>
+      </div>
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:12px 14px;">
+        <div style="font-size:8.5pt;font-weight:700;color:var(--gold);margin-bottom:7px;">Partner 2 needs Partner 1 to know:</div>
+        <div style="font-size:8pt;color:var(--mid);margin-bottom:5px;">When I react to money this way…</div>
+        <textarea style="height:28px;" placeholder="e.g. When I seem excited and impulsive about a purchase…"></textarea>
+        <div style="font-size:8pt;color:var(--mid);margin-bottom:5px;margin-top:6px;">What I actually need is…</div>
+        <textarea style="height:28px;" placeholder="e.g. I need you to get curious about what's driving it before you push back…"></textarea>
+      </div>
+    </div>
+
+    <div class="section-lbl">OUR COMBINATION'S FINANCIAL DESIGN PRINCIPLES</div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:12px 16px;margin-bottom:12px;">
+      <div style="font-size:8pt;color:var(--mid);margin-bottom:5px;">Three rules we want to build our financial life around, based on who we both are:</div>
+      <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:7px;">
+        <div style="background:var(--teal-mid);color:#fff;font-size:7.5pt;font-weight:700;padding:2px 8px;border-radius:20px;flex-shrink:0;margin-top:2px;">RULE 1</div>
+        <textarea style="height:26px;" placeholder="e.g. We keep a 3-month emergency fund that is never touched for non-emergencies."></textarea>
+      </div>
+      <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:7px;">
+        <div style="background:var(--teal-mid);color:#fff;font-size:7.5pt;font-weight:700;padding:2px 8px;border-radius:20px;flex-shrink:0;margin-top:2px;">RULE 2</div>
+        <textarea style="height:26px;" placeholder="e.g. Each partner has $X/month of personal spending — no questions, no guilt."></textarea>
+      </div>
+      <div style="display:flex;gap:8px;align-items:flex-start;">
+        <div style="background:var(--teal-mid);color:#fff;font-size:7.5pt;font-weight:700;padding:2px 8px;border-radius:20px;flex-shrink:0;margin-top:2px;">RULE 3</div>
+        <textarea style="height:26px;" placeholder="e.g. Any purchase over $X requires a 48-hour conversation before we commit."></textarea>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Reminder:</strong> These rules aren't constraints — they're agreements built specifically for the two personalities in your relationship. A Guardian + Explorer couple will design very different rules than an Architect + Dreamer couple. That's the point. Your rules should fit you, not some generic financial advice template.
+    </div>
+  </div>
+  <div class="ftr">Couples Money Personality System · OurSteady.com</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     P7B · GROWTH PATH PER TYPE
+══════════════════════════════════════════════ -->
+<div class="page">
+  <div class="hdr"><span class="hl">YOUR GROWTH PATH — WHAT TO WORK ON THIS QUARTER</span><span class="hc">Couples Money Personality System</span><span class="hr">✦</span></div>
+  <div class="body">
+
+    <div style="background:var(--teal-lite);border-radius:7px;padding:9px 14px;margin-bottom:14px;font-size:8.5pt;color:var(--teal-dark);line-height:1.6;">
+      Each personality type has a signature strength <em>and</em> a signature blind spot. This page maps the one financial habit each type should focus on building this quarter — not to fix a flaw, but to grow beyond it.
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+
+      <!-- Architect Growth Path -->
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:10px;overflow:hidden;">
+        <div style="background:var(--architect);padding:11px 16px;display:flex;align-items:center;gap:10px;">
+          <div style="font-size:16pt;">🏛️</div>
+          <div>
+            <div style="font-size:9pt;font-weight:700;color:#fff;">The Architect</div>
+            <div style="font-size:7.5pt;color:rgba(200,220,255,.85);">Growth path: from control to trust</div>
+          </div>
+        </div>
+        <div style="padding:12px 16px;">
+          <div style="font-size:8pt;font-weight:700;color:var(--architect);margin-bottom:5px;">Your strength:</div>
+          <div style="font-size:8pt;color:var(--charcoal);margin-bottom:9px;line-height:1.6;">You bring order, foresight, and calm to financial planning. You're the partner who actually checks the numbers.</div>
+          <div style="font-size:8pt;font-weight:700;color:var(--coral);margin-bottom:5px;">This quarter, work on:</div>
+          <div style="background:var(--architect-lite);border-radius:6px;padding:8px 12px;font-size:8.5pt;color:var(--charcoal);line-height:1.6;margin-bottom:8px;">Practice saying yes to one unplanned expense — without checking the spreadsheet first. Let your partner lead a spending decision without your review process.</div>
+          <div style="font-size:7.5pt;font-weight:700;color:var(--teal);margin-bottom:4px;">My commitment this quarter:</div>
+          <input class="iline" type="text" style="width:100%;font-size:8pt;" placeholder="e.g. I will let my partner choose one activity budget item per month without input from me">
+        </div>
+      </div>
+
+      <!-- Dreamer Growth Path -->
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:10px;overflow:hidden;">
+        <div style="background:var(--dreamer);padding:11px 16px;display:flex;align-items:center;gap:10px;">
+          <div style="font-size:16pt;">✨</div>
+          <div>
+            <div style="font-size:9pt;font-weight:700;color:#fff;">The Dreamer</div>
+            <div style="font-size:7.5pt;color:rgba(230,210,255,.85);">Growth path: from vision to action</div>
+          </div>
+        </div>
+        <div style="padding:12px 16px;">
+          <div style="font-size:8pt;font-weight:700;color:var(--dreamer);margin-bottom:5px;">Your strength:</div>
+          <div style="font-size:8pt;color:var(--charcoal);margin-bottom:9px;line-height:1.6;">You bring inspiration, big-picture thinking, and emotional motivation to financial goals. You make saving feel worth it.</div>
+          <div style="font-size:8pt;font-weight:700;color:var(--coral);margin-bottom:5px;">This quarter, work on:</div>
+          <div style="background:var(--dreamer-lite);border-radius:6px;padding:8px 12px;font-size:8.5pt;color:var(--charcoal);line-height:1.6;margin-bottom:8px;">Pick one dream and break it into monthly milestones with actual dollar amounts. A goal with no numbers attached is just a wish — give this one real stakes.</div>
+          <div style="font-size:7.5pt;font-weight:700;color:var(--teal);margin-bottom:4px;">My commitment this quarter:</div>
+          <input class="iline" type="text" style="width:100%;font-size:8pt;" placeholder="e.g. I will set up a named savings account for our biggest dream goal this month">
+        </div>
+      </div>
+
+      <!-- Guardian Growth Path -->
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:10px;overflow:hidden;">
+        <div style="background:var(--guardian);padding:11px 16px;display:flex;align-items:center;gap:10px;">
+          <div style="font-size:16pt;">🛡️</div>
+          <div>
+            <div style="font-size:9pt;font-weight:700;color:#fff;">The Guardian</div>
+            <div style="font-size:7.5pt;color:rgba(255,240,200,.85);">Growth path: from safety to growth</div>
+          </div>
+        </div>
+        <div style="padding:12px 16px;">
+          <div style="font-size:8pt;font-weight:700;color:#8B6020;margin-bottom:5px;">Your strength:</div>
+          <div style="font-size:8pt;color:var(--charcoal);margin-bottom:9px;line-height:1.6;">You protect the household — insurance is updated, emergency funds are healthy, no big surprises catch you off guard.</div>
+          <div style="font-size:8pt;font-weight:700;color:var(--coral);margin-bottom:5px;">This quarter, work on:</div>
+          <div style="background:var(--guardian-lite);border-radius:6px;padding:8px 12px;font-size:8.5pt;color:var(--charcoal);line-height:1.6;margin-bottom:8px;">Open one investment account or increase contributions by 1%. Protection builds a floor; investing builds a ceiling. You're ready to build both.</div>
+          <div style="font-size:7.5pt;font-weight:700;color:var(--teal);margin-bottom:4px;">My commitment this quarter:</div>
+          <input class="iline" type="text" style="width:100%;font-size:8pt;" placeholder="e.g. I will increase my 401k contribution by 1% before the end of this month">
+        </div>
+      </div>
+
+      <!-- Explorer Growth Path -->
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:10px;overflow:hidden;">
+        <div style="background:var(--explorer);padding:11px 16px;display:flex;align-items:center;gap:10px;">
+          <div style="font-size:16pt;">🧭</div>
+          <div>
+            <div style="font-size:9pt;font-weight:700;color:#fff;">The Explorer</div>
+            <div style="font-size:7.5pt;color:rgba(255,230,220,.85);">Growth path: from freedom to foundation</div>
+          </div>
+        </div>
+        <div style="padding:12px 16px;">
+          <div style="font-size:8pt;font-weight:700;color:var(--explorer);margin-bottom:5px;">Your strength:</div>
+          <div style="font-size:8pt;color:var(--charcoal);margin-bottom:9px;line-height:1.6;">You live fully and spend intentionally on what matters to you. You're rarely paralysed by financial anxiety and often model genuine joy in life.</div>
+          <div style="font-size:8pt;font-weight:700;color:var(--coral);margin-bottom:5px;">This quarter, work on:</div>
+          <div style="background:var(--explorer-lite);border-radius:6px;padding:8px 12px;font-size:8.5pt;color:var(--charcoal);line-height:1.6;margin-bottom:8px;">Set up one automated savings transfer — even $50/month. The secret is to make the future-version of yourself a non-negotiable bill, not a leftover decision.</div>
+          <div style="font-size:7.5pt;font-weight:700;color:var(--teal);margin-bottom:4px;">My commitment this quarter:</div>
+          <input class="iline" type="text" style="width:100%;font-size:8pt;" placeholder="e.g. I will automate $100/month to savings on payday — before I see it">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="note">
+      <strong>How to use this page:</strong> Each partner fills in their own commitment box above. Revisit this at your next money date. The growth path isn't about fixing your personality — it's about expanding beyond its natural limits so your partnership grows stronger financially.
+    </div>
+  </div>
+  <div class="ftr">Couples Money Personality System · OurSteady.com</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     P8 · THE 5 MONEY CONFLICT PATTERNS
+══════════════════════════════════════════════ -->
+<div class="page">
+  <div class="hdr"><span class="hl">THE 5 MONEY CONFLICT PATTERNS</span><span class="hc">Couples Money Personality System</span><span class="hr">8</span></div>
+  <div class="body">
+
+    <div style="background:var(--teal-lite);border-radius:7px;padding:9px 14px;margin-bottom:12px;font-size:8.5pt;color:var(--teal-dark);line-height:1.6;">
+      These are the 5 most common ways personality differences turn into money fights. Recognising your pattern is the first step to interrupting it. Check the one(s) you experience most often.
+    </div>
+
+    <!-- Pattern 1 -->
+    <div class="conflict-card">
+      <div class="conflict-tab" style="background:var(--architect);"></div>
+      <div class="conflict-inner">
+        <div class="conflict-meta">
+          <div class="conflict-num" style="background:var(--architect);">1</div>
+          <div class="conflict-title">The Control vs Freedom Fight</div>
+          <span class="tag" style="background:var(--architect-lite);color:var(--architect);font-size:7pt;margin-left:auto;">Architect / Guardian vs Explorer</span>
+        </div>
+        <div class="conflict-trigger">Trigger: One partner creates or enforces budget rules. The other feels monitored and restricted.</div>
+        <div class="conflict-cols">
+          <div class="conflict-col" style="background:var(--coral-lite);">
+            <div class="conflict-col-lbl" style="color:var(--coral);">ROOT CAUSE</div>
+            <div style="font-size:8pt;color:var(--charcoal);line-height:1.5;">The rule-maker's need for predictability has become a control mechanism. The Explorer's need for autonomy has become avoidance of accountability.</div>
+          </div>
+          <div class="conflict-col" style="background:var(--teal-lite);">
+            <div class="conflict-col-lbl" style="color:var(--teal);">RESOLUTION</div>
+            <div style="font-size:8pt;color:var(--charcoal);line-height:1.5;">Separate "shared money" from "personal money" clearly. The shared system can have structure; personal spending is unconditionally free.</div>
+          </div>
+          <div class="conflict-col" style="background:var(--gold-lite);">
+            <div class="conflict-col-lbl" style="color:#8B6020;">SAY THIS</div>
+            <div style="font-size:8pt;color:var(--charcoal);line-height:1.5;font-style:italic;">"I want us both to feel free inside our system — not just me. What would freedom look like for you?"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pattern 2 -->
+    <div class="conflict-card">
+      <div class="conflict-tab" style="background:var(--dreamer);"></div>
+      <div class="conflict-inner">
+        <div class="conflict-meta">
+          <div class="conflict-num" style="background:var(--dreamer);">2</div>
+          <div class="conflict-title">The Vision vs Reality Fight</div>
+          <span class="tag" style="background:var(--dreamer-lite);color:var(--dreamer);font-size:7pt;margin-left:auto;">Dreamer vs Architect / Guardian</span>
+        </div>
+        <div class="conflict-trigger">Trigger: One partner proposes an exciting financial goal or purchase. The other immediately reality-checks it with costs, risks, or timeline objections.</div>
+        <div class="conflict-cols">
+          <div class="conflict-col" style="background:var(--coral-lite);">
+            <div class="conflict-col-lbl" style="color:var(--coral);">ROOT CAUSE</div>
+            <div style="font-size:8pt;color:var(--charcoal);line-height:1.5;">The Dreamer hears the reality-check as rejection. The detail-oriented partner thinks they're being helpful, not dismissive.</div>
+          </div>
+          <div class="conflict-col" style="background:var(--teal-lite);">
+            <div class="conflict-col-lbl" style="color:var(--teal);">RESOLUTION</div>
+            <div style="font-size:8pt;color:var(--charcoal);line-height:1.5;">Create a two-phase response: first, affirm the goal. Second, explore feasibility. Never skip phase one.</div>
+          </div>
+          <div class="conflict-col" style="background:var(--gold-lite);">
+            <div class="conflict-col-lbl" style="color:#8B6020;">SAY THIS</div>
+            <div style="font-size:8pt;color:var(--charcoal);line-height:1.5;font-style:italic;">"I love this idea — genuinely. Can we spend a few days figuring out what it would actually take to make it happen?"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pattern 3 -->
+    <div class="conflict-card">
+      <div class="conflict-tab" style="background:var(--guardian);"></div>
+      <div class="conflict-inner">
+        <div class="conflict-meta">
+          <div class="conflict-num" style="background:var(--guardian);">3</div>
+          <div class="conflict-title">The Fear vs Frustration Fight</div>
+          <span class="tag" style="background:var(--guardian-lite);color:#8B6020;font-size:7pt;margin-left:auto;">Guardian vs Dreamer / Explorer</span>
+        </div>
+        <div class="conflict-trigger">Trigger: The Guardian expresses anxiety about a financial decision. The other partner interprets the anxiety as excessive or irrational and becomes dismissive or impatient.</div>
+        <div class="conflict-cols">
+          <div class="conflict-col" style="background:var(--coral-lite);">
+            <div class="conflict-col-lbl" style="color:var(--coral);">ROOT CAUSE</div>
+            <div style="font-size:8pt;color:var(--charcoal);line-height:1.5;">The Guardian's fear is being treated as a character flaw rather than a valid perspective. This causes them to escalate — or shut down entirely.</div>
+          </div>
+          <div class="conflict-col" style="background:var(--teal-lite);">
+            <div class="conflict-col-lbl" style="color:var(--teal);">RESOLUTION</div>
+            <div style="font-size:8pt;color:var(--charcoal);line-height:1.5;">Acknowledge the fear explicitly before addressing the decision. "I hear that this worries you. Tell me what would make you feel safe enough to move forward."</div>
+          </div>
+          <div class="conflict-col" style="background:var(--gold-lite);">
+            <div class="conflict-col-lbl" style="color:#8B6020;">SAY THIS</div>
+            <div style="font-size:8pt;color:var(--charcoal);line-height:1.5;font-style:italic;">"Your caution protects us — I'm not dismissing it. What's the specific thing you need in place before you'd feel okay with this?"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pattern 4 -->
+    <div class="conflict-card">
+      <div class="conflict-tab" style="background:var(--coral);"></div>
+      <div class="conflict-inner">
+        <div class="conflict-meta">
+          <div class="conflict-num" style="background:var(--coral);">4</div>
+          <div class="conflict-title">The Engagement Gap Fight</div>
+          <span class="tag" style="background:var(--explorer-lite);color:var(--coral);font-size:7pt;margin-left:auto;">Explorer vs any type</span>
+        </div>
+        <div class="conflict-trigger">Trigger: One partner avoids financial conversations, forgets to check accounts, or makes purchases without consulting the other. The other partner feels unsupported or disrespected.</div>
+        <div class="conflict-cols">
+          <div class="conflict-col" style="background:var(--coral-lite);">
+            <div class="conflict-col-lbl" style="color:var(--coral);">ROOT CAUSE</div>
+            <div style="font-size:8pt;color:var(--charcoal);line-height:1.5;">The Explorer isn't malicious — finances genuinely don't feel urgent to them. But their partner is absorbing all the mental load, which breeds resentment.</div>
+          </div>
+          <div class="conflict-col" style="background:var(--teal-lite);">
+            <div class="conflict-col-lbl" style="color:var(--teal);">RESOLUTION</div>
+            <div style="font-size:8pt;color:var(--charcoal);line-height:1.5;">Make engagement structured and time-boxed. A monthly 30-minute money date with a clear agenda is easier to say yes to than an open-ended "we need to talk about money."</div>
+          </div>
+          <div class="conflict-col" style="background:var(--gold-lite);">
+            <div class="conflict-col-lbl" style="color:#8B6020;">SAY THIS</div>
+            <div style="font-size:8pt;color:var(--charcoal);line-height:1.5;font-style:italic;">"I need you present for 30 minutes once a month. That's the whole ask. Can we make that non-negotiable for us?"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pattern 5 -->
+    <div class="conflict-card">
+      <div class="conflict-tab" style="background:var(--teal-mid);"></div>
+      <div class="conflict-inner">
+        <div class="conflict-meta">
+          <div class="conflict-num" style="background:var(--teal-mid);">5</div>
+          <div class="conflict-title">The Scorekeeping Fight</div>
+          <span class="tag" style="background:var(--teal-lite);color:var(--teal);font-size:7pt;margin-left:auto;">Any combination</span>
+        </div>
+        <div class="conflict-trigger">Trigger: One or both partners keep mental tallies of who spent what, who contributed more, or whose "fault" a financial problem is. The money conversation becomes a trial.</div>
+        <div class="conflict-cols">
+          <div class="conflict-col" style="background:var(--coral-lite);">
+            <div class="conflict-col-lbl" style="color:var(--coral);">ROOT CAUSE</div>
+            <div style="font-size:8pt;color:var(--charcoal);line-height:1.5;">Unresolved resentment from past financial interactions, often when one partner felt unheard or overridden. The current fight is really about old wounds.</div>
+          </div>
+          <div class="conflict-col" style="background:var(--teal-lite);">
+            <div class="conflict-col-lbl" style="color:var(--teal);">RESOLUTION</div>
+            <div style="font-size:8pt;color:var(--charcoal);line-height:1.5;">Name the pattern aloud: "I think we're scorekeeping right now." Then reset: "What do we actually need from this conversation — not to win it?"</div>
+          </div>
+          <div class="conflict-col" style="background:var(--gold-lite);">
+            <div class="conflict-col-lbl" style="color:#8B6020;">SAY THIS</div>
+            <div style="font-size:8pt;color:var(--charcoal);line-height:1.5;font-style:italic;">"I don't want to keep score. I want us to feel like a team. Can we start from that place instead?"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="ftr">Couples Money Personality System · OurSteady.com</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     P9 · CONFLICT RESOLUTION FRAMEWORK
+══════════════════════════════════════════════ -->
+<div class="page">
+  <div class="hdr"><span class="hl">CONFLICT RESOLUTION FRAMEWORK + DESIGN YOUR RULES</span><span class="hc">Couples Money Personality System</span><span class="hr">9</span></div>
+  <div class="body">
+
+    <div class="section-lbl">THE 4-STEP MONEY CONFLICT FRAMEWORK</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px;">
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:12px 14px;">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:7px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:var(--teal-mid);color:#fff;font-size:9pt;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
+          <div style="font-size:9pt;font-weight:700;color:var(--teal-dark);">Pause &amp; Name It</div>
+        </div>
+        <div style="font-size:8.5pt;color:var(--charcoal);line-height:1.6;">When a money conversation gets heated, say: <em style="color:var(--teal);">"We're in a money fight right now."</em> Naming it creates distance from the emotion. Take a 10-minute break if needed — physiology needs to settle before productive conversation is possible.</div>
+        <div style="margin-top:8px;background:var(--teal-pale);border-radius:5px;padding:7px 10px;font-size:8pt;color:var(--mid);">Our signal word or phrase when we need to pause: <input class="iline" type="text" style="width:120px;" placeholder="e.g. 'yellow card'"></div>
+      </div>
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:12px 14px;">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:7px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:var(--teal-mid);color:#fff;font-size:9pt;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
+          <div style="font-size:9pt;font-weight:700;color:var(--teal-dark);">Name Your Need, Not the Problem</div>
+        </div>
+        <div style="font-size:8.5pt;color:var(--charcoal);line-height:1.6;">Instead of arguing about the purchase or decision, each partner names the underlying need: <em style="color:var(--teal);">"What I actually need right now is…"</em> Security? Freedom? Respect? To be heard? Getting to the need underneath the argument resolves it faster than debating the facts.</div>
+        <div style="margin-top:8px;background:var(--teal-pale);border-radius:5px;padding:7px 10px;font-size:8pt;color:var(--mid);">My most common underlying need in money fights: <input class="iline" type="text" style="width:110px;"></div>
+      </div>
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:12px 14px;">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:7px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:var(--gold);color:#fff;font-size:9pt;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
+          <div style="font-size:9pt;font-weight:700;color:var(--teal-dark);">Acknowledge Before You Respond</div>
+        </div>
+        <div style="font-size:8.5pt;color:var(--charcoal);line-height:1.6;">Before sharing your view, reflect back what you heard: <em style="color:var(--teal);">"So what I'm hearing is you feel [X] because [Y] — is that right?"</em> Most money fights escalate because each partner feels unheard. Acknowledgement is not agreement — it's confirmation that you're listening.</div>
+        <div style="margin-top:8px;background:var(--gold-lite);border-radius:5px;padding:7px 10px;font-size:8pt;color:var(--mid);">What "feeling heard" looks like to me: <input class="iline" type="text" style="width:150px;"></div>
+      </div>
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:12px 14px;">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:7px;">
+          <div style="width:26px;height:26px;border-radius:50%;background:var(--gold);color:#fff;font-size:9pt;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</div>
+          <div style="font-size:9pt;font-weight:700;color:var(--teal-dark);">Build a Solution Together</div>
+        </div>
+        <div style="font-size:8.5pt;color:var(--charcoal);line-height:1.6;">Once both partners feel heard, move to problem-solving: <em style="color:var(--teal);">"Given what we both need, what's a solution that works for us both — even partially?"</em> It doesn't have to be perfect. A partial solution you both agree to beats a perfect one that only one of you owns.</div>
+        <div style="margin-top:8px;background:var(--gold-lite);border-radius:5px;padding:7px 10px;font-size:8pt;color:var(--mid);">Our commitment: we won't end a money conversation without a next step. Next step = <input class="iline" type="text" style="width:130px;"></div>
+      </div>
+    </div>
+
+    <div class="section-lbl">DESIGN YOUR RULES — BASED ON YOUR PERSONALITY COMBINATION</div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:12px 16px;margin-bottom:12px;">
+      <div style="font-size:8.5pt;color:var(--charcoal);font-weight:700;margin-bottom:9px;">Our Non-Negotiables (things that protect both of us — agreed in advance, not debated in the moment)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div>
+          <div style="font-size:7.5pt;font-weight:700;color:var(--teal);letter-spacing:.06em;margin-bottom:5px;">SAFETY &amp; STRUCTURE</div>
+          <div style="font-size:8pt;color:var(--mid);margin-bottom:4px;">Our emergency fund minimum (never spend below):</div>
+          <input class="iline" type="text" style="width:100%;margin-bottom:7px;" placeholder="e.g. 3 months of expenses = $X">
+          <div style="font-size:8pt;color:var(--mid);margin-bottom:4px;">Purchases requiring joint discussion:</div>
+          <input class="iline" type="text" style="width:100%;margin-bottom:7px;" placeholder="e.g. Anything over $200">
+          <div style="font-size:8pt;color:var(--mid);margin-bottom:4px;">Our monthly money date (day + time):</div>
+          <input class="iline" type="text" style="width:100%;" placeholder="e.g. 1st Sunday of each month, 10am">
+        </div>
+        <div>
+          <div style="font-size:7.5pt;font-weight:700;color:var(--gold);letter-spacing:.06em;margin-bottom:5px;">FREEDOM &amp; FAIRNESS</div>
+          <div style="font-size:8pt;color:var(--mid);margin-bottom:4px;">Each partner's monthly personal spending (no-questions):</div>
+          <input class="iline" type="text" style="width:100%;margin-bottom:7px;" placeholder="e.g. P1: $X · P2: $X">
+          <div style="font-size:8pt;color:var(--mid);margin-bottom:4px;">Our "fun money" or adventure budget per month:</div>
+          <input class="iline" type="text" style="width:100%;margin-bottom:7px;" placeholder="e.g. $X shared, used however we agree">
+          <div style="font-size:8pt;color:var(--mid);margin-bottom:4px;">How we handle surprise windfalls (tax return, bonus):</div>
+          <input class="iline" type="text" style="width:100%;" placeholder="e.g. 50% to savings, 50% split between us">
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Design principle:</strong> Rules that reflect your personalities are ones you'll both actually keep. A rule that works for an Architect/Guardian couple may feel suffocating to an Explorer. These rules are yours — build them around who you are, not what financial advice articles say you should be.
+    </div>
+  </div>
+  <div class="ftr">Couples Money Personality System · OurSteady.com</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     P10 · ACTION PLAN + COMMITMENT
+══════════════════════════════════════════════ -->
+<div class="page">
+  <div class="hdr"><span class="hl">YOUR NEXT STEPS + COMMITMENT PAGE</span><span class="hc">Couples Money Personality System</span><span class="hr">10</span></div>
+  <div class="body">
+
+    <div class="section-lbl">YOUR PERSONALITY-BASED ACTION PLAN</div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;overflow:hidden;margin-bottom:12px;">
+      <div style="padding:9px 14px;font-size:8.5pt;font-weight:700;background:var(--teal-dark);color:#fff;">Based on your combination, here are the moves that matter most for your personality types</div>
+      <div style="padding:10px 14px;">
+        <div style="display:grid;grid-template-columns:auto 1fr auto;gap:8px 14px;align-items:start;">
+          <div style="font-size:8pt;font-weight:700;color:var(--teal);padding-top:2px;">THIS WEEK</div>
+          <div style="font-size:8.5pt;color:var(--charcoal);">Share your personality results with your partner. Read each other's profiles aloud. React without judgment — just curiosity.</div>
+          <div style="width:14px;height:14px;border:1.5px solid var(--teal);border-radius:3px;margin-top:2px;flex-shrink:0;"></div>
+
+          <div style="font-size:8pt;font-weight:700;color:var(--teal);padding-top:2px;">THIS WEEK</div>
+          <div style="font-size:8.5pt;color:var(--charcoal);">Go to page 7 and complete the "What I need you to understand" section together. This conversation alone is worth the price of this workbook.</div>
+          <div style="width:14px;height:14px;border:1.5px solid var(--teal);border-radius:3px;margin-top:2px;flex-shrink:0;"></div>
+
+          <div style="font-size:8pt;font-weight:700;color:var(--gold);padding-top:2px;">THIS MONTH</div>
+          <div style="font-size:8.5pt;color:var(--charcoal);">Set your 3 Design Rules on page 9. Write them somewhere both of you can see — on the fridge, in a notes app, at the front of your wallet. The point is visibility.</div>
+          <div style="width:14px;height:14px;border:1.5px solid var(--gold);border-radius:3px;margin-top:2px;flex-shrink:0;"></div>
+
+          <div style="font-size:8pt;font-weight:700;color:var(--gold);padding-top:2px;">THIS MONTH</div>
+          <div style="font-size:8.5pt;color:var(--charcoal);">Set your first monthly money date. Put it in both calendars now. 30 minutes. Agenda: look at the numbers, check the goals, make one shared decision together.</div>
+          <div style="width:14px;height:14px;border:1.5px solid var(--gold);border-radius:3px;margin-top:2px;flex-shrink:0;"></div>
+
+          <div style="font-size:8pt;font-weight:700;color:var(--coral);padding-top:2px;">ONGOING</div>
+          <div style="font-size:8.5pt;color:var(--charcoal);">When money tension rises, use the 4-step framework from page 9. Pause. Name the need. Acknowledge. Build together. It gets easier the more you practice.</div>
+          <div style="width:14px;height:14px;border:1.5px solid var(--coral);border-radius:3px;margin-top:2px;flex-shrink:0;"></div>
+
+          <div style="font-size:8pt;font-weight:700;color:var(--coral);padding-top:2px;">ONGOING</div>
+          <div style="font-size:8.5pt;color:var(--charcoal);">Revisit your type profiles once a year. People change — especially after major life events (job changes, children, health events). Your combination may shift, and so should your rules.</div>
+          <div style="width:14px;height:14px;border:1.5px solid var(--coral);border-radius:3px;margin-top:2px;flex-shrink:0;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-lbl">ONE THING WE'RE COMMITTING TO CHANGE</div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:12px 16px;margin-bottom:14px;">
+      <div style="font-size:8pt;color:var(--mid);margin-bottom:6px;">Based on what we've learned about our personalities and patterns, the one thing we're going to do differently starting now:</div>
+      <textarea style="height:50px;" placeholder="Write it here — specifically and together. 'We're going to…' not 'We should try to…'"></textarea>
+    </div>
+
+    <!-- Commitment -->
+    <div style="background:var(--teal-dark);border-radius:12px;padding:22px 28px;text-align:center;">
+      <div style="font-size:8pt;font-weight:700;color:var(--gold);letter-spacing:.1em;margin-bottom:8px;">OUR COMMITMENT</div>
+      <div style="font-family:'Playfair Display',serif;font-size:13pt;color:#fff;line-height:1.7;margin-bottom:16px;">We understand each other's money personalities.<br>We commit to building a financial life that works for both of us —<br>not despite our differences, but <em style="color:var(--gold);">because</em> of them.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:500px;margin:0 auto;">
+        <div>
+          <div style="border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:4px;margin-bottom:5px;"><input style="background:transparent;border:none;color:#fff;font-family:'DM Sans',sans-serif;font-size:9pt;width:100%;outline:none;text-align:center;" type="text" placeholder="Partner 1 signature"></div>
+          <div style="font-size:7.5pt;color:rgba(200,240,230,.6);">Partner 1 · <input style="background:transparent;border:none;color:rgba(200,240,230,.6);font-family:'DM Sans',sans-serif;font-size:7.5pt;width:80px;outline:none;" type="text" placeholder="Date"></div>
+        </div>
+        <div>
+          <div style="border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:4px;margin-bottom:5px;"><input style="background:transparent;border:none;color:#fff;font-family:'DM Sans',sans-serif;font-size:9pt;width:100%;outline:none;text-align:center;" type="text" placeholder="Partner 2 signature"></div>
+          <div style="font-size:7.5pt;color:rgba(200,240,230,.6);">Partner 2 · <input style="background:transparent;border:none;color:rgba(200,240,230,.6);font-family:'DM Sans',sans-serif;font-size:7.5pt;width:80px;outline:none;" type="text" placeholder="Date"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Next step CTA -->
+    <div style="background:var(--warm);border-radius:8px;padding:12px 16px;margin-top:12px;display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;">
+      <div>
+        <div style="font-size:8.5pt;font-weight:700;color:var(--charcoal);margin-bottom:3px;">Ready to put this into action?</div>
+        <div style="font-size:8pt;color:var(--mid);line-height:1.6;">The <strong>Couples Wealth Blueprint Workbook</strong> takes your personality insights and turns them into a full 6-module financial plan — budget, investing, debt payoff, shared goals, protection, and a 12-month roadmap. Built for couples, no videos required.</div>
+      </div>
+      <div style="text-align:center;flex-shrink:0;">
+        <div style="background:var(--teal-mid);color:#fff;font-size:8.5pt;font-weight:700;padding:8px 16px;border-radius:8px;white-space:nowrap;">OurSteady.com<br><span style="font-size:7.5pt;font-weight:400;opacity:.85;">/blueprint</span></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="ftr">Couples Money Personality System · OurSteady.com &nbsp;·&nbsp; Complete your financial plan at OurSteady.com/blueprint</div>
+</div>
+
+
+<!-- ═══ BACK COVER ═══ -->
+Use this version inside any of: Convo Deck / Personality System / Legacy Vault
+     Swap the "You Have This" row to match the actual product.
+     Below shown as: Money Date Conversation Deck
+─────────────────────────────────────────────────────────────────────────────── -->
+<div class="page">
+<div class="bp bp-plum"> <!-- plum used for the Connection Kit family -->
+  <div class="bp-topbar"></div>
+  <div class="bp-inner">
+    <div class="card">
+
+      <div class="card-hdr">
+        <div class="card-hdr-stripe stripe-plum"></div>
+        <div class="eyebrow">OurSteady Financial Ecosystem</div>
+        <h2>You're in the relationship layer.<br><em>Here's the full picture.</em></h2>
+        <div class="sub">The Connection Kit deepens the bond. Here's every tool in the system — and where to go next.</div>
+        <div class="rule"></div>
+      </div>
+
+      <div class="card-body">
+
+        <div class="tier-lbl">The Connection Kit — Already Yours</div>
+        <!-- SWAP THIS ROW to match actual product -->
+        <div class="pr locked" style="opacity:.5;">
+          <div class="badge b-27">$27</div>
+          <div class="pinfo"><a href="https://OurSteady.com/deck" style="text-decoration:none;"><div class="pname">Money Date Conversation Deck</div></a><div class="pdesc">12 months of guided prompts — deepen every money date ritual.</div></div>
+          <div class="ptag tag-have">✓ You Have This</div>
+        </div>
+        <div class="pr have">
+          <div class="badge b-27">$27</div>
+          <div class="pinfo"><a href="https://OurSteady.com/personality" style="text-decoration:none;"><div class="pname">Money Personality System</div></a><div class="pdesc">Understand how each of you thinks about money — before it becomes a fight.</div></div>
+          <div class="ptag tag-lock">In Bundle</div>
+        </div>
+        <div class="pr locked" style="opacity:.5;">
+          <div class="badge b-27">$27</div>
+          <div class="pinfo"><a href="https://OurSteady.com/vault" style="text-decoration:none;"><div class="pname">Life Admin &amp; Legacy Vault</div></a><div class="pdesc">Wills, insurance, digital legacy, estate essentials — all in one place.</div></div>
+          <div class="ptag tag-lock">In Bundle</div>
+        </div>
+        <div style="padding:4px 9px;">
+          <div style="font-size:7pt;color:var(--mid);font-style:italic;">Get all three together as <strong>The Connection Kit — $67</strong> at OurSteady.com</div>
+        </div>
+
+        <div class="tier-lbl">The Foundation — Start Here if You Haven't</div>
+        <div class="pr locked">
+          <div class="badge b-free">FREE</div>
+          <div class="pinfo"><a href="https://OurSteady.com/" style="text-decoration:none;"><div class="pname">Money Date Starter Kit</div></a><div class="pdesc">The ritual that makes every Connection Kit tool work.</div></div>
+          <div class="ptag tag-lock">Free</div>
+        </div>
+        <div class="pr next">
+          <div class="badge b-9">$9</div>
+          <div class="pinfo"><a href="https://OurSteady.com/tracker" style="text-decoration:none;"><div class="pname">Couples Wealth Tracker</div></a><div class="pdesc">19-page monthly system — the data layer the whole system runs on.</div></div>
+          <div class="ptag tag-next">→ Add This</div>
+        </div>
+
+        <div class="tier-lbl">Build the Plan</div>
+        <div class="pr locked">
+          <div class="badge b-7">$7</div>
+          <div class="pinfo"><a href="https://OurSteady.com/sheet" style="text-decoration:none;"><div class="pname">Money Scripts Cheat Sheet</div></a><div class="pdesc">Exact words for the 5 hardest money conversations. $7.</div></div>
+          <div class="ptag tag-lock">Add On</div>
+        </div>
+        <div class="pr locked">
+          <div class="badge b-17">$17</div>
+          <div class="pinfo"><a href="https://OurSteady.com/workbook" style="text-decoration:none;"><div class="pname">Wealth Blueprint Workbook</div></a><div class="pdesc">6 modules: budget, invest, debt, goals, protect, 12-month roadmap.</div></div>
+          <div class="ptag tag-lock">Workbook</div>
+        </div>
+        <div class="pr locked">
+          <div class="badge b-37">$37</div>
+          <div class="pinfo"><a href="https://OurSteady.com/reset" style="text-decoration:none;"><div class="pname">90-Day Financial Reset Kit</div></a><div class="pdesc">Clear the clutter, reset the budget, rebuild in 90 days.</div></div>
+          <div class="ptag tag-lock">Strategy</div>
+        </div>
+
+        <div class="tier-lbl">Unlocks Via Email — After Purchase</div>
+        <div class="pr soon">
+          <div class="badge b-47">$47</div>
+          <div class="pinfo"><a href="https://OurSteady.com/accelerator" style="text-decoration:none;"><div class="pname">Couples Wealth Accelerator</div></a><div class="pdesc">12-month implementation system — the execution engine.</div></div>
+          <div class="ptag tag-soon">✉ Via Email</div>
+        </div>
+        <div class="pr soon">
+          <div class="badge b-37">$37</div>
+          <div class="pinfo"><a href="https://OurSteady.com/investment" style="text-decoration:none;"><div class="pname">Investment Starter Kit</div></a><div class="pdesc">Build your first investment strategy together.</div></div>
+          <div class="ptag tag-soon">✉ Via Email</div>
+        </div>
+        <div class="pr soon">
+          <div class="badge b-97">$97</div>
+          <div class="pinfo"><a href="https://OurSteady.com/video" style="text-decoration:none;"><div class="pname">Couples Wealth Blueprint — Video Modules</div></a><div class="pdesc">6 guided video modules + all workbooks.</div></div>
+          <div class="ptag tag-soon">✉ Via Email</div>
+        </div>
+
+      </div>
+
+      <div class="card-cta">
+        <div class="cta-l">
+          <div class="clbl">Complete the Connection Kit</div>
+          <div class="ctxt">Get the Deck + Personality System + Legacy Vault together for $67 — or add the Tracker ($9) as your next data layer.</div>
+        </div>
+        <a href="https://OurSteady.com/" style="text-decoration:none;"><div class="cta-r">OurSteady.com</div></a>
+      </div>
+
+      <div class="card-foot">
+        <div class="fl">OurSteady Financial Ecosystem · All products work as a complete system</div>
+        <div class="fr">OurSteady.com</div>
+      </div>
+
+    </div>
+  </div>
+  <div class="bp-botbar"></div>
+</div>
+</div>
+
+</body>
+</html>

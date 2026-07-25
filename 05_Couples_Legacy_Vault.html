@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Couples Life Admin & Legacy Vault</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sage:#4A7C6B; --sage-dark:#2E5248; --sage-mid:#5D8B7A;
+    --sage-lite:#EAF2EE; --sage-pale:#F4FAF7;
+    --cream:#FDFAF5; --warm:#F2EAD8; --warm-mid:#E8DCC8;
+    --gold:#C9963C; --gold-lite:#F5E6C8; --gold-pale:#FDF6E8; --plum:#7B5EA7; --plum-lite:#F2EBF8; --teal:#2A7B6E; --teal-dark:#164F46; --teal-lite:#E2F4F1; --amber:#B85C2E; --amber-lite:#FAF0E8;
+    --charcoal:#2C2C2C; --mid:#6B6B6B; --light:#E0DCD4; --pale:#F0EDE8;
+    --coral:#D4795A; --coral-lite:#FAEDE8;
+    --blue:#5B6F8E; --blue-lite:#EBF0F6;
+    --white:#fff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:#e8e4dc;color:var(--charcoal);font-size:10pt;line-height:1.5;}
+  .page{width:816px;min-height:1056px;margin:0 auto 32px;background:var(--cream);position:relative;overflow:hidden;page-break-after:always;}
+  @media print{.page{margin:0;page-break-after:always;}body{background:#fff;}}
+
+  /* Shared Components */
+  .hdr{background:var(--sage-dark);padding:10px 28px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--gold);}
+  .hdr .hl{font-size:7.5pt;font-weight:700;color:var(--gold);letter-spacing:.08em;}
+  .hdr .hc{font-size:8pt;color:rgba(255,255,255,.8);}
+  .hdr .hr{font-size:7pt;color:rgba(255,255,255,.5);}
+  .ftr{background:var(--sage-dark);padding:5px 28px;text-align:center;font-size:7pt;color:rgba(255,255,255,.7);position:absolute;bottom:0;left:0;right:0;}
+  .body{padding:24px 28px 60px;}
+  .section-lbl{font-size:8pt;font-weight:700;letter-spacing:.1em;color:var(--gold);margin-bottom:12px;text-transform:uppercase;display:flex;align-items:center;gap:10px;}
+  .section-lbl::after{content:'';flex:1;height:1px;background:var(--warm-mid);}
+  
+  .card{background:#fff;border:.5px solid var(--light);border-radius:8px;overflow:hidden;margin-bottom:16px;}
+  .col-hdr{padding:8px 14px;font-size:8.5pt;font-weight:700;letter-spacing:.05em;color:#fff;background:var(--sage-mid);}
+  
+  .row{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;font-size:9pt;border-bottom:.5px solid var(--pale);}
+  .row:last-child{border-bottom:none;}
+  .row:nth-child(even){background:var(--sage-pale);}
+  
+  .iline{border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:9pt;outline:none;padding:2px 0;}
+  .row input{width:80%;text-align:right;}
+  
+  .note-box{background:var(--sage-lite);border-left:3px solid var(--sage);padding:12px 16px;font-size:8.5pt;color:var(--sage-dark);margin-bottom:20px;border-radius:0 6px 6px 0;}
+
+  /* Cover Page */
+  #p1{background:var(--sage-dark);color:#fff;border:10px solid var(--gold);}
+  #p1 .hero{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;text-align:center;}
+  #p1 .vault-icon{font-size:48pt;margin-bottom:20px;color:var(--gold);}
+  #p1 h1{font-family:'Playfair Display',serif;font-size:42pt;line-height:1.1;margin-bottom:10px;}
+  #p1 h1 em{color:var(--gold);font-style:normal;display:block;}
+  #p1 .sub{font-size:12pt;color:rgba(200,232,220,.9);letter-spacing:.05em;margin-bottom:40px;}
+  #p1 .divider{width:60px;height:3px;background:var(--gold);margin-bottom:40px;}
+  #p1 .box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);padding:24px;border-radius:12px;width:100%;max-width:400px;}
+  #p1 .box-lbl{font-size:8pt;font-weight:700;color:var(--gold);letter-spacing:.1em;margin-bottom:15px;}
+  #p1 .field{margin-bottom:12px;text-align:left;}
+  #p1 label{font-size:7.5pt;color:rgba(255,255,255,.6);display:block;margin-bottom:4px;}
+  #p1 input{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.2);color:#fff;font-family:'DM Sans',sans-serif;padding:4px 0;outline:none;}
+  #p1 .footer-note{position:absolute;bottom:40px;font-size:8pt;color:rgba(255,255,255,.4);font-style:italic;}
+
+  /* Grid Layouts */
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  
+  /* Checkbox style */
+  .cb-list{margin-top:10px;}
+  .cb-item{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;font-size:9pt;}
+  .cb-box{width:14px;height:14px;border:1px solid var(--sage);border-radius:3px;margin-top:2px;flex-shrink:0;}
+
+
+  /* ═══ BACK COVER BP STYLES ═══ */
+.bp {
+  /* override per-product via class: .bp-sage / .bp-plum / etc */
+  --pa: var(--sage-dark);   /* primary accent — header + bars */
+  --pa-mid: var(--sage-mid);
+  --pa-lite: var(--sage-lite);
+  --pa-pale: var(--sage-pale);
+  --tag-have-bg: var(--gold);
+  --tag-next-bg: var(--pa);
+
+  min-height:1056px;
+  display:flex; flex-direction:column;
+  background:var(--pa);
+}
+
+/* product-specific accent overrides */
+.bp-sage    { --pa:var(--sage-dark); --pa-mid:var(--sage-mid); --pa-lite:var(--sage-lite); --pa-pale:var(--sage-pale); }
+.bp-plum    { --pa:#5B3F8A; --pa-mid:#7B5EA7; --pa-lite:#F2EBF8; --pa-pale:#F8F4FC; }
+.bp-teal    { --pa:var(--teal-dark); --pa-mid:var(--teal); --pa-lite:var(--teal-lite); --pa-pale:#F0FAF8; }
+.bp-amber   { --pa:#8A3F18; --pa-mid:var(--amber); --pa-lite:var(--amber-lite); --pa-pale:#FDF6F0; }
+.bp-sagedark{ --pa:#1E3D33; --pa-mid:var(--sage-dark); --pa-lite:var(--sage-lite); --pa-pale:var(--sage-pale); }
+/* Deck/Invest/Vault all sage but differentiated by inner stripe color below */
+
+.bp-topbar  { height:4px; background:linear-gradient(90deg,var(--gold),var(--pa-mid),var(--pa)); }
+.bp-botbar  { height:4px; background:linear-gradient(90deg,var(--pa),var(--pa-mid),var(--gold)); }
+
+.bp-inner {
+  flex:1;
+  display:flex; align-items:stretch; justify-content:center;
+  padding:26px 32px 22px;
+}
+
+/* ─────────────────────────────────────────────
+   CARD
+───────────────────────────────────────────── */
+.bp .card {
+  background:var(--cream);
+  border-radius:14px;
+  border:none;
+  width:100%;
+  display:flex; flex-direction:column;
+  overflow:hidden;
+  box-shadow:0 10px 50px rgba(0,0,0,.22);
+}
+
+/* card header */
+.bp .card-hdr {
+  background:var(--pa);
+  padding:18px 24px 14px;
+  border-bottom:2.5px solid var(--gold);
+  text-align:center;
+}
+.bp .card-hdr .eyebrow {
+  font-size:6.5pt; font-weight:700; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--gold);
+  margin-bottom:7px;
+}
+.bp .card-hdr h2 {
+  font-family:'Playfair Display',serif;
+  font-size:18pt; color:#fff; line-height:1.2;
+  margin-bottom:4px;
+}
+.bp .card-hdr h2 em { color:var(--gold); font-style:italic; }
+.bp .card-hdr .sub {
+  font-size:7.5pt; color:rgba(200,232,220,.72); line-height:1.5;
+}
+.bp .card-hdr .rule {
+  width:44px; height:2px; background:var(--gold);
+  margin:9px auto 0; border-radius:2px;
+}
+
+/* product-specific header stripe (top edge inside card header)
+   gives Deck/Invest/Vault a visual tell even though all use sage */
+.bp .card-hdr-stripe {
+  height:3px; margin:-18px -24px 14px; /* bleeds to edges */
+}
+.stripe-sage     { background:var(--sage); }
+.stripe-sage2    { background:linear-gradient(90deg,var(--sage),var(--sage-mid)); } /* Deck */
+.stripe-sage3    { background:linear-gradient(90deg,var(--sage-mid),var(--teal)); } /* Invest */
+.stripe-sage4    { background:linear-gradient(90deg,var(--sage-dark),var(--sage)); } /* Vault */
+.stripe-plum     { background:var(--plum); }
+.stripe-teal     { background:var(--teal); }
+.stripe-amber    { background:var(--amber); }
+.stripe-sagedark { background:var(--sage-dark); }
+
+/* ─────────────────────────────────────────────
+   PRODUCT LIST BODY
+───────────────────────────────────────────── */
+.bp .card-body {
+  flex:1; padding:14px 20px 12px;
+  display:flex; flex-direction:column; gap:0;
+}
+
+/* tier dividers */
+.tier-lbl {
+  font-size:6pt; font-weight:700; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--mid);
+  margin:9px 0 4px;
+  display:flex; align-items:center; gap:6px;
+}
+.tier-lbl::before,.tier-lbl::after {
+  content:''; flex:1; height:.5px; background:var(--light);
+}
+
+/* product rows */
+.pr {
+  display:flex; align-items:center; gap:10px;
+  padding:7px 9px; border-radius:7px;
+  border:.5px solid transparent;
+  margin-bottom:1px;
+}
+.pr.have {
+  background:var(--gold-pale);
+  border-color:rgba(201,150,60,.35);
+}
+.pr.next {
+  background:var(--pa-pale);
+  border-color:rgba(74,124,107,.3);
+}
+.pr.soon {
+  background:#fff;
+  border-color:var(--light);
+  opacity:.65;
+}
+.pr.locked {
+  background:#fff;
+  border-color:var(--light);
+  opacity:.55;
+}
+
+/* price badge */
+.badge {
+  flex-shrink:0; font-size:6.5pt; font-weight:700;
+  padding:2px 8px; border-radius:16px;
+  white-space:nowrap; min-width:34px; text-align:center;
+  line-height:1.5;
+}
+.b-free  { background:var(--sage);      color:#fff; }
+.b-7     { background:#8B9BAD;          color:#fff; }
+.b-9     { background:var(--gold);      color:#fff; }
+.b-17    { background:var(--coral);     color:#fff; }
+.b-27    { background:var(--plum);      color:#fff; }
+.b-37    { background:var(--amber);     color:#fff; }
+.b-47    { background:var(--sage-dark); color:#fff; }
+.b-67    { background:#5B3F8A;          color:#fff; }
+.b-97    { background:var(--charcoal);  color:#fff; }
+
+/* product info */
+.pinfo { flex:1; min-width:0; }
+.pname { font-size:8.5pt; font-weight:600; color:var(--charcoal); line-height:1.2; }
+.pdesc { font-size:7pt; color:var(--mid); margin-top:1px; line-height:1.35; }
+
+/* state tag */
+.ptag {
+  flex-shrink:0; font-size:6pt; font-weight:700;
+  letter-spacing:.07em; text-transform:uppercase;
+  padding:2px 7px; border-radius:9px; white-space:nowrap;
+}
+.tag-have  { background:var(--gold);      color:#fff; }
+.tag-next  { background:var(--pa);        color:#fff; }
+.tag-soon  { background:var(--light);     color:var(--mid); font-style:italic; }
+.tag-lock  { background:var(--pale);      color:var(--mid); }
+
+/* ─────────────────────────────────────────────
+   CONNECTION KIT GROUP
+───────────────────────────────────────────── */
+.ck-group {
+  border:.5px solid var(--plum);
+  border-radius:8px; overflow:hidden;
+  margin-bottom:1px;
+  opacity:.72;
+}
+.ck-group.next { opacity:1; border-color:var(--plum); }
+.ck-label {
+  background:var(--plum); padding:4px 10px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.ck-label .cktitle {
+  font-size:7pt; font-weight:700; color:#fff; letter-spacing:.06em;
+}
+.ck-label .ckprice {
+  font-size:7pt; font-weight:700;
+  background:rgba(255,255,255,.18); color:#fff;
+  padding:1px 8px; border-radius:10px;
+}
+.ck-items { padding:5px 8px; background:var(--plum-lite); display:flex; flex-direction:column; gap:3px; }
+.ck-item  { font-size:7.5pt; color:var(--charcoal); display:flex; gap:6px; align-items:center; }
+.ck-item::before { content:'·'; color:var(--plum); font-weight:700; }
+
+/* ─────────────────────────────────────────────
+   CTA STRIP
+───────────────────────────────────────────── */
+.bp .card-cta {
+  margin:10px 20px 14px;
+  background:var(--pa);
+  border-radius:9px; padding:12px 16px;
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+}
+.bp .cta-l .clbl { font-size:6.5pt; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); margin-bottom:2px; }
+.bp .cta-l .ctxt { font-size:8pt; color:rgba(200,232,220,.9); line-height:1.45; }
+.bp .cta-r { font-size:8.5pt; font-weight:700; color:var(--gold); white-space:nowrap; flex-shrink:0; }
+
+/* card footer */
+.bp .card-foot {
+  padding:7px 20px;
+  border-top:.5px solid var(--light);
+  display:flex; justify-content:space-between; align-items:center;
+}
+.bp .card-foot .fl { font-size:6.5pt; color:var(--mid); }
+.bp .card-foot .fr { font-size:6.5pt; font-weight:600; color:var(--pa-mid); }
+
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: COVER -->
+<div class="page" id="p1">
+  <div class="hero">
+    <div class="vault-icon">🗝️</div>
+    <h1>Life Admin &<em>Legacy Vault</em></h1>
+    <div class="sub">The Master Key to Your Shared Life</div>
+    <div class="divider"></div>
+    <div class="box">
+      <div class="box-lbl">VAULT OWNERS</div>
+      <div class="field"><label>Partner 1</label><input type="text" placeholder="Full Name"></div>
+      <div class="field"><label>Partner 2</label><input type="text" placeholder="Full Name"></div>
+      <div class="field"><label>Last Updated</label><input type="text" placeholder="Date"></div>
+    </div>
+    <p class="footer-note">"The greatest gift you can give your partner is clarity in a moment of chaos."</p>
+  </div>
+</div>
+
+<!-- PAGE 2: EMERGENCY PROTOCOL -->
+<div class="page">
+  <div class="hdr"><span class="hl">EMERGENCY PROTOCOL</span><span class="hc">Life Admin & Legacy Vault</span><span class="hr">2</span></div>
+  <div class="body">
+<div style="background:var(--sage-pale,#f4faf7);border:.5px solid var(--sage-mid,#5d8b7a);border-left:3px solid var(--sage,#4a7c6b);border-radius:6px;padding:9px 14px 9px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:14px;font-size:8pt;color:var(--sage-dark,#2e5248);">
+  <span><strong style="font-size:8pt;letter-spacing:.06em;color:var(--sage-dark,#2e5248);">NEW TO OURSTEADY?</strong>&nbsp; To get the most from this product, read the companion How-To Guide first — it walks through every section step-by-step.</span>
+  <a href="https://2fold.pages.dev/howto/How%20to%20Use_%20Couples%20Life%20Admin%20&%20Legacy%20Vault.pdf" target="_blank" rel="noopener" style="display:inline-block;flex-shrink:0;background:var(--sage,#4a7c6b);color:#fff;font-family:inherit;font-size:7.5pt;font-weight:700;letter-spacing:.06em;text-decoration:none;padding:5px 13px;border-radius:4px;white-space:nowrap;">How-To Guide</a>
+</div>
+
+    <div class="note-box">
+      <strong>In Case of Emergency (ICE):</strong> This page should be the first thing anyone looks for. Keep it updated and ensure at least one trusted person outside your household knows where to find this document.
+    </div>
+
+    <div class="section-lbl">PRIMARY CONTACTS</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="col-hdr">PARTNER 1 EMERGENCY</div>
+        <div class="row"><span>Name</span><input type="text" class="iline"></div>
+        <div class="row"><span>Relation</span><input type="text" class="iline"></div>
+        <div class="row"><span>Phone</span><input type="text" class="iline"></div>
+        <div class="row"><span>Email</span><input type="text" class="iline"></div>
+      </div>
+      <div class="card">
+        <div class="col-hdr">PARTNER 2 EMERGENCY</div>
+        <div class="row"><span>Name</span><input type="text" class="iline"></div>
+        <div class="row"><span>Relation</span><input type="text" class="iline"></div>
+        <div class="row"><span>Phone</span><input type="text" class="iline"></div>
+        <div class="row"><span>Email</span><input type="text" class="iline"></div>
+      </div>
+    </div>
+
+    <div class="section-lbl">MEDICAL ESSENTIALS</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="col-hdr">PARTNER 1</div>
+        <div class="row"><span>Blood Type</span><input type="text" class="iline"></div>
+        <div class="row"><span>Allergies</span><input type="text" class="iline"></div>
+        <div class="row"><span>Primary Doctor</span><input type="text" class="iline"></div>
+        <div class="row"><span>Health Insurance</span><input type="text" class="iline"></div>
+        <div class="row"><span>Policy #</span><input type="text" class="iline"></div>
+      </div>
+      <div class="card">
+        <div class="col-hdr">PARTNER 2</div>
+        <div class="row"><span>Blood Type</span><input type="text" class="iline"></div>
+        <div class="row"><span>Allergies</span><input type="text" class="iline"></div>
+        <div class="row"><span>Primary Doctor</span><input type="text" class="iline"></div>
+        <div class="row"><span>Health Insurance</span><input type="text" class="iline"></div>
+        <div class="row"><span>Policy #</span><input type="text" class="iline"></div>
+      </div>
+    </div>
+
+    <div class="section-lbl">TRUSTED "KEY HOLDERS"</div>
+    <p style="font-size:8.5pt;color:var(--mid);margin-bottom:10px;">People who have a spare key to the house or access to this vault.</p>
+    <div class="card">
+      <div class="row"><span>Name: <input type="text" class="iline" style="width:150px;text-align:left;"></span><span>Access to: <input type="text" class="iline" style="width:200px;text-align:left;"></span></div>
+      <div class="row"><span>Name: <input type="text" class="iline" style="width:150px;text-align:left;"></span><span>Access to: <input type="text" class="iline" style="width:200px;text-align:left;"></span></div>
+    </div>
+  </div>
+  <div class="ftr">Life Admin & Legacy Vault · OurSteady.com</div>
+</div>
+
+<!-- PAGE 3: DIGITAL LEGACY -->
+<div class="page">
+  <div class="hdr"><span class="hl">DIGITAL LEGACY</span><span class="hc">Life Admin & Legacy Vault</span><span class="hr">3</span></div>
+  <div class="body">
+    <div class="note-box" style="background:var(--blue-lite); border-left-color:var(--blue); color:var(--blue);">
+      <strong>Digital Access:</strong> We live our lives online. Without a plan, your photos, memories, and accounts could be locked forever. <em>Note: Never write full passwords here. Use a Password Manager and record the Master Key location instead.</em>
+    </div>
+
+    <div class="section-lbl">THE MASTER KEYS</div>
+    <div class="card">
+      <div class="col-hdr" style="background:var(--blue);">PASSWORD MANAGER</div>
+      <div class="row"><span>Service (e.g. 1Password, LastPass)</span><input type="text" class="iline"></div>
+      <div class="row"><span>Account Email</span><input type="text" class="iline"></div>
+      <div class="row"><span>Location of Master Password Hint</span><input type="text" class="iline"></div>
+      <div class="row"><span>Emergency Access Contact</span><input type="text" class="iline"></div>
+    </div>
+
+    <div class="section-lbl">HARDWARE ACCESS</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="col-hdr" style="background:var(--blue);">PARTNER 1 DEVICES</div>
+        <div class="row"><span>Phone Passcode Hint</span><input type="text" class="iline"></div>
+        <div class="row"><span>Laptop Password Hint</span><input type="text" class="iline"></div>
+        <div class="row"><span>Cloud Backup (iCloud/Google)</span><input type="text" class="iline"></div>
+      </div>
+      <div class="card">
+        <div class="col-hdr" style="background:var(--blue);">PARTNER 2 DEVICES</div>
+        <div class="row"><span>Phone Passcode Hint</span><input type="text" class="iline"></div>
+        <div class="row"><span>Laptop Password Hint</span><input type="text" class="iline"></div>
+        <div class="row"><span>Cloud Backup (iCloud/Google)</span><input type="text" class="iline"></div>
+      </div>
+    </div>
+
+    <div class="section-lbl">SENSITIVE DIGITAL ASSETS</div>
+    <div class="card">
+      <div class="row"><span>Crypto / Cold Storage Location</span><input type="text" class="iline" style="width:400px;"></div>
+      <div class="row"><span>Domain Names / Digital Business</span><input type="text" class="iline" style="width:400px;"></div>
+      <div class="row"><span>Social Media Legacy Contact Set?</span><input type="text" class="iline" style="width:400px;"></div>
+    </div>
+  </div>
+  <div class="ftr">Life Admin & Legacy Vault · OurSteady.com</div>
+</div>
+
+<!-- PAGE 4: INSURANCE & PROTECTION -->
+<div class="page">
+  <div class="hdr"><span class="hl">INSURANCE & PROTECTION</span><span class="hc">Life Admin & Legacy Vault</span><span class="hr">4</span></div>
+  <div class="body">
+    <div class="section-lbl">LIFE INSURANCE</div>
+    <div class="card">
+      <div class="col-hdr" style="background:var(--coral);">POLICY DETAILS</div>
+      <div class="row" style="font-weight:700;"><span>Provider</span><span>Coverage Amount</span><span>Policy #</span></div>
+      <div class="row"><span><input type="text" class="iline" style="width:120px;text-align:left;"></span><span><input type="text" class="iline" style="width:120px;"></span><span><input type="text" class="iline" style="width:120px;"></span></div>
+      <div class="row"><span><input type="text" class="iline" style="width:120px;text-align:left;"></span><span><input type="text" class="iline" style="width:120px;"></span><span><input type="text" class="iline" style="width:120px;"></span></div>
+      <div class="row"><span><input type="text" class="iline" style="width:120px;text-align:left;"></span><span><input type="text" class="iline" style="width:120px;"></span><span><input type="text" class="iline" style="width:120px;"></span></div>
+    </div>
+
+    <div class="section-lbl">OTHER PROTECTION</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="col-hdr" style="background:var(--coral);">HOME & AUTO</div>
+        <div class="row"><span>Home Provider</span><input type="text" class="iline"></div>
+        <div class="row"><span>Auto Provider</span><input type="text" class="iline"></div>
+        <div class="row"><span>Umbrella Policy?</span><input type="text" class="iline"></div>
+      </div>
+      <div class="card">
+        <div class="col-hdr" style="background:var(--coral);">DISABILITY/LTC</div>
+        <div class="row"><span>Short Term Dis.</span><input type="text" class="iline"></div>
+        <div class="row"><span>Long Term Dis.</span><input type="text" class="iline"></div>
+        <div class="row"><span>Long Term Care</span><input type="text" class="iline"></div>
+      </div>
+    </div>
+
+    <div class="section-lbl">DOCUMENT LOCATIONS</div>
+    <p style="font-size:8.5pt;color:var(--mid);margin-bottom:10px;">Where are the physical originals?</p>
+    <div class="card">
+      <div class="row"><span>Birth Certificates / Passports</span><input type="text" class="iline" style="width:400px;"></div>
+      <div class="row"><span>Marriage Certificate</span><input type="text" class="iline" style="width:400px;"></div>
+      <div class="row"><span>Property Deeds / Titles</span><input type="text" class="iline" style="width:400px;"></div>
+      <div class="row"><span>Social Security Cards</span><input type="text" class="iline" style="width:400px;"></div>
+    </div>
+  </div>
+  <div class="ftr">Life Admin & Legacy Vault · OurSteady.com</div>
+</div>
+
+<!-- PAGE 5: ESTATE & FINAL WISHES -->
+<div class="page">
+  <div class="hdr"><span class="hl">ESTATE & FINAL WISHES</span><span class="hc">Life Admin & Legacy Vault</span><span class="hr">5</span></div>
+  <div class="body">
+    <div class="note-box" style="background:var(--gold-lite); border-left-color:var(--gold); color:var(--charcoal);">
+      <strong>The Legal Pieces:</strong> These documents ensure your wishes are followed and your partner is protected from legal hurdles. If these aren't done yet, make it your next shared goal.
+    </div>
+
+    <div class="section-lbl">ESTATE DOCUMENTS</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="col-hdr" style="background:var(--gold);">PARTNER 1</div>
+        <div class="row"><span>Will Completed?</span><input type="text" class="iline"></div>
+        <div class="row"><span>Power of Attorney</span><input type="text" class="iline"></div>
+        <div class="row"><span>Healthcare Directive</span><input type="text" class="iline"></div>
+        <div class="row"><span>Location of Original</span><input type="text" class="iline"></div>
+      </div>
+      <div class="card">
+        <div class="col-hdr" style="background:var(--gold);">PARTNER 2</div>
+        <div class="row"><span>Will Completed?</span><input type="text" class="iline"></div>
+        <div class="row"><span>Power of Attorney</span><input type="text" class="iline"></div>
+        <div class="row"><span>Healthcare Directive</span><input type="text" class="iline"></div>
+        <div class="row"><span>Location of Original</span><input type="text" class="iline"></div>
+      </div>
+    </div>
+
+    <div class="section-lbl">BENEFICIARY CHECKLIST</div>
+    <p style="font-size:8.5pt;color:var(--mid);margin-bottom:10px;">Have you named beneficiaries on these accounts? (This overrides a Will).</p>
+    <div class="card" style="padding:12px;">
+      <div class="grid-2">
+        <div class="cb-list">
+          <div class="cb-item"><div class="cb-box"></div> 401(k) / 403(b) Accounts</div>
+          <div class="cb-item"><div class="cb-box"></div> IRA / Roth IRA Accounts</div>
+          <div class="cb-item"><div class="cb-box"></div> Brokerage Accounts</div>
+        </div>
+        <div class="cb-list">
+          <div class="cb-item"><div class="cb-box"></div> Life Insurance Policies</div>
+          <div class="cb-item"><div class="cb-box"></div> Bank Accounts (POD/TOD)</div>
+          <div class="cb-item"><div class="cb-box"></div> Health Savings Accounts (HSA)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-lbl">FINAL WISHES (OPTIONAL)</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="col-hdr" style="background:var(--gold);">PARTNER 1</div>
+        <div class="row"><span style="font-size:8pt;">Preferences (Burial, Service, etc.)</span></div>
+        <div style="padding:10px;"><textarea class="iline" style="width:100%;height:60px;"></textarea></div>
+      </div>
+      <div class="card">
+        <div class="col-hdr" style="background:var(--gold);">PARTNER 2</div>
+        <div class="row"><span style="font-size:8pt;">Preferences (Burial, Service, etc.)</span></div>
+        <div style="padding:10px;"><textarea class="iline" style="width:100%;height:60px;"></textarea></div>
+      </div>
+    </div>
+  </div>
+  <div class="ftr">Life Admin & Legacy Vault · OurSteady.com</div>
+</div>
+
+<!-- ═══ STORING THIS VAULT + EMERGENCY ACCESS + REVIEW ANNUALLY ═══ -->
+<div class="page">
+  <div class="hdr"><span class="hl">STORING YOUR VAULT + EMERGENCY ACCESS</span><span class="hc">Life Admin &amp; Legacy Vault</span><span class="hr">✦</span></div>
+  <div class="body" style="padding:16px 28px 50px;">
+
+    <!-- STORING THIS VAULT -->
+    <div class="section-lbl">STORING THIS VAULT SAFELY</div>
+    <div class="note-box" style="margin-bottom:14px;">This document contains sensitive information. Storing it properly is just as important as filling it out. Use at least two of the three storage methods below.</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:18px;">
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;overflow:hidden;">
+        <div style="background:var(--sage-dark);padding:9px 14px;font-size:8pt;font-weight:700;color:var(--gold);">🔑 Password Manager</div>
+        <div style="padding:12px 14px;">
+          <div style="font-size:8.5pt;color:var(--charcoal);line-height:1.6;margin-bottom:8px;">Save a PDF of this vault to a secure password manager (e.g. 1Password, Bitwarden, LastPass) in a shared vault both partners can access.</div>
+          <div style="font-size:7.5pt;color:var(--mid);margin-bottom:6px;font-weight:700;">Our password manager:</div>
+          <input class="iline" type="text" style="width:100%;font-size:8.5pt;" placeholder="e.g. 1Password · Shared Vault">
+          <div style="font-size:7.5pt;color:var(--mid);margin-top:6px;">Both partners have access? <input class="iline" type="text" style="width:60px;" placeholder="Yes / No"></div>
+        </div>
+      </div>
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;overflow:hidden;">
+        <div style="background:var(--sage);padding:9px 14px;font-size:8pt;font-weight:700;color:#fff;">☁️ Secure Cloud Folder</div>
+        <div style="padding:12px 14px;">
+          <div style="font-size:8.5pt;color:var(--charcoal);line-height:1.6;margin-bottom:8px;">Create a dedicated "Legacy Documents" folder in a shared cloud service (Google Drive, iCloud, Dropbox) — password-protected or within a shared account.</div>
+          <div style="font-size:7.5pt;color:var(--mid);margin-bottom:6px;font-weight:700;">Our cloud location:</div>
+          <input class="iline" type="text" style="width:100%;font-size:8.5pt;" placeholder="e.g. Google Drive / 📁 Legacy Vault">
+          <div style="font-size:7.5pt;color:var(--mid);margin-top:6px;">Folder access: <input class="iline" type="text" style="width:90px;" placeholder="Both / P1 only"></div>
+        </div>
+      </div>
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;overflow:hidden;">
+        <div style="background:var(--gold);padding:9px 14px;font-size:8pt;font-weight:700;color:#fff;">🔒 Physical Safe Copy</div>
+        <div style="padding:12px 14px;">
+          <div style="font-size:8.5pt;color:var(--charcoal);line-height:1.6;margin-bottom:8px;">Print and store a physical copy in a fireproof safe or safety deposit box. Include this document alongside original will, insurance policies, and property deeds.</div>
+          <div style="font-size:7.5pt;color:var(--mid);margin-bottom:6px;font-weight:700;">Physical location:</div>
+          <input class="iline" type="text" style="width:100%;font-size:8.5pt;" placeholder="e.g. Home safe / Bank name">
+          <div style="font-size:7.5pt;color:var(--mid);margin-top:6px;">Safe combination: <input class="iline" type="text" style="width:80px;" placeholder="📝 stored at…"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EMERGENCY ACCESS -->
+    <div class="section-lbl">EMERGENCY ACCESS — FIRST 72 HOURS</div>
+    <div style="background:var(--sage-dark);border-radius:10px;padding:16px 22px;margin-bottom:14px;">
+      <div style="font-size:9pt;color:#fff;font-weight:500;margin-bottom:10px;">If something happens to one of us, here is exactly what to do first:</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:10px 14px;">
+            <div style="font-size:7.5pt;font-weight:700;color:var(--gold);margin-bottom:5px;">STEP 1 · Within 24 hours</div>
+            <div style="font-size:8pt;color:rgba(200,232,220,.9);line-height:1.6;">1. Locate this document (see storage above)<br>2. Call our designated emergency contact:<br><input style="background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.3);color:#fff;font-family:'DM Sans',sans-serif;font-size:8pt;width:100%;outline:none;margin-top:4px;" type="text" placeholder="Name + phone number"><br>3. Do NOT make any major financial decisions for at least 48 hours</div>
+          </div>
+          <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:10px 14px;">
+            <div style="font-size:7.5pt;font-weight:700;color:var(--gold);margin-bottom:5px;">STEP 2 · Within 48–72 hours</div>
+            <div style="font-size:8pt;color:rgba(200,232,220,.9);line-height:1.6;">1. Contact our financial advisor / bank:<br><input style="background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.3);color:#fff;font-family:'DM Sans',sans-serif;font-size:8pt;width:100%;outline:none;margin-top:4px;" type="text" placeholder="Advisor name + contact"><br>2. Notify HR/employer about benefits and salary continuation<br>3. Contact the estate attorney: <input style="background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.3);color:#fff;font-family:'DM Sans',sans-serif;font-size:8pt;width:100%;outline:none;margin-top:4px;" type="text" placeholder="Attorney name + contact"></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:10px 14px;">
+            <div style="font-size:7.5pt;font-weight:700;color:var(--gold);margin-bottom:5px;">IMMEDIATELY ACCESSIBLE ACCOUNTS</div>
+            <div style="font-size:8pt;color:rgba(200,232,220,.9);margin-bottom:4px;">Joint chequing/current account:</div>
+            <input style="background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.3);color:#fff;font-family:'DM Sans',sans-serif;font-size:8pt;width:100%;outline:none;" type="text" placeholder="Bank + account # (last 4 digits)">
+            <div style="font-size:8pt;color:rgba(200,232,220,.9);margin-top:8px;margin-bottom:4px;">Emergency fund account:</div>
+            <input style="background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.3);color:#fff;font-family:'DM Sans',sans-serif;font-size:8pt;width:100%;outline:none;" type="text" placeholder="Bank + account # (last 4 digits)">
+            <div style="font-size:8pt;color:rgba(200,232,220,.9);margin-top:8px;margin-bottom:4px;">Online banking access info stored at:</div>
+            <input style="background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.3);color:#fff;font-family:'DM Sans',sans-serif;font-size:8pt;width:100%;outline:none;" type="text" placeholder="Password manager / safe">
+          </div>
+          <div style="background:rgba(201,150,60,.2);border:1px solid rgba(201,150,60,.4);border-radius:6px;padding:10px 14px;">
+            <div style="font-size:7.5pt;font-weight:700;color:var(--gold);margin-bottom:4px;">⚠️ IMPORTANT REMINDER</div>
+            <div style="font-size:8pt;color:rgba(250,240,220,.9);line-height:1.6;">Life insurance claims must be filed within 30–60 days. See insurance section of this vault for policy numbers and insurer contacts.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REVIEW ANNUALLY -->
+    <div class="section-lbl">REVIEW ANNUALLY — DATE FIELDS</div>
+    <div style="background:var(--gold-lite);border:.5px solid var(--gold);border-radius:8px;padding:14px 18px;">
+      <div style="font-size:8.5pt;color:var(--charcoal);margin-bottom:10px;">This vault should be reviewed and updated every year. Things change — jobs, accounts, policies, families. Schedule a 30-minute annual vault review on your money date calendar.</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
+        <div style="background:#fff;border-radius:6px;padding:8px 12px;text-align:center;">
+          <div style="font-size:7pt;font-weight:700;color:var(--gold);margin-bottom:4px;">YEAR 1 REVIEW</div>
+          <input class="iline" type="text" style="width:100%;text-align:center;" placeholder="Date reviewed">
+          <input class="iline" type="text" style="width:100%;text-align:center;margin-top:5px;" placeholder="Updated by">
+        </div>
+        <div style="background:#fff;border-radius:6px;padding:8px 12px;text-align:center;">
+          <div style="font-size:7pt;font-weight:700;color:var(--gold);margin-bottom:4px;">YEAR 2 REVIEW</div>
+          <input class="iline" type="text" style="width:100%;text-align:center;" placeholder="Date reviewed">
+          <input class="iline" type="text" style="width:100%;text-align:center;margin-top:5px;" placeholder="Updated by">
+        </div>
+        <div style="background:#fff;border-radius:6px;padding:8px 12px;text-align:center;">
+          <div style="font-size:7pt;font-weight:700;color:var(--gold);margin-bottom:4px;">YEAR 3 REVIEW</div>
+          <input class="iline" type="text" style="width:100%;text-align:center;" placeholder="Date reviewed">
+          <input class="iline" type="text" style="width:100%;text-align:center;margin-top:5px;" placeholder="Updated by">
+        </div>
+        <div style="background:#fff;border-radius:6px;padding:8px 12px;text-align:center;">
+          <div style="font-size:7pt;font-weight:700;color:var(--gold);margin-bottom:4px;">YEAR 4 REVIEW</div>
+          <input class="iline" type="text" style="width:100%;text-align:center;" placeholder="Date reviewed">
+          <input class="iline" type="text" style="width:100%;text-align:center;margin-top:5px;" placeholder="Updated by">
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:8pt;color:var(--mid);font-style:italic;">💡 Things to check at each review: new accounts opened, beneficiary changes, policy renewals, estate document updates, new digital assets, relationship changes.</div>
+    </div>
+
+  </div>
+  <div class="ftr">Life Admin & Legacy Vault · OurSteady.com</div>
+</div>
+
+
+<!-- ═══ BACK COVER ═══ -->
+<!-- Legacy Vault version — showing Vault as "You Have This" -->
+<div class="page">
+<div class="bp bp-plum"> <!-- plum used for the Connection Kit family -->
+  <div class="bp-topbar"></div>
+  <div class="bp-inner">
+    <div class="card">
+
+      <div class="card-hdr">
+        <div class="card-hdr-stripe stripe-plum"></div>
+        <div class="eyebrow">OurSteady Financial Ecosystem</div>
+        <h2>You're in the relationship layer.<br><em>Here's the full picture.</em></h2>
+        <div class="sub">The Connection Kit deepens the bond. Here's every tool in the system — and where to go next.</div>
+        <div class="rule"></div>
+      </div>
+
+      <div class="card-body">
+
+        <div class="tier-lbl">The Connection Kit — Already Yours</div>
+        <!-- SWAP THIS ROW to match actual product -->
+        <div class="pr locked" style="opacity:.5;">
+          <div class="badge b-27">$27</div>
+          <div class="pinfo"><a href="https://OurSteady.com/deck" style="text-decoration:none;"><div class="pname">Money Date Conversation Deck</div></a><div class="pdesc">12 months of guided prompts — deepen every money date ritual.</div></div>
+          <div class="ptag tag-have">✓ You Have This</div>
+        </div>
+        <div class="pr locked" style="opacity:.5;">
+          <div class="badge b-27">$27</div>
+          <div class="pinfo"><a href="https://OurSteady.com/personality" style="text-decoration:none;"><div class="pname">Money Personality System</div></a><div class="pdesc">Understand how each of you thinks about money — before it becomes a fight.</div></div>
+          <div class="ptag tag-lock">In Bundle</div>
+        </div>
+        <div class="pr have">
+          <div class="badge b-27">$27</div>
+          <div class="pinfo"><a href="https://OurSteady.com/vault" style="text-decoration:none;"><div class="pname">Life Admin &amp; Legacy Vault</div></a><div class="pdesc">Wills, insurance, digital legacy, estate essentials — all in one place.</div></div>
+          <div class="ptag tag-lock">In Bundle</div>
+        </div>
+        <div style="padding:4px 9px;">
+          <div style="font-size:7pt;color:var(--mid);font-style:italic;">Get all three together as <strong>The Connection Kit — $67</strong> at OurSteady.com</div>
+        </div>
+
+        <div class="tier-lbl">The Foundation — Start Here if You Haven't</div>
+        <div class="pr locked">
+          <div class="badge b-free">FREE</div>
+          <div class="pinfo"><a href="https://OurSteady.com/" style="text-decoration:none;"><div class="pname">Money Date Starter Kit</div></a><div class="pdesc">The ritual that makes every Connection Kit tool work.</div></div>
+          <div class="ptag tag-lock">Free</div>
+        </div>
+        <div class="pr next">
+          <div class="badge b-9">$9</div>
+          <div class="pinfo"><a href="https://OurSteady.com/tracker" style="text-decoration:none;"><div class="pname">Couples Wealth Tracker</div></a><div class="pdesc">19-page monthly system — the data layer the whole system runs on.</div></div>
+          <div class="ptag tag-next">→ Add This</div>
+        </div>
+
+        <div class="tier-lbl">Build the Plan</div>
+        <div class="pr locked">
+          <div class="badge b-7">$7</div>
+          <div class="pinfo"><a href="https://OurSteady.com/sheet" style="text-decoration:none;"><div class="pname">Money Scripts Cheat Sheet</div></a><div class="pdesc">Exact words for the 5 hardest money conversations. $7.</div></div>
+          <div class="ptag tag-lock">Add On</div>
+        </div>
+        <div class="pr locked">
+          <div class="badge b-17">$17</div>
+          <div class="pinfo"><a href="https://OurSteady.com/workbook" style="text-decoration:none;"><div class="pname">Wealth Blueprint Workbook</div></a><div class="pdesc">6 modules: budget, invest, debt, goals, protect, 12-month roadmap.</div></div>
+          <div class="ptag tag-lock">Workbook</div>
+        </div>
+        <div class="pr locked">
+          <div class="badge b-37">$37</div>
+          <div class="pinfo"><a href="https://OurSteady.com/reset" style="text-decoration:none;"><div class="pname">90-Day Financial Reset Kit</div></a><div class="pdesc">Clear the clutter, reset the budget, rebuild in 90 days.</div></div>
+          <div class="ptag tag-lock">Strategy</div>
+        </div>
+
+        <div class="tier-lbl">Unlocks Via Email — After Purchase</div>
+        <div class="pr soon">
+          <div class="badge b-47">$47</div>
+          <div class="pinfo"><a href="https://OurSteady.com/accelerator" style="text-decoration:none;"><div class="pname">Couples Wealth Accelerator</div></a><div class="pdesc">12-month implementation system — the execution engine.</div></div>
+          <div class="ptag tag-soon">✉ Via Email</div>
+        </div>
+        <div class="pr soon">
+          <div class="badge b-37">$37</div>
+          <div class="pinfo"><a href="https://OurSteady.com/investment" style="text-decoration:none;"><div class="pname">Investment Starter Kit</div></a><div class="pdesc">Build your first investment strategy together.</div></div>
+          <div class="ptag tag-soon">✉ Via Email</div>
+        </div>
+        <div class="pr soon">
+          <div class="badge b-97">$97</div>
+          <div class="pinfo"><a href="https://OurSteady.com/video" style="text-decoration:none;"><div class="pname">Couples Wealth Blueprint — Video Modules</div></a><div class="pdesc">6 guided video modules + all workbooks.</div></div>
+          <div class="ptag tag-soon">✉ Via Email</div>
+        </div>
+
+      </div>
+
+      <div class="card-cta">
+        <div class="cta-l">
+          <div class="clbl">Complete the Connection Kit</div>
+          <div class="ctxt">Get the Deck + Personality System + Legacy Vault together for $67 — or add the Tracker ($9) as your next data layer.</div>
+        </div>
+        <a href="https://OurSteady.com/" style="text-decoration:none;"><div class="cta-r">OurSteady.com</div></a>
+      </div>
+
+      <div class="card-foot">
+        <div class="fl">OurSteady Financial Ecosystem · All products work as a complete system</div>
+        <div class="fr">OurSteady.com</div>
+      </div>
+
+    </div>
+  </div>
+  <div class="bp-botbar"></div>
+</div>
+</div>
+
+</body>
+</html>

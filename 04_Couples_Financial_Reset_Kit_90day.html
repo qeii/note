@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Couples Financial Reset Kit — The 90-Day Reboot</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Brand system — shared across funnel */
+    --sage:#4A7C6B; --sage-dark:#2E5248; --sage-mid:#5D8B7A;
+    --sage-lite:#EAF2EE; --sage-pale:#F4FAF7;
+    --cream:#FDFAF5; --warm:#F2EAD8; --warm-mid:#E8DCC8;
+    --gold:#C9963C; --gold-lite:#F5E6C8; --gold-pale:#FDF6E8; --plum:#7B5EA7; --plum-lite:#F2EBF8; --teal:#2A7B6E; --teal-dark:#164F46; --teal-lite:#E2F4F1; --amber:#B85C2E; --amber-lite:#FAF0E8;
+    --charcoal:#2C2C2C; --mid:#6B6B6B; --light:#E0DCD4; --pale:#F0EDE8;
+    --coral:#D4795A; --coral-lite:#FAEDE8;
+    --blue:#5B6F8E; --blue-lite:#EBF0F6;
+
+    /* This product — deep amber/burnt sienna accent */
+    --amber:#B85C2E; --amber-dark:#8A3F18; --amber-mid:#C96A38;
+    --amber-lite:#FAF0E8; --amber-pale:#FDF6F0;
+    --amber-warm:#E8A06A;
+
+    /* Phase colors */
+    --phase1:#5B6F8E;  --phase1-lite:#EBF0F6;
+    --phase2:#4A7C6B;  --phase2-lite:#EAF2EE;
+    --phase3:#B85C2E;  --phase3-lite:#FAF0E8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:#ddd0c4;color:var(--charcoal);font-size:10pt;}
+  .page{width:816px;min-height:1056px;margin:0 auto 32px;background:var(--cream);position:relative;overflow:hidden;page-break-after:always;}
+  @media print{.page{margin:0;page-break-after:always;}body{background:#fff;}}
+
+  /* Shared components */
+  .hdr{padding:10px 28px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--gold);}
+  .hdr .hl{font-size:7.5pt;font-weight:700;color:var(--gold);letter-spacing:.08em;}
+  .hdr .hc{font-size:8pt;color:rgba(255,255,255,.8);}
+  .hdr .hr{font-size:7pt;color:rgba(255,255,255,.5);}
+  .ftr{background:var(--amber-dark);padding:5px 28px;text-align:center;font-size:7pt;color:rgba(255,255,255,.65);position:absolute;bottom:0;left:0;right:0;}
+  .body{padding:16px 28px 52px;}
+  .iline{border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8.5pt;outline:none;}
+  .section-lbl{font-size:7.5pt;font-weight:700;letter-spacing:.08em;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+  .section-lbl::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+  .note{background:var(--amber-lite);border-left:3px solid var(--amber-mid);border-radius:0 6px 6px 0;padding:10px 14px;font-size:8.5pt;color:var(--charcoal);line-height:1.6;}
+  .note strong{color:var(--amber-dark);}
+  textarea{width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8.5pt;resize:none;outline:none;line-height:1.6;}
+  .cb{width:11px;height:11px;border:1.5px solid var(--amber-mid);border-radius:2px;display:inline-block;flex-shrink:0;margin-top:2px;}
+  .cb-row{display:flex;gap:8px;align-items:flex-start;margin-bottom:7px;font-size:8.5pt;color:var(--charcoal);}
+
+  /* Week strip */
+  .week-strip{border-radius:6px;padding:7px 14px;display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .week-num{font-size:7.5pt;font-weight:700;padding:3px 10px;border-radius:20px;background:var(--gold);color:#fff;white-space:nowrap;}
+  .week-title{font-size:9.5pt;font-weight:700;color:#fff;}
+  .week-focus{font-size:8pt;color:rgba(255,255,255,.8);}
+
+  /* Phase banner */
+  .phase-banner{border-radius:10px;padding:12px 18px;margin-bottom:14px;display:flex;align-items:center;gap:14px;}
+  .phase-num{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11pt;font-weight:700;color:#fff;flex-shrink:0;}
+  .phase-title{font-size:12pt;font-weight:700;color:#fff;}
+  .phase-sub{font-size:8pt;color:rgba(255,255,255,.82);}
+  .phase-weeks{margin-left:auto;background:rgba(255,255,255,.18);border-radius:20px;padding:4px 12px;font-size:7.5pt;font-weight:700;color:#fff;white-space:nowrap;}
+
+  /* Task card */
+  .task-card{background:#fff;border:.5px solid var(--light);border-radius:8px;overflow:hidden;margin-bottom:8px;}
+  .task-hdr{padding:8px 14px;font-size:8.5pt;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px;}
+  .task-body{padding:9px 14px 11px;}
+
+  /* Milestone tracker */
+  .milestone-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:6px;margin-bottom:5px;}
+  .ms-circle{width:24px;height:24px;border-radius:50%;border:2px solid;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9pt;font-weight:700;}
+
+  /* Check-in grid */
+  .checkin-cell{background:#fff;border:.5px solid var(--light);border-radius:6px;padding:9px 12px;}
+
+  /* Number tracker row */
+  .num-row{display:flex;align-items:center;justify-content:space-between;padding:5px 10px;font-size:8.5pt;}
+  .num-row:nth-child(even){background:var(--amber-pale);}
+  .num-row input{border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;width:90px;text-align:right;outline:none;}
+  .num-total{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:var(--gold-lite);border-top:1px solid var(--gold);font-size:8.5pt;font-weight:700;}
+  .num-total input{font-weight:700;border-bottom:1px solid var(--gold);width:90px;text-align:right;border:none;border-bottom:1px solid var(--gold);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;outline:none;}
+
+  /* COVER */
+  #p1{min-height:1056px;display:flex;flex-direction:column;background:var(--amber-dark);}
+  #p1 .tbar{height:5px;background:var(--gold);}
+  #p1 .hero{flex:1;background:radial-gradient(ellipse at 40% 35%,#C96A38 0%,#8A3F18 50%,#5C2408 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:38px 72px 28px;position:relative;}
+  #p1 .price{background:var(--gold);color:#fff;font-size:8pt;font-weight:700;padding:4px 20px;border-radius:20px;letter-spacing:.1em;margin-bottom:16px;}
+  #p1 h1{font-family:'Playfair Display',serif;font-size:36pt;color:#fff;text-align:center;line-height:1.15;}
+  #p1 h1 em{color:var(--gold);font-style:normal;display:block;}
+  #p1 h1 span{font-size:17pt;color:rgba(250,210,170,.75);display:block;font-weight:400;margin-top:4px;}
+  #p1 .rule{width:120px;height:2px;background:var(--gold);margin:14px auto;}
+  #p1 .sub{font-size:10pt;color:rgba(250,210,170,.9);text-align:center;line-height:1.7;margin-bottom:6px;}
+  #p1 .phase-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:16px 0;width:100%;}
+  #p1 .ph-card{border-radius:10px;padding:12px 14px;text-align:center;}
+  #p1 .ph-icon{font-size:18pt;margin-bottom:5px;}
+  #p1 .ph-label{font-size:7pt;font-weight:700;letter-spacing:.08em;margin-bottom:3px;}
+  #p1 .ph-name{font-size:9.5pt;font-weight:700;color:#fff;}
+  #p1 .ph-weeks{font-size:7.5pt;color:rgba(255,255,255,.75);}
+  #p1 .inside{background:rgba(90,30,5,.45);border:1px solid rgba(200,110,60,.35);border-radius:12px;padding:18px 24px;margin:14px 0;width:100%;}
+  #p1 .ititle{font-size:7.5pt;font-weight:700;color:var(--gold);letter-spacing:.1em;text-align:center;margin-bottom:11px;}
+  #p1 .igrid{display:grid;grid-template-columns:1fr 1fr;gap:7px 22px;}
+  #p1 .iitem{display:flex;gap:8px;align-items:flex-start;}
+  #p1 .inum{color:var(--gold);font-size:7pt;font-weight:700;flex-shrink:0;margin-top:2px;}
+  #p1 .iname{font-size:8.5pt;font-weight:600;color:#fff;}
+  #p1 .idesc{font-size:7.5pt;color:rgba(250,200,160,.8);}
+  #p1 .ourbox{background:rgba(70,20,5,.5);border:.5px solid rgba(200,110,60,.3);border-radius:8px;padding:13px 20px;width:100%;}
+  #p1 .olbl{font-size:7pt;font-weight:700;color:var(--gold);letter-spacing:.1em;text-align:center;margin-bottom:8px;}
+  #p1 .ofields{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  #p1 .ofield label{font-size:7.5pt;color:rgba(250,200,160,.85);display:block;margin-bottom:2px;}
+  #p1 .ofield input{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(200,110,60,.5);font-family:'DM Sans',sans-serif;font-size:8.5pt;color:#fff;padding:2px 0;outline:none;}
+  #p1 .bbar{height:5px;background:var(--gold);}
+
+  /* ═══ BACK COVER BP STYLES ═══ */
+.bp {
+  /* override per-product via class: .bp-sage / .bp-plum / etc */
+  --pa: var(--sage-dark);   /* primary accent — header + bars */
+  --pa-mid: var(--sage-mid);
+  --pa-lite: var(--sage-lite);
+  --pa-pale: var(--sage-pale);
+  --tag-have-bg: var(--gold);
+  --tag-next-bg: var(--pa);
+
+  min-height:1056px;
+  display:flex; flex-direction:column;
+  background:var(--pa);
+}
+
+/* product-specific accent overrides */
+.bp-sage    { --pa:var(--sage-dark); --pa-mid:var(--sage-mid); --pa-lite:var(--sage-lite); --pa-pale:var(--sage-pale); }
+.bp-plum    { --pa:#5B3F8A; --pa-mid:#7B5EA7; --pa-lite:#F2EBF8; --pa-pale:#F8F4FC; }
+.bp-teal    { --pa:var(--teal-dark); --pa-mid:var(--teal); --pa-lite:var(--teal-lite); --pa-pale:#F0FAF8; }
+.bp-amber   { --pa:#8A3F18; --pa-mid:var(--amber); --pa-lite:var(--amber-lite); --pa-pale:#FDF6F0; }
+.bp-sagedark{ --pa:#1E3D33; --pa-mid:var(--sage-dark); --pa-lite:var(--sage-lite); --pa-pale:var(--sage-pale); }
+/* Deck/Invest/Vault all sage but differentiated by inner stripe color below */
+
+.bp-topbar  { height:4px; background:linear-gradient(90deg,var(--gold),var(--pa-mid),var(--pa)); }
+.bp-botbar  { height:4px; background:linear-gradient(90deg,var(--pa),var(--pa-mid),var(--gold)); }
+
+.bp-inner {
+  flex:1;
+  display:flex; align-items:stretch; justify-content:center;
+  padding:26px 32px 22px;
+}
+
+/* ─────────────────────────────────────────────
+   CARD
+───────────────────────────────────────────── */
+.bp .card {
+  background:var(--cream);
+  border-radius:14px;
+  border:none;
+  width:100%;
+  display:flex; flex-direction:column;
+  overflow:hidden;
+  box-shadow:0 10px 50px rgba(0,0,0,.22);
+}
+
+/* card header */
+.bp .card-hdr {
+  background:var(--pa);
+  padding:18px 24px 14px;
+  border-bottom:2.5px solid var(--gold);
+  text-align:center;
+}
+.bp .card-hdr .eyebrow {
+  font-size:6.5pt; font-weight:700; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--gold);
+  margin-bottom:7px;
+}
+.bp .card-hdr h2 {
+  font-family:'Playfair Display',serif;
+  font-size:18pt; color:#fff; line-height:1.2;
+  margin-bottom:4px;
+}
+.bp .card-hdr h2 em { color:var(--gold); font-style:italic; }
+.bp .card-hdr .sub {
+  font-size:7.5pt; color:rgba(200,232,220,.72); line-height:1.5;
+}
+.bp .card-hdr .rule {
+  width:44px; height:2px; background:var(--gold);
+  margin:9px auto 0; border-radius:2px;
+}
+
+/* product-specific header stripe (top edge inside card header)
+   gives Deck/Invest/Vault a visual tell even though all use sage */
+.bp .card-hdr-stripe {
+  height:3px; margin:-18px -24px 14px; /* bleeds to edges */
+}
+.stripe-sage     { background:var(--sage); }
+.stripe-sage2    { background:linear-gradient(90deg,var(--sage),var(--sage-mid)); } /* Deck */
+.stripe-sage3    { background:linear-gradient(90deg,var(--sage-mid),var(--teal)); } /* Invest */
+.stripe-sage4    { background:linear-gradient(90deg,var(--sage-dark),var(--sage)); } /* Vault */
+.stripe-plum     { background:var(--plum); }
+.stripe-teal     { background:var(--teal); }
+.stripe-amber    { background:var(--amber); }
+.stripe-sagedark { background:var(--sage-dark); }
+
+/* ─────────────────────────────────────────────
+   PRODUCT LIST BODY
+───────────────────────────────────────────── */
+.bp .card-body {
+  flex:1; padding:14px 20px 12px;
+  display:flex; flex-direction:column; gap:0;
+}
+
+/* tier dividers */
+.tier-lbl {
+  font-size:6pt; font-weight:700; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--mid);
+  margin:9px 0 4px;
+  display:flex; align-items:center; gap:6px;
+}
+.tier-lbl::before,.tier-lbl::after {
+  content:''; flex:1; height:.5px; background:var(--light);
+}
+
+/* product rows */
+.pr {
+  display:flex; align-items:center; gap:10px;
+  padding:7px 9px; border-radius:7px;
+  border:.5px solid transparent;
+  margin-bottom:1px;
+}
+.pr.have {
+  background:var(--gold-pale);
+  border-color:rgba(201,150,60,.35);
+}
+.pr.next {
+  background:var(--pa-pale);
+  border-color:rgba(74,124,107,.3);
+}
+.pr.soon {
+  background:#fff;
+  border-color:var(--light);
+  opacity:.65;
+}
+.pr.locked {
+  background:#fff;
+  border-color:var(--light);
+  opacity:.55;
+}
+
+/* price badge */
+.badge {
+  flex-shrink:0; font-size:6.5pt; font-weight:700;
+  padding:2px 8px; border-radius:16px;
+  white-space:nowrap; min-width:34px; text-align:center;
+  line-height:1.5;
+}
+.b-free  { background:var(--sage);      color:#fff; }
+.b-7     { background:#8B9BAD;          color:#fff; }
+.b-9     { background:var(--gold);      color:#fff; }
+.b-17    { background:var(--coral);     color:#fff; }
+.b-27    { background:var(--plum);      color:#fff; }
+.b-37    { background:var(--amber);     color:#fff; }
+.b-47    { background:var(--sage-dark); color:#fff; }
+.b-67    { background:#5B3F8A;          color:#fff; }
+.b-97    { background:var(--charcoal);  color:#fff; }
+
+/* product info */
+.pinfo { flex:1; min-width:0; }
+.pname { font-size:8.5pt; font-weight:600; color:var(--charcoal); line-height:1.2; }
+.pdesc { font-size:7pt; color:var(--mid); margin-top:1px; line-height:1.35; }
+
+/* state tag */
+.ptag {
+  flex-shrink:0; font-size:6pt; font-weight:700;
+  letter-spacing:.07em; text-transform:uppercase;
+  padding:2px 7px; border-radius:9px; white-space:nowrap;
+}
+.tag-have  { background:var(--gold);      color:#fff; }
+.tag-next  { background:var(--pa);        color:#fff; }
+.tag-soon  { background:var(--light);     color:var(--mid); font-style:italic; }
+.tag-lock  { background:var(--pale);      color:var(--mid); }
+
+/* ─────────────────────────────────────────────
+   CONNECTION KIT GROUP
+───────────────────────────────────────────── */
+.ck-group {
+  border:.5px solid var(--plum);
+  border-radius:8px; overflow:hidden;
+  margin-bottom:1px;
+  opacity:.72;
+}
+.ck-group.next { opacity:1; border-color:var(--plum); }
+.ck-label {
+  background:var(--plum); padding:4px 10px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.ck-label .cktitle {
+  font-size:7pt; font-weight:700; color:#fff; letter-spacing:.06em;
+}
+.ck-label .ckprice {
+  font-size:7pt; font-weight:700;
+  background:rgba(255,255,255,.18); color:#fff;
+  padding:1px 8px; border-radius:10px;
+}
+.ck-items { padding:5px 8px; background:var(--plum-lite); display:flex; flex-direction:column; gap:3px; }
+.ck-item  { font-size:7.5pt; color:var(--charcoal); display:flex; gap:6px; align-items:center; }
+.ck-item::before { content:'·'; color:var(--plum); font-weight:700; }
+
+/* ─────────────────────────────────────────────
+   CTA STRIP
+───────────────────────────────────────────── */
+.bp .card-cta {
+  margin:10px 20px 14px;
+  background:var(--pa);
+  border-radius:9px; padding:12px 16px;
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+}
+.bp .cta-l .clbl { font-size:6.5pt; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); margin-bottom:2px; }
+.bp .cta-l .ctxt { font-size:8pt; color:rgba(200,232,220,.9); line-height:1.45; }
+.bp .cta-r { font-size:8.5pt; font-weight:700; color:var(--gold); white-space:nowrap; flex-shrink:0; }
+
+/* card footer */
+.bp .card-foot {
+  padding:7px 20px;
+  border-top:.5px solid var(--light);
+  display:flex; justify-content:space-between; align-items:center;
+}
+.bp .card-foot .fl { font-size:6.5pt; color:var(--mid); }
+.bp .card-foot .fr { font-size:6.5pt; font-weight:600; color:var(--pa-mid); }
+
+</style>
+</head>
+<body>
+
+
+<!-- ══════════════════════════════════════════════
+     P1 · COVER
+══════════════════════════════════════════════ -->
+<div class="page" id="p1">
+  <div class="tbar"></div>
+  <div class="hero">
+    <div class="price">COMPLETE KIT — $37</div>
+    <h1>Couples Financial<em>Reset Kit</em><span>The 90-Day Reboot</span></h1>
+    <div class="rule"></div>
+    <p class="sub">A step-by-step 90-day action plan with weekly check-ins,<br>monthly milestones, and a financial fresh start — together.</p>
+
+    <div class="phase-row">
+      <div class="ph-card" style="background:rgba(91,111,142,.45);border:1px solid rgba(91,111,142,.5);">
+        <div class="ph-icon">🔍</div>
+        <div class="ph-label" style="color:rgba(180,200,230,.85);">PHASE 1 · WEEKS 1–4</div>
+        <div class="ph-name">Clarity</div>
+        <div class="ph-weeks">See everything clearly</div>
+      </div>
+      <div class="ph-card" style="background:rgba(74,124,107,.45);border:1px solid rgba(74,124,107,.5);">
+        <div class="ph-icon">🔧</div>
+        <div class="ph-label" style="color:rgba(160,220,190,.85);">PHASE 2 · WEEKS 5–8</div>
+        <div class="ph-name">Structure</div>
+        <div class="ph-weeks">Build the system</div>
+      </div>
+      <div class="ph-card" style="background:rgba(184,92,46,.5);border:1px solid rgba(200,120,70,.5);">
+        <div class="ph-icon">🚀</div>
+        <div class="ph-label" style="color:rgba(250,210,170,.85);">PHASE 3 · WEEKS 9–13</div>
+        <div class="ph-name">Momentum</div>
+        <div class="ph-weeks">Accelerate forward</div>
+      </div>
+    </div>
+
+    <div class="inside">
+      <div class="ititle">WHAT'S INSIDE — 12 PAGES</div>
+      <div class="igrid">
+        <div class="iitem"><span class="inum">01</span><div><div class="iname">Your Starting Point Snapshot</div><div class="idesc">Net worth, spending reality, and reset targets</div></div></div>
+        <div class="iitem"><span class="inum">02</span><div><div class="iname">Phase 1 — Clarity (Wks 1–4)</div><div class="idesc">Weekly action plans + check-ins</div></div></div>
+        <div class="iitem"><span class="inum">03</span><div><div class="iname">Phase 2 — Structure (Wks 5–8)</div><div class="idesc">Build your system, automate, simplify</div></div></div>
+        <div class="iitem"><span class="inum">04</span><div><div class="iname">Phase 3 — Momentum (Wks 9–13)</div><div class="idesc">Accelerate, invest, lock it in</div></div></div>
+        <div class="iitem"><span class="inum">05</span><div><div class="iname">Monthly Check-In Sheets (×3)</div><div class="idesc">Day 30, Day 60, Day 90 reviews</div></div></div>
+        <div class="iitem"><span class="inum">06</span><div><div class="iname">90-Day Milestone Tracker</div><div class="idesc">Visual progress map for the full reboot</div></div></div>
+        <div class="iitem"><span class="inum">07</span><div><div class="iname">Weekly Spending Reset Log</div><div class="idesc">Simplified weekly cash flow tracker</div></div></div>
+        <div class="iitem"><span class="inum">08</span><div><div class="iname">Commitment + Day 90 Declaration</div><div class="idesc">Sign it at the start. Reflect at the end.</div></div></div>
+      </div>
+    </div>
+
+    <div class="ourbox">
+      <div class="olbl">OUR 90-DAY REBOOT</div>
+      <div class="ofields">
+        <div class="ofield"><label>Partner 1</label><input type="text" placeholder="Your name"></div>
+        <div class="ofield"><label>Partner 2</label><input type="text" placeholder="Their name"></div>
+        <div class="ofield"><label>Start Date (Day 1)</label><input type="text" placeholder="e.g. 1 June 2025"></div>
+        <div class="ofield"><label>End Date (Day 90)</label><input type="text" placeholder="e.g. 29 August 2025"></div>
+      </div>
+    </div>
+  </div>
+  <div class="bbar"></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     P2 · HOW TO USE + COMMITMENT
+══════════════════════════════════════════════ -->
+<div class="page">
+  <div class="hdr" style="background:var(--amber-dark);"><span class="hl">HOW TO USE THIS KIT</span><span class="hc">Couples Financial Reset Kit — The 90-Day Reboot</span><span class="hr">2</span></div>
+  <div class="body">
+<div style="background:var(--sage-pale,#f4faf7);border:.5px solid var(--sage-mid,#5d8b7a);border-left:3px solid var(--sage,#4a7c6b);border-radius:6px;padding:9px 14px 9px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:14px;font-size:8pt;color:var(--sage-dark,#2e5248);">
+  <span><strong style="font-size:8pt;letter-spacing:.06em;color:var(--sage-dark,#2e5248);">NEW TO OURSTEADY?</strong>&nbsp; To get the most from this product, read the companion How-To Guide first — it walks through every section step-by-step.</span>
+  <a href="https://2fold.pages.dev/howto/How%20to%20Use_%20Couples%20Financial%20Reset%20Kit%20%E2%80%94%2090-Day%20Reboot.pdf" target="_blank" rel="noopener" style="display:inline-block;flex-shrink:0;background:var(--sage,#4a7c6b);color:#fff;font-family:inherit;font-size:7.5pt;font-weight:700;letter-spacing:.06em;text-decoration:none;padding:5px 13px;border-radius:4px;white-space:nowrap;">How-To Guide</a>
+</div>
+
+
+    <div style="background:var(--amber-lite);border-radius:8px;padding:12px 18px;margin-bottom:14px;font-size:8.5pt;color:var(--charcoal);line-height:1.7;">
+      This kit is a <strong style="color:var(--amber-dark);">90-day step-by-step action plan</strong> — not a workbook you fill in once and forget. It's designed to be picked up weekly, for 13 short sessions, with three monthly milestone reviews. Each session takes 20–40 minutes. You don't need to be financial experts. You just need to show up, together, once a week.
+    </div>
+
+    <div class="section-lbl">THE 3-PHASE STRUCTURE</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-bottom:14px;">
+      <div style="background:var(--phase1-lite);border:1px solid #c0cad8;border-radius:8px;padding:11px 13px;">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;">
+          <div style="width:22px;height:22px;border-radius:50%;background:var(--phase1);color:#fff;font-size:7.5pt;font-weight:700;display:flex;align-items:center;justify-content:center;">1</div>
+          <div style="font-size:8.5pt;font-weight:700;color:var(--phase1);">CLARITY · Weeks 1–4</div>
+        </div>
+        <div style="font-size:8pt;color:var(--charcoal);line-height:1.6;">Stop guessing. See the full picture — where your money actually goes, what you actually owe, and what a real fresh start looks like for your specific situation.</div>
+      </div>
+      <div style="background:var(--phase2-lite);border:1px solid #a8ccc0;border-radius:8px;padding:11px 13px;">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;">
+          <div style="width:22px;height:22px;border-radius:50%;background:var(--phase2);color:#fff;font-size:7.5pt;font-weight:700;display:flex;align-items:center;justify-content:center;">2</div>
+          <div style="font-size:8.5pt;font-weight:700;color:var(--phase2);">STRUCTURE · Weeks 5–8</div>
+        </div>
+        <div style="font-size:8pt;color:var(--charcoal);line-height:1.6;">Build the system. Automate what can be automated. Design your budget to fit your life — not some template. Eliminate the decisions that keep tripping you up.</div>
+      </div>
+      <div style="background:var(--phase3-lite);border:1px solid #d8a888;border-radius:8px;padding:11px 13px;">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;">
+          <div style="width:22px;height:22px;border-radius:50%;background:var(--phase3);color:#fff;font-size:7.5pt;font-weight:700;display:flex;align-items:center;justify-content:center;">3</div>
+          <div style="font-size:8.5pt;font-weight:700;color:var(--phase3);">MOMENTUM · Weeks 9–13</div>
+        </div>
+        <div style="font-size:8pt;color:var(--charcoal);line-height:1.6;">Accelerate. With clarity and structure in place, direct your surplus toward your first big goal. Lock in habits that will outlast the 90 days.</div>
+      </div>
+    </div>
+
+    <div class="section-lbl">HOW EACH WEEK WORKS</div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;overflow:hidden;margin-bottom:14px;">
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:0;">
+        <div style="background:var(--amber-lite);padding:9px 14px;border-bottom:.5px solid var(--light);font-size:8pt;font-weight:700;color:var(--amber-dark);">BEFORE</div>
+        <div style="padding:9px 14px;border-bottom:.5px solid var(--light);font-size:8.5pt;color:var(--charcoal);">Skim that week's action items — 2 minutes, before your session.</div>
+        <div style="background:var(--amber-lite);padding:9px 14px;border-bottom:.5px solid var(--light);font-size:8pt;font-weight:700;color:var(--amber-dark);">DURING</div>
+        <div style="padding:9px 14px;border-bottom:.5px solid var(--light);font-size:8.5pt;color:var(--charcoal);">Sit together (phones away), work through the tasks and the check-in questions. Write actual answers — not plans to think about later.</div>
+        <div style="background:var(--amber-lite);padding:9px 14px;border-bottom:.5px solid var(--light);font-size:8pt;font-weight:700;color:var(--amber-dark);">AFTER</div>
+        <div style="padding:9px 14px;border-bottom:.5px solid var(--light);font-size:8.5pt;color:var(--charcoal);">Do the one action item you committed to before your next session. Not three. One.</div>
+        <div style="background:var(--gold-lite);padding:9px 14px;font-size:8pt;font-weight:700;color:var(--amber-dark);">MONTHLY</div>
+        <div style="padding:9px 14px;font-size:8.5pt;color:var(--charcoal);">Complete the Day 30, Day 60, and Day 90 check-in sheets. These are the pivot points where you assess, adjust, and recommit.</div>
+      </div>
+    </div>
+
+    <div class="section-lbl">GROUND RULES FOR THE 90 DAYS</div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:12px 16px;margin-bottom:14px;">
+      <div class="cb-row"><div class="cb"></div><div><strong>No blame for the past.</strong> Whatever the numbers say at the starting point, you're here now, together. The reset starts from today.</div></div>
+      <div class="cb-row"><div class="cb"></div><div><strong>Both partners show up.</strong> One person running the finances while the other checks out is how you got here. The reboot requires two people.</div></div>
+      <div class="cb-row"><div class="cb"></div><div><strong>Progress over perfection.</strong> A week where you did 3 out of 5 tasks is a good week. Don't let perfect be the enemy of better.</div></div>
+      <div class="cb-row"><div class="cb"></div><div><strong>Write it down.</strong> Decisions that aren't written down don't exist. Every commitment goes on paper (or in the field).</div></div>
+      <div class="cb-row"><div class="cb"></div><div><strong>The 90 days are non-negotiable. The method is flexible.</strong> If a task doesn't fit your situation, adapt it — but don't skip the week.</div></div>
+    </div>
+
+    <!-- Commitment -->
+    <div style="background:var(--amber-dark);border-radius:10px;padding:18px 22px;">
+      <div style="font-size:8pt;font-weight:700;color:var(--gold);letter-spacing:.1em;text-align:center;margin-bottom:8px;">OUR STARTING COMMITMENT</div>
+      <div style="font-family:'Playfair Display',serif;font-size:11pt;color:#fff;text-align:center;line-height:1.7;margin-bottom:14px;">We commit to 90 days. Not to perfection — to showing up.<br>We will do the work, have the conversations, and build something<br>better than what we started with.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:480px;margin:0 auto 16px;">
+        <div>
+          <div style="border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:4px;margin-bottom:4px;"><input style="background:transparent;border:none;color:#fff;font-family:'DM Sans',sans-serif;font-size:8.5pt;width:100%;outline:none;" type="text" placeholder="Partner 1 signature"></div>
+          <div style="font-size:7pt;color:rgba(250,200,160,.65);">Partner 1 · <input style="background:transparent;border:none;color:rgba(250,200,160,.65);font-family:'DM Sans',sans-serif;font-size:7pt;width:80px;outline:none;" type="text" placeholder="Date"></div>
+        </div>
+        <div>
+          <div style="border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:4px;margin-bottom:4px;"><input style="background:transparent;border:none;color:#fff;font-family:'DM Sans',sans-serif;font-size:8.5pt;width:100%;outline:none;" type="text" placeholder="Partner 2 signature"></div>
+          <div style="font-size:7pt;color:rgba(250,200,160,.65);">Partner 2 · <input style="background:transparent;border:none;color:rgba(250,200,160,.65);font-family:'DM Sans',sans-serif;font-size:7pt;width:80px;outline:none;" type="text" placeholder="Date"></div>
+        </div>
+      </div>
+      <!-- PARTNER ACCOUNTABILITY SECTION -->
+      <div style="background:rgba(255,255,255,.1);border-radius:8px;padding:12px 16px;">
+        <div style="font-size:7pt;font-weight:700;letter-spacing:.1em;color:var(--gold);margin-bottom:8px;text-align:center;">✦ PARTNER ACCOUNTABILITY — WEEKLY COMMITMENT BOX</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div style="background:rgba(0,0,0,.15);border-radius:6px;padding:10px 12px;">
+            <div style="font-size:7.5pt;font-weight:600;color:rgba(250,200,160,.9);margin-bottom:6px;">This week I commit to:</div>
+            <div style="border-bottom:1px solid rgba(255,255,255,.25);padding-bottom:4px;margin-bottom:8px;"><input style="background:transparent;border:none;color:#fff;font-family:'DM Sans',sans-serif;font-size:8pt;width:100%;outline:none;" type="text" placeholder="Partner 1's specific action..."></div>
+            <div style="border-bottom:1px solid rgba(255,255,255,.15);padding-bottom:3px;margin-bottom:5px;"><input style="background:transparent;border:none;color:rgba(250,200,160,.7);font-family:'DM Sans',sans-serif;font-size:7.5pt;width:100%;outline:none;" type="text" placeholder="Signature"></div>
+          </div>
+          <div style="background:rgba(0,0,0,.15);border-radius:6px;padding:10px 12px;">
+            <div style="font-size:7.5pt;font-weight:600;color:rgba(250,200,160,.9);margin-bottom:6px;">This week I commit to:</div>
+            <div style="border-bottom:1px solid rgba(255,255,255,.25);padding-bottom:4px;margin-bottom:8px;"><input style="background:transparent;border:none;color:#fff;font-family:'DM Sans',sans-serif;font-size:8pt;width:100%;outline:none;" type="text" placeholder="Partner 2's specific action..."></div>
+            <div style="border-bottom:1px solid rgba(255,255,255,.15);padding-bottom:3px;margin-bottom:5px;"><input style="background:transparent;border:none;color:rgba(250,200,160,.7);font-family:'DM Sans',sans-serif;font-size:7.5pt;width:100%;outline:none;" type="text" placeholder="Signature"></div>
+          </div>
+        </div>
+        <div style="font-size:7.5pt;color:rgba(250,200,160,.65);text-align:center;margin-top:7px;font-style:italic;">Repeat this box at each weekly session — copy to a sticky note or photograph your commitment.</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="ftr">Couples Financial Reset Kit — The 90-Day Reboot · OurSteady.com</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     P3 · STARTING POINT SNAPSHOT
+══════════════════════════════════════════════ -->
+<div class="page">
+  <div class="hdr" style="background:var(--amber-dark);"><span class="hl">YOUR STARTING POINT SNAPSHOT</span><span class="hc">Couples Financial Reset Kit — The 90-Day Reboot</span><span class="hr">3</span></div>
+  <div class="body">
+
+    <div class="note" style="margin-bottom:14px;">Fill this in <strong>before Week 1.</strong> You need a baseline — not so you can feel bad about it, but so you know exactly what you're resetting from. These numbers are your Day 0. You'll compare them at Day 30, 60, and 90.</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+      <!-- Assets -->
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;overflow:hidden;">
+        <div style="padding:8px 14px;background:var(--phase2);font-size:8.5pt;font-weight:700;color:#fff;">ASSETS — What We Own</div>
+        <div class="num-row"><span>Chequing / Current account(s)</span><input type="text" placeholder="$"></div>
+        <div class="num-row"><span>Savings account(s)</span><input type="text" placeholder="$"></div>
+        <div class="num-row"><span>Emergency fund</span><input type="text" placeholder="$"></div>
+        <div class="num-row"><span>Investment / brokerage accounts</span><input type="text" placeholder="$"></div>
+        <div class="num-row"><span>Retirement accounts (combined)</span><input type="text" placeholder="$"></div>
+        <div class="num-row"><span>Property equity (value − mortgage)</span><input type="text" placeholder="$"></div>
+        <div class="num-row"><span>Other assets</span><input type="text" placeholder="$"></div>
+        <div class="num-total"><span>TOTAL ASSETS</span><input type="text" placeholder="$"></div>
+      </div>
+      <!-- Liabilities -->
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;overflow:hidden;">
+        <div style="padding:8px 14px;background:var(--coral);font-size:8.5pt;font-weight:700;color:#fff;">LIABILITIES — What We Owe</div>
+        <div class="num-row"><span>Mortgage balance</span><input type="text" placeholder="$"></div>
+        <div class="num-row"><span>Car loan(s)</span><input type="text" placeholder="$"></div>
+        <div class="num-row"><span>Credit card #1</span><input type="text" placeholder="$"></div>
+        <div class="num-row"><span>Credit card #2</span><input type="text" placeholder="$"></div>
+        <div class="num-row"><span>Student loans</span><input type="text" placeholder="$"></div>
+        <div class="num-row"><span>Personal loans / BNPL</span><input type="text" placeholder="$"></div>
+        <div class="num-row"><span>Other debt</span><input type="text" placeholder="$"></div>
+        <div class="num-total"><span>TOTAL LIABILITIES</span><input type="text" placeholder="$"></div>
+      </div>
+    </div>
+
+    <!-- Net Worth -->
+    <div style="background:var(--gold-lite);border:1px solid var(--gold);border-radius:8px;padding:10px 16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-size:8.5pt;font-weight:700;color:var(--amber-dark);">DAY 0 NET WORTH (Assets minus Liabilities)</div>
+        <div style="font-size:7.5pt;color:var(--mid);margin-top:2px;">This is your reset baseline. You'll recalculate at Day 30, 60, and 90.</div>
+      </div>
+      <input type="text" style="border:none;border-bottom:2px solid var(--gold);background:transparent;font-family:'DM Sans',sans-serif;font-size:12pt;font-weight:700;width:130px;text-align:right;outline:none;" placeholder="$">
+    </div>
+
+    <!-- Monthly cash flow -->
+    <div class="section-lbl">MONTHLY CASH FLOW — REALITY CHECK</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;overflow:hidden;">
+        <div style="padding:7px 14px;background:var(--phase2);font-size:8pt;font-weight:700;color:#fff;">MONTHLY INCOME (After tax)</div>
+        <div class="num-row"><span>Partner 1 take-home</span><input type="text" placeholder="$"></div>
+        <div class="num-row"><span>Partner 2 take-home</span><input type="text" placeholder="$"></div>
+        <div class="num-row"><span>Side income / freelance</span><input type="text" placeholder="$"></div>
+        <div class="num-row"><span>Rental / passive income</span><input type="text" placeholder="$"></div>
+        <div class="num-total"><span>TOTAL MONTHLY INCOME</span><input type="text" placeholder="$"></div>
+      </div>
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;overflow:hidden;">
+        <div style="padding:7px 14px;background:var(--coral);font-size:8pt;font-weight:700;color:#fff;">MONTHLY FIXED EXPENSES</div>
+        <div class="num-row"><span>Rent / mortgage</span><input type="text" placeholder="$"></div>
+        <div class="num-row"><span>Utilities / phone / internet</span><input type="text" placeholder="$"></div>
+        <div class="num-row"><span>Insurance (car, home, health)</span><input type="text" placeholder="$"></div>
+        <div class="num-row"><span>Debt minimum payments</span><input type="text" placeholder="$"></div>
+        <div class="num-row"><span>Subscriptions (total)</span><input type="text" placeholder="$"></div>
+        <div class="num-total"><span>TOTAL FIXED EXPENSES</span><input type="text" placeholder="$"></div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="background:var(--amber-lite);border:.5px solid #d8a888;border-radius:8px;padding:10px 14px;">
+        <div style="font-size:8pt;font-weight:700;color:var(--amber-dark);margin-bottom:5px;">Estimated monthly variable spend:</div>
+        <input type="text" style="border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:9pt;width:100%;outline:none;" placeholder="$">
+        <div style="font-size:7.5pt;color:var(--mid);margin-top:4px;">Groceries, dining, transport, fun</div>
+      </div>
+      <div style="background:var(--phase2-lite);border:.5px solid #a8ccc0;border-radius:8px;padding:10px 14px;">
+        <div style="font-size:8pt;font-weight:700;color:var(--phase2);margin-bottom:5px;">Current monthly savings:</div>
+        <input type="text" style="border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:9pt;width:100%;outline:none;" placeholder="$">
+        <div style="font-size:7.5pt;color:var(--mid);margin-top:4px;">What actually goes into savings</div>
+      </div>
+      <div style="background:var(--gold-lite);border:.5px solid var(--gold);border-radius:8px;padding:10px 14px;">
+        <div style="font-size:8pt;font-weight:700;color:#8B6020;margin-bottom:5px;">Monthly surplus / shortfall:</div>
+        <input type="text" style="border:none;border-bottom:1px solid var(--gold);background:transparent;font-family:'DM Sans',sans-serif;font-size:9pt;width:100%;outline:none;" placeholder="$">
+        <div style="font-size:7.5pt;color:var(--mid);margin-top:4px;">Income minus all expenses</div>
+      </div>
+    </div>
+
+    <div class="section-lbl">OUR 90-DAY RESET TARGETS</div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:11px 16px;">
+      <div style="display:grid;grid-template-columns:1fr auto;gap:6px 16px;align-items:center;">
+        <div style="font-size:8.5pt;color:var(--charcoal);">By Day 90, we want our net worth to be:</div>
+        <input class="iline" type="text" style="width:120px;text-align:right;" placeholder="$">
+        <div style="font-size:8.5pt;color:var(--charcoal);">By Day 90, we want our monthly savings to be at least:</div>
+        <input class="iline" type="text" style="width:120px;text-align:right;" placeholder="$">
+        <div style="font-size:8.5pt;color:var(--charcoal);">By Day 90, we want to reduce total debt by:</div>
+        <input class="iline" type="text" style="width:120px;text-align:right;" placeholder="$">
+        <div style="font-size:8.5pt;color:var(--charcoal);">The one financial habit we most want to change:</div>
+        <input class="iline" type="text" style="width:240px;" placeholder="e.g. Stop spending before saving">
+      </div>
+    </div>
+
+  </div>
+  <div class="ftr">Couples Financial Reset Kit — The 90-Day Reboot · OurSteady.com</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     P4 · PHASE 1 — CLARITY (WEEKS 1–4)
+══════════════════════════════════════════════ -->
+<div class="page">
+  <div class="hdr" style="background:var(--phase1);"><span class="hl">PHASE 1 — CLARITY</span><span class="hc">Couples Financial Reset Kit — The 90-Day Reboot</span><span class="hr">4</span></div>
+  <div class="body">
+
+    <div class="phase-banner" style="background:var(--phase1);">
+      <div class="phase-num" style="background:rgba(255,255,255,.2);">1</div>
+      <div>
+        <div class="phase-title">Clarity · Weeks 1–4</div>
+        <div class="phase-sub">Before you can reset, you have to see clearly. This phase is about stopping the guesswork and replacing it with facts.</div>
+      </div>
+      <div class="phase-weeks">Weeks 1–4</div>
+    </div>
+
+    <!-- Week 1 -->
+    <div class="week-strip" style="background:var(--phase1);">
+      <span class="week-num">WEEK 1</span>
+      <div>
+        <div class="week-title">The Spending Audit</div>
+        <div class="week-focus">Focus: Where is the money actually going?</div>
+      </div>
+    </div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:11px 16px;margin-bottom:10px;">
+      <div style="font-size:8pt;color:var(--mid);font-style:italic;margin-bottom:8px;">Pull the last 60 days of bank and credit card statements. Work through these tasks together.</div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--phase1);"></div><div>Log every transaction category from the last 60 days into your Wealth Tracker (or in the table below). Don't judge — just count.</div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--phase1);"></div><div>Identify the top 3 spending categories that surprised you. Write them here: <input class="iline" type="text" style="width:260px;" placeholder="e.g. Dining out, subscriptions, random Amazon"></div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--phase1);"></div><div>Find and list every active subscription. Total them. Decide together: cancel, keep, or downgrade each.</div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--phase1);"></div><div>Calculate your real "fun spend" last month (dining, entertainment, shopping): $ <input class="iline" type="text" style="width:80px;"> vs what you thought it was: $ <input class="iline" type="text" style="width:80px;"></div></div>
+      <div style="background:var(--phase1-lite);border-radius:5px;padding:8px 12px;margin-top:5px;"><span style="font-size:7.5pt;font-weight:700;color:var(--phase1);">THIS WEEK'S ONE ACTION: </span><textarea style="height:18px;font-size:8pt;" placeholder="The single most important thing we'll do before next week's session…"></textarea></div>
+    </div>
+
+    <!-- Week 2 -->
+    <div class="week-strip" style="background:var(--phase1);">
+      <span class="week-num">WEEK 2</span>
+      <div>
+        <div class="week-title">The Debt Inventory</div>
+        <div class="week-focus">Focus: Name every debt. Know every number.</div>
+      </div>
+    </div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:11px 16px;margin-bottom:10px;">
+      <div style="font-size:8pt;color:var(--mid);font-style:italic;margin-bottom:8px;">You can't fight an enemy you can't see. This week you name everything.</div>
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:6px;overflow:hidden;margin-bottom:8px;">
+        <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--phase1);">
+          <div style="padding:5px 10px;font-size:7.5pt;font-weight:700;color:#fff;">DEBT NAME</div>
+          <div style="padding:5px 10px;font-size:7.5pt;font-weight:700;color:#fff;">BALANCE</div>
+          <div style="padding:5px 10px;font-size:7.5pt;font-weight:700;color:#fff;">INT. RATE</div>
+          <div style="padding:5px 10px;font-size:7.5pt;font-weight:700;color:#fff;">MIN PMT</div>
+        </div>
+        <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--pale);">
+          <div style="padding:5px 10px;"><input class="iline" type="text" style="width:100%;" placeholder="e.g. Visa credit card"></div>
+          <div style="padding:5px 10px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+          <div style="padding:5px 10px;"><input class="iline" type="text" style="width:100%;" placeholder="%"></div>
+          <div style="padding:5px 10px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;">
+          <div style="padding:5px 10px;"><input class="iline" type="text" style="width:100%;"></div>
+          <div style="padding:5px 10px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+          <div style="padding:5px 10px;"><input class="iline" type="text" style="width:100%;" placeholder="%"></div>
+          <div style="padding:5px 10px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--pale);">
+          <div style="padding:5px 10px;"><input class="iline" type="text" style="width:100%;"></div>
+          <div style="padding:5px 10px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+          <div style="padding:5px 10px;"><input class="iline" type="text" style="width:100%;" placeholder="%"></div>
+          <div style="padding:5px 10px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;">
+          <div style="padding:5px 10px;"><input class="iline" type="text" style="width:100%;"></div>
+          <div style="padding:5px 10px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+          <div style="padding:5px 10px;"><input class="iline" type="text" style="width:100%;" placeholder="%"></div>
+          <div style="padding:5px 10px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--gold-lite);font-weight:700;">
+          <div style="padding:5px 10px;font-size:8pt;">TOTAL</div>
+          <div style="padding:5px 10px;"><input class="iline" type="text" style="width:100%;font-weight:700;" placeholder="$"></div>
+          <div style="padding:5px 10px;"></div>
+          <div style="padding:5px 10px;"><input class="iline" type="text" style="width:100%;font-weight:700;" placeholder="$"></div>
+        </div>
+      </div>
+      <div style="background:var(--phase1-lite);border-radius:5px;padding:8px 12px;"><span style="font-size:7.5pt;font-weight:700;color:var(--phase1);">THIS WEEK'S ONE ACTION: </span><textarea style="height:18px;font-size:8pt;" placeholder="e.g. Call credit card company to request a rate reduction on our highest-rate card…"></textarea></div>
+    </div>
+
+    <!-- Week 3 -->
+    <div class="week-strip" style="background:var(--phase1);">
+      <span class="week-num">WEEK 3</span>
+      <div>
+        <div class="week-title">The Income Audit + Gap Analysis</div>
+        <div class="week-focus">Focus: Are we earning what we could? What's our real monthly gap?</div>
+      </div>
+    </div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:11px 16px;margin-bottom:10px;">
+      <div class="cb-row"><div class="cb" style="border-color:var(--phase1);"></div><div>List every income source and verify the net-of-tax figure for each. Note any that are irregular.</div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--phase1);"></div><div>Calculate: Total Income − Fixed Expenses − Variable Spend − Debt Minimums = Real Surplus: <strong>$<input class="iline" type="text" style="width:80px;"></strong></div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--phase1);"></div><div>Is there a gap (spending more than earning)? If yes, what's the top candidate for reduction? <input class="iline" type="text" style="width:200px;"></div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--phase1);"></div><div>Could either partner increase income in the next 90 days? Brainstorm 2 options — even small ones. <input class="iline" type="text" style="width:220px;"></div></div>
+      <div style="background:var(--phase1-lite);border-radius:5px;padding:8px 12px;margin-top:5px;"><span style="font-size:7.5pt;font-weight:700;color:var(--phase1);">THIS WEEK'S ONE ACTION: </span><textarea style="height:18px;font-size:8pt;" placeholder=""></textarea></div>
+    </div>
+
+    <!-- Week 4 -->
+    <div class="week-strip" style="background:var(--phase1);">
+      <span class="week-num">WEEK 4</span>
+      <div>
+        <div class="week-title">Define Your Reset Goals</div>
+        <div class="week-focus">Focus: What does "reset" actually mean for us?</div>
+      </div>
+    </div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:11px 16px;">
+      <div class="cb-row"><div class="cb" style="border-color:var(--phase1);"></div><div>Write your "After 90 Days" vision: what does your financial life look like on Day 91? <input class="iline" type="text" style="width:280px;"></div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--phase1);"></div><div>Set 3 measurable 90-day targets (numbers, not intentions). Refer to your reset targets on Page 3.</div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--phase1);"></div><div>Name the ONE financial pattern from Phase 1 data you most want to change: <input class="iline" type="text" style="width:230px;"></div></div>
+      <div style="background:var(--phase1-lite);border-radius:5px;padding:8px 12px;margin-top:5px;"><span style="font-size:7.5pt;font-weight:700;color:var(--phase1);">THIS WEEK'S ONE ACTION: </span><textarea style="height:18px;font-size:8pt;" placeholder=""></textarea></div>
+    </div>
+
+  </div>
+  <div class="ftr">Couples Financial Reset Kit — The 90-Day Reboot · OurSteady.com</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     P5 · PHASE 2 — STRUCTURE (WEEKS 5–8)
+══════════════════════════════════════════════ -->
+<div class="page">
+  <div class="hdr" style="background:var(--phase2);"><span class="hl">PHASE 2 — STRUCTURE</span><span class="hc">Couples Financial Reset Kit — The 90-Day Reboot</span><span class="hr">5</span></div>
+  <div class="body">
+
+    <div class="phase-banner" style="background:var(--phase2);">
+      <div class="phase-num" style="background:rgba(255,255,255,.2);">2</div>
+      <div>
+        <div class="phase-title">Structure · Weeks 5–8</div>
+        <div class="phase-sub">Now you see clearly. Time to build a system that does the work for you — without willpower.</div>
+      </div>
+      <div class="phase-weeks">Weeks 5–8</div>
+    </div>
+
+    <!-- Week 5 -->
+    <div class="week-strip" style="background:var(--phase2);">
+      <span class="week-num">WEEK 5</span>
+      <div>
+        <div class="week-title">Design Your Reset Budget</div>
+        <div class="week-focus">Focus: Build a budget you'll actually live by.</div>
+      </div>
+    </div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:11px 16px;margin-bottom:10px;">
+      <div style="font-size:8pt;color:var(--mid);font-style:italic;margin-bottom:8px;">Choose your budget framework — then fill in your numbers. Use your Phase 1 data as the starting point.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:9px;">
+        <div style="background:var(--phase2-lite);border:1.5px solid var(--phase2);border-radius:6px;padding:8px 12px;">
+          <div style="font-size:8.5pt;font-weight:700;color:var(--phase2);margin-bottom:3px;">50/30/20 Rule</div>
+          <div style="font-size:7.5pt;color:var(--mid);">50% needs · 30% wants · 20% savings + debt. Simple and intuitive. Best for couples new to budgeting.</div>
+        </div>
+        <div style="background:var(--pale);border:.5px solid var(--light);border-radius:6px;padding:8px 12px;">
+          <div style="font-size:8.5pt;font-weight:700;color:var(--charcoal);margin-bottom:3px;">Pay Yourself First</div>
+          <div style="font-size:7.5pt;color:var(--mid);">Save + invest first, spend the rest freely. Best for couples who struggle to save from what's left.</div>
+        </div>
+        <div style="background:var(--pale);border:.5px solid var(--light);border-radius:6px;padding:8px 12px;">
+          <div style="font-size:8.5pt;font-weight:700;color:var(--charcoal);margin-bottom:3px;">Zero-Based</div>
+          <div style="font-size:7.5pt;color:var(--mid);">Every dollar assigned a job. Income minus all allocations = $0. Best for couples with variable spend or tight margins.</div>
+        </div>
+      </div>
+      <div style="font-size:8pt;color:var(--mid);margin-bottom:5px;">Our chosen framework: <input class="iline" type="text" style="width:160px;"> &nbsp; Monthly income to budget: $<input class="iline" type="text" style="width:90px;"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;">
+        <div style="background:var(--phase2-lite);border-radius:6px;padding:8px 12px;">
+          <div style="font-size:7.5pt;font-weight:700;color:var(--phase2);margin-bottom:5px;">NEEDS / ESSENTIALS</div>
+          <div class="num-row" style="padding:3px 0;"><span style="font-size:8pt;">Housing</span><input type="text" placeholder="$" style="width:70px;"></div>
+          <div class="num-row" style="padding:3px 0;"><span style="font-size:8pt;">Food / groceries</span><input type="text" placeholder="$" style="width:70px;"></div>
+          <div class="num-row" style="padding:3px 0;"><span style="font-size:8pt;">Transport</span><input type="text" placeholder="$" style="width:70px;"></div>
+          <div class="num-row" style="padding:3px 0;"><span style="font-size:8pt;">Utilities / bills</span><input type="text" placeholder="$" style="width:70px;"></div>
+          <div class="num-row" style="padding:3px 0;background:var(--gold-lite);font-weight:700;"><span style="font-size:8pt;">TOTAL</span><input type="text" placeholder="$" style="width:70px;font-weight:700;"></div>
+        </div>
+        <div style="background:var(--amber-lite);border-radius:6px;padding:8px 12px;">
+          <div style="font-size:7.5pt;font-weight:700;color:var(--amber-dark);margin-bottom:5px;">WANTS / LIFESTYLE</div>
+          <div class="num-row" style="padding:3px 0;"><span style="font-size:8pt;">Dining + entertainment</span><input type="text" placeholder="$" style="width:70px;"></div>
+          <div class="num-row" style="padding:3px 0;"><span style="font-size:8pt;">Shopping / clothing</span><input type="text" placeholder="$" style="width:70px;"></div>
+          <div class="num-row" style="padding:3px 0;"><span style="font-size:8pt;">Hobbies + sport</span><input type="text" placeholder="$" style="width:70px;"></div>
+          <div class="num-row" style="padding:3px 0;"><span style="font-size:8pt;">Personal spending (each)</span><input type="text" placeholder="$" style="width:70px;"></div>
+          <div class="num-row" style="padding:3px 0;background:var(--gold-lite);font-weight:700;"><span style="font-size:8pt;">TOTAL</span><input type="text" placeholder="$" style="width:70px;font-weight:700;"></div>
+        </div>
+        <div style="background:var(--phase1-lite);border-radius:6px;padding:8px 12px;">
+          <div style="font-size:7.5pt;font-weight:700;color:var(--phase1);margin-bottom:5px;">SAVINGS + DEBT</div>
+          <div class="num-row" style="padding:3px 0;"><span style="font-size:8pt;">Emergency fund top-up</span><input type="text" placeholder="$" style="width:70px;"></div>
+          <div class="num-row" style="padding:3px 0;"><span style="font-size:8pt;">Extra debt payment</span><input type="text" placeholder="$" style="width:70px;"></div>
+          <div class="num-row" style="padding:3px 0;"><span style="font-size:8pt;">Goal savings</span><input type="text" placeholder="$" style="width:70px;"></div>
+          <div class="num-row" style="padding:3px 0;"><span style="font-size:8pt;">Investing</span><input type="text" placeholder="$" style="width:70px;"></div>
+          <div class="num-row" style="padding:3px 0;background:var(--gold-lite);font-weight:700;"><span style="font-size:8pt;">TOTAL</span><input type="text" placeholder="$" style="width:70px;font-weight:700;"></div>
+        </div>
+      </div>
+      <div style="background:var(--phase2-lite);border-radius:5px;padding:7px 12px;margin-top:8px;"><span style="font-size:7.5pt;font-weight:700;color:var(--phase2);">THIS WEEK'S ONE ACTION: </span><textarea style="height:18px;font-size:8pt;" placeholder="e.g. Set up a dedicated savings account and automate the transfer for Day 1 of next month…"></textarea></div>
+    </div>
+
+    <!-- Week 6 -->
+    <div class="week-strip" style="background:var(--phase2);">
+      <span class="week-num">WEEK 6</span>
+      <div>
+        <div class="week-title">Automate Everything You Can</div>
+        <div class="week-focus">Focus: Remove willpower from your financial system.</div>
+      </div>
+    </div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:11px 16px;margin-bottom:10px;">
+      <div style="font-size:8pt;color:var(--mid);font-style:italic;margin-bottom:8px;">Automation is the single highest-leverage move in any financial reset. Set it up once; it works forever.</div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--phase2);"></div><div>Schedule <strong>savings transfer on payday</strong> — before anything else leaves your account. Amount: $<input class="iline" type="text" style="width:80px;"> on <input class="iline" type="text" style="width:80px;" placeholder="day of month"></div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--phase2);"></div><div>Set up <strong>auto debt extra payment</strong> on highest-rate debt. Amount: $<input class="iline" type="text" style="width:80px;"> Target debt: <input class="iline" type="text" style="width:140px;"></div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--phase2);"></div><div>Cancel or downgrade subscriptions identified in Week 1. Total saved per month: $<input class="iline" type="text" style="width:80px;"></div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--phase2);"></div><div>Set all fixed bill payments to auto-pay. List any not yet automated: <input class="iline" type="text" style="width:220px;"></div></div>
+      <div style="background:var(--phase2-lite);border-radius:5px;padding:7px 12px;margin-top:5px;"><span style="font-size:7.5pt;font-weight:700;color:var(--phase2);">THIS WEEK'S ONE ACTION: </span><textarea style="height:18px;font-size:8pt;" placeholder=""></textarea></div>
+    </div>
+
+    <!-- Week 7 -->
+    <div class="week-strip" style="background:var(--phase2);">
+      <span class="week-num">WEEK 7</span>
+      <div>
+        <div class="week-title">The Spending Reset — 2 Weeks Intentional</div>
+        <div class="week-focus">Focus: A 2-week intentional spending challenge.</div>
+      </div>
+    </div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:11px 16px;margin-bottom:10px;">
+      <div style="font-size:8pt;color:var(--mid);font-style:italic;margin-bottom:8px;">Not a fast. Not punishment. Two weeks of intentional spending — every non-essential purchase gets a 24-hour pause.</div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--phase2);"></div><div>Agree on your 24-hour rule: any non-essential purchase over $<input class="iline" type="text" style="width:50px;"> requires a same-day conversation before buying.</div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--phase2);"></div><div>Plan 5 "free" enjoyable activities for the next 2 weeks (removes the urge to spend for entertainment). List them: <input class="iline" type="text" style="width:240px;"></div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--phase2);"></div><div>At the end of the 2 weeks, calculate what you saved vs the prior month: $<input class="iline" type="text" style="width:80px;"> extra freed up.</div></div>
+      <div style="background:var(--phase2-lite);border-radius:5px;padding:7px 12px;margin-top:5px;"><span style="font-size:7.5pt;font-weight:700;color:var(--phase2);">THIS WEEK'S ONE ACTION: </span><textarea style="height:18px;font-size:8pt;" placeholder=""></textarea></div>
+    </div>
+
+    <!-- Week 8 -->
+    <div class="week-strip" style="background:var(--phase2);">
+      <span class="week-num">WEEK 8</span>
+      <div>
+        <div class="week-title">System Review + Mid-Point Tune</div>
+        <div class="week-focus">Focus: Is the system working? What needs adjusting?</div>
+      </div>
+    </div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:11px 16px;">
+      <div class="cb-row"><div class="cb" style="border-color:var(--phase2);"></div><div>Review your budget from Week 5. Which categories were over? <input class="iline" type="text" style="width:200px;"> Under? <input class="iline" type="text" style="width:120px;"></div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--phase2);"></div><div>Is the automation from Week 6 running correctly? Any issues? <input class="iline" type="text" style="width:240px;"></div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--phase2);"></div><div>Adjust your budget for Phase 3 based on what you've learned. What's changing? <input class="iline" type="text" style="width:230px;"></div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--phase2);"></div><div>How are you feeling about the reset — both of you? Rate the system out of 10: P1: <input class="iline" type="text" style="width:30px;">/10 &nbsp; P2: <input class="iline" type="text" style="width:30px;">/10</div></div>
+      <div style="background:var(--phase2-lite);border-radius:5px;padding:7px 12px;margin-top:5px;"><span style="font-size:7.5pt;font-weight:700;color:var(--phase2);">THIS WEEK'S ONE ACTION: </span><textarea style="height:18px;font-size:8pt;" placeholder=""></textarea></div>
+    </div>
+
+  </div>
+  <div class="ftr">Couples Financial Reset Kit — The 90-Day Reboot · OurSteady.com</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     P6 · PHASE 3 — MOMENTUM (WEEKS 9–13)
+══════════════════════════════════════════════ -->
+<div class="page">
+  <div class="hdr" style="background:var(--amber-dark);"><span class="hl">PHASE 3 — MOMENTUM</span><span class="hc">Couples Financial Reset Kit — The 90-Day Reboot</span><span class="hr">6</span></div>
+  <div class="body">
+
+    <div class="phase-banner" style="background:var(--amber-mid);">
+      <div class="phase-num" style="background:rgba(255,255,255,.2);">3</div>
+      <div>
+        <div class="phase-title">Momentum · Weeks 9–13</div>
+        <div class="phase-sub">The system is built. Now you accelerate. This phase is about directing your surplus, locking in habits, and finishing strong.</div>
+      </div>
+      <div class="phase-weeks">Weeks 9–13</div>
+    </div>
+
+    <!-- Week 9 -->
+    <div class="week-strip" style="background:var(--amber-mid);">
+      <span class="week-num">WEEK 9</span>
+      <div>
+        <div class="week-title">Pick Your Priority: Debt or Goal?</div>
+        <div class="week-focus">Focus: Direct your surplus with intention.</div>
+      </div>
+    </div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:11px 16px;margin-bottom:10px;">
+      <div style="font-size:8pt;color:var(--mid);font-style:italic;margin-bottom:8px;">Now that you have a surplus, the question is: where does it go first? Use the priority decision below.</div>
+      <div style="background:var(--amber-lite);border-radius:8px;padding:10px 14px;margin-bottom:8px;">
+        <div style="font-size:8pt;font-weight:700;color:var(--amber-dark);margin-bottom:6px;">THE PRIORITY LADDER — work down from the top</div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="display:flex;align-items:center;gap:8px;"><div class="cb" style="border-color:var(--amber-mid);"></div><div style="font-size:8.5pt;"><strong>1.</strong> Emergency fund fully funded (3 months expenses) — if not, this comes first.</div></div>
+          <div style="display:flex;align-items:center;gap:8px;"><div class="cb" style="border-color:var(--amber-mid);"></div><div style="font-size:8.5pt;"><strong>2.</strong> Employer-matched retirement (up to the match) — it's a guaranteed 50–100% return.</div></div>
+          <div style="display:flex;align-items:center;gap:8px;"><div class="cb" style="border-color:var(--amber-mid);"></div><div style="font-size:8.5pt;"><strong>3.</strong> High-interest debt (above 7%) — pay this aggressively before investing further.</div></div>
+          <div style="display:flex;align-items:center;gap:8px;"><div class="cb" style="border-color:var(--amber-mid);"></div><div style="font-size:8.5pt;"><strong>4.</strong> First shared goal savings — direct your monthly surplus here.</div></div>
+          <div style="display:flex;align-items:center;gap:8px;"><div class="cb" style="border-color:var(--amber-mid);"></div><div style="font-size:8.5pt;"><strong>5.</strong> Medium-rate debt (3–7%) and additional investing — split between both.</div></div>
+        </div>
+      </div>
+      <div style="font-size:8.5pt;color:var(--charcoal);margin-bottom:5px;">Our current priority step on the ladder: <input class="iline" type="text" style="width:180px;"> Monthly surplus directed here: $<input class="iline" type="text" style="width:80px;"></div>
+      <div style="background:var(--amber-lite);border-radius:5px;padding:7px 12px;margin-top:5px;"><span style="font-size:7.5pt;font-weight:700;color:var(--amber-dark);">THIS WEEK'S ONE ACTION: </span><textarea style="height:18px;font-size:8pt;" placeholder="e.g. Increase extra debt payment from $200 to $350 per month…"></textarea></div>
+    </div>
+
+    <!-- Week 10 -->
+    <div class="week-strip" style="background:var(--amber-mid);">
+      <span class="week-num">WEEK 10</span>
+      <div>
+        <div class="week-title">Income Acceleration Review</div>
+        <div class="week-focus">Focus: Is there more money available to us?</div>
+      </div>
+    </div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:11px 16px;margin-bottom:10px;">
+      <div class="cb-row"><div class="cb" style="border-color:var(--amber-mid);"></div><div>Review the income increase ideas from Week 3. What progress has been made? <input class="iline" type="text" style="width:220px;"></div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--amber-mid);"></div><div>Is a raise or salary review feasible in the next 60 days? Who takes this on? <input class="iline" type="text" style="width:180px;"> By when: <input class="iline" type="text" style="width:80px;"></div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--amber-mid);"></div><div>Any upcoming irregular income (bonus, tax refund, gift)? Amount: $<input class="iline" type="text" style="width:80px;"> How we'll use it: <input class="iline" type="text" style="width:160px;"></div></div>
+      <div style="background:var(--amber-lite);border-radius:5px;padding:7px 12px;margin-top:5px;"><span style="font-size:7.5pt;font-weight:700;color:var(--amber-dark);">THIS WEEK'S ONE ACTION: </span><textarea style="height:18px;font-size:8pt;" placeholder=""></textarea></div>
+    </div>
+
+    <!-- Week 11 -->
+    <div class="week-strip" style="background:var(--amber-mid);">
+      <span class="week-num">WEEK 11</span>
+      <div>
+        <div class="week-title">Lock In the Habits</div>
+        <div class="week-focus">Focus: What are we keeping after Day 90?</div>
+      </div>
+    </div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:11px 16px;margin-bottom:10px;">
+      <div style="font-size:8pt;color:var(--mid);font-style:italic;margin-bottom:8px;">A reboot that doesn't change your habits doesn't last. This week you decide what stays permanently.</div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--amber-mid);"></div><div>Which budget categories are now second nature? <input class="iline" type="text" style="width:260px;"></div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--amber-mid);"></div><div>Which weekly/monthly habit has had the biggest positive impact? <input class="iline" type="text" style="width:260px;"></div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--amber-mid);"></div><div>Commit to a post-90-day money date cadence: <input class="iline" type="text" style="width:200px;" placeholder="e.g. First Sunday of every month, 9am"></div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--amber-mid);"></div><div>What's the single habit that — if you keep it — will compound most over the next 12 months? <input class="iline" type="text" style="width:230px;"></div></div>
+      <div style="background:var(--amber-lite);border-radius:5px;padding:7px 12px;margin-top:5px;"><span style="font-size:7.5pt;font-weight:700;color:var(--amber-dark);">THIS WEEK'S ONE ACTION: </span><textarea style="height:18px;font-size:8pt;" placeholder=""></textarea></div>
+    </div>
+
+    <!-- Week 12 -->
+    <div class="week-strip" style="background:var(--amber-mid);">
+      <span class="week-num">WEEK 12</span>
+      <div>
+        <div class="week-title">Set Your Next 90-Day Target</div>
+        <div class="week-focus">Focus: Don't stop at Day 90 — point at Day 180.</div>
+      </div>
+    </div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:11px 16px;margin-bottom:10px;">
+      <div class="cb-row"><div class="cb" style="border-color:var(--amber-mid);"></div><div>Based on Phase 3 progress, what is the next financial milestone to target? <input class="iline" type="text" style="width:240px;"></div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--amber-mid);"></div><div>Set a Day 180 net worth target: $<input class="iline" type="text" style="width:100px;"> &nbsp; Monthly savings target: $<input class="iline" type="text" style="width:100px;"></div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--amber-mid);"></div><div>What product, tool, or resource would most help us in the next 90 days? <input class="iline" type="text" style="width:220px;"></div></div>
+      <div style="background:var(--amber-lite);border-radius:5px;padding:7px 12px;margin-top:5px;"><span style="font-size:7.5pt;font-weight:700;color:var(--amber-dark);">THIS WEEK'S ONE ACTION: </span><textarea style="height:18px;font-size:8pt;" placeholder=""></textarea></div>
+    </div>
+
+    <!-- Week 13 -->
+    <div class="week-strip" style="background:var(--amber-dark);">
+      <span class="week-num">WEEK 13</span>
+      <div>
+        <div class="week-title">Day 90 — The Full Reckoning</div>
+        <div class="week-focus">Focus: Measure everything. Celebrate the real wins.</div>
+      </div>
+    </div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:11px 16px;">
+      <div class="cb-row"><div class="cb" style="border-color:var(--amber-dark);"></div><div>Complete the Day 90 Check-In Sheet (page 10). Recalculate your net worth and compare to Day 0.</div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--amber-dark);"></div><div>Read your starting commitment (page 2) aloud together. Did you show up for each other?</div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--amber-dark);"></div><div>Complete the Day 90 Declaration on the final page. Sign it together.</div></div>
+      <div class="cb-row"><div class="cb" style="border-color:var(--amber-dark);"></div><div>Celebrate — intentionally. You showed up for 90 days. That is worth marking.</div></div>
+    </div>
+
+  </div>
+  <div class="ftr">Couples Financial Reset Kit — The 90-Day Reboot · OurSteady.com</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     P7 · WEEKLY SPENDING RESET LOG
+══════════════════════════════════════════════ -->
+<div class="page">
+  <div class="hdr" style="background:var(--amber-dark);"><span class="hl">WEEKLY SPENDING RESET LOG</span><span class="hc">Couples Financial Reset Kit — The 90-Day Reboot</span><span class="hr">7</span></div>
+  <div class="body">
+
+    <div class="note" style="margin-bottom:12px;">Use this simplified log each week to track how your actual spending compares to your reset budget. You don't need to log every transaction — just total each category weekly and compare to your budget target. What gets measured gets managed.</div>
+
+    <div style="font-size:8pt;color:var(--mid);margin-bottom:10px;">Budget targets from Week 5: Needs $<input class="iline" type="text" style="width:70px;"> / Wants $<input class="iline" type="text" style="width:70px;"> / Savings+Debt $<input class="iline" type="text" style="width:70px;"> / Total $<input class="iline" type="text" style="width:80px;"></div>
+
+    <!-- Weekly log table -->
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;overflow:hidden;margin-bottom:12px;">
+      <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr 1fr 1fr 1fr;background:var(--amber-dark);">
+        <div style="padding:7px 8px;font-size:7.5pt;font-weight:700;color:#fff;">WEEK</div>
+        <div style="padding:7px 6px;font-size:7.5pt;font-weight:700;color:#fff;">NEEDS<br><span style="font-weight:400;font-size:6.5pt;opacity:.8;">Housing/food/bills</span></div>
+        <div style="padding:7px 6px;font-size:7.5pt;font-weight:700;color:#fff;">WANTS<br><span style="font-weight:400;font-size:6.5pt;opacity:.8;">Dining/fun/shop</span></div>
+        <div style="padding:7px 6px;font-size:7.5pt;font-weight:700;color:#fff;">SAVINGS<br><span style="font-weight:400;font-size:6.5pt;opacity:.8;">Auto-transferred</span></div>
+        <div style="padding:7px 6px;font-size:7.5pt;font-weight:700;color:#fff;">DEBT EXTRA<br><span style="font-weight:400;font-size:6.5pt;opacity:.8;">Above minimum</span></div>
+        <div style="padding:7px 6px;font-size:7.5pt;font-weight:700;color:#fff;">TOTAL<br><span style="font-weight:400;font-size:6.5pt;opacity:.8;">All spending</span></div>
+        <div style="padding:7px 6px;font-size:7.5pt;font-weight:700;color:var(--gold);">vs BUDGET<br><span style="font-weight:400;font-size:6.5pt;opacity:.8;">+over / −under</span></div>
+      </div>
+      <!-- 13 weeks -->
+      <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr 1fr 1fr 1fr;border-bottom:.5px solid var(--light);background:var(--pale);">
+        <div style="padding:5px 8px;font-size:8pt;font-weight:700;color:var(--phase1);">Wk 1</div>
+        <div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="±$"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr 1fr 1fr 1fr;border-bottom:.5px solid var(--light);">
+        <div style="padding:5px 8px;font-size:8pt;font-weight:700;color:var(--phase1);">Wk 2</div>
+        <div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="±$"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr 1fr 1fr 1fr;border-bottom:.5px solid var(--light);background:var(--pale);">
+        <div style="padding:5px 8px;font-size:8pt;font-weight:700;color:var(--phase1);">Wk 3</div>
+        <div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="±$"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr 1fr 1fr 1fr;border-bottom:.5px solid var(--light);">
+        <div style="padding:5px 8px;font-size:8pt;font-weight:700;color:var(--phase1);">Wk 4</div>
+        <div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="±$"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr 1fr 1fr 1fr;border-bottom:.5px solid var(--light);background:var(--phase2-lite);">
+        <div style="padding:5px 8px;font-size:8pt;font-weight:700;color:var(--phase2);">Wk 5</div>
+        <div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="±$"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr 1fr 1fr 1fr;border-bottom:.5px solid var(--light);">
+        <div style="padding:5px 8px;font-size:8pt;font-weight:700;color:var(--phase2);">Wk 6</div>
+        <div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="±$"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr 1fr 1fr 1fr;border-bottom:.5px solid var(--light);background:var(--phase2-lite);">
+        <div style="padding:5px 8px;font-size:8pt;font-weight:700;color:var(--phase2);">Wk 7</div>
+        <div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="±$"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr 1fr 1fr 1fr;border-bottom:.5px solid var(--light);">
+        <div style="padding:5px 8px;font-size:8pt;font-weight:700;color:var(--phase2);">Wk 8</div>
+        <div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="±$"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr 1fr 1fr 1fr;border-bottom:.5px solid var(--light);background:var(--amber-pale);">
+        <div style="padding:5px 8px;font-size:8pt;font-weight:700;color:var(--amber-dark);">Wk 9</div>
+        <div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="±$"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr 1fr 1fr 1fr;border-bottom:.5px solid var(--light);">
+        <div style="padding:5px 8px;font-size:8pt;font-weight:700;color:var(--amber-dark);">Wk 10</div>
+        <div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="±$"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr 1fr 1fr 1fr;border-bottom:.5px solid var(--light);background:var(--amber-pale);">
+        <div style="padding:5px 8px;font-size:8pt;font-weight:700;color:var(--amber-dark);">Wk 11</div>
+        <div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="±$"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr 1fr 1fr 1fr;border-bottom:.5px solid var(--light);">
+        <div style="padding:5px 8px;font-size:8pt;font-weight:700;color:var(--amber-dark);">Wk 12</div>
+        <div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="±$"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr 1fr 1fr 1fr;background:var(--gold-lite);">
+        <div style="padding:5px 8px;font-size:8pt;font-weight:700;color:var(--amber-dark);">Wk 13</div>
+        <div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div><div style="padding:3px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="±$"></div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+      <div style="background:var(--phase2-lite);border-radius:6px;padding:8px 12px;text-align:center;">
+        <div style="font-size:7.5pt;font-weight:700;color:var(--phase2);margin-bottom:4px;">TOTAL SAVED (90 days)</div>
+        <input type="text" style="border:none;border-bottom:1.5px solid var(--phase2);background:transparent;font-family:'DM Sans',sans-serif;font-size:11pt;font-weight:700;width:120px;text-align:center;outline:none;" placeholder="$">
+      </div>
+      <div style="background:var(--amber-pale);border-radius:6px;padding:8px 12px;text-align:center;">
+        <div style="font-size:7.5pt;font-weight:700;color:var(--amber-dark);margin-bottom:4px;">EXTRA DEBT PAID (90 days)</div>
+        <input type="text" style="border:none;border-bottom:1.5px solid var(--amber-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:11pt;font-weight:700;width:120px;text-align:center;outline:none;" placeholder="$">
+      </div>
+      <div style="background:var(--gold-lite);border-radius:6px;padding:8px 12px;text-align:center;">
+        <div style="font-size:7.5pt;font-weight:700;color:#8B6020;margin-bottom:4px;">NET WORTH CHANGE</div>
+        <input type="text" style="border:none;border-bottom:1.5px solid var(--gold);background:transparent;font-family:'DM Sans',sans-serif;font-size:11pt;font-weight:700;width:120px;text-align:center;outline:none;" placeholder="+$">
+      </div>
+    </div>
+
+  </div>
+  <div class="ftr">Couples Financial Reset Kit — The 90-Day Reboot · OurSteady.com</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     P8 · DAY 30 CHECK-IN
+══════════════════════════════════════════════ -->
+<div class="page">
+  <div class="hdr" style="background:var(--phase1);"><span class="hl">DAY 30 CHECK-IN — END OF PHASE 1</span><span class="hc">Couples Financial Reset Kit — The 90-Day Reboot</span><span class="hr">8</span></div>
+  <div class="body">
+
+    <div style="background:var(--phase1);border-radius:8px;padding:10px 18px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-family:'Playfair Display',serif;font-size:13pt;color:#fff;">Day 30 · Phase 1 Complete</div>
+      <div style="font-size:8.5pt;color:rgba(200,220,240,.85);">Check-in date: <input style="background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.4);color:#fff;font-family:'DM Sans',sans-serif;font-size:8.5pt;width:110px;outline:none;" type="text" placeholder="dd/mm/yyyy"></div>
+    </div>
+
+    <div class="section-lbl">THE NUMBERS — Day 30 vs Day 0</div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;overflow:hidden;margin-bottom:12px;">
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--phase1);">
+        <div style="padding:7px 12px;font-size:7.5pt;font-weight:700;color:#fff;">METRIC</div>
+        <div style="padding:7px 8px;font-size:7.5pt;font-weight:700;color:#fff;">DAY 0</div>
+        <div style="padding:7px 8px;font-size:7.5pt;font-weight:700;color:#fff;">DAY 30</div>
+        <div style="padding:7px 8px;font-size:7.5pt;font-weight:700;color:var(--gold);">CHANGE</div>
+      </div>
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;border-bottom:.5px solid var(--light);">
+        <div style="padding:7px 12px;font-size:8.5pt;">Net Worth</div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="±$"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;border-bottom:.5px solid var(--light);background:var(--pale);">
+        <div style="padding:7px 12px;font-size:8.5pt;">Total Debt</div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="±$"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;border-bottom:.5px solid var(--light);">
+        <div style="padding:7px 12px;font-size:8.5pt;">Monthly Savings</div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="±$"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--pale);">
+        <div style="padding:7px 12px;font-size:8.5pt;">Monthly Surplus</div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="±$"></div>
+      </div>
+    </div>
+
+    <div class="section-lbl">PHASE 1 REFLECTION — BOTH PARTNERS</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:10px 14px;">
+        <div style="font-size:8.5pt;font-weight:700;color:var(--phase1);margin-bottom:7px;">What surprised us most in Phase 1?</div>
+        <textarea style="height:45px;" placeholder="e.g. We were spending $680/month dining out without realising…"></textarea>
+        <div style="font-size:8.5pt;font-weight:700;color:var(--phase1);margin-top:8px;margin-bottom:5px;">What was hardest to face together?</div>
+        <textarea style="height:35px;" placeholder=""></textarea>
+      </div>
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:10px 14px;">
+        <div style="font-size:8.5pt;font-weight:700;color:var(--phase1);margin-bottom:7px;">What are we proud of in Month 1?</div>
+        <textarea style="height:45px;" placeholder="e.g. We cancelled 6 subscriptions, saving $94/month…"></textarea>
+        <div style="font-size:8.5pt;font-weight:700;color:var(--phase1);margin-top:8px;margin-bottom:5px;">One thing we're doing differently in Phase 2:</div>
+        <textarea style="height:35px;" placeholder=""></textarea>
+      </div>
+    </div>
+
+    <div class="section-lbl">PHASE 2 INTENTION</div>
+    <div style="background:var(--phase2-lite);border-radius:8px;padding:11px 16px;">
+      <div style="font-size:8.5pt;color:var(--charcoal);margin-bottom:6px;">Our top priority for Phase 2 (Weeks 5–8):</div>
+      <textarea style="height:28px;" placeholder="e.g. Get the budget built and automate savings before Week 6…"></textarea>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">
+        <div><div style="font-size:8pt;color:var(--mid);margin-bottom:3px;">P2 target: Monthly savings by Day 60:</div><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div><div style="font-size:8pt;color:var(--mid);margin-bottom:3px;">P2 target: Debt reduced by Day 60 (vs Day 0):</div><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="ftr">Couples Financial Reset Kit — The 90-Day Reboot · OurSteady.com</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     P9 · DAY 60 CHECK-IN
+══════════════════════════════════════════════ -->
+<div class="page">
+  <div class="hdr" style="background:var(--phase2);"><span class="hl">DAY 60 CHECK-IN — END OF PHASE 2</span><span class="hc">Couples Financial Reset Kit — The 90-Day Reboot</span><span class="hr">9</span></div>
+  <div class="body">
+
+    <div style="background:var(--phase2);border-radius:8px;padding:10px 18px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-family:'Playfair Display',serif;font-size:13pt;color:#fff;">Day 60 · Phase 2 Complete</div>
+      <div style="font-size:8.5pt;color:rgba(180,230,210,.85);">Check-in date: <input style="background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.4);color:#fff;font-family:'DM Sans',sans-serif;font-size:8.5pt;width:110px;outline:none;" type="text" placeholder="dd/mm/yyyy"></div>
+    </div>
+
+    <div class="section-lbl">THE NUMBERS — Day 60 vs Day 30 vs Day 0</div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;overflow:hidden;margin-bottom:12px;">
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;background:var(--phase2);">
+        <div style="padding:7px 12px;font-size:7.5pt;font-weight:700;color:#fff;">METRIC</div>
+        <div style="padding:7px 8px;font-size:7.5pt;font-weight:700;color:#fff;">DAY 0</div>
+        <div style="padding:7px 8px;font-size:7.5pt;font-weight:700;color:#fff;">DAY 30</div>
+        <div style="padding:7px 8px;font-size:7.5pt;font-weight:700;color:#fff;">DAY 60</div>
+        <div style="padding:7px 8px;font-size:7.5pt;font-weight:700;color:var(--gold);">TOTAL CHANGE</div>
+      </div>
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;border-bottom:.5px solid var(--light);">
+        <div style="padding:7px 12px;font-size:8.5pt;">Net Worth</div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="±$"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;border-bottom:.5px solid var(--light);background:var(--pale);">
+        <div style="padding:7px 12px;font-size:8.5pt;">Total Debt</div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="±$"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;border-bottom:.5px solid var(--light);">
+        <div style="padding:7px 12px;font-size:8.5pt;">Monthly Savings</div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="±$"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;background:var(--pale);">
+        <div style="padding:7px 12px;font-size:8.5pt;">Emergency Fund Balance</div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:5px 8px;"><input class="iline" type="text" style="width:100%;" placeholder="±$"></div>
+      </div>
+    </div>
+
+    <div class="section-lbl">SYSTEM HEALTH CHECK</div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:10px 16px;margin-bottom:12px;">
+      <div style="display:grid;grid-template-columns:1fr auto;gap:5px 14px;align-items:center;">
+        <div style="font-size:8.5pt;">Is the budget system from Week 5 still being used?</div>
+        <input class="iline" type="text" style="width:100px;" placeholder="Yes / No / Partly">
+        <div style="font-size:8.5pt;">Are the automations from Week 6 all running?</div>
+        <input class="iline" type="text" style="width:100px;" placeholder="Yes / No / Partly">
+        <div style="font-size:8.5pt;">Did you do the 2-week intentional spending challenge?</div>
+        <input class="iline" type="text" style="width:100px;" placeholder="Yes / No / Partly">
+        <div style="font-size:8.5pt;">What part of the system is working best?</div>
+        <input class="iline" type="text" style="width:200px;" placeholder="">
+        <div style="font-size:8.5pt;">What still needs fixing before Phase 3?</div>
+        <input class="iline" type="text" style="width:200px;" placeholder="">
+      </div>
+    </div>
+
+    <div class="section-lbl">PHASE 2 REFLECTION + PHASE 3 INTENTION</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:10px 14px;">
+        <div style="font-size:8.5pt;font-weight:700;color:var(--phase2);margin-bottom:6px;">What's the biggest financial win so far?</div>
+        <textarea style="height:40px;" placeholder="e.g. We paid off our highest-rate credit card in full…"></textarea>
+        <div style="font-size:8.5pt;font-weight:700;color:var(--phase2);margin-top:8px;margin-bottom:5px;">What conversation were we avoiding that we finally had?</div>
+        <textarea style="height:35px;" placeholder=""></textarea>
+      </div>
+      <div style="background:var(--amber-lite);border-radius:8px;padding:10px 14px;">
+        <div style="font-size:8.5pt;font-weight:700;color:var(--amber-dark);margin-bottom:6px;">Phase 3 priority: Where does our surplus go?</div>
+        <textarea style="height:40px;" placeholder="e.g. All extra $400/month goes to emergency fund until we hit $12k…"></textarea>
+        <div style="font-size:8.5pt;font-weight:700;color:var(--amber-dark);margin-top:8px;margin-bottom:5px;">What do we want to feel like at Day 90?</div>
+        <textarea style="height:35px;" placeholder="e.g. Confident. In control. No longer avoiding our bank account."></textarea>
+      </div>
+    </div>
+
+    <div style="background:var(--phase2-lite);border-radius:8px;padding:10px 16px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div><div style="font-size:8pt;color:var(--mid);margin-bottom:3px;">P3 target: Net worth by Day 90:</div><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+      <div><div style="font-size:8pt;color:var(--mid);margin-bottom:3px;">P3 target: Total debt reduced from Day 0 to Day 90:</div><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+    </div>
+
+  </div>
+  <div class="ftr">Couples Financial Reset Kit — The 90-Day Reboot · OurSteady.com</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     P10 · 90-DAY MILESTONE TRACKER
+══════════════════════════════════════════════ -->
+<div class="page">
+  <div class="hdr" style="background:var(--amber-dark);"><span class="hl">90-DAY MILESTONE TRACKER</span><span class="hc">Couples Financial Reset Kit — The 90-Day Reboot</span><span class="hr">10</span></div>
+  <div class="body">
+
+    <div class="note" style="margin-bottom:14px;">Tick each milestone as you complete it. The visual progress of filling this page is part of the motivation — don't underestimate it.</div>
+
+    <!-- Phase 1 milestones -->
+    <div style="background:var(--phase1-lite);border:1px solid #c0cad8;border-radius:10px;padding:12px 16px;margin-bottom:10px;">
+      <div style="font-size:8.5pt;font-weight:700;color:var(--phase1);letter-spacing:.06em;margin-bottom:10px;">🔍 PHASE 1 — CLARITY MILESTONES (Weeks 1–4)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+        <div class="milestone-row" style="background:#fff;">
+          <div class="ms-circle" style="border-color:var(--phase1);color:var(--phase1);">✓</div>
+          <div style="font-size:8.5pt;">Completed the spending audit (last 60 days)</div>
+        </div>
+        <div class="milestone-row" style="background:#fff;">
+          <div class="ms-circle" style="border-color:var(--phase1);color:var(--phase1);">✓</div>
+          <div style="font-size:8.5pt;">Listed and totalled all debts with rates</div>
+        </div>
+        <div class="milestone-row" style="background:#fff;">
+          <div class="ms-circle" style="border-color:var(--phase1);color:var(--phase1);">✓</div>
+          <div style="font-size:8.5pt;">Cancelled unused subscriptions (saved $<input class="iline" type="text" style="width:50px;">/mo)</div>
+        </div>
+        <div class="milestone-row" style="background:#fff;">
+          <div class="ms-circle" style="border-color:var(--phase1);color:var(--phase1);">✓</div>
+          <div style="font-size:8.5pt;">Calculated real monthly surplus / shortfall</div>
+        </div>
+        <div class="milestone-row" style="background:#fff;">
+          <div class="ms-circle" style="border-color:var(--phase1);color:var(--phase1);">✓</div>
+          <div style="font-size:8.5pt;">Completed the income audit</div>
+        </div>
+        <div class="milestone-row" style="background:#fff;">
+          <div class="ms-circle" style="border-color:var(--phase1);color:var(--phase1);">✓</div>
+          <div style="font-size:8.5pt;">Defined our 90-day reset targets (Page 3)</div>
+        </div>
+        <div class="milestone-row" style="background:#fff;">
+          <div class="ms-circle" style="border-color:var(--phase1);color:var(--phase1);">✓</div>
+          <div style="font-size:8.5pt;">Completed Day 30 check-in sheet</div>
+        </div>
+        <div class="milestone-row" style="background:var(--gold-lite);">
+          <div class="ms-circle" style="border-color:var(--gold);color:var(--gold);">🏆</div>
+          <div style="font-size:8.5pt;font-weight:700;">PHASE 1 COMPLETE — We see clearly now.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 2 milestones -->
+    <div style="background:var(--phase2-lite);border:1px solid #a8ccc0;border-radius:10px;padding:12px 16px;margin-bottom:10px;">
+      <div style="font-size:8.5pt;font-weight:700;color:var(--phase2);letter-spacing:.06em;margin-bottom:10px;">🔧 PHASE 2 — STRUCTURE MILESTONES (Weeks 5–8)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+        <div class="milestone-row" style="background:#fff;">
+          <div class="ms-circle" style="border-color:var(--phase2);color:var(--phase2);">✓</div>
+          <div style="font-size:8.5pt;">Built our reset budget (Week 5)</div>
+        </div>
+        <div class="milestone-row" style="background:#fff;">
+          <div class="ms-circle" style="border-color:var(--phase2);color:var(--phase2);">✓</div>
+          <div style="font-size:8.5pt;">Set up automatic savings transfer on payday</div>
+        </div>
+        <div class="milestone-row" style="background:#fff;">
+          <div class="ms-circle" style="border-color:var(--phase2);color:var(--phase2);">✓</div>
+          <div style="font-size:8.5pt;">Automated extra debt payment on highest-rate debt</div>
+        </div>
+        <div class="milestone-row" style="background:#fff;">
+          <div class="ms-circle" style="border-color:var(--phase2);color:var(--phase2);">✓</div>
+          <div style="font-size:8.5pt;">Completed the 2-week intentional spending challenge</div>
+        </div>
+        <div class="milestone-row" style="background:#fff;">
+          <div class="ms-circle" style="border-color:var(--phase2);color:var(--phase2);">✓</div>
+          <div style="font-size:8.5pt;">Reviewed and tuned the system at Week 8</div>
+        </div>
+        <div class="milestone-row" style="background:#fff;">
+          <div class="ms-circle" style="border-color:var(--phase2);color:var(--phase2);">✓</div>
+          <div style="font-size:8.5pt;">Completed Day 60 check-in sheet</div>
+        </div>
+        <div class="milestone-row" style="background:#fff;">
+          <div class="ms-circle" style="border-color:var(--phase2);color:var(--phase2);">✓</div>
+          <div style="font-size:8.5pt;">All fixed bills on auto-pay</div>
+        </div>
+        <div class="milestone-row" style="background:var(--gold-lite);">
+          <div class="ms-circle" style="border-color:var(--gold);color:var(--gold);">🏆</div>
+          <div style="font-size:8.5pt;font-weight:700;">PHASE 2 COMPLETE — The system runs itself.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 3 milestones -->
+    <div style="background:var(--amber-lite);border:1px solid #d8a888;border-radius:10px;padding:12px 16px;margin-bottom:10px;">
+      <div style="font-size:8.5pt;font-weight:700;color:var(--amber-dark);letter-spacing:.06em;margin-bottom:10px;">🚀 PHASE 3 — MOMENTUM MILESTONES (Weeks 9–13)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+        <div class="milestone-row" style="background:#fff;">
+          <div class="ms-circle" style="border-color:var(--amber-mid);color:var(--amber-mid);">✓</div>
+          <div style="font-size:8.5pt;">Identified our priority step on the ladder (Week 9)</div>
+        </div>
+        <div class="milestone-row" style="background:#fff;">
+          <div class="ms-circle" style="border-color:var(--amber-mid);color:var(--amber-mid);">✓</div>
+          <div style="font-size:8.5pt;">Directed surplus to debt or goal every month</div>
+        </div>
+        <div class="milestone-row" style="background:#fff;">
+          <div class="ms-circle" style="border-color:var(--amber-mid);color:var(--amber-mid);">✓</div>
+          <div style="font-size:8.5pt;">Completed income acceleration review (Week 10)</div>
+        </div>
+        <div class="milestone-row" style="background:#fff;">
+          <div class="ms-circle" style="border-color:var(--amber-mid);color:var(--amber-mid);">✓</div>
+          <div style="font-size:8.5pt;">Locked in 1 permanent habit change (Week 11)</div>
+        </div>
+        <div class="milestone-row" style="background:#fff;">
+          <div class="ms-circle" style="border-color:var(--amber-mid);color:var(--amber-mid);">✓</div>
+          <div style="font-size:8.5pt;">Set Day 180 target + next 90-day plan (Week 12)</div>
+        </div>
+        <div class="milestone-row" style="background:#fff;">
+          <div class="ms-circle" style="border-color:var(--amber-mid);color:var(--amber-mid);">✓</div>
+          <div style="font-size:8.5pt;">Completed the 13-week Spending Reset Log</div>
+        </div>
+        <div class="milestone-row" style="background:#fff;">
+          <div class="ms-circle" style="border-color:var(--amber-mid);color:var(--amber-mid);">✓</div>
+          <div style="font-size:8.5pt;">Completed Day 90 check-in and full reckoning</div>
+        </div>
+        <div class="milestone-row" style="background:var(--gold-lite);">
+          <div class="ms-circle" style="border-color:var(--gold);color:var(--gold);">🏆</div>
+          <div style="font-size:8.5pt;font-weight:700;">PHASE 3 COMPLETE — We have momentum.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grand milestone -->
+    <div style="background:var(--amber-dark);border-radius:8px;padding:11px 18px;text-align:center;">
+      <div style="font-size:11pt;color:var(--gold);font-family:'Playfair Display',serif;margin-bottom:3px;">🎉 THE 90-DAY REBOOT — COMPLETE</div>
+      <div style="font-size:8.5pt;color:rgba(255,255,255,.85);">You showed up. 90 days. Together. That is the whole thing.</div>
+    </div>
+
+  </div>
+  <div class="ftr">Couples Financial Reset Kit — The 90-Day Reboot · OurSteady.com</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     P11 · DAY 90 CHECK-IN + FULL RECKONING
+══════════════════════════════════════════════ -->
+<div class="page">
+  <div class="hdr" style="background:var(--amber-dark);"><span class="hl">DAY 90 CHECK-IN — THE FULL RECKONING</span><span class="hc">Couples Financial Reset Kit — The 90-Day Reboot</span><span class="hr">11</span></div>
+  <div class="body">
+
+    <div style="background:var(--amber-mid);border-radius:8px;padding:10px 18px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-family:'Playfair Display',serif;font-size:13pt;color:#fff;">Day 90 · The Full Reckoning</div>
+      <div style="font-size:8.5pt;color:rgba(255,230,200,.9);">Check-in date: <input style="background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.4);color:#fff;font-family:'DM Sans',sans-serif;font-size:8.5pt;width:110px;outline:none;" type="text" placeholder="dd/mm/yyyy"></div>
+    </div>
+
+    <div class="section-lbl">THE NUMBERS — FULL 90-DAY COMPARISON</div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;overflow:hidden;margin-bottom:12px;">
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;background:var(--amber-dark);">
+        <div style="padding:7px 12px;font-size:7.5pt;font-weight:700;color:#fff;">METRIC</div>
+        <div style="padding:7px 6px;font-size:7.5pt;font-weight:700;color:#fff;">DAY 0</div>
+        <div style="padding:7px 6px;font-size:7.5pt;font-weight:700;color:#fff;">DAY 30</div>
+        <div style="padding:7px 6px;font-size:7.5pt;font-weight:700;color:#fff;">DAY 60</div>
+        <div style="padding:7px 6px;font-size:7.5pt;font-weight:700;color:#fff;">DAY 90</div>
+        <div style="padding:7px 6px;font-size:7.5pt;font-weight:700;color:var(--gold);">TOTAL CHANGE</div>
+      </div>
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;border-bottom:.5px solid var(--light);">
+        <div style="padding:7px 12px;font-size:8.5pt;">Net Worth</div>
+        <div style="padding:4px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:4px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:4px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:4px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:4px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="±$"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;border-bottom:.5px solid var(--light);background:var(--pale);">
+        <div style="padding:7px 12px;font-size:8.5pt;">Total Debt</div>
+        <div style="padding:4px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:4px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:4px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:4px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:4px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="±$"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;border-bottom:.5px solid var(--light);">
+        <div style="padding:7px 12px;font-size:8.5pt;">Monthly Savings</div>
+        <div style="padding:4px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:4px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:4px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:4px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="$"></div>
+        <div style="padding:4px 6px;"><input class="iline" type="text" style="width:100%;" placeholder="±$"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;background:var(--gold-lite);">
+        <div style="padding:7px 12px;font-size:8.5pt;font-weight:700;">Monthly Surplus</div>
+        <div style="padding:4px 6px;"><input class="iline" type="text" style="width:100%;font-weight:700;" placeholder="$"></div>
+        <div style="padding:4px 6px;"><input class="iline" type="text" style="width:100%;font-weight:700;" placeholder="$"></div>
+        <div style="padding:4px 6px;"><input class="iline" type="text" style="width:100%;font-weight:700;" placeholder="$"></div>
+        <div style="padding:4px 6px;"><input class="iline" type="text" style="width:100%;font-weight:700;" placeholder="$"></div>
+        <div style="padding:4px 6px;"><input class="iline" type="text" style="width:100%;font-weight:700;" placeholder="±$"></div>
+      </div>
+    </div>
+
+    <div class="section-lbl">THE FULL RECKONING — REFLECT TOGETHER</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:10px 14px;">
+        <div style="font-size:8.5pt;font-weight:700;color:var(--amber-dark);margin-bottom:6px;">What are we most proud of over the 90 days?</div>
+        <textarea style="height:42px;" placeholder="Not just the numbers — the conversations, the moments, the things you changed together…"></textarea>
+        <div style="font-size:8.5pt;font-weight:700;color:var(--amber-dark);margin-top:8px;margin-bottom:5px;">What was the hardest moment and how did we get through it?</div>
+        <textarea style="height:38px;" placeholder=""></textarea>
+      </div>
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:10px 14px;">
+        <div style="font-size:8.5pt;font-weight:700;color:var(--amber-dark);margin-bottom:6px;">What did we learn about how we handle money together?</div>
+        <textarea style="height:42px;" placeholder="About your patterns, your differences, your strengths as a team…"></textarea>
+        <div style="font-size:8.5pt;font-weight:700;color:var(--amber-dark);margin-top:8px;margin-bottom:5px;">What's the one habit we're keeping forever?</div>
+        <textarea style="height:38px;" placeholder=""></textarea>
+      </div>
+    </div>
+
+    <div style="background:var(--amber-lite);border-radius:8px;padding:11px 16px;margin-bottom:12px;">
+      <div style="font-size:8.5pt;font-weight:700;color:var(--amber-dark);margin-bottom:7px;">Did we hit our 90-day targets? (from Page 3)</div>
+      <div style="display:grid;grid-template-columns:1fr auto auto;gap:6px 14px;align-items:center;">
+        <div style="font-size:8.5pt;">Net worth target of $<input class="iline" type="text" style="width:80px;">:</div>
+        <input class="iline" type="text" style="width:80px;" placeholder="Actual $">
+        <input class="iline" type="text" style="width:80px;" placeholder="Hit / Missed">
+        <div style="font-size:8.5pt;">Monthly savings target of $<input class="iline" type="text" style="width:80px;">:</div>
+        <input class="iline" type="text" style="width:80px;" placeholder="Actual $">
+        <input class="iline" type="text" style="width:80px;" placeholder="Hit / Missed">
+        <div style="font-size:8.5pt;">Debt reduction target of $<input class="iline" type="text" style="width:80px;">:</div>
+        <input class="iline" type="text" style="width:80px;" placeholder="Actual $">
+        <input class="iline" type="text" style="width:80px;" placeholder="Hit / Missed">
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>On missing targets:</strong> If you didn't hit every number, that's not failure — that's data. You know more now than you did on Day 0. You built habits, had conversations, and showed up. The next 90 days will be better because of these 90. Keep going.
+    </div>
+
+  </div>
+  <div class="ftr">Couples Financial Reset Kit — The 90-Day Reboot · OurSteady.com</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     P12 · DAY 90 DECLARATION + NEXT CHAPTER
+══════════════════════════════════════════════ -->
+<div class="page">
+  <div class="hdr" style="background:var(--amber-dark);"><span class="hl">DAY 90 DECLARATION + WHAT COMES NEXT</span><span class="hc">Couples Financial Reset Kit — The 90-Day Reboot</span><span class="hr">12</span></div>
+  <div class="body">
+
+    <div style="background:var(--amber-dark);border-radius:12px;padding:24px 30px;margin-bottom:18px;text-align:center;">
+      <div style="font-size:9pt;font-weight:700;color:var(--gold);letter-spacing:.12em;margin-bottom:10px;">DAY 90 DECLARATION</div>
+      <div style="font-family:'Playfair Display',serif;font-size:13.5pt;color:#fff;line-height:1.8;margin-bottom:18px;">
+        We started this reboot with honesty about where we were.<br>
+        We showed up every week — for the numbers, and for each other.<br>
+        We now know more, owe less, and have more clarity about where we're going.<br>
+        <em style="color:var(--gold);">We are not the same couple we were on Day 0.</em>
+      </div>
+      <div style="width:80px;height:2px;background:var(--gold);margin:0 auto 16px;"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:500px;margin:0 auto 16px;">
+        <div>
+          <div style="border-bottom:1px solid rgba(255,255,255,.35);padding-bottom:5px;margin-bottom:5px;"><input style="background:transparent;border:none;color:#fff;font-family:'DM Sans',sans-serif;font-size:9pt;width:100%;outline:none;text-align:center;" type="text" placeholder="Partner 1 signature"></div>
+          <div style="font-size:7.5pt;color:rgba(250,200,160,.65);">Partner 1 · <input style="background:transparent;border:none;color:rgba(250,200,160,.65);font-family:'DM Sans',sans-serif;font-size:7.5pt;width:80px;outline:none;" type="text" placeholder="Date"></div>
+        </div>
+        <div>
+          <div style="border-bottom:1px solid rgba(255,255,255,.35);padding-bottom:5px;margin-bottom:5px;"><input style="background:transparent;border:none;color:#fff;font-family:'DM Sans',sans-serif;font-size:9pt;width:100%;outline:none;text-align:center;" type="text" placeholder="Partner 2 signature"></div>
+          <div style="font-size:7.5pt;color:rgba(250,200,160,.65);">Partner 2 · <input style="background:transparent;border:none;color:rgba(250,200,160,.65);font-family:'DM Sans',sans-serif;font-size:7.5pt;width:80px;outline:none;" type="text" placeholder="Date"></div>
+        </div>
+      </div>
+      <div style="background:rgba(201,150,60,.18);border:.5px solid rgba(201,150,60,.45);border-radius:8px;padding:10px 16px;">
+        <div style="font-size:8.5pt;color:rgba(255,230,190,.9);font-family:'Playfair Display',serif;font-style:italic;">In 90 days, we changed our net worth by:</div>
+        <div style="margin-top:5px;"><input style="background:transparent;border:none;border-bottom:1.5px solid var(--gold);color:var(--gold);font-family:'DM Sans',sans-serif;font-size:16pt;font-weight:700;width:200px;outline:none;text-align:center;" type="text" placeholder="+$"></div>
+      </div>
+    </div>
+
+    <div class="section-lbl">WHAT COMES NEXT</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:11px 14px;">
+        <div style="font-size:8.5pt;font-weight:700;color:var(--charcoal);margin-bottom:7px;">Our Day 180 financial targets:</div>
+        <div style="font-size:8pt;color:var(--mid);margin-bottom:4px;">Net worth target:</div>
+        <input class="iline" type="text" style="width:100%;margin-bottom:6px;" placeholder="$">
+        <div style="font-size:8pt;color:var(--mid);margin-bottom:4px;">Monthly savings rate target:</div>
+        <input class="iline" type="text" style="width:100%;margin-bottom:6px;" placeholder="$">
+        <div style="font-size:8pt;color:var(--mid);margin-bottom:4px;">Next debt to eliminate:</div>
+        <input class="iline" type="text" style="width:100%;" placeholder="Name + balance">
+      </div>
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:11px 14px;">
+        <div style="font-size:8.5pt;font-weight:700;color:var(--charcoal);margin-bottom:7px;">Our ongoing money date commitment:</div>
+        <div style="font-size:8pt;color:var(--mid);margin-bottom:4px;">Frequency:</div>
+        <input class="iline" type="text" style="width:100%;margin-bottom:6px;" placeholder="e.g. First Sunday of each month">
+        <div style="font-size:8pt;color:var(--mid);margin-bottom:4px;">What we always review:</div>
+        <input class="iline" type="text" style="width:100%;margin-bottom:6px;" placeholder="e.g. Budget, net worth, goals progress">
+        <div style="font-size:8pt;color:var(--mid);margin-bottom:4px;">One thing we always celebrate:</div>
+        <input class="iline" type="text" style="width:100%;" placeholder="e.g. Whatever we paid off or saved this month">
+      </div>
+    </div>
+
+    <!-- CTA back into funnel -->
+    <div style="background:var(--warm);border-radius:8px;padding:12px 18px;display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;">
+      <div>
+        <div style="font-size:8.5pt;font-weight:700;color:var(--charcoal);margin-bottom:3px;">Ready to go deeper?</div>
+        <div style="font-size:8pt;color:var(--mid);line-height:1.65;">The <strong>Couples Wealth Blueprint Workbook</strong> takes everything you've built in this reset and turns it into a full 6-module wealth plan — investing, goal funding, protection, and a 12-month roadmap. The perfect next step after your reboot. No videos required.</div>
+      </div>
+      <div style="text-align:center;flex-shrink:0;">
+        <div style="background:var(--amber-dark);color:#fff;font-size:8.5pt;font-weight:700;padding:8px 16px;border-radius:8px;white-space:nowrap;">OurSteady.com<br><span style="font-size:7.5pt;font-weight:400;opacity:.85;">/blueprint</span></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="ftr">Couples Financial Reset Kit — The 90-Day Reboot · OurSteady.com &nbsp;·&nbsp; Keep building at OurSteady.com/blueprint</div>
+</div>
+
+
+
+<!-- ═══ DAY 90 CELEBRATION + BRIDGE TO ACCELERATOR ═══ -->
+<div class="page">
+  <div class="hdr" style="background:var(--amber-dark);"><span class="hl">DAY 90 — CELEBRATION &amp; WHAT'S NEXT</span><span class="hc">Couples Financial Reset Kit — The 90-Day Reboot</span><span class="hr">✦</span></div>
+  <div class="body">
+
+    <!-- Celebration header -->
+    <div style="background:radial-gradient(ellipse at 50% 30%,#C96A38,#8A3F18);border-radius:12px;padding:22px 28px;text-align:center;margin-bottom:16px;">
+      <div style="font-size:24pt;margin-bottom:6px;">🎉</div>
+      <div style="font-family:'Playfair Display',serif;font-size:18pt;color:#fff;margin-bottom:8px;">You did it. 90 days.</div>
+      <div style="font-size:9.5pt;color:rgba(250,210,170,.9);line-height:1.7;max-width:500px;margin:0 auto;">Most couples talk about fixing their finances for years. You actually did it. You showed up every week, had hard conversations, and built something real. That deserves a real celebration — not just a checkbox.</div>
+    </div>
+
+    <!-- Celebration prompt -->
+    <div style="background:#fff;border:1.5px solid var(--gold);border-radius:10px;padding:16px 22px;margin-bottom:14px;">
+      <div style="font-size:8pt;font-weight:700;color:var(--amber-dark);letter-spacing:.08em;margin-bottom:12px;">✦ OUR DAY 90 CELEBRATION</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+        <div>
+          <div style="font-size:8pt;color:var(--mid);margin-bottom:5px;">How we're celebrating (write it in!):</div>
+          <input class="iline" type="text" style="width:100%;font-size:9pt;" placeholder="e.g. Dinner at our favourite restaurant">
+          <div style="font-size:7.5pt;color:var(--mid);margin-top:3px;font-style:italic;">Make it proportional to your 90-day commitment. You earned this.</div>
+        </div>
+        <div>
+          <div style="font-size:8pt;color:var(--mid);margin-bottom:5px;">Our celebration date:</div>
+          <input class="iline" type="text" style="width:100%;" placeholder="Date / venue">
+          <div style="font-size:8pt;color:var(--mid);margin-top:8px;">One thing we're most proud of:</div>
+          <input class="iline" type="text" style="width:100%;" placeholder="________________">
+        </div>
+      </div>
+      <div style="background:var(--gold-lite);border-radius:8px;padding:12px 16px;">
+        <div style="font-size:7.5pt;font-weight:700;color:#8B6020;margin-bottom:8px;">DAY 90 NUMBERS CHECK — HOW FAR DID WE COME?</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;font-size:8.5pt;color:var(--charcoal);">
+          <div>Net Worth: Day 0 → Day 90<br><input class="iline" type="text" placeholder="Day 0: $" style="width:100%;margin-top:4px;"><input class="iline" type="text" placeholder="Day 90: $" style="width:100%;margin-top:4px;"></div>
+          <div>Monthly Savings: Day 0 → Day 90<br><input class="iline" type="text" placeholder="Day 0: $" style="width:100%;margin-top:4px;"><input class="iline" type="text" placeholder="Day 90: $" style="width:100%;margin-top:4px;"></div>
+          <div>Total Debt: Day 0 → Day 90<br><input class="iline" type="text" placeholder="Day 0: $" style="width:100%;margin-top:4px;"><input class="iline" type="text" placeholder="Day 90: $" style="width:100%;margin-top:4px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- What's Next bridge -->
+    <div style="font-size:8pt;font-weight:700;color:var(--amber-dark);letter-spacing:.08em;margin-bottom:10px;">✦ WHAT'S NEXT — YOUR BRIDGE TO THE WEALTH ACCELERATOR</div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:10px;overflow:hidden;margin-bottom:10px;">
+      <div style="display:grid;grid-template-columns:6px 1fr;gap:0;">
+        <div style="background:var(--phase1);"></div>
+        <div style="padding:11px 16px;">
+          <div style="font-size:8.5pt;font-weight:700;color:var(--phase1);margin-bottom:3px;">The Reset gave you a clean foundation.</div>
+          <div style="font-size:8pt;color:var(--mid);line-height:1.6;">You now know your numbers, have a working budget, and a clear picture of your debt. That's the hardest part. The next phase is building — month by month, quarter by quarter — on what you've established.</div>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--amber-dark);border-radius:10px;padding:14px 20px;display:flex;align-items:center;gap:20px;">
+      <div style="flex:1;">
+        <div style="font-size:8pt;font-weight:700;color:var(--gold);margin-bottom:5px;">→ Your Next Step: Couples Wealth Accelerator</div>
+        <div style="font-size:8.5pt;color:#fff;margin-bottom:4px;">The 12-month implementation system that picks up exactly where this reset leaves off.</div>
+        <div style="font-size:8pt;color:rgba(250,200,160,.85);line-height:1.6;">Monthly reviews · Quarterly goal resets · Investment habit tracker · Couples check-in rituals · Year-end net worth celebration</div>
+      </div>
+      <div style="flex-shrink:0;text-align:center;background:var(--gold);border-radius:8px;padding:10px 16px;">
+        <div style="font-size:8pt;font-weight:700;color:#fff;">OurSteady.com</div>
+        <div style="font-size:7.5pt;color:rgba(255,255,255,.8);">/accelerator</div>
+      </div>
+    </div>
+
+    <!-- Partner signatures - Day 90 -->
+    <div style="background:var(--amber-lite);border-radius:8px;padding:12px 18px;margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div>
+        <div style="font-size:7.5pt;font-weight:700;color:var(--amber-dark);margin-bottom:5px;">Day 90 Reflection — Partner 1</div>
+        <textarea rows="2" placeholder="One thing I learned about myself..." style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;resize:none;outline:none;"></textarea>
+        <input class="iline" type="text" style="width:100%;margin-top:6px;" placeholder="Signature · Day 90">
+      </div>
+      <div>
+        <div style="font-size:7.5pt;font-weight:700;color:var(--amber-dark);margin-bottom:5px;">Day 90 Reflection — Partner 2</div>
+        <textarea rows="2" placeholder="One thing I learned about us..." style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;resize:none;outline:none;"></textarea>
+        <input class="iline" type="text" style="width:100%;margin-top:6px;" placeholder="Signature · Day 90">
+      </div>
+    </div>
+
+  </div>
+  <div class="ftr">Couples Financial Reset Kit — The 90-Day Reboot · OurSteady.com · Celebrate Day 90!</div>
+</div>
+
+
+<!-- ═══ BACK COVER ═══ -->
+<div class="page">
+<div class="bp bp-amber">
+  <div class="bp-topbar"></div>
+  <div class="bp-inner">
+    <div class="card">
+
+      <div class="card-hdr">
+        <div class="card-hdr-stripe stripe-amber"></div>
+        <div class="eyebrow">OurSteady Financial Ecosystem</div>
+        <h2>You cleared the slate.<br><em>Now build on it.</em></h2>
+        <div class="sub">The Reset gives you a clean foundation. Here's everything designed to build on top of it.</div>
+        <div class="rule"></div>
+      </div>
+
+      <div class="card-body">
+
+        <div class="tier-lbl">Foundation — Already Yours</div>
+        <div class="pr have">
+          <div class="badge b-free">FREE</div>
+          <div class="pinfo"><a href="https://OurSteady.com/" style="text-decoration:none;"><div class="pname">Money Date Starter Kit</div></a><div class="pdesc">The ritual that keeps the conversation going after the reset.</div></div>
+          <div class="ptag tag-have">✓ Included</div>
+        </div>
+        <div class="pr have">
+          <div class="badge b-37">$37</div>
+          <div class="pinfo"><a href="https://OurSteady.com/reset" style="text-decoration:none;"><div class="pname">90-Day Financial Reset Kit</div></a><div class="pdesc">Clear the clutter, reset the budget, rebuild with a clean slate.</div></div>
+          <div class="ptag tag-have">✓ You Have This</div>
+        </div>
+
+        <div class="tier-lbl">Add the Data Layer — Track Going Forward</div>
+        <div class="pr next">
+          <div class="badge b-9">$9</div>
+          <div class="pinfo"><a href="https://OurSteady.com/tracker" style="text-decoration:none;"><div class="pname">Couples Wealth Tracker</div></a><div class="pdesc">Capture every number from your reset onward. 19-page monthly system.</div></div>
+          <div class="ptag tag-next">→ Essential Next</div>
+        </div>
+
+        <div class="tier-lbl">Make It Stick — Communication</div>
+        <div class="pr locked">
+          <div class="badge b-7">$7</div>
+          <div class="pinfo"><a href="https://OurSteady.com/sheet" style="text-decoration:none;"><div class="pname">Money Scripts Cheat Sheet</div></a><div class="pdesc">Exact words for the 5 hardest money conversations.</div></div>
+          <div class="ptag tag-lock">Add On</div>
+        </div>
+
+        <div class="tier-lbl">Build the Full Plan</div>
+        <div class="pr locked">
+          <div class="badge b-17">$17</div>
+          <div class="pinfo"><a href="https://OurSteady.com/workbook" style="text-decoration:none;"><div class="pname">Wealth Blueprint Workbook</div></a><div class="pdesc">6 modules: budget, invest, debt, goals, protect, 12-month roadmap.</div></div>
+          <div class="ptag tag-lock">Workbook</div>
+        </div>
+
+        <div class="tier-lbl">Deepen the Relationship Layer</div>
+        <div class="ck-group next">
+          <div class="ck-label">
+            <div class="cktitle">✦ The Connection Kit</div>
+            <div class="ckprice">$67 bundle</div>
+          </div>
+          <div class="ck-items">
+            <a href="https://OurSteady.com/deck" style="text-decoration:none;"><div class="ck-item">Money Date Conversation Deck — guided prompts for every money date</div></a>
+            <a href="https://OurSteady.com/personality" style="text-decoration:none;"><div class="ck-item">Money Personality System — understand how your partner thinks about money</div></a>
+            <a href="https://OurSteady.com/vault" style="text-decoration:none;"><div class="ck-item">Life Admin &amp; Legacy Vault — wills, insurance, digital legacy in one place</div></a>
+          </div>
+        </div>
+
+        <div class="tier-lbl">Unlocks Via Email — After Purchase</div>
+        <div class="pr soon">
+          <div class="badge b-47">$47</div>
+          <div class="pinfo"><a href="https://OurSteady.com/accelerator" style="text-decoration:none;"><div class="pname">Couples Wealth Accelerator</div></a><div class="pdesc">12-month implementation system — the engine that runs after the reset.</div></div>
+          <div class="ptag tag-soon">✉ Via Email</div>
+        </div>
+        <div class="pr soon">
+          <div class="badge b-37">$37</div>
+          <div class="pinfo"><a href="https://OurSteady.com/investment" style="text-decoration:none;"><div class="pname">Investment Starter Kit</div></a><div class="pdesc">Build your first investment strategy once the foundation is solid.</div></div>
+          <div class="ptag tag-soon">✉ Via Email</div>
+        </div>
+        <div class="pr soon">
+          <div class="badge b-97">$97</div>
+          <div class="pinfo"><a href="https://OurSteady.com/video" style="text-decoration:none;"><div class="pname">Couples Wealth Blueprint — Video Modules</div></a><div class="pdesc">6 guided video modules + all workbooks. The full course experience.</div></div>
+          <div class="ptag tag-soon">✉ Via Email</div>
+        </div>
+
+      </div>
+
+      <div class="card-cta">
+        <div class="cta-l">
+          <div class="clbl">Reset done — now track it</div>
+          <div class="ctxt">The Wealth Tracker ($9) captures every number from here forward. The reset only counts if you measure what comes next.</div>
+        </div>
+        <a href="https://OurSteady.com/" style="text-decoration:none;"><div class="cta-r">OurSteady.com</div></a>
+      </div>
+
+      <div class="card-foot">
+        <div class="fl">OurSteady Financial Ecosystem · All products work as a complete system</div>
+        <div class="fr">OurSteady.com</div>
+      </div>
+
+    </div>
+  </div>
+  <div class="bp-botbar"></div>
+</div>
+</div>
+
+</body>
+</html>

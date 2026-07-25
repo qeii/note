@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Couple's Wealth Blueprint Workbook</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sage:#4A7C6B;--sage-dark:#2E5248;--sage-mid:#5D8B7A;
+    --sage-lite:#EAF2EE;--sage-pale:#F4FAF7;
+    --cream:#FDFAF5;--warm:#F2EAD8;--warm-mid:#E8DCC8;
+    --gold:#C9963C;--gold-lite:#F5E6C8; --gold-pale:#FDF6E8; --plum:#7B5EA7; --plum-lite:#F2EBF8; --teal:#2A7B6E; --teal-dark:#164F46; --teal-lite:#E2F4F1; --amber:#B85C2E; --amber-lite:#FAF0E8;
+    --charcoal:#2C2C2C;--mid:#6B6B6B;--light:#E0DCD4;--pale:#F0EDE8;
+    --coral:#D4795A;--coral-lite:#FAEDE8;
+    --blue:#5B6F8E;--blue-lite:#EBF0F6;
+    --teal:#2A7B6E;--teal-lite:#E0F4F1;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:#d8e4e0;color:var(--charcoal);font-size:10pt;}
+  .page{width:816px;min-height:1056px;margin:0 auto 32px;background:var(--cream);position:relative;overflow:hidden;page-break-after:always;}
+  @media print{.page{margin:0;page-break-after:always;}body{background:#fff;}}
+
+  /* shared */
+  .hdr{padding:10px 28px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--gold);}
+  .hdr .hl{font-size:7.5pt;font-weight:700;color:var(--gold);letter-spacing:.08em;}
+  .hdr .hc{font-size:8pt;color:rgba(255,255,255,.8);}
+  .hdr .hr{font-size:7pt;color:rgba(255,255,255,.5);}
+  .ftr{background:var(--sage-dark);padding:5px 28px;text-align:center;font-size:7pt;color:rgba(255,255,255,.65);position:absolute;bottom:0;left:0;right:0;}
+  .body{padding:16px 28px 52px;}
+  .card{background:#fff;border:.5px solid var(--light);border-radius:8px;overflow:hidden;}
+  .col-hdr{padding:9px 14px;font-size:8.5pt;font-weight:700;letter-spacing:.05em;color:#fff;}
+  .iline{border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8.5pt;outline:none;}
+  .cb{width:10px;height:10px;border:1px solid var(--sage);border-radius:2px;display:inline-block;flex-shrink:0;margin-top:2px;}
+  .cb-row{display:flex;gap:7px;align-items:flex-start;margin-bottom:7px;font-size:8.5pt;color:var(--charcoal);}
+  .row{display:flex;align-items:center;justify-content:space-between;padding:5px 10px;font-size:8.5pt;}
+  .row:nth-child(even){background:var(--sage-pale);}
+  .row input{border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;width:90px;text-align:right;outline:none;}
+  .total-row{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:var(--gold-lite);border-top:1px solid var(--gold);font-size:8.5pt;font-weight:700;}
+  .total-row input{font-weight:700;border-bottom:1px solid var(--gold);width:90px;text-align:right;border-top:none;border-left:none;border-right:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;outline:none;}
+  .section-lbl{font-size:7.5pt;font-weight:700;letter-spacing:.08em;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+  .section-lbl::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+  .reflect{border:none;width:100%;border:1px solid var(--warm-mid);border-radius:4px;background:var(--cream);font-family:'DM Sans',sans-serif;font-size:8.5pt;outline:none;display:block;margin-bottom:9px;padding:6px 8px;resize:none;min-height:58px;line-height:1.6;}
+  .insight-box{background:var(--teal-lite);border-left:3px solid var(--teal);border-radius:0 6px 6px 0;padding:10px 14px;font-size:8.5pt;color:var(--charcoal);line-height:1.6;margin:10px 0;}
+  .insight-box strong{color:var(--teal);}
+  .module-strip{background:var(--sage);padding:8px 16px;display:flex;align-items:center;gap:10px;margin-bottom:14px;border-radius:6px;}
+  .module-num{background:var(--gold);color:#fff;font-size:8pt;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap;}
+  .module-title{font-size:10pt;font-weight:700;color:#fff;}
+  .module-sub{font-size:8pt;color:rgba(200,232,220,.85);}
+  .tip-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+  .tip-card{background:#fff;border:.5px solid var(--light);border-radius:6px;padding:10px 12px;}
+  .tip-icon{font-size:14pt;margin-bottom:4px;}
+  .tip-title{font-size:8.5pt;font-weight:700;color:var(--sage-dark);margin-bottom:3px;}
+  .tip-body{font-size:8pt;color:var(--mid);line-height:1.5;}
+  textarea{width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8.5pt;resize:none;outline:none;line-height:1.6;}
+
+  /* cover */
+  #p1{min-height:1056px;display:flex;flex-direction:column;}
+  #p1 .tbar{height:5px;background:var(--gold);}
+  #p1 .hero{flex:1;background:linear-gradient(150deg,var(--sage-dark) 0%,#1E3D33 60%,#152E26 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:45px 80px 35px;}
+  #p1 .workbook-badge{background:rgba(201,150,60,.2);border:1px solid rgba(201,150,60,.5);color:var(--gold);font-size:7.5pt;font-weight:700;padding:4px 16px;border-radius:20px;letter-spacing:.1em;margin-bottom:8px;}
+  #p1 .price{background:var(--gold);color:#fff;font-size:8pt;font-weight:700;padding:4px 20px;border-radius:20px;letter-spacing:.1em;margin-bottom:20px;}
+  #p1 h1{font-family:'Playfair Display',serif;font-size:38pt;color:#fff;text-align:center;line-height:1.15;}
+  #p1 h1 em{color:var(--gold);font-style:normal;display:block;}
+  #p1 h1 span{font-size:22pt;color:rgba(200,232,220,.7);display:block;font-weight:400;}
+  #p1 .rule{width:120px;height:2px;background:var(--gold);margin:16px auto;}
+  #p1 .sub{font-size:10.5pt;color:rgba(200,232,220,.85);text-align:center;line-height:1.65;margin-bottom:6px;}
+  #p1 .modules-box{background:rgba(42,84,72,.6);border:1px solid rgba(93,139,122,.3);border-radius:12px;padding:20px 26px;margin:20px 0;width:100%;}
+  #p1 .mlabel{font-size:7.5pt;font-weight:700;color:var(--gold);letter-spacing:.1em;margin-bottom:12px;}
+  #p1 .mlist{display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;}
+  #p1 .mitem{display:flex;gap:8px;align-items:flex-start;}
+  #p1 .mbadge{background:var(--gold);color:#fff;font-size:6.5pt;font-weight:700;padding:2px 7px;border-radius:20px;flex-shrink:0;margin-top:2px;white-space:nowrap;}
+  #p1 .mname{font-size:8.5pt;font-weight:600;color:#fff;}
+  #p1 .mdesc{font-size:7.5pt;color:rgba(168,212,194,.8);}
+  #p1 .workbook-note{background:rgba(201,150,60,.15);border:.5px solid rgba(201,150,60,.4);border-radius:8px;padding:12px 18px;width:100%;text-align:center;margin-bottom:8px;}
+  #p1 .wn-title{font-size:8.5pt;font-weight:700;color:var(--gold);margin-bottom:4px;}
+  #p1 .wn-body{font-size:8pt;color:rgba(200,232,220,.8);line-height:1.6;}
+  #p1 .ourbox{background:rgba(35,63,54,.7);border-radius:8px;padding:12px 18px;width:100%;}
+  #p1 .olbl{font-size:7pt;font-weight:700;color:var(--gold);letter-spacing:.1em;text-align:center;margin-bottom:8px;}
+  #p1 .ofields{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  #p1 .ofield label{font-size:7.5pt;color:rgba(138,191,174,.9);display:block;margin-bottom:2px;}
+  #p1 .ofield input{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(61,107,92,.6);font-family:'DM Sans',sans-serif;font-size:8.5pt;color:#fff;padding:2px 0;outline:none;}
+  #p1 .bbar{height:5px;background:var(--gold);}
+
+  /* ═══ BACK COVER BP STYLES ═══ */
+.bp {
+  /* override per-product via class: .bp-sage / .bp-plum / etc */
+  --pa: var(--sage-dark);   /* primary accent — header + bars */
+  --pa-mid: var(--sage-mid);
+  --pa-lite: var(--sage-lite);
+  --pa-pale: var(--sage-pale);
+  --tag-have-bg: var(--gold);
+  --tag-next-bg: var(--pa);
+
+  min-height:1056px;
+  display:flex; flex-direction:column;
+  background:var(--pa);
+}
+
+/* product-specific accent overrides */
+.bp-sage    { --pa:var(--sage-dark); --pa-mid:var(--sage-mid); --pa-lite:var(--sage-lite); --pa-pale:var(--sage-pale); }
+.bp-plum    { --pa:#5B3F8A; --pa-mid:#7B5EA7; --pa-lite:#F2EBF8; --pa-pale:#F8F4FC; }
+.bp-teal    { --pa:var(--teal-dark); --pa-mid:var(--teal); --pa-lite:var(--teal-lite); --pa-pale:#F0FAF8; }
+.bp-amber   { --pa:#8A3F18; --pa-mid:var(--amber); --pa-lite:var(--amber-lite); --pa-pale:#FDF6F0; }
+.bp-sagedark{ --pa:#1E3D33; --pa-mid:var(--sage-dark); --pa-lite:var(--sage-lite); --pa-pale:var(--sage-pale); }
+/* Deck/Invest/Vault all sage but differentiated by inner stripe color below */
+
+.bp-topbar  { height:4px; background:linear-gradient(90deg,var(--gold),var(--pa-mid),var(--pa)); }
+.bp-botbar  { height:4px; background:linear-gradient(90deg,var(--pa),var(--pa-mid),var(--gold)); }
+
+.bp-inner {
+  flex:1;
+  display:flex; align-items:stretch; justify-content:center;
+  padding:26px 32px 22px;
+}
+
+/* ─────────────────────────────────────────────
+   CARD
+───────────────────────────────────────────── */
+.bp .card {
+  background:var(--cream);
+  border-radius:14px;
+  border:none;
+  width:100%;
+  display:flex; flex-direction:column;
+  overflow:hidden;
+  box-shadow:0 10px 50px rgba(0,0,0,.22);
+}
+
+/* card header */
+.bp .card-hdr {
+  background:var(--pa);
+  padding:18px 24px 14px;
+  border-bottom:2.5px solid var(--gold);
+  text-align:center;
+}
+.bp .card-hdr .eyebrow {
+  font-size:6.5pt; font-weight:700; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--gold);
+  margin-bottom:7px;
+}
+.bp .card-hdr h2 {
+  font-family:'Playfair Display',serif;
+  font-size:18pt; color:#fff; line-height:1.2;
+  margin-bottom:4px;
+}
+.bp .card-hdr h2 em { color:var(--gold); font-style:italic; }
+.bp .card-hdr .sub {
+  font-size:7.5pt; color:rgba(200,232,220,.72); line-height:1.5;
+}
+.bp .card-hdr .rule {
+  width:44px; height:2px; background:var(--gold);
+  margin:9px auto 0; border-radius:2px;
+}
+
+/* product-specific header stripe (top edge inside card header)
+   gives Deck/Invest/Vault a visual tell even though all use sage */
+.bp .card-hdr-stripe {
+  height:3px; margin:-18px -24px 14px; /* bleeds to edges */
+}
+.stripe-sage     { background:var(--sage); }
+.stripe-sage2    { background:linear-gradient(90deg,var(--sage),var(--sage-mid)); } /* Deck */
+.stripe-sage3    { background:linear-gradient(90deg,var(--sage-mid),var(--teal)); } /* Invest */
+.stripe-sage4    { background:linear-gradient(90deg,var(--sage-dark),var(--sage)); } /* Vault */
+.stripe-plum     { background:var(--plum); }
+.stripe-teal     { background:var(--teal); }
+.stripe-amber    { background:var(--amber); }
+.stripe-sagedark { background:var(--sage-dark); }
+
+/* ─────────────────────────────────────────────
+   PRODUCT LIST BODY
+───────────────────────────────────────────── */
+.bp .card-body {
+  flex:1; padding:14px 20px 12px;
+  display:flex; flex-direction:column; gap:0;
+}
+
+/* tier dividers */
+.tier-lbl {
+  font-size:6pt; font-weight:700; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--mid);
+  margin:9px 0 4px;
+  display:flex; align-items:center; gap:6px;
+}
+.tier-lbl::before,.tier-lbl::after {
+  content:''; flex:1; height:.5px; background:var(--light);
+}
+
+/* product rows */
+.pr {
+  display:flex; align-items:center; gap:10px;
+  padding:7px 9px; border-radius:7px;
+  border:.5px solid transparent;
+  margin-bottom:1px;
+}
+.pr.have {
+  background:var(--gold-pale);
+  border-color:rgba(201,150,60,.35);
+}
+.pr.next {
+  background:var(--pa-pale);
+  border-color:rgba(74,124,107,.3);
+}
+.pr.soon {
+  background:#fff;
+  border-color:var(--light);
+  opacity:.65;
+}
+.pr.locked {
+  background:#fff;
+  border-color:var(--light);
+  opacity:.55;
+}
+
+/* price badge */
+.badge {
+  flex-shrink:0; font-size:6.5pt; font-weight:700;
+  padding:2px 8px; border-radius:16px;
+  white-space:nowrap; min-width:34px; text-align:center;
+  line-height:1.5;
+}
+.b-free  { background:var(--sage);      color:#fff; }
+.b-7     { background:#8B9BAD;          color:#fff; }
+.b-9     { background:var(--gold);      color:#fff; }
+.b-17    { background:var(--coral);     color:#fff; }
+.b-27    { background:var(--plum);      color:#fff; }
+.b-37    { background:var(--amber);     color:#fff; }
+.b-47    { background:var(--sage-dark); color:#fff; }
+.b-67    { background:#5B3F8A;          color:#fff; }
+.b-97    { background:var(--charcoal);  color:#fff; }
+
+/* product info */
+.pinfo { flex:1; min-width:0; }
+.pname { font-size:8.5pt; font-weight:600; color:var(--charcoal); line-height:1.2; }
+.pdesc { font-size:7pt; color:var(--mid); margin-top:1px; line-height:1.35; }
+
+/* state tag */
+.ptag {
+  flex-shrink:0; font-size:6pt; font-weight:700;
+  letter-spacing:.07em; text-transform:uppercase;
+  padding:2px 7px; border-radius:9px; white-space:nowrap;
+}
+.tag-have  { background:var(--gold);      color:#fff; }
+.tag-next  { background:var(--pa);        color:#fff; }
+.tag-soon  { background:var(--light);     color:var(--mid); font-style:italic; }
+.tag-lock  { background:var(--pale);      color:var(--mid); }
+
+/* ─────────────────────────────────────────────
+   CONNECTION KIT GROUP
+───────────────────────────────────────────── */
+.ck-group {
+  border:.5px solid var(--plum);
+  border-radius:8px; overflow:hidden;
+  margin-bottom:1px;
+  opacity:.72;
+}
+.ck-group.next { opacity:1; border-color:var(--plum); }
+.ck-label {
+  background:var(--plum); padding:4px 10px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.ck-label .cktitle {
+  font-size:7pt; font-weight:700; color:#fff; letter-spacing:.06em;
+}
+.ck-label .ckprice {
+  font-size:7pt; font-weight:700;
+  background:rgba(255,255,255,.18); color:#fff;
+  padding:1px 8px; border-radius:10px;
+}
+.ck-items { padding:5px 8px; background:var(--plum-lite); display:flex; flex-direction:column; gap:3px; }
+.ck-item  { font-size:7.5pt; color:var(--charcoal); display:flex; gap:6px; align-items:center; }
+.ck-item::before { content:'·'; color:var(--plum); font-weight:700; }
+
+/* ─────────────────────────────────────────────
+   CTA STRIP
+───────────────────────────────────────────── */
+.bp .card-cta {
+  margin:10px 20px 14px;
+  background:var(--pa);
+  border-radius:9px; padding:12px 16px;
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+}
+.bp .cta-l .clbl { font-size:6.5pt; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); margin-bottom:2px; }
+.bp .cta-l .ctxt { font-size:8pt; color:rgba(200,232,220,.9); line-height:1.45; }
+.bp .cta-r { font-size:8.5pt; font-weight:700; color:var(--gold); white-space:nowrap; flex-shrink:0; }
+
+/* card footer */
+.bp .card-foot {
+  padding:7px 20px;
+  border-top:.5px solid var(--light);
+  display:flex; justify-content:space-between; align-items:center;
+}
+.bp .card-foot .fl { font-size:6.5pt; color:var(--mid); }
+.bp .card-foot .fr { font-size:6.5pt; font-weight:600; color:var(--pa-mid); }
+
+</style>
+</head>
+<body>
+
+<!-- ══ P1 COVER ══ -->
+<div class="page" id="p1">
+  <div class="tbar"></div>
+  <div class="hero">
+    <span class="workbook-badge">WORKBOOK EDITION</span>
+    <div class="price" style="background:var(--gold);color:#fff;font-size:8pt;font-weight:700;padding:4px 20px;border-radius:20px;letter-spacing:.1em;margin-bottom:20px;">COMPLETE SYSTEM — $27</div>
+    <h1>Couple's Wealth<em>Blueprint</em><span>Mini-Course Workbook</span></h1>
+    <div class="rule"></div>
+    <p class="sub">All six modules. Every framework, worksheet, and exercise.<br>Work through it at your own pace — together.</p>
+    <div class="modules-box">
+      <div class="mlabel">6 MODULES INSIDE</div>
+      <div class="mlist">
+        <div class="mitem"><span class="mbadge">MOD 1</span><div><div class="mname">Budgeting as a Team</div><div class="mdesc">Build a joint system that works for both personalities</div></div></div>
+        <div class="mitem"><span class="mbadge">MOD 2</span><div><div class="mname">Joint Investing Basics</div><div class="mdesc">Where to put money and in what order</div></div></div>
+        <div class="mitem"><span class="mbadge">MOD 3</span><div><div class="mname">Debt Payoff Strategy</div><div class="mdesc">Choose your method, build your attack plan</div></div></div>
+        <div class="mitem"><span class="mbadge">MOD 4</span><div><div class="mname">Your First Shared Goal</div><div class="mdesc">Pick it, plan it, and fund it together</div></div></div>
+        <div class="mitem"><span class="mbadge">MOD 5</span><div><div class="mname">Protecting What You Build</div><div class="mdesc">Insurance, wills, beneficiaries — the basics</div></div></div>
+        <div class="mitem"><span class="mbadge">MOD 6</span><div><div class="mname">Your 12-Month Wealth Roadmap</div><div class="mdesc">Tie it all together into one clear plan</div></div></div>
+      </div>
+    </div>
+    <div class="workbook-note">
+      <div class="wn-title">📖 Workbook Edition — No Videos Required</div>
+      <div class="wn-body">Same frameworks and exercises as the full course. Read each module intro, then complete the worksheets together. Estimated time: 2–3 hours total, or one module per week.</div>
+    </div>
+    <div class="ourbox">
+      <div class="olbl">OUR WORKBOOK</div>
+      <div class="ofields">
+        <div class="ofield"><label>Partner 1</label><input type="text" placeholder="Your name"></div>
+        <div class="ofield"><label>Partner 2</label><input type="text" placeholder="Their name"></div>
+        <div class="ofield"><label>Started</label><input type="text" placeholder="Date"></div>
+        <div class="ofield"><label>Completed</label><input type="text" placeholder="Date"></div>
+      </div>
+    </div>
+  </div>
+  <div class="bbar"></div>
+</div>
+
+<!-- ══ HOW TO USE ══ -->
+<div class="page">
+  <div class="hdr" style="background:var(--sage-dark);"><span class="hl">HOW TO USE THIS WORKBOOK</span><span class="hc">Couple's Wealth Blueprint Workbook</span><span class="hr">·</span></div>
+  <div class="body">
+<div style="background:var(--sage-pale,#f4faf7);border:.5px solid var(--sage-mid,#5d8b7a);border-left:3px solid var(--sage,#4a7c6b);border-radius:6px;padding:9px 14px 9px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:14px;font-size:8pt;color:var(--sage-dark,#2e5248);">
+  <span><strong style="font-size:8pt;letter-spacing:.06em;color:var(--sage-dark,#2e5248);">NEW TO OURSTEADY?</strong>&nbsp; To get the most from this product, read the companion How-To Guide first — it walks through every section step-by-step.</span>
+  <a href="https://2fold.pages.dev/howto/How%20to%20Use_%20Couple%27s%20Wealth%20Blueprint%20Workbook.pdf" target="_blank" rel="noopener" style="display:inline-block;flex-shrink:0;background:var(--sage,#4a7c6b);color:#fff;font-family:inherit;font-size:7.5pt;font-weight:700;letter-spacing:.06em;text-decoration:none;padding:5px 13px;border-radius:4px;white-space:nowrap;">How-To Guide</a>
+</div>
+
+    <div style="background:var(--warm);border-radius:6px;padding:13px 16px;font-size:9pt;color:var(--mid);margin-bottom:18px;line-height:1.7;">
+      This is a <strong style="color:var(--sage-dark);">self-directed workbook.</strong> Read each module intro together, then complete the worksheets as a couple. No finance background required.
+    </div>
+
+    <div class="section-lbl">TWO WAYS TO WORK THROUGH IT</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+      <div style="background:#fff;border:1.5px solid var(--sage);border-radius:8px;padding:14px 16px;">
+        <div style="font-size:9pt;font-weight:700;color:var(--sage-dark);margin-bottom:6px;">📅 One module per week</div>
+        <div style="font-size:8.5pt;color:var(--mid);line-height:1.65;">Do one module at your weekly or monthly money date. 30–45 minutes per session. 6 weeks to a complete financial plan. Best for couples who want to take their time and have real conversations.</div>
+      </div>
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:14px 16px;">
+        <div style="font-size:9pt;font-weight:700;color:var(--charcoal);margin-bottom:6px;">⚡ In one sitting</div>
+        <div style="font-size:8.5pt;color:var(--mid);line-height:1.65;">Block 2–3 hours together and work through all 6 modules in one focused session. Best for couples who want to get everything on the table at once and leave with a complete plan.</div>
+      </div>
+    </div>
+
+    <div class="section-lbl">BEFORE YOU START</div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;overflow:hidden;margin-bottom:16px;">
+      <div style="padding:10px 14px;border-bottom:.5px solid var(--light);display:flex;gap:10px;align-items:flex-start;font-size:8.5pt;">
+        <div class="cb"></div><div><strong style="color:var(--charcoal);">Fill in the cover page first</strong> — add your names and start date. This is your workbook now.</div>
+      </div>
+      <div style="padding:10px 14px;border-bottom:.5px solid var(--light);display:flex;gap:10px;align-items:flex-start;font-size:8.5pt;">
+        <div class="cb"></div><div><strong style="color:var(--charcoal);">Gather your numbers</strong> — have your latest bank statements, debt balances, and investment account totals accessible before Module 3.</div>
+      </div>
+      <div style="padding:10px 14px;border-bottom:.5px solid var(--light);display:flex;gap:10px;align-items:flex-start;font-size:8.5pt;">
+        <div class="cb"></div><div><strong style="color:var(--charcoal);">No blame zone</strong> — whatever the numbers say, you're here together. Curiosity over criticism.</div>
+      </div>
+      <div style="padding:10px 14px;display:flex;gap:10px;align-items:flex-start;font-size:8.5pt;">
+        <div class="cb"></div><div><strong style="color:var(--charcoal);">Sign the commitment page last</strong> (Module 6) — it means more after you've done the work.</div>
+      </div>
+    </div>
+
+    <div style="background:var(--gold-lite);border:.5px solid var(--gold);border-radius:6px;padding:11px 16px;font-size:8.5pt;color:var(--charcoal);line-height:1.7;margin-bottom:14px;">
+      <strong style="color:var(--sage-dark);">🖨 To print:</strong> Open in your browser → File → Print → All Pages → Save as PDF or send to printer.<br>
+      <strong style="color:var(--sage-dark);">💻 To fill digitally:</strong> Open in <strong>Adobe Reader</strong> (free at adobe.com) or <strong>Preview</strong> (Mac). Fill fields and save as a new file with your names — e.g. <em>"Smith-Jones Blueprint 2025.pdf"</em>.
+    </div>
+
+    <div class="section-lbl">THE 6 MODULES AT A GLANCE</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:6px;padding:9px 12px;font-size:8pt;"><div style="font-weight:700;color:var(--sage);margin-bottom:3px;">MOD 1 · Budget</div><div style="color:var(--mid);">Choose your method + build your joint framework</div></div>
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:6px;padding:9px 12px;font-size:8pt;"><div style="font-weight:700;color:var(--blue);margin-bottom:3px;">MOD 2 · Invest</div><div style="color:var(--mid);">The priority ladder — where to put money first</div></div>
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:6px;padding:9px 12px;font-size:8pt;"><div style="font-weight:700;color:var(--coral);margin-bottom:3px;">MOD 3 · Debt</div><div style="color:var(--mid);">Avalanche vs snowball — your attack plan</div></div>
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:6px;padding:9px 12px;font-size:8pt;"><div style="font-weight:700;color:var(--gold);margin-bottom:3px;">MOD 4 · Goals</div><div style="color:var(--mid);">Name your shared goal + fund it with a real number</div></div>
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:6px;padding:9px 12px;font-size:8pt;"><div style="font-weight:700;color:var(--sage-dark);margin-bottom:3px;">MOD 5 · Protect</div><div style="color:var(--mid);">Insurance + estate basics checklist</div></div>
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:6px;padding:9px 12px;font-size:8pt;"><div style="font-weight:700;color:var(--sage-mid);margin-bottom:3px;">MOD 6 · Roadmap</div><div style="color:var(--mid);">12-month quarterly plan + commitment page</div></div>
+    </div>
+  </div>
+  <div class="ftr">Couple's Wealth Blueprint Workbook · OurSteady.com</div>
+</div>
+
+<!-- ══ P2 HOW TO USE ══ -->
+<div class="page">
+  <div class="hdr" style="background:var(--sage-dark);"><span class="hl">HOW TO USE THIS WORKBOOK</span><span class="hc">Couple's Wealth Blueprint Workbook</span><span class="hr">2</span></div>
+  <div class="body" style="display:flex;flex-direction:column;justify-content:center;padding:32px 52px 60px;">
+    <div style="max-width:580px;margin:0 auto;width:100%;">
+      <div style="font-family:'Playfair Display',serif;font-size:16pt;color:var(--sage-dark);margin-bottom:6px;line-height:1.25;">Before you begin</div>
+      <div style="width:40px;height:3px;background:var(--gold);border-radius:2px;margin-bottom:20px;"></div>
+
+      <div style="background:#fff;border:1.5px solid var(--gold);border-radius:10px;padding:16px 20px;margin-bottom:16px;">
+        <div style="font-size:8.5pt;font-weight:700;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:9px;">Two ways to work through this</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div style="background:var(--sage-pale);border-radius:7px;padding:10px 12px;">
+            <div style="font-size:8.5pt;font-weight:700;color:var(--sage-dark);margin-bottom:4px;">⏱ One Session</div>
+            <div style="font-size:8pt;color:var(--mid);line-height:1.6;">Work through all 6 modules in one 2–3 hour sitting. Make it a money date — coffees on, phones away, both partners present.</div>
+          </div>
+          <div style="background:var(--sage-pale);border-radius:7px;padding:10px 12px;">
+            <div style="font-size:8.5pt;font-weight:700;color:var(--sage-dark);margin-bottom:4px;">📅 One Per Month</div>
+            <div style="font-size:8pt;color:var(--mid);line-height:1.6;">Do one module per money date over 6 months. Ideal if one topic feels heavy — Module 3 (debt) is often the one couples need extra time with.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+        <div style="display:flex;gap:11px;align-items:flex-start;background:#fff;border:.5px solid var(--light);border-radius:8px;padding:10px 13px;">
+          <div style="width:20px;height:20px;border-radius:50%;background:var(--gold);color:#fff;font-size:7.5pt;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
+          <div style="font-size:8.5pt;color:var(--charcoal);line-height:1.6;"><strong>Start with the cover page.</strong> Add your names and today's date. This makes the workbook yours — not a template, but a record you both started together.</div>
+        </div>
+        <div style="display:flex;gap:11px;align-items:flex-start;background:#fff;border:.5px solid var(--light);border-radius:8px;padding:10px 13px;">
+          <div style="width:20px;height:20px;border-radius:50%;background:var(--sage);color:#fff;font-size:7.5pt;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
+          <div style="font-size:8.5pt;color:var(--charcoal);line-height:1.6;"><strong>Print it or fill digitally in Adobe Reader.</strong> Adobe Reader is free at adobe.com. Fill the fields and save a copy with your names in the filename — e.g. <em>"Smith-Jones Blueprint 2025.pdf"</em>.</div>
+        </div>
+        <div style="display:flex;gap:11px;align-items:flex-start;background:#fff;border:.5px solid var(--light);border-radius:8px;padding:10px 13px;">
+          <div style="width:20px;height:20px;border-radius:50%;background:var(--sage);color:#fff;font-size:7.5pt;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
+          <div style="font-size:8.5pt;color:var(--charcoal);line-height:1.6;"><strong>Both partners participate.</strong> The exercises are designed for two people. You can read through it first — but don't fill it in alone. The value is in the shared decisions.</div>
+        </div>
+        <div style="display:flex;gap:11px;align-items:flex-start;background:#fff;border:.5px solid var(--light);border-radius:8px;padding:10px 13px;">
+          <div style="width:20px;height:20px;border-radius:50%;background:var(--sage);color:#fff;font-size:7.5pt;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</div>
+          <div style="font-size:8.5pt;color:var(--charcoal);line-height:1.6;"><strong>End with Module 6.</strong> The commitment page is the close — both signatures, both dates. Don't skip it. That signature is the moment you go from filling in a workbook to making a plan.</div>
+        </div>
+      </div>
+
+      <div style="background:var(--sage-dark);border-radius:8px;padding:12px 16px;font-size:8.5pt;color:rgba(200,232,220,.9);line-height:1.7;">
+        <strong style="color:var(--gold);">A note on Module 2 (Investing):</strong> The investment priority ladder is an educational framework — not personalised financial advice. For advice specific to your situation, work with a licensed financial advisor.
+      </div>
+    </div>
+  </div>
+  <div class="ftr">Couple's Wealth Blueprint Workbook · OurSteady.com</div>
+</div>
+
+<!-- ══ P3 MODULE 1: BUDGETING AS A TEAM ══ -->
+<div class="page">
+  <div class="hdr" style="background:var(--sage);"><span class="hl">MODULE 1 OF 6</span><span class="hc">Couple's Wealth Blueprint Workbook</span><span class="hr">3</span></div>
+  <div class="body">
+    <div class="module-strip">
+      <span class="module-num">MOD 1</span>
+      <div style="flex:1;"><div class="module-title">Budgeting as a Team</div><div class="module-sub">Build a joint system that works for both your money personalities</div></div>
+      <div style="background:rgba(255,255,255,.18);border-radius:20px;padding:3px 12px;font-size:7.5pt;font-weight:700;color:rgba(255,255,255,.9);white-space:nowrap;">⏱ 20 min</div>
+    </div>
+
+    <div class="insight-box">
+      <strong>The core idea:</strong> A budget isn't a restriction — it's a permission slip. When you build it together, it reflects both your values. The goal isn't a perfect spreadsheet; it's a shared agreement about how your money moves.
+    </div>
+
+    <div class="section-lbl">CHOOSE YOUR BUDGET METHOD</div>
+    <div class="tip-grid">
+      <div class="tip-card"><div class="tip-icon">50/30/20</div><div class="tip-title">The 50/30/20 Rule</div><div class="tip-body">50% needs · 30% wants · 20% savings & debt. Best for couples new to budgeting — simple, flexible, and easy to split.</div></div>
+      <div class="tip-card"><div class="tip-icon">💰</div><div class="tip-title">Zero-Based Budget</div><div class="tip-body">Every dollar gets a job until income minus expenses = $0. Best for couples who want maximum control and intentionality.</div></div>
+      <div class="tip-card"><div class="tip-icon">🏷️</div><div class="tip-title">Pay Yourself First</div><div class="tip-body">Save + invest first, spend the rest freely. Best for couples who hate tracking but are consistent with automation.</div></div>
+      <div class="tip-card"><div class="tip-icon">📦</div><div class="tip-title">The Envelope System</div><div class="tip-body">Cash (or digital) envelopes per category. Spend until it's gone. Best for variable spenders who need a hard limit.</div></div>
+    </div>
+    <div style="background:var(--sage-lite);border-radius:6px;padding:10px 14px;margin-bottom:14px;font-size:8.5pt;">
+      <strong style="color:var(--sage-dark);">We're choosing:</strong> <input class="iline" type="text" style="width:200px;"> &nbsp;&nbsp;
+      <strong style="color:var(--sage-dark);">Because:</strong> <input class="iline" type="text" style="width:260px;">
+    </div>
+
+    <div class="section-lbl">OUR JOINT BUDGET FRAMEWORK</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+      <div class="card">
+        <div class="col-hdr" style="background:var(--sage);">MONTHLY INCOME</div>
+        <div class="row"><span>Partner 1 take-home</span><input type="text" placeholder="$"></div>
+        <div class="row"><span>Partner 2 take-home</span><input type="text" placeholder="$"></div>
+        <div class="row"><span>Side income / other</span><input type="text" placeholder="$"></div>
+        <div class="total-row"><span>TOTAL</span><input type="text" placeholder="$"></div>
+      </div>
+      <div class="card">
+        <div class="col-hdr" style="background:var(--blue);">BUDGET ALLOCATION</div>
+        <div class="row"><span>Needs (housing, bills, food)</span><input type="text" placeholder="$  /  %"></div>
+        <div class="row"><span>Wants (dining, fun, lifestyle)</span><input type="text" placeholder="$  /  %"></div>
+        <div class="row"><span>Savings + investments</span><input type="text" placeholder="$  /  %"></div>
+        <div class="row"><span>Debt payments (above min)</span><input type="text" placeholder="$  /  %"></div>
+        <div class="total-row"><span>TOTAL ALLOCATED</span><input type="text" placeholder="$"></div>
+      </div>
+    </div>
+
+    <div class="section-lbl">HOW WE'LL HANDLE PERSONAL SPENDING</div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:12px 16px;margin-bottom:12px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px;font-size:8.5pt;">
+        <div><strong style="color:var(--charcoal);">Joint account contributions:</strong><br><span style="color:var(--mid);">How much each puts into shared account</span><br><input class="iline" type="text" style="width:100%;margin-top:4px;"></div>
+        <div><strong style="color:var(--charcoal);">Personal spending allowance:</strong><br><span style="color:var(--mid);">Each partner's guilt-free money per month</span><br><input class="iline" type="text" style="width:100%;margin-top:4px;"></div>
+      </div>
+      <div style="font-size:8.5pt;color:var(--mid);">Purchases over $<input class="iline" type="text" style="width:60px;"> require a conversation before buying. &nbsp; We review our budget: <input class="iline" type="text" style="width:140px;"></div>
+    </div>
+
+    <div class="section-lbl">MODULE 1 REFLECTION</div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:12px 16px;">
+      <div style="font-size:8.5pt;color:var(--mid);margin-bottom:6px;">What surprised us about our numbers?</div>
+      <textarea style="height:50px;" placeholder="Write here…"></textarea>
+      <div style="font-size:8.5pt;color:var(--mid);margin-bottom:6px;margin-top:6px;">One thing we're changing about how we budget:</div>
+      <textarea style="height:50px;" placeholder="Write here…"></textarea>
+      <div style="margin-top:10px;display:flex;align-items:center;gap:10px;background:var(--sage-lite);border-radius:6px;padding:8px 14px;">
+        <div style="width:16px;height:16px;border:2px solid var(--sage);border-radius:3px;flex-shrink:0;"></div>
+        <div style="font-size:8pt;font-weight:700;color:var(--sage-dark);">Module 1 Complete — both partners have reviewed and discussed.</div>
+        <div style="margin-left:auto;font-size:7.5pt;color:var(--mid);">Date: <input class="iline" type="text" style="width:80px;"></div>
+      </div>
+    </div>
+  </div>
+  <div class="ftr">Couple's Wealth Blueprint Workbook · OurSteady.com</div>
+</div>
+
+<!-- ══ P3 MODULE 2: JOINT INVESTING BASICS ══ -->
+<div class="page">
+  <div class="hdr" style="background:var(--blue);"><span class="hl">MODULE 2 OF 6</span><span class="hc">Couple's Wealth Blueprint Workbook</span><span class="hr">4</span></div>
+  <div class="body">
+    <div class="module-strip" style="background:var(--blue);">
+      <span class="module-num">MOD 2</span>
+      <div style="flex:1;"><div class="module-title">Joint Investing Basics</div><div class="module-sub">Where to put money and in what order — the investment priority ladder</div></div>
+      <div style="background:rgba(255,255,255,.18);border-radius:20px;padding:3px 12px;font-size:7.5pt;font-weight:700;color:rgba(255,255,255,.9);white-space:nowrap;">⏱ 25 min</div>
+    </div>
+
+    <div class="insight-box" style="background:var(--blue-lite);border-left-color:var(--blue);">
+      <strong style="color:var(--blue);">The core idea:</strong> You don't need to be experts. You need a system. Start with tax-advantaged accounts, automate contributions, and invest in low-cost index funds. Time in the market beats timing the market — every time.
+    </div>
+
+    <div style="background:var(--blue-lite);border:.5px solid #B0C4DE;border-radius:4px;padding:7px 12px;font-size:7.5pt;color:var(--blue);margin-bottom:10px;font-style:italic;">This framework is for educational purposes only. For advice specific to your situation, work with a licensed financial advisor.</div>
+
+    <div class="section-lbl">THE INVESTMENT PRIORITY LADDER</div>
+    <div style="margin-bottom:14px;">
+      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;background:#fff;border:.5px solid var(--light);border-radius:6px;padding:8px 12px;">
+        <div style="width:22px;height:22px;border-radius:50%;background:var(--sage);color:#fff;font-size:8pt;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
+        <div style="flex:1;"><div style="font-size:9pt;font-weight:600;color:var(--charcoal);margin-bottom:2px;">Employer 401(k) Match</div><div style="font-size:8pt;color:var(--mid);">Contribute enough to get the full match — it's a 50–100% instant return. Non-negotiable first step.</div></div>
+        <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;font-size:8pt;color:var(--mid);">Done? <input type="checkbox" style="width:12px;height:12px;"></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;background:#fff;border:.5px solid var(--light);border-radius:6px;padding:8px 12px;">
+        <div style="width:22px;height:22px;border-radius:50%;background:var(--coral);color:#fff;font-size:8pt;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
+        <div style="flex:1;"><div style="font-size:9pt;font-weight:600;color:var(--charcoal);margin-bottom:2px;">High-Interest Debt</div><div style="font-size:8pt;color:var(--mid);">Pay off any debt above ~7% interest before investing further. The math favours debt payoff at high rates.</div></div>
+        <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;font-size:8pt;color:var(--mid);">Done? <input type="checkbox" style="width:12px;height:12px;"></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;background:#fff;border:.5px solid var(--light);border-radius:6px;padding:8px 12px;">
+        <div style="width:22px;height:22px;border-radius:50%;background:var(--gold);color:#fff;font-size:8pt;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
+        <div style="flex:1;"><div style="font-size:9pt;font-weight:600;color:var(--charcoal);margin-bottom:2px;">Emergency Fund</div><div style="font-size:8pt;color:var(--mid);">Build 3–6 months of expenses in a high-yield savings account. This is your financial shock absorber.</div></div>
+        <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;font-size:8pt;color:var(--mid);">Done? <input type="checkbox" style="width:12px;height:12px;"></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;background:#fff;border:.5px solid var(--light);border-radius:6px;padding:8px 12px;">
+        <div style="width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;font-size:8pt;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</div>
+        <div style="flex:1;"><div style="font-size:9pt;font-weight:600;color:var(--charcoal);margin-bottom:2px;">Roth IRA / Traditional IRA</div><div style="font-size:8pt;color:var(--mid);">Max if eligible ($7,000/person in 2025). Roth = tax-free growth. Traditional = tax deduction now.</div></div>
+        <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;font-size:8pt;color:var(--mid);">Done? <input type="checkbox" style="width:12px;height:12px;"></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;background:#fff;border:.5px solid var(--light);border-radius:6px;padding:8px 12px;">
+        <div style="width:22px;height:22px;border-radius:50%;background:var(--sage-dark);color:#fff;font-size:8pt;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">5</div>
+        <div style="flex:1;"><div style="font-size:9pt;font-weight:600;color:var(--charcoal);margin-bottom:2px;">Max 401(k) Contributions</div><div style="font-size:8pt;color:var(--mid);">After the match, max the rest ($23,500/person in 2025) before taxable accounts.</div></div>
+        <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;font-size:8pt;color:var(--mid);">Done? <input type="checkbox" style="width:12px;height:12px;"></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;background:#fff;border:.5px solid var(--light);border-radius:6px;padding:8px 12px;">
+        <div style="width:22px;height:22px;border-radius:50%;background:var(--mid);color:#fff;font-size:8pt;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">6</div>
+        <div style="flex:1;"><div style="font-size:9pt;font-weight:600;color:var(--charcoal);margin-bottom:2px;">Taxable Brokerage</div><div style="font-size:8pt;color:var(--mid);">Once tax-advantaged accounts are maxed, invest additional savings here in index funds.</div></div>
+        <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;font-size:8pt;color:var(--mid);">Done? <input type="checkbox" style="width:12px;height:12px;"></div>
+      </div>
+    </div>
+
+    <div class="section-lbl">OUR INVESTMENT PLAN</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+      <div class="card"><div class="col-hdr" style="background:var(--blue);">PARTNER 1 ACCOUNTS</div>
+        <div class="row"><span>401(k) — current contribution</span><input type="text" placeholder="$  /  %"></div>
+        <div class="row"><span>Roth/Traditional IRA</span><input type="text" placeholder="$  /  %"></div>
+        <div class="row"><span>Brokerage / other</span><input type="text" placeholder="$  /  %"></div>
+        <div class="total-row"><span>TOTAL INVESTING</span><input type="text" placeholder="$"></div>
+      </div>
+      <div class="card"><div class="col-hdr" style="background:var(--blue);">PARTNER 2 ACCOUNTS</div>
+        <div class="row"><span>401(k) — current contribution</span><input type="text" placeholder="$  /  %"></div>
+        <div class="row"><span>Roth/Traditional IRA</span><input type="text" placeholder="$  /  %"></div>
+        <div class="row"><span>Brokerage / other</span><input type="text" placeholder="$  /  %"></div>
+        <div class="total-row"><span>TOTAL INVESTING</span><input type="text" placeholder="$"></div>
+      </div>
+    </div>
+
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:12px 16px;margin-bottom:12px;">
+      <div style="font-size:8.5pt;font-weight:600;color:var(--charcoal);margin-bottom:8px;">What we invest in (tick all that apply):</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;font-size:8.5pt;">
+        <label style="display:flex;gap:5px;"><input type="checkbox"> S&amp;P 500 index fund</label>
+        <label style="display:flex;gap:5px;"><input type="checkbox"> Total market index fund</label>
+        <label style="display:flex;gap:5px;"><input type="checkbox"> International index fund</label>
+        <label style="display:flex;gap:5px;"><input type="checkbox"> Bond fund</label>
+        <label style="display:flex;gap:5px;"><input type="checkbox"> Target-date fund</label>
+        <label style="display:flex;gap:5px;"><input type="checkbox"> Real estate / REITs</label>
+        <label style="display:flex;gap:5px;"><input type="checkbox"> Individual stocks</label>
+        <label style="display:flex;gap:5px;"><input type="checkbox"> Crypto (small %)</label>
+        <label style="display:flex;gap:5px;"><input type="checkbox"> Other: <input class="iline" type="text" style="width:80px;"></label>
+      </div>
+    </div>
+
+    <div class="section-lbl">MODULE 2 REFLECTION</div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:12px 16px;">
+      <div style="font-size:8.5pt;color:var(--mid);margin-bottom:6px;">The next step on the investment ladder we need to take:</div>
+      <textarea style="height:50px;" placeholder="Write here…"></textarea>
+      <div style="font-size:8.5pt;color:var(--mid);margin-bottom:6px;margin-top:6px;">One thing we'd like to learn more about:</div>
+      <textarea style="height:50px;" placeholder="Write here…"></textarea>
+      <div style="margin-top:10px;display:flex;align-items:center;gap:10px;background:var(--blue-lite);border-radius:6px;padding:8px 14px;">
+        <div style="width:16px;height:16px;border:2px solid var(--blue);border-radius:3px;flex-shrink:0;"></div>
+        <div style="font-size:8pt;font-weight:700;color:var(--blue);">Module 2 Complete — both partners have reviewed and discussed.</div>
+        <div style="margin-left:auto;font-size:7.5pt;color:var(--mid);">Date: <input class="iline" type="text" style="width:80px;"></div>
+      </div>
+    </div>
+  </div>
+  <div class="ftr">Couple's Wealth Blueprint Workbook · OurSteady.com</div>
+</div>
+
+<!-- ══ P4 MODULE 3: DEBT PAYOFF ══ -->
+<div class="page">
+  <div class="hdr" style="background:var(--coral);"><span class="hl">MODULE 3 OF 6</span><span class="hc">Couple's Wealth Blueprint Workbook</span><span class="hr">5</span></div>
+  <div class="body">
+    <div class="module-strip" style="background:var(--coral);">
+      <span class="module-num">MOD 3</span>
+      <div style="flex:1;"><div class="module-title">Debt Payoff Strategy</div><div class="module-sub">Choose your method and build your attack plan together</div></div>
+      <div style="background:rgba(255,255,255,.18);border-radius:20px;padding:3px 12px;font-size:7.5pt;font-weight:700;color:rgba(255,255,255,.9);white-space:nowrap;">⏱ 30 min</div>
+    </div>
+
+    <div class="insight-box" style="background:var(--coral-lite);border-left-color:var(--coral);">
+      <strong style="color:var(--coral);">The core idea:</strong> Debt doesn't disappear by ignoring it — but it does disappear faster when you attack it with a plan. Choosing a method together and committing to it changes everything. The method matters less than the momentum.
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+      <div style="background:#fff;border:1.5px solid var(--coral);border-radius:8px;padding:12px 14px;">
+        <div style="font-size:8.5pt;font-weight:700;color:var(--coral);margin-bottom:5px;">🔥 AVALANCHE METHOD</div>
+        <div style="font-size:8pt;color:var(--mid);margin-bottom:6px;">Pay minimums on all debts. Put every extra dollar toward the <strong>highest interest rate</strong> debt first. Mathematically optimal — saves the most money.</div>
+        <div style="font-size:8pt;font-weight:600;color:var(--charcoal);">Best for: analytically minded couples who are motivated by data.</div>
+      </div>
+      <div style="background:#fff;border:1.5px solid var(--blue);border-radius:8px;padding:12px 14px;">
+        <div style="font-size:8.5pt;font-weight:700;color:var(--blue);margin-bottom:5px;">⛄ SNOWBALL METHOD</div>
+        <div style="font-size:8pt;color:var(--mid);margin-bottom:6px;">Pay minimums on all debts. Put every extra dollar toward the <strong>smallest balance</strong> first. Costs slightly more in interest but provides fast wins.</div>
+        <div style="font-size:8pt;font-weight:600;color:var(--charcoal);">Best for: couples who need motivation and visible progress to stay on track.</div>
+      </div>
+    </div>
+    <div style="background:var(--sage-lite);border-radius:6px;padding:8px 14px;margin-bottom:14px;font-size:8.5pt;">
+      <strong style="color:var(--sage-dark);">We're choosing:</strong> <label style="margin-right:14px;"><input type="radio" name="method"> Avalanche</label><label><input type="radio" name="method"> Snowball</label> &nbsp;&nbsp;
+      <strong style="color:var(--sage-dark);">Our extra monthly payment amount: $</strong><input class="iline" type="text" style="width:80px;">
+    </div>
+
+    <div class="section-lbl">OUR DEBT ATTACK PLAN</div>
+    <table style="width:100%;border-collapse:collapse;font-size:8pt;margin-bottom:12px;">
+      <thead><tr style="background:var(--coral);">
+        <th style="padding:6px 8px;color:#fff;text-align:left;">Debt Name</th>
+        <th style="padding:6px;color:#fff;">Balance</th>
+        <th style="padding:6px;color:#fff;">Interest %</th>
+        <th style="padding:6px;color:#fff;">Min. Payment</th>
+        <th style="padding:6px;color:#fff;">Attack Order</th>
+        <th style="padding:6px;color:#fff;">Est. Payoff</th>
+      </tr></thead>
+      <tbody>
+        <tr><td style="padding:5px 8px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;outline:none;" placeholder="e.g. Visa"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td></tr>
+        <tr style="background:var(--coral-lite);"><td style="padding:5px 8px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td></tr>
+        <tr><td style="padding:5px 8px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td></tr>
+        <tr style="background:var(--coral-lite);"><td style="padding:5px 8px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td></tr>
+        <tr><td style="padding:5px 8px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td></tr>
+        <tr style="background:var(--coral-lite);"><td style="padding:5px 8px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;text-align:center;outline:none;"></td></tr>
+      </tbody>
+    </table>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:12px 14px;">
+        <div style="font-size:8.5pt;font-weight:600;color:var(--charcoal);margin-bottom:8px;">Our debt-free milestones 🎉</div>
+        <div style="font-size:8.5pt;color:var(--mid);margin-bottom:5px;">First debt gone: <input class="iline" type="text" style="width:130px;"> by <input class="iline" type="text" style="width:80px;"></div>
+        <div style="font-size:8.5pt;color:var(--mid);margin-bottom:5px;">Halfway point: $<input class="iline" type="text" style="width:80px;"> by <input class="iline" type="text" style="width:80px;"></div>
+        <div style="font-size:8.5pt;color:var(--mid);">Completely debt-free: by <input class="iline" type="text" style="width:110px;"></div>
+      </div>
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:12px 14px;">
+        <div style="font-size:8.5pt;font-weight:600;color:var(--charcoal);margin-bottom:8px;">When we're debt-free, we'll…</div>
+        <textarea style="height:56px;" placeholder="Describe your debt-free celebration or what you'll do with that money…"></textarea>
+      </div>
+    </div>
+
+    <div class="section-lbl">MODULE 3 REFLECTION</div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:12px 16px;">
+      <div style="font-size:8.5pt;color:var(--mid);margin-bottom:6px;">How does it feel to see all our debt mapped out in one place?</div>
+      <textarea style="height:28px;" placeholder="Write here…"></textarea>
+      <div style="font-size:8.5pt;color:var(--mid);margin-bottom:6px;margin-top:6px;">What will we do with the freed-up monthly cash once debt is gone?</div>
+      <textarea style="height:28px;" placeholder="Write here…"></textarea>
+    </div>
+  </div>
+  <div class="ftr">Couple's Wealth Blueprint Workbook · OurSteady.com</div>
+</div>
+
+<!-- ══ P5 MODULE 4: FIRST SHARED GOAL ══ -->
+<div class="page">
+  <div class="hdr" style="background:var(--gold);"><span class="hl">MODULE 4 OF 6</span><span class="hc">Couple's Wealth Blueprint Workbook</span><span class="hr">6</span></div>
+  <div class="body">
+    <div class="module-strip" style="background:var(--gold);">
+      <span class="module-num">MOD 4</span>
+      <div style="flex:1;"><div class="module-title">Your First Shared Goal</div><div class="module-sub">Pick it, plan it, fund it — and make it meaningful to both of you</div></div>
+      <div style="background:rgba(255,255,255,.18);border-radius:20px;padding:3px 12px;font-size:7.5pt;font-weight:700;color:rgba(255,255,255,.9);white-space:nowrap;">⏱ 25 min</div>
+    </div>
+
+    <div class="insight-box" style="background:var(--gold-lite);border-left-color:var(--gold);">
+      <strong style="color:#8B6020;">The core idea:</strong> Couples who save toward shared goals build more wealth — and stronger relationships — than those who manage money separately. A shared goal is a shared identity. It changes how you think about every dollar.
+    </div>
+
+    <div class="section-lbl">BRAINSTORM: OUR POTENTIAL GOALS</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px;">
+      <script>
+        ['Home down payment','Emergency fund','Vacation / travel','Wedding','Baby / family planning','New car (cash)','Start a business','Early retirement','Investment property','Education / courses','Home renovation','Giving / charity'].forEach(g=>{
+          document.write(`<label style="background:#fff;border:.5px solid var(--light);border-radius:5px;padding:6px 8px;font-size:8pt;display:flex;gap:5px;align-items:center;cursor:pointer;"><input type="checkbox" style="flex-shrink:0;"> ${g}</label>`);
+        });
+      </script>
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:5px;padding:6px 8px;font-size:8pt;display:flex;gap:5px;align-items:center;">Other: <input type="text" style="flex:1;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-size:8pt;outline:none;"></div>
+    </div>
+
+    <div class="section-lbl">OUR #1 SHARED GOAL — THE PLAN</div>
+    <div style="background:#fff;border:1.5px solid var(--gold);border-radius:10px;padding:14px 18px;margin-bottom:12px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div>
+          <div style="font-size:8.5pt;color:var(--mid);margin-bottom:4px;">Our goal is:</div>
+          <input type="text" class="iline" style="width:100%;font-size:10pt;font-weight:600;">
+          <div style="font-size:8.5pt;color:var(--mid);margin-top:10px;margin-bottom:4px;">Why this matters to Partner 1:</div>
+          <textarea style="height:32px;" placeholder="In your own words…"></textarea>
+          <div style="font-size:8.5pt;color:var(--mid);margin-top:6px;margin-bottom:4px;">Why this matters to Partner 2:</div>
+          <textarea style="height:32px;" placeholder="In your own words…"></textarea>
+        </div>
+        <div>
+          <div style="font-size:8.5pt;color:var(--mid);margin-bottom:4px;">Total amount needed: $</div>
+          <input type="text" class="iline" style="width:100%;font-size:12pt;font-weight:700;">
+          <div style="font-size:8.5pt;color:var(--mid);margin-top:10px;margin-bottom:4px;">Already saved: $</div>
+          <input type="text" class="iline" style="width:100%;font-size:10pt;">
+          <div style="font-size:8.5pt;color:var(--mid);margin-top:10px;margin-bottom:4px;">Remaining gap: $</div>
+          <input type="text" class="iline" style="width:100%;font-size:10pt;">
+          <div style="font-size:8.5pt;color:var(--mid);margin-top:10px;margin-bottom:4px;">Target date:</div>
+          <input type="text" class="iline" style="width:100%;">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding-top:10px;border-top:.5px solid var(--light);">
+        <div style="font-size:8.5pt;color:var(--mid);">Months until goal: <input class="iline" type="text" style="width:60px;"></div>
+        <div style="font-size:8.5pt;color:var(--mid);">Needed per month: $<input class="iline" type="text" style="width:70px;"></div>
+        <div style="font-size:8.5pt;color:var(--mid);">Saving account: <input class="iline" type="text" style="width:100px;"></div>
+      </div>
+    </div>
+
+    <div class="section-lbl">MAKE IT AUTOMATIC</div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:12px 16px;margin-bottom:12px;">
+      <div class="cb-row"><div class="cb"></div>Open a dedicated savings account named after this goal</div>
+      <div class="cb-row"><div class="cb"></div>Set up an automatic transfer on payday: $<input class="iline" type="text" style="width:80px;"> on the <input class="iline" type="text" style="width:30px;"> of each month</div>
+      <div class="cb-row"><div class="cb"></div>Put this goal on both our phone lock screens as a visual reminder</div>
+      <div class="cb-row"><div class="cb"></div>Schedule a monthly 5-min check-in to watch the balance grow</div>
+    </div>
+
+    <div class="section-lbl">MODULE 4 REFLECTION</div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:12px 16px;">
+      <div style="font-size:8.5pt;color:var(--mid);margin-bottom:6px;">How does it feel to have a clear shared goal with a real number and date?</div>
+      <textarea style="height:36px;" placeholder="Write here…"></textarea>
+    </div>
+  </div>
+  <div class="ftr">Couple's Wealth Blueprint Workbook · OurSteady.com</div>
+</div>
+
+<!-- ══ P6 MODULE 5 & 6 ══ -->
+<div class="page">
+  <div class="hdr" style="background:var(--sage-dark);"><span class="hl">MODULES 5 &amp; 6 OF 6</span><span class="hc">Couple's Wealth Blueprint Workbook</span><span class="hr">7</span></div>
+  <div class="body">
+
+    <div class="module-strip" style="background:var(--sage-dark);margin-bottom:10px;">
+      <span class="module-num">MOD 5</span>
+      <div style="flex:1;"><div class="module-title">Protecting What You Build</div><div class="module-sub">Insurance, wills, and beneficiaries — the unsexy but essential stuff</div></div>
+      <div style="background:rgba(255,255,255,.18);border-radius:20px;padding:3px 12px;font-size:7.5pt;font-weight:700;color:rgba(255,255,255,.9);white-space:nowrap;">⏱ 20 min</div>
+    </div>
+
+    <div class="insight-box">
+      <strong>The core idea:</strong> Building wealth takes years. Losing it can take one unexpected event. Protection isn't pessimism — it's the responsible side of financial planning. Most couples skip this entirely. Don't be most couples.
+    </div>
+
+    <div class="section-lbl">PROTECTION CHECKLIST</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+      <div class="card"><div class="col-hdr" style="background:var(--sage-dark);">INSURANCE</div>
+        <div style="padding:10px 12px;">
+          <div class="cb-row"><div class="cb"></div><div>Health insurance — both covered? <input class="iline" type="text" style="width:80px;" placeholder="Provider"></div></div>
+          <div class="cb-row"><div class="cb"></div><div>Life insurance — amount adequate? Partner 1: $<input class="iline" type="text" style="width:70px;"> Partner 2: $<input class="iline" type="text" style="width:70px;"></div></div>
+          <div class="cb-row"><div class="cb"></div><div>Disability insurance — covers 60-70% of income?</div></div>
+          <div class="cb-row"><div class="cb"></div><div>Renter's / homeowner's insurance — updated value?</div></div>
+          <div class="cb-row"><div class="cb"></div><div>Car insurance — right coverage level?</div></div>
+          <div class="cb-row"><div class="cb"></div><div>Umbrella policy (if high net worth)?</div></div>
+        </div>
+      </div>
+      <div class="card"><div class="col-hdr" style="background:var(--blue);">ESTATE BASICS</div>
+        <div style="padding:10px 12px;">
+          <div class="cb-row"><div class="cb"></div><div>Will / testament — both have one?</div></div>
+          <div class="cb-row"><div class="cb"></div><div>Beneficiaries updated on all accounts (401k, IRA, life insurance)?</div></div>
+          <div class="cb-row"><div class="cb"></div><div>Power of attorney designated?</div></div>
+          <div class="cb-row"><div class="cb"></div><div>Healthcare directive / living will?</div></div>
+          <div class="cb-row"><div class="cb"></div><div>Emergency binder: passwords, accounts, contacts — accessible to both?</div></div>
+          <div class="cb-row"><div class="cb"></div><div>Both partners know where all financial documents are?</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:8.5pt;">
+      <strong style="color:var(--charcoal);">Our top protection priority to address this month:</strong>
+      <input class="iline" type="text" style="width:100%;margin-top:5px;display:block;">
+    </div>
+
+    <div class="module-strip" style="background:var(--sage);margin-bottom:10px;">
+      <span class="module-num">MOD 6</span>
+      <div style="flex:1;"><div class="module-title">Your 12-Month Wealth Roadmap</div><div class="module-sub">Tie it all together into one clear, shared action plan</div></div>
+      <div style="background:rgba(255,255,255,.18);border-radius:20px;padding:3px 12px;font-size:7.5pt;font-weight:700;color:rgba(255,255,255,.9);white-space:nowrap;">⏱ 30 min</div>
+    </div>
+
+    <div class="section-lbl">OUR 12-MONTH PLAN</div>
+    <table style="width:100%;border-collapse:collapse;font-size:8pt;margin-bottom:12px;">
+      <thead><tr style="background:var(--sage);"><th style="padding:6px 8px;color:#fff;text-align:left;width:80px;">Quarter</th><th style="padding:6px;color:#fff;">Financial Focus</th><th style="padding:6px;color:#fff;">Goal / Milestone</th><th style="padding:6px;color:#fff;">Amount / Target</th><th style="padding:6px;color:#fff;">Done?</th></tr></thead>
+      <tbody>
+        <tr style="background:var(--sage-pale);"><td style="padding:6px 8px;font-weight:700;color:var(--sage-dark);">Q1 · Jan–Mar</td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;outline:none;"></td><td style="padding:5px;text-align:center;"><input type="checkbox"></td></tr>
+        <tr><td style="padding:6px 8px;font-weight:700;color:var(--sage-dark);">Q2 · Apr–Jun</td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;outline:none;"></td><td style="padding:5px;text-align:center;"><input type="checkbox"></td></tr>
+        <tr style="background:var(--sage-pale);"><td style="padding:6px 8px;font-weight:700;color:var(--sage-dark);">Q3 · Jul–Sep</td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;outline:none;"></td><td style="padding:5px;text-align:center;"><input type="checkbox"></td></tr>
+        <tr><td style="padding:6px 8px;font-weight:700;color:var(--sage-dark);">Q4 · Oct–Dec</td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;outline:none;"></td><td style="padding:5px;"><input type="text" style="width:100%;border:none;border-bottom:1px solid var(--warm-mid);background:transparent;font-family:'DM Sans',sans-serif;font-size:8pt;outline:none;"></td><td style="padding:5px;text-align:center;"><input type="checkbox"></td></tr>
+      </tbody>
+    </table>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="background:#fff;border:.5px solid var(--light);border-radius:8px;padding:12px 14px;">
+        <div style="font-size:8.5pt;font-weight:600;color:var(--charcoal);margin-bottom:8px;">By end of this year we will have:</div>
+        <div class="cb-row"><div class="cb"></div><div>Net worth of: $<input class="iline" type="text" style="width:100px;"></div></div>
+        <div class="cb-row"><div class="cb"></div><div>Saved: $<input class="iline" type="text" style="width:100px;"> total</div></div>
+        <div class="cb-row"><div class="cb"></div><div>Paid off: $<input class="iline" type="text" style="width:80px;"> in debt</div></div>
+        <div class="cb-row"><div class="cb"></div><div>Invested: $<input class="iline" type="text" style="width:100px;"> total</div></div>
+        <div class="cb-row"><div class="cb"></div><div>Achieved goal: <input class="iline" type="text" style="width:120px;"></div></div>
+      </div>
+      <div style="background:var(--sage-dark);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between;">
+        <div style="font-family:'Playfair Display',serif;font-size:12pt;color:#fff;margin-bottom:8px;line-height:1.4;">One year from now, we'll look back on this moment as the one where everything changed.</div>
+        <div style="font-size:8.5pt;color:rgba(200,232,220,.8);">OurSteady.com · Keep going. Together.</div>
+      </div>
+    </div>
+
+    <div style="background:var(--gold-lite);border:.5px solid var(--gold);border-radius:8px;padding:12px 16px;">
+      <div style="font-size:8.5pt;font-weight:700;color:var(--sage-dark);margin-bottom:6px;">Our commitment to each other:</div>
+      <div style="font-size:8.5pt;color:var(--mid);margin-bottom:8px;font-style:italic;">We commit to showing up for our money date every month, being honest about our numbers, and choosing our shared future over short-term comfort. Signed:</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        <div><div style="border-bottom:1px solid var(--gold);margin-bottom:4px;height:24px;"></div><div style="font-size:8pt;color:var(--mid);">Partner 1 &nbsp;&nbsp; Date: ___________</div></div>
+        <div><div style="border-bottom:1px solid var(--gold);margin-bottom:4px;height:24px;"></div><div style="font-size:8pt;color:var(--mid);">Partner 2 &nbsp;&nbsp; Date: ___________</div></div>
+      </div>
+    </div>
+
+    <div style="margin-top:14px;text-align:center;padding:10px 0;border-top:.5px solid var(--light);">
+      <div style="font-size:8pt;color:var(--mid);line-height:1.6;">Want the full guided experience with video walkthroughs for every module?<br>
+      <strong style="color:var(--sage-dark);">The Wealth Blueprint Mini-Course — 6 video modules + this workbook — is at OurSteady.com/blueprint</strong></div>
+    </div>
+
+  </div>
+  <div class="ftr">Couple's Wealth Blueprint Workbook · OurSteady.com</div>
+</div>
+
+<script>
+(function(){
+  const KEY_PREFIX = 'wbwk_';
+  function saveField(el) {
+    const id = el.dataset.fid;
+    if (!id) return;
+    try {
+      if (el.type === 'checkbox' || el.type === 'radio') localStorage.setItem(KEY_PREFIX + id, el.checked ? '1' : '0');
+      else localStorage.setItem(KEY_PREFIX + id, el.value);
+    } catch(e) {}
+  }
+  function loadAll() {
+    document.querySelectorAll('input[data-fid], textarea[data-fid]').forEach(el => {
+      try {
+        const val = localStorage.getItem(KEY_PREFIX + el.dataset.fid);
+        if (val === null) return;
+        if (el.type === 'checkbox' || el.type === 'radio') el.checked = val === '1';
+        else el.value = val;
+      } catch(e) {}
+    });
+  }
+  function assignIds() {
+    let i = 0;
+    document.querySelectorAll('input, textarea').forEach(el => {
+      if (!el.dataset.fid) el.dataset.fid = 'f' + (i++);
+      el.addEventListener('change', () => saveField(el));
+      el.addEventListener('input', () => saveField(el));
+    });
+  }
+  document.addEventListener('DOMContentLoaded', () => { assignIds(); loadAll(); });
+})();
+</script>
+
+<!-- ═══ BACK COVER ═══ -->
+<div class="page">
+<div class="bp bp-teal">
+  <div class="bp-topbar"></div>
+  <div class="bp-inner">
+    <div class="card">
+
+      <div class="card-hdr">
+        <div class="card-hdr-stripe stripe-teal"></div>
+        <div class="eyebrow">OurSteady Financial Ecosystem</div>
+        <h2>You have the blueprint.<br><em>Now execute it.</em></h2>
+        <div class="sub">The Workbook is the plan. Here's every tool that helps you follow through on it.</div>
+        <div class="rule"></div>
+      </div>
+
+      <div class="card-body">
+
+        <div class="tier-lbl">Foundation — Already Yours</div>
+        <div class="pr have">
+          <div class="badge b-free">FREE</div>
+          <div class="pinfo"><a href="https://OurSteady.com/" style="text-decoration:none;"><div class="pname">Money Date Starter Kit</div></a><div class="pdesc">The ritual that brought you here.</div></div>
+          <div class="ptag tag-have">✓ Included</div>
+        </div>
+        <div class="pr have">
+          <div class="badge b-17">$17</div>
+          <div class="pinfo"><a href="https://OurSteady.com/workbook" style="text-decoration:none;"><div class="pname">Wealth Blueprint Workbook</div></a><div class="pdesc">6-module financial plan — budget, invest, debt, goals, protect, roadmap.</div></div>
+          <div class="ptag tag-have">✓ You Have This</div>
+        </div>
+
+        <div class="tier-lbl">Add the Data Layer — Essential Pair</div>
+        <div class="pr next">
+          <div class="badge b-9">$9</div>
+          <div class="pinfo"><a href="https://OurSteady.com/tracker" style="text-decoration:none;"><div class="pname">Couples Wealth Tracker</div></a><div class="pdesc">Track every number from your Blueprint month by month. 19-page system.</div></div>
+          <div class="ptag tag-next">→ Pair Now</div>
+        </div>
+
+        <div class="tier-lbl">Support the Conversations</div>
+        <div class="pr locked">
+          <div class="badge b-7">$7</div>
+          <div class="pinfo"><a href="https://OurSteady.com/sheet" style="text-decoration:none;"><div class="pname">Money Scripts Cheat Sheet</div></a><div class="pdesc">Exact words for the 5 hardest money conversations.</div></div>
+          <div class="ptag tag-lock">Add On</div>
+        </div>
+
+        <div class="tier-lbl">Reset & Execute the Plan</div>
+        <div class="pr locked">
+          <div class="badge b-37">$37</div>
+          <div class="pinfo"><a href="https://OurSteady.com/reset" style="text-decoration:none;"><div class="pname">90-Day Financial Reset Kit</div></a><div class="pdesc">Clear the clutter first — then execute the Blueprint with a clean slate.</div></div>
+          <div class="ptag tag-lock">Strategy</div>
+        </div>
+
+        <div class="tier-lbl">Deepen the Relationship Layer</div>
+        <div class="ck-group locked">
+          <div class="ck-label">
+            <div class="cktitle">✦ The Connection Kit</div>
+            <div class="ckprice">$67 bundle</div>
+          </div>
+          <div class="ck-items">
+            <a href="https://OurSteady.com/deck" style="text-decoration:none;"><div class="ck-item">Money Date Conversation Deck — guided prompts for every money date</div></a>
+            <a href="https://OurSteady.com/personality" style="text-decoration:none;"><div class="ck-item">Money Personality System — understand how your partner thinks about money</div></a>
+            <a href="https://OurSteady.com/vault" style="text-decoration:none;"><div class="ck-item">Life Admin &amp; Legacy Vault — wills, insurance, digital legacy in one place</div></a>
+          </div>
+        </div>
+
+        <div class="tier-lbl">Unlocks Via Email — After Purchase</div>
+        <div class="pr soon">
+          <div class="badge b-47">$47</div>
+          <div class="pinfo"><a href="https://OurSteady.com/accelerator" style="text-decoration:none;"><div class="pname">Couples Wealth Accelerator</div></a><div class="pdesc">12-month implementation system — turns your Blueprint into a monthly rhythm.</div></div>
+          <div class="ptag tag-soon">✉ Via Email</div>
+        </div>
+        <div class="pr soon">
+          <div class="badge b-37">$37</div>
+          <div class="pinfo"><a href="https://OurSteady.com/investment" style="text-decoration:none;"><div class="pname">Investment Starter Kit</div></a><div class="pdesc">The investment chapter of your Blueprint, expanded into a full strategy.</div></div>
+          <div class="ptag tag-soon">✉ Via Email</div>
+        </div>
+        <div class="pr soon">
+          <div class="badge b-97">$97</div>
+          <div class="pinfo"><a href="https://OurSteady.com/video" style="text-decoration:none;"><div class="pname">Couples Wealth Blueprint — Video Modules</div></a><div class="pdesc">Watch the Blueprint come to life — guided video walkthroughs.</div></div>
+          <div class="ptag tag-soon">✉ Via Email</div>
+        </div>
+
+      </div>
+
+      <div class="card-cta">
+        <div class="cta-l">
+          <div class="clbl">Blueprint → Tracker → Reset</div>
+          <div class="ctxt">You made the plan. Now track it monthly ($9) and clear the slate with the 90-Day Reset ($37).</div>
+        </div>
+        <a href="https://OurSteady.com/" style="text-decoration:none;"><div class="cta-r">OurSteady.com</div></a>
+      </div>
+
+      <div class="card-foot">
+        <div class="fl">OurSteady Financial Ecosystem · All products work as a complete system</div>
+        <div class="fr">OurSteady.com</div>
+      </div>
+
+    </div>
+  </div>
+  <div class="bp-botbar"></div>
+</div>
+</div>
+
+</body>
+</html>

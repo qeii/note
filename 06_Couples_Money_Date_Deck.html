@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>12-Month Money Date Conversation Deck</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sage:#4A7C6B; --sage-dark:#2E5248; --sage-mid:#5D8B7A;
+    --sage-lite:#EAF2EE; --sage-pale:#F4FAF7;
+    --cream:#FDFAF5; --warm:#F2EAD8; --warm-mid:#E8DCC8;
+    --gold:#C9963C; --gold-lite:#F5E6C8; --gold-pale:#FDF6E8; --plum:#7B5EA7; --plum-lite:#F2EBF8; --teal:#2A7B6E; --teal-dark:#164F46; --teal-lite:#E2F4F1; --amber:#B85C2E; --amber-lite:#FAF0E8;
+    --charcoal:#2C2C2C; --mid:#6B6B6B; --light:#E0DCD4; --pale:#F0EDE8;
+    --coral:#D4795A; --coral-lite:#FAEDE8;
+    --blue:#5B6F8E; --blue-lite:#EBF0F6;
+    --white:#fff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:#e8e4dc;color:var(--charcoal);font-size:10pt;line-height:1.5;}
+  .page{width:816px;min-height:1056px;margin:0 auto 32px;background:var(--cream);position:relative;overflow:hidden;page-break-after:always;}
+  @media print{.page{margin:0;page-break-after:always;}body{background:#fff;}}
+
+  /* Shared Components */
+  .hdr{background:var(--sage);padding:10px 28px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--gold);}
+  .hdr .hl{font-size:7.5pt;font-weight:700;color:var(--gold);letter-spacing:.08em;}
+  .hdr .hc{font-size:8pt;color:rgba(255,255,255,.8);}
+  .hdr .hr{font-size:7pt;color:rgba(255,255,255,.5);}
+  .ftr{background:var(--sage-dark);padding:5px 28px;text-align:center;font-size:7pt;color:rgba(255,255,255,.7);position:absolute;bottom:0;left:0;right:0;}
+  .body{padding:30px 40px 60px;}
+
+  /* Cover Page */
+  #p1{background:var(--cream);border:12px solid var(--sage-dark);}
+  #p1 .hero{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;text-align:center;}
+  #p1 .deck-badge{background:var(--gold);color:#fff;font-size:8pt;font-weight:700;padding:5px 20px;border-radius:20px;letter-spacing:.1em;margin-bottom:20px;}
+  #p1 h1{font-family:'Playfair Display',serif;font-size:44pt;line-height:1.1;color:var(--sage-dark);margin-bottom:15px;}
+  #p1 h1 em{color:var(--gold);font-style:italic;display:block;}
+  #p1 .sub{font-size:12pt;color:var(--mid);margin-bottom:40px;max-width:500px;}
+  #p1 .card-stack{display:flex;gap:10px;margin-bottom:40px;}
+  #p1 .stack-item{width:60px;height:80px;background:#fff;border:1px solid var(--light);border-radius:6px;transform:rotate(-5deg);box-shadow:2px 2px 10px rgba(0,0,0,0.05);}
+  #p1 .stack-item:nth-child(2){transform:rotate(5deg);background:var(--sage-lite);}
+  #p1 .stack-item:nth-child(3){transform:rotate(-2deg);background:var(--gold-lite);}
+  
+  /* Instructions */
+  .how-to{background:var(--warm);padding:20px;border-radius:10px;margin-bottom:30px;}
+  .how-to h2{font-family:'Playfair Display',serif;font-size:14pt;margin-bottom:10px;color:var(--sage-dark);}
+  .how-to p{font-size:9pt;color:var(--mid);}
+
+  /* Card Grid */
+  .card-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .q-card{background:#fff;border:1px solid var(--light);border-radius:12px;padding:24px;min-height:180px;display:flex;flex-direction:column;justify-content:space-between;position:relative;box-shadow:0 2px 8px rgba(0,0,0,0.03);}
+  .q-card::before{content:'';position:absolute;top:10px;left:10px;right:10px;bottom:10px;border:0.5px solid var(--pale);border-radius:8px;pointer-events:none;}
+  .q-cat{font-size:7pt;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:15px;}
+  .q-text{font-family:'Playfair Display',serif;font-size:12pt;color:var(--sage-dark);line-height:1.4;flex:1;}
+  .q-num{font-size:7pt;color:var(--light);text-align:right;}
+  
+  /* Category Colors */
+  .cat-dreams{color:var(--blue);}
+  .cat-reflect{color:var(--sage);}
+  .cat-hard{color:var(--coral);}
+  .cat-fun{color:var(--coral);}
+
+  /* Section Label */
+  .section-lbl{font-family:'Playfair Display',serif;font-size:11pt;font-weight:700;color:var(--sage-dark);text-transform:uppercase;letter-spacing:.05em;}
+
+
+  /* ═══ BACK COVER BP STYLES ═══ */
+.bp {
+  /* override per-product via class: .bp-sage / .bp-plum / etc */
+  --pa: var(--sage-dark);   /* primary accent — header + bars */
+  --pa-mid: var(--sage-mid);
+  --pa-lite: var(--sage-lite);
+  --pa-pale: var(--sage-pale);
+  --tag-have-bg: var(--gold);
+  --tag-next-bg: var(--pa);
+
+  min-height:1056px;
+  display:flex; flex-direction:column;
+  background:var(--pa);
+}
+
+/* product-specific accent overrides */
+.bp-sage    { --pa:var(--sage-dark); --pa-mid:var(--sage-mid); --pa-lite:var(--sage-lite); --pa-pale:var(--sage-pale); }
+.bp-plum    { --pa:#5B3F8A; --pa-mid:#7B5EA7; --pa-lite:#F2EBF8; --pa-pale:#F8F4FC; }
+.bp-teal    { --pa:var(--teal-dark); --pa-mid:var(--teal); --pa-lite:var(--teal-lite); --pa-pale:#F0FAF8; }
+.bp-amber   { --pa:#8A3F18; --pa-mid:var(--amber); --pa-lite:var(--amber-lite); --pa-pale:#FDF6F0; }
+.bp-sagedark{ --pa:#1E3D33; --pa-mid:var(--sage-dark); --pa-lite:var(--sage-lite); --pa-pale:var(--sage-pale); }
+/* Deck/Invest/Vault all sage but differentiated by inner stripe color below */
+
+.bp-topbar  { height:4px; background:linear-gradient(90deg,var(--gold),var(--pa-mid),var(--pa)); }
+.bp-botbar  { height:4px; background:linear-gradient(90deg,var(--pa),var(--pa-mid),var(--gold)); }
+
+.bp-inner {
+  flex:1;
+  display:flex; align-items:stretch; justify-content:center;
+  padding:26px 32px 22px;
+}
+
+/* ─────────────────────────────────────────────
+   CARD
+───────────────────────────────────────────── */
+.bp .card {
+  background:var(--cream);
+  border-radius:14px;
+  border:none;
+  width:100%;
+  display:flex; flex-direction:column;
+  overflow:hidden;
+  box-shadow:0 10px 50px rgba(0,0,0,.22);
+}
+
+/* card header */
+.bp .card-hdr {
+  background:var(--pa);
+  padding:18px 24px 14px;
+  border-bottom:2.5px solid var(--gold);
+  text-align:center;
+}
+.bp .card-hdr .eyebrow {
+  font-size:6.5pt; font-weight:700; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--gold);
+  margin-bottom:7px;
+}
+.bp .card-hdr h2 {
+  font-family:'Playfair Display',serif;
+  font-size:18pt; color:#fff; line-height:1.2;
+  margin-bottom:4px;
+}
+.bp .card-hdr h2 em { color:var(--gold); font-style:italic; }
+.bp .card-hdr .sub {
+  font-size:7.5pt; color:rgba(200,232,220,.72); line-height:1.5;
+}
+.bp .card-hdr .rule {
+  width:44px; height:2px; background:var(--gold);
+  margin:9px auto 0; border-radius:2px;
+}
+
+/* product-specific header stripe (top edge inside card header)
+   gives Deck/Invest/Vault a visual tell even though all use sage */
+.bp .card-hdr-stripe {
+  height:3px; margin:-18px -24px 14px; /* bleeds to edges */
+}
+.stripe-sage     { background:var(--sage); }
+.stripe-sage2    { background:linear-gradient(90deg,var(--sage),var(--sage-mid)); } /* Deck */
+.stripe-sage3    { background:linear-gradient(90deg,var(--sage-mid),var(--teal)); } /* Invest */
+.stripe-sage4    { background:linear-gradient(90deg,var(--sage-dark),var(--sage)); } /* Vault */
+.stripe-plum     { background:var(--plum); }
+.stripe-teal     { background:var(--teal); }
+.stripe-amber    { background:var(--amber); }
+.stripe-sagedark { background:var(--sage-dark); }
+
+/* ─────────────────────────────────────────────
+   PRODUCT LIST BODY
+───────────────────────────────────────────── */
+.bp .card-body {
+  flex:1; padding:14px 20px 12px;
+  display:flex; flex-direction:column; gap:0;
+}
+
+/* tier dividers */
+.tier-lbl {
+  font-size:6pt; font-weight:700; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--mid);
+  margin:9px 0 4px;
+  display:flex; align-items:center; gap:6px;
+}
+.tier-lbl::before,.tier-lbl::after {
+  content:''; flex:1; height:.5px; background:var(--light);
+}
+
+/* product rows */
+.pr {
+  display:flex; align-items:center; gap:10px;
+  padding:7px 9px; border-radius:7px;
+  border:.5px solid transparent;
+  margin-bottom:1px;
+}
+.pr.have {
+  background:var(--gold-pale);
+  border-color:rgba(201,150,60,.35);
+}
+.pr.next {
+  background:var(--pa-pale);
+  border-color:rgba(74,124,107,.3);
+}
+.pr.soon {
+  background:#fff;
+  border-color:var(--light);
+  opacity:.65;
+}
+.pr.locked {
+  background:#fff;
+  border-color:var(--light);
+  opacity:.55;
+}
+
+/* price badge */
+.badge {
+  flex-shrink:0; font-size:6.5pt; font-weight:700;
+  padding:2px 8px; border-radius:16px;
+  white-space:nowrap; min-width:34px; text-align:center;
+  line-height:1.5;
+}
+.b-free  { background:var(--sage);      color:#fff; }
+.b-7     { background:#8B9BAD;          color:#fff; }
+.b-9     { background:var(--gold);      color:#fff; }
+.b-17    { background:var(--coral);     color:#fff; }
+.b-27    { background:var(--plum);      color:#fff; }
+.b-37    { background:var(--amber);     color:#fff; }
+.b-47    { background:var(--sage-dark); color:#fff; }
+.b-67    { background:#5B3F8A;          color:#fff; }
+.b-97    { background:var(--charcoal);  color:#fff; }
+
+/* product info */
+.pinfo { flex:1; min-width:0; }
+.pname { font-size:8.5pt; font-weight:600; color:var(--charcoal); line-height:1.2; }
+.pdesc { font-size:7pt; color:var(--mid); margin-top:1px; line-height:1.35; }
+
+/* state tag */
+.ptag {
+  flex-shrink:0; font-size:6pt; font-weight:700;
+  letter-spacing:.07em; text-transform:uppercase;
+  padding:2px 7px; border-radius:9px; white-space:nowrap;
+}
+.tag-have  { background:var(--gold);      color:#fff; }
+.tag-next  { background:var(--pa);        color:#fff; }
+.tag-soon  { background:var(--light);     color:var(--mid); font-style:italic; }
+.tag-lock  { background:var(--pale);      color:var(--mid); }
+
+/* ─────────────────────────────────────────────
+   CONNECTION KIT GROUP
+───────────────────────────────────────────── */
+.ck-group {
+  border:.5px solid var(--plum);
+  border-radius:8px; overflow:hidden;
+  margin-bottom:1px;
+  opacity:.72;
+}
+.ck-group.next { opacity:1; border-color:var(--plum); }
+.ck-label {
+  background:var(--plum); padding:4px 10px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.ck-label .cktitle {
+  font-size:7pt; font-weight:700; color:#fff; letter-spacing:.06em;
+}
+.ck-label .ckprice {
+  font-size:7pt; font-weight:700;
+  background:rgba(255,255,255,.18); color:#fff;
+  padding:1px 8px; border-radius:10px;
+}
+.ck-items { padding:5px 8px; background:var(--plum-lite); display:flex; flex-direction:column; gap:3px; }
+.ck-item  { font-size:7.5pt; color:var(--charcoal); display:flex; gap:6px; align-items:center; }
+.ck-item::before { content:'·'; color:var(--plum); font-weight:700; }
+
+/* ─────────────────────────────────────────────
+   CTA STRIP
+───────────────────────────────────────────── */
+.bp .card-cta {
+  margin:10px 20px 14px;
+  background:var(--pa);
+  border-radius:9px; padding:12px 16px;
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+}
+.bp .cta-l .clbl { font-size:6.5pt; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); margin-bottom:2px; }
+.bp .cta-l .ctxt { font-size:8pt; color:rgba(200,232,220,.9); line-height:1.45; }
+.bp .cta-r { font-size:8.5pt; font-weight:700; color:var(--gold); white-space:nowrap; flex-shrink:0; }
+
+/* card footer */
+.bp .card-foot {
+  padding:7px 20px;
+  border-top:.5px solid var(--light);
+  display:flex; justify-content:space-between; align-items:center;
+}
+.bp .card-foot .fl { font-size:6.5pt; color:var(--mid); }
+.bp .card-foot .fr { font-size:6.5pt; font-weight:600; color:var(--pa-mid); }
+
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: COVER -->
+<div class="page" id="p1">
+  <div class="hero">
+    <div class="deck-badge">52 CONVERSATION CARDS</div>
+    <h1>The Money Date<em>Conversation Deck</em></h1>
+    <p class="sub">Stop talking about bills. Start talking about your future. One question for every week of the year.</p>
+    <div class="card-stack">
+      <div class="stack-item"></div>
+      <div class="stack-item"></div>
+      <div class="stack-item"></div>
+    </div>
+    <div style="font-size:9pt; color:var(--gold); font-weight:700; letter-spacing:.05em;">TWOFOLD LIFE · DIGITAL EDITION</div>
+  </div>
+</div>
+
+<!-- PAGE 2: HOW TO USE & MONTH 1 -->
+<div class="page">
+  <div class="hdr"><span class="hl">HOW TO USE THIS DECK</span><span class="hc">Money Date Conversation Deck</span><span class="hr">2</span></div>
+  <div class="body">
+<div style="background:var(--sage-pale,#f4faf7);border:.5px solid var(--sage-mid,#5d8b7a);border-left:3px solid var(--sage,#4a7c6b);border-radius:6px;padding:9px 14px 9px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:14px;font-size:8pt;color:var(--sage-dark,#2e5248);">
+  <span><strong style="font-size:8pt;letter-spacing:.06em;color:var(--sage-dark,#2e5248);">NEW TO OURSTEADY?</strong>&nbsp; To get the most from this product, read the companion How-To Guide first — it walks through every section step-by-step.</span>
+  <a href="https://2fold.pages.dev/howto/How%20to%20Use_%2012-Month%20Money%20Date%20Conversation%20Deck.pdf" target="_blank" rel="noopener" style="display:inline-block;flex-shrink:0;background:var(--sage,#4a7c6b);color:#fff;font-family:inherit;font-size:7.5pt;font-weight:700;letter-spacing:.06em;text-decoration:none;padding:5px 13px;border-radius:4px;white-space:nowrap;">How-To Guide</a>
+</div>
+
+    <div class="how-to">
+      <h2>How to use these cards</h2>
+      <p>Pick one card during your weekly check-in or four cards during your Monthly Money Date. There are no right or wrong answers. The goal is to understand your partner's "Money Why" and build a shared vision that excites you both.</p>
+      <p style="margin-top:10px;padding:8px 12px;background:rgba(201,150,60,.12);border-left:3px solid var(--gold);border-radius:0 6px 6px 0;font-size:8.5pt;color:var(--sage-dark);"><strong>💡 How many cards per date?</strong> Use <strong>3–5 cards per money date</strong> — enough to spark real conversation without rushing. One card from each category keeps it balanced. Save the rest for next month.</p>
+    </div>
+
+    <div class="section-lbl" style="margin-bottom:20px;">MONTH 1: THE FOUNDATION</div>
+    <div class="card-grid">
+      <div class="q-card">
+        <div class="q-cat cat-reflect">Reflection</div>
+        <div class="q-text">"What is your earliest memory of money? Was it a positive or negative experience?"</div>
+        <div class="q-num">CARD 01</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-dreams">Dreams & Vision</div>
+        <div class="q-text">"If we woke up tomorrow with $10,000 extra in our account, what's the first 'fun' thing we'd do?"</div>
+        <div class="q-num">CARD 02</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-fun">Fun & Legacy</div>
+        <div class="q-text">"What is one thing your parents did with money that you want to replicate in our home?"</div>
+        <div class="q-num">CARD 03</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-hard">Hard Conversations</div>
+        <div class="q-text">"What is one area of our spending that makes you feel anxious? How can I help ease that?"</div>
+        <div class="q-num">CARD 04</div>
+      </div>
+    </div>
+  </div>
+  <div class="ftr">Money Date Conversation Deck · OurSteady.com</div>
+</div>
+
+<!-- PAGE 3: MONTH 2 & 3 -->
+<div class="page">
+  <div class="hdr"><span class="hl">MONTHS 2 & 3</span><span class="hc">Money Date Conversation Deck</span><span class="hr">3</span></div>
+  <div class="body">
+    <div class="section-lbl" style="margin-bottom:20px;">MONTH 2: LIFESTYLE & VALUES</div>
+    <div class="card-grid">
+      <div class="q-card">
+        <div class="q-cat cat-dreams">Dreams & Vision</div>
+        <div class="q-text">"What does a 'perfect' Saturday look like to you? How much does that day cost?"</div>
+        <div class="q-num">CARD 05</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-reflect">Reflection</div>
+        <div class="q-text">"When was the last time you felt really proud of a financial decision we made together?"</div>
+        <div class="q-num">CARD 06</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-fun">Fun & Legacy</div>
+        <div class="q-text">"If we could take a month off work to travel anywhere, where would we go first?"</div>
+        <div class="q-num">CARD 07</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-hard">Hard Conversations</div>
+        <div class="q-text">"Do you feel like our current 'fun money' allowance is fair? Why or why not?"</div>
+        <div class="q-num">CARD 08</div>
+      </div>
+    </div>
+
+    <div class="section-lbl" style="margin-top:30px; margin-bottom:20px;">MONTH 3: THE BIG PICTURE</div>
+    <div class="card-grid">
+      <div class="q-card">
+        <div class="q-cat cat-dreams">Dreams & Vision</div>
+        <div class="q-text">"If money were no object, what kind of house would we live in? Describe the vibe."</div>
+        <div class="q-num">CARD 09</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-hard">Hard Conversations</div>
+        <div class="q-text">"What's one thing I spend money on that you don't fully understand, but want to?"</div>
+        <div class="q-num">CARD 10</div>
+      </div>
+    </div>
+  </div>
+  <div class="ftr">Money Date Conversation Deck · OurSteady.com</div>
+</div>
+
+<!-- PAGE 4: MONTH 4 & 5 -->
+<div class="page">
+  <div class="hdr"><span class="hl">MONTHS 4 & 5</span><span class="hc">Money Date Conversation Deck</span><span class="hr">4</span></div>
+  <div class="body">
+    <div class="section-lbl" style="margin-bottom:20px;">MONTH 4: HABITS & HACKS</div>
+    <div class="card-grid">
+      <div class="q-card">
+        <div class="q-cat cat-reflect">Reflection</div>
+        <div class="q-text">"What's the best $100 we've spent in the last 6 months?"</div>
+        <div class="q-num">CARD 11</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-fun">Fun & Legacy</div>
+        <div class="q-text">"What's a skill you'd love to learn if we had the budget for a high-end course?"</div>
+        <div class="q-num">CARD 12</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-hard">Hard Conversations</div>
+        <div class="q-text">"On a scale of 1-10, how much do you trust our current financial plan?"</div>
+        <div class="q-num">CARD 13</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-dreams">Dreams & Vision</div>
+        <div class="q-text">"What does 'retirement' look like to you? Is it stopping work, or just working on what you love?"</div>
+        <div class="q-num">CARD 14</div>
+      </div>
+    </div>
+
+    <div class="section-lbl" style="margin-top:30px; margin-bottom:20px;">MONTH 5: GROWTH & GENEROSITY</div>
+    <div class="card-grid">
+      <div class="q-card">
+        <div class="q-cat cat-fun">Fun & Legacy</div>
+        <div class="q-text">"If we had $5,000 to give away to a cause or person, who would it be and why?"</div>
+        <div class="q-num">CARD 15</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-reflect">Reflection</div>
+        <div class="q-text">"What's one financial mistake you've made that taught you a valuable lesson?"</div>
+        <div class="q-num">CARD 16</div>
+      </div>
+    </div>
+  </div>
+  <div class="ftr">Money Date Conversation Deck · OurSteady.com</div>
+</div>
+
+<!-- PAGE 5: MONTH 6 -->
+<div class="page">
+  <div class="hdr"><span class="hl">MONTH 6: MID-YEAR RESET</span><span class="hc">Money Date Conversation Deck</span><span class="hr">5</span></div>
+  <div class="body">
+    <div class="section-lbl" style="margin-bottom:20px;">MONTH 6: MID-YEAR RESET</div>
+    <div class="card-grid">
+      <div class="q-card">
+        <div class="q-cat cat-dreams">Dreams & Vision</div>
+        <div class="q-text">"If we could change one thing about our current lifestyle today, what would it be?"</div>
+        <div class="q-num">CARD 17</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-hard">Hard Conversations</div>
+        <div class="q-text">"Do you feel like we're working as a team, or does one of us carry more of the 'money mental load'?"</div>
+        <div class="q-num">CARD 18</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-reflect">Reflection</div>
+        <div class="q-text">"What's the biggest goal we've achieved together so far? How did it feel?"</div>
+        <div class="q-num">CARD 19</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-fun">Fun & Legacy</div>
+        <div class="q-text">"What's a 'luxury' item or experience you'd love for us to save for next year?"</div>
+        <div class="q-num">CARD 20</div>
+      </div>
+    </div>
+  </div>
+  <div class="ftr">Money Date Conversation Deck · OurSteady.com</div>
+</div>
+
+<!-- PAGE 6: MONTH 7 & 8 -->
+<div class="page">
+  <div class="hdr"><span class="hl">MONTHS 7 & 8</span><span class="hc">Money Date Conversation Deck</span><span class="hr">6</span></div>
+  <div class="body">
+    <div class="section-lbl" style="margin-bottom:20px;">MONTH 7: REFLECTION & GROWTH</div>
+    <div class="card-grid">
+      <div class="q-card">
+        <div class="q-cat cat-reflect">Reflection</div>
+        <div class="q-text">"What financial belief did you inherit from your family that you still carry today? Is it serving you?"</div>
+        <div class="q-num">CARD 21</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-dreams">Dreams & Vision</div>
+        <div class="q-text">"If we had unlimited time and resources, what passion project would you pursue, and how would it impact our lives?"</div>
+        <div class="q-num">CARD 22</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-hard">Hard Conversations</div>
+        <div class="q-text">"What's one financial decision I've made that you found confusing or concerning? Let's talk about it."</div>
+        <div class="q-num">CARD 23</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-fun">Fun & Legacy</div>
+        <div class="q-text">"What's a small, recurring 'fun money' expense that brings you a lot of joy?"</div>
+        <div class="q-num">CARD 24</div>
+      </div>
+    </div>
+
+    <div class="section-lbl" style="margin-top:30px; margin-bottom:20px;">MONTH 8: DREAMS & POSSIBILITIES</div>
+    <div class="card-grid">
+      <div class="q-card">
+        <div class="q-cat cat-dreams">Dreams & Vision</div>
+        <div class="q-text">"Describe our ideal 'future self' five years from now, specifically regarding our financial freedom and lifestyle."</div>
+        <div class="q-num">CARD 25</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-reflect">Reflection</div>
+        <div class="q-text">"Think about a time we successfully navigated a financial challenge together. What did we learn from it?"</div>
+        <div class="q-num">CARD 26</div>
+      </div>
+    </div>
+  </div>
+  <div class="ftr">Money Date Conversation Deck · OurSteady.com</div>
+</div>
+
+<!-- PAGE 7: MONTH 9 & 10 -->
+<div class="page">
+  <div class="hdr"><span class="hl">MONTHS 9 & 10</span><span class="hc">Money Date Conversation Deck</span><span class="hr">7</span></div>
+  <div class="body">
+    <div class="section-lbl" style="margin-bottom:20px;">MONTH 9: ALIGNMENT & COMMUNICATION</div>
+    <div class="card-grid">
+      <div class="q-card">
+        <div class="q-cat cat-hard">Hard Conversations</div>
+        <div class="q-text">"Do you ever feel like we're not on the same page about our financial priorities? If so, what's one area we could discuss more openly?"</div>
+        <div class="q-num">CARD 27</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-fun">Fun & Legacy</div>
+        <div class="q-text">"If we could start a small business together, what would it be, and what problem would it solve?"</div>
+        <div class="q-num">CARD 28</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-dreams">Dreams & Vision</div>
+        <div class="q-text">"What kind of legacy do you hope we build together, beyond just financial assets?"</div>
+        <div class="q-num">CARD 29</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-reflect">Reflection</div>
+        <div class="q-text">"What's one financial habit you've developed that you're most proud of?"</div>
+        <div class="q-num">CARD 30</div>
+      </div>
+    </div>
+
+    <div class="section-lbl" style="margin-top:30px; margin-bottom:20px;">MONTH 10: VISION & ADVENTURE</div>
+    <div class="card-grid">
+      <div class="q-card">
+        <div class="q-cat cat-dreams">Dreams & Vision</div>
+        <div class="q-text">"If we could invest in one experience that would enrich our lives significantly, what would it be?"</div>
+        <div class="q-num">CARD 31</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-hard">Hard Conversations</div>
+        <div class="q-text">"What's your biggest financial fear, and how can we support each other in addressing it?"</div>
+        <div class="q-num">CARD 32</div>
+      </div>
+    </div>
+  </div>
+  <div class="ftr">Money Date Conversation Deck · OurSteady.com</div>
+</div>
+
+<!-- PAGE 8: MONTH 11 & 12 -->
+<div class="page">
+  <div class="hdr"><span class="hl">MONTHS 11 & 12</span><span class="hc">Money Date Conversation Deck</span><span class="hr">8</span></div>
+  <div class="body">
+    <div class="section-lbl" style="margin-bottom:20px;">MONTH 11: REFLECTION & LEGACY</div>
+    <div class="card-grid">
+      <div class="q-card">
+        <div class="q-cat cat-reflect">Reflection</div>
+        <div class="q-text">"How has our financial journey together changed your perspective on money?"</div>
+        <div class="q-num">CARD 33</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-fun">Fun & Legacy</div>
+        <div class="q-text">"What's one unique experience you'd love for us to save up for and share?"</div>
+        <div class="q-num">CARD 34</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-dreams">Dreams & Vision</div>
+        <div class="q-text">"What's a long-term goal that excites you, even if it feels a bit audacious right now?"</div>
+        <div class="q-num">CARD 35</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-hard">Hard Conversations</div>
+        <div class="q-text">"Is there anything about our current financial situation that keeps you up at night?"</div>
+        <div class="q-num">CARD 36</div>
+      </div>
+    </div>
+
+    <div class="section-lbl" style="margin-top:30px; margin-bottom:20px;">MONTH 12: YEAR-END CELEBRATION & PLANNING</div>
+    <div class="card-grid">
+      <div class="q-card">
+        <div class="q-cat cat-fun">Fun & Legacy</div>
+        <div class="q-text">"How can we incorporate more 'fun' into our financial planning process?"</div>
+        <div class="q-num">CARD 37</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-reflect">Reflection</div>
+        <div class="q-text">"What financial milestone are you most looking forward to celebrating with me?"</div>
+        <div class="q-num">CARD 38</div>
+      </div>
+    </div>
+  </div>
+  <div class="ftr">Money Date Conversation Deck · OurSteady.com</div>
+</div>
+
+<!-- PAGE 9: EXTENDED CARDS 39-44 -->
+<div class="page">
+  <div class="hdr"><span class="hl">BONUS CARDS</span><span class="hc">Money Date Conversation Deck</span><span class="hr">9</span></div>
+  <div class="body">
+    <div class="section-lbl" style="margin-bottom:20px;">EXTENDED DECK: BONUS CONVERSATIONS</div>
+    <div class="card-grid">
+      <div class="q-card">
+        <div class="q-cat cat-dreams">Dreams & Vision</div>
+        <div class="q-text">"How can we align our daily spending with our biggest dreams and values?"</div>
+        <div class="q-num">CARD 39</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-hard">Hard Conversations</div>
+        <div class="q-text">"How do you feel about discussing money with me? Is there anything I can do to make these conversations easier?"</div>
+        <div class="q-num">CARD 40</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-reflect">Reflection</div>
+        <div class="q-text">"Reflect on a time when money caused tension between us. How did we resolve it, and what can we do differently next time?"</div>
+        <div class="q-num">CARD 41</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-fun">Fun & Legacy</div>
+        <div class="q-text">"What's a charitable cause or organization that resonates deeply with you, and how might we support it?"</div>
+        <div class="q-num">CARD 42</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-dreams">Dreams & Vision</div>
+        <div class="q-text">"Imagine our lives 10 years from now. What financial decisions today will help us get there?"</div>
+        <div class="q-num">CARD 43</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-reflect">Reflection</div>
+        <div class="q-text">"What does financial security mean to you, personally? Has that definition evolved over time?"</div>
+        <div class="q-num">CARD 44</div>
+      </div>
+    </div>
+  </div>
+  <div class="ftr">Money Date Conversation Deck · OurSteady.com</div>
+</div>
+
+<!-- PAGE 10: EXTENDED CARDS 45-52 -->
+<div class="page">
+  <div class="hdr"><span class="hl">FINAL CARDS</span><span class="hc">Money Date Conversation Deck</span><span class="hr">10</span></div>
+  <div class="body">
+    <div class="section-lbl" style="margin-bottom:20px;">EXTENDED DECK: CLOSING CONVERSATIONS</div>
+    <div class="card-grid">
+      <div class="q-card">
+        <div class="q-cat cat-hard">Hard Conversations</div>
+        <div class="q-text">"What's one area where you feel we could improve our financial communication?"</div>
+        <div class="q-num">CARD 45</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-fun">Fun & Legacy</div>
+        <div class="q-text">"Beyond traditional investments, what's something valuable we could invest in for our future together (e.g., education, a skill, a shared hobby)?"</div>
+        <div class="q-num">CARD 46</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-dreams">Dreams & Vision</div>
+        <div class="q-text">"What's one big adventure you dream of us taking together, and what financial steps can we start taking towards it?"</div>
+        <div class="q-num">CARD 47</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-reflect">Reflection</div>
+        <div class="q-text">"What's a financial 'win' from the past year that we should acknowledge and celebrate more?"</div>
+        <div class="q-num">CARD 48</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-hard">Hard Conversations</div>
+        <div class="q-text">"If we faced an unexpected financial setback, how would you want us to approach it as a team?"</div>
+        <div class="q-num">CARD 49</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-fun">Fun & Legacy</div>
+        <div class="q-text">"What kind of financial lessons or values do you hope to pass on to future generations?"</div>
+        <div class="q-num">CARD 50</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-dreams">Dreams & Vision</div>
+        <div class="q-text">"What's a financial boundary you feel is important for us to establish or reinforce?"</div>
+        <div class="q-num">CARD 51</div>
+      </div>
+      <div class="q-card">
+        <div class="q-cat cat-reflect">Reflection</div>
+        <div class="q-text">"If we had an extra 'fun' budget this month, what's the first thing you'd want to do with it?"</div>
+        <div class="q-num">CARD 52</div>
+      </div>
+    </div>
+  </div>
+  <div class="ftr">Money Date Conversation Deck · OurSteady.com</div>
+</div>
+
+<!-- PAGE 12: BLANK CARD TEMPLATES -->
+<div class="page">
+  <div class="hdr"><span class="hl">WRITE YOUR OWN CARDS</span><span class="hc">Money Date Conversation Deck</span><span class="hr">✦</span></div>
+  <div class="body" style="padding:20px 40px 60px;">
+    <div style="font-size:9pt;color:var(--mid);font-style:italic;margin-bottom:20px;">The best conversations often come from your own experiences. Use these blank cards to write prompts that are specific to your relationship, your goals, and the conversations <em>you</em> need to have.</div>
+
+    <div style="font-size:7pt;font-weight:700;letter-spacing:.1em;color:var(--gold);margin-bottom:14px;">YOUR CUSTOM CARDS — CUT AND USE OR FILL IN DIGITALLY</div>
+
+    <div class="card-grid">
+
+      <div class="q-card" style="border:1.5px dashed var(--sage);background:var(--sage-pale);">
+        <div>
+          <div style="font-size:7pt;font-weight:700;letter-spacing:.08em;color:var(--sage);margin-bottom:8px;">✎ CATEGORY: <input type="text" style="border:none;border-bottom:1px solid var(--sage);background:transparent;font-family:'DM Sans',sans-serif;font-size:7pt;width:120px;outline:none;" placeholder="Dreams / Reflect / Hard / Fun"></div>
+          <div style="font-family:'Playfair Display',serif;font-size:10pt;color:var(--sage-dark);line-height:1.5;flex:1;">
+            <textarea style="width:100%;height:80px;border:none;border-bottom:1px solid var(--sage);background:transparent;font-family:'Playfair Display',serif;font-size:10pt;resize:none;outline:none;color:var(--sage-dark);" placeholder="Write your question here..."></textarea>
+          </div>
+        </div>
+        <div style="font-size:7pt;color:var(--light);text-align:right;">CUSTOM CARD 1</div>
+      </div>
+
+      <div class="q-card" style="border:1.5px dashed var(--blue);background:var(--blue-lite);">
+        <div>
+          <div style="font-size:7pt;font-weight:700;letter-spacing:.08em;color:var(--blue);margin-bottom:8px;">✎ CATEGORY: <input type="text" style="border:none;border-bottom:1px solid var(--blue);background:transparent;font-family:'DM Sans',sans-serif;font-size:7pt;width:120px;outline:none;" placeholder="Dreams / Reflect / Hard / Fun"></div>
+          <div style="font-family:'Playfair Display',serif;font-size:10pt;color:var(--charcoal);line-height:1.5;flex:1;">
+            <textarea style="width:100%;height:80px;border:none;border-bottom:1px solid var(--blue);background:transparent;font-family:'Playfair Display',serif;font-size:10pt;resize:none;outline:none;color:var(--charcoal);" placeholder="Write your question here..."></textarea>
+          </div>
+        </div>
+        <div style="font-size:7pt;color:var(--light);text-align:right;">CUSTOM CARD 2</div>
+      </div>
+
+      <div class="q-card" style="border:1.5px dashed var(--coral);background:var(--coral-lite);">
+        <div>
+          <div style="font-size:7pt;font-weight:700;letter-spacing:.08em;color:var(--coral);margin-bottom:8px;">✎ CATEGORY: <input type="text" style="border:none;border-bottom:1px solid var(--coral);background:transparent;font-family:'DM Sans',sans-serif;font-size:7pt;width:120px;outline:none;" placeholder="Dreams / Reflect / Hard / Fun"></div>
+          <div style="font-family:'Playfair Display',serif;font-size:10pt;color:var(--charcoal);line-height:1.5;flex:1;">
+            <textarea style="width:100%;height:80px;border:none;border-bottom:1px solid var(--coral);background:transparent;font-family:'Playfair Display',serif;font-size:10pt;resize:none;outline:none;color:var(--charcoal);" placeholder="Write your question here..."></textarea>
+          </div>
+        </div>
+        <div style="font-size:7pt;color:var(--light);text-align:right;">CUSTOM CARD 3</div>
+      </div>
+
+      <div class="q-card" style="border:1.5px dashed var(--gold);background:var(--gold-pale);">
+        <div>
+          <div style="font-size:7pt;font-weight:700;letter-spacing:.08em;color:var(--gold);margin-bottom:8px;">✎ CATEGORY: <input type="text" style="border:none;border-bottom:1px solid var(--gold);background:transparent;font-family:'DM Sans',sans-serif;font-size:7pt;width:120px;outline:none;" placeholder="Dreams / Reflect / Hard / Fun"></div>
+          <div style="font-family:'Playfair Display',serif;font-size:10pt;color:var(--charcoal);line-height:1.5;flex:1;">
+            <textarea style="width:100%;height:80px;border:none;border-bottom:1px solid var(--gold);background:transparent;font-family:'Playfair Display',serif;font-size:10pt;resize:none;outline:none;color:var(--charcoal);" placeholder="Write your question here..."></textarea>
+          </div>
+        </div>
+        <div style="font-size:7pt;color:var(--light);text-align:right;">CUSTOM CARD 4</div>
+      </div>
+
+    </div>
+
+    <div style="margin-top:20px;background:var(--warm);border-radius:8px;padding:14px 18px;font-size:8.5pt;color:var(--mid);line-height:1.7;">
+      <strong style="color:var(--sage-dark);">Ideas for your custom cards:</strong> "What would you do if we had an extra $500 this month?" · "Is there a money conversation we've been avoiding?" · "What does our ideal retirement look like in vivid detail?" · "What's one financial habit of mine you actually love?" · "At what number would you feel truly financially free?"
+    </div>
+  </div>
+  <div class="ftr">Money Date Conversation Deck · OurSteady.com</div>
+</div>
+
+
+<!-- ═══ BACK COVER ═══ -->
+<div class="page">
+<div class="bp bp-plum"> <!-- plum used for the Connection Kit family -->
+  <div class="bp-topbar"></div>
+  <div class="bp-inner">
+    <div class="card">
+
+      <div class="card-hdr">
+        <div class="card-hdr-stripe stripe-plum"></div>
+        <div class="eyebrow">OurSteady Financial Ecosystem</div>
+        <h2>You're in the relationship layer.<br><em>Here's the full picture.</em></h2>
+        <div class="sub">The Connection Kit deepens the bond. Here's every tool in the system — and where to go next.</div>
+        <div class="rule"></div>
+      </div>
+
+      <div class="card-body">
+
+        <div class="tier-lbl">The Connection Kit — Already Yours</div>
+        <!-- SWAP THIS ROW to match actual product -->
+        <div class="pr have">
+          <div class="badge b-27">$27</div>
+          <div class="pinfo"><a href="https://OurSteady.com/deck" style="text-decoration:none;"><div class="pname">Money Date Conversation Deck</div></a><div class="pdesc">12 months of guided prompts — deepen every money date ritual.</div></div>
+          <div class="ptag tag-have">✓ You Have This</div>
+        </div>
+        <div class="pr locked" style="opacity:.5;">
+          <div class="badge b-27">$27</div>
+          <div class="pinfo"><a href="https://OurSteady.com/personality" style="text-decoration:none;"><div class="pname">Money Personality System</div></a><div class="pdesc">Understand how each of you thinks about money — before it becomes a fight.</div></div>
+          <div class="ptag tag-lock">In Bundle</div>
+        </div>
+        <div class="pr locked" style="opacity:.5;">
+          <div class="badge b-27">$27</div>
+          <div class="pinfo"><a href="https://OurSteady.com/vault" style="text-decoration:none;"><div class="pname">Life Admin &amp; Legacy Vault</div></a><div class="pdesc">Wills, insurance, digital legacy, estate essentials — all in one place.</div></div>
+          <div class="ptag tag-lock">In Bundle</div>
+        </div>
+        <div style="padding:4px 9px;">
+          <div style="font-size:7pt;color:var(--mid);font-style:italic;">Get all three together as <strong>The Connection Kit — $67</strong> at OurSteady.com</div>
+        </div>
+
+        <div class="tier-lbl">The Foundation — Start Here if You Haven't</div>
+        <div class="pr locked">
+          <div class="badge b-free">FREE</div>
+          <div class="pinfo"><a href="https://OurSteady.com/" style="text-decoration:none;"><div class="pname">Money Date Starter Kit</div></a><div class="pdesc">The ritual that makes every Connection Kit tool work.</div></div>
+          <div class="ptag tag-lock">Free</div>
+        </div>
+        <div class="pr next">
+          <div class="badge b-9">$9</div>
+          <div class="pinfo"><a href="https://OurSteady.com/tracker" style="text-decoration:none;"><div class="pname">Couples Wealth Tracker</div></a><div class="pdesc">19-page monthly system — the data layer the whole system runs on.</div></div>
+          <div class="ptag tag-next">→ Add This</div>
+        </div>
+
+        <div class="tier-lbl">Build the Plan</div>
+        <div class="pr locked">
+          <div class="badge b-7">$7</div>
+          <div class="pinfo"><a href="https://OurSteady.com/sheet" style="text-decoration:none;"><div class="pname">Money Scripts Cheat Sheet</div></a><div class="pdesc">Exact words for the 5 hardest money conversations. $7.</div></div>
+          <div class="ptag tag-lock">Add On</div>
+        </div>
+        <div class="pr locked">
+          <div class="badge b-17">$17</div>
+          <div class="pinfo"><a href="https://OurSteady.com/workbook" style="text-decoration:none;"><div class="pname">Wealth Blueprint Workbook</div></a><div class="pdesc">6 modules: budget, invest, debt, goals, protect, 12-month roadmap.</div></div>
+          <div class="ptag tag-lock">Workbook</div>
+        </div>
+        <div class="pr locked">
+          <div class="badge b-37">$37</div>
+          <div class="pinfo"><a href="https://OurSteady.com/reset" style="text-decoration:none;"><div class="pname">90-Day Financial Reset Kit</div></a><div class="pdesc">Clear the clutter, reset the budget, rebuild in 90 days.</div></div>
+          <div class="ptag tag-lock">Strategy</div>
+        </div>
+
+        <div class="tier-lbl">Unlocks Via Email — After Purchase</div>
+        <div class="pr soon">
+          <div class="badge b-47">$47</div>
+          <div class="pinfo"><a href="https://OurSteady.com/accelerator" style="text-decoration:none;"><div class="pname">Couples Wealth Accelerator</div></a><div class="pdesc">12-month implementation system — the execution engine.</div></div>
+          <div class="ptag tag-soon">✉ Via Email</div>
+        </div>
+        <div class="pr soon">
+          <div class="badge b-37">$37</div>
+          <div class="pinfo"><a href="https://OurSteady.com/investment" style="text-decoration:none;"><div class="pname">Investment Starter Kit</div></a><div class="pdesc">Build your first investment strategy together.</div></div>
+          <div class="ptag tag-soon">✉ Via Email</div>
+        </div>
+        <div class="pr soon">
+          <div class="badge b-97">$97</div>
+          <div class="pinfo"><a href="https://OurSteady.com/video" style="text-decoration:none;"><div class="pname">Couples Wealth Blueprint — Video Modules</div></a><div class="pdesc">6 guided video modules + all workbooks.</div></div>
+          <div class="ptag tag-soon">✉ Via Email</div>
+        </div>
+
+      </div>
+
+      <div class="card-cta">
+        <div class="cta-l">
+          <div class="clbl">Complete the Connection Kit</div>
+          <div class="ctxt">Get the Deck + Personality System + Legacy Vault together for $67 — or add the Tracker ($9) as your next data layer.</div>
+        </div>
+        <a href="https://OurSteady.com/" style="text-decoration:none;"><div class="cta-r">OurSteady.com</div></a>
+      </div>
+
+      <div class="card-foot">
+        <div class="fl">OurSteady Financial Ecosystem · All products work as a complete system</div>
+        <div class="fr">OurSteady.com</div>
+      </div>
+
+    </div>
+  </div>
+  <div class="bp-botbar"></div>
+</div>
+</div>
+
+</body>
+</html>
