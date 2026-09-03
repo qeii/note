@@ -329,6 +329,53 @@
   }
   .btn-restore:hover { background: var(--surface-hover); color: var(--text); border-color: var(--text-dim); }
 
+  /* ══ FOLDER SYNC ══ */
+  .sidebar-sync {
+    padding: 10px 16px;
+    border-top: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 8px;
+    transition: border-color 0.35s ease, padding 0.3s ease;
+  }
+
+  .sync-status {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 10px; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.05em;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .sync-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--text-dim); flex-shrink: 0;
+    transition: background 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .sync-dot.connected { background: var(--accent-2); box-shadow: 0 0 0 3px var(--accent-2-glow); }
+  .sync-dot.reconnect { background: var(--danger); box-shadow: 0 0 0 3px rgba(196,92,74,0.15); }
+  .sync-dot.unsupported { background: var(--text-dim); }
+
+  .btn-sync {
+    width: 100%;
+    background: var(--accent-2-glow);
+    border: 1px solid var(--accent-2-dim);
+    color: var(--accent-2);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 4px; cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    display: flex; align-items: center; justify-content: center; gap: 4px;
+    overflow: hidden; white-space: nowrap;
+  }
+
+  .btn-sync:hover { background: var(--accent-2); color: var(--bg); border-color: var(--accent-2); }
+
+  .sidebar.collapsed .sidebar-sync { padding: 8px; align-items: center; }
+  .sidebar.collapsed .sync-status { justify-content: center; }
+  .sidebar.collapsed .sync-status span:not(.sync-dot) { display: none; }
+  .sidebar.collapsed .btn-sync { width: 40px; height: 40px; padding: 0; }
+
   /* ══ COLLAPSED SIDEBAR ══ */
   .sidebar.collapsed { width: 56px; min-width: 56px; }
   .sidebar.collapsed .sidebar-header { padding: 16px 4px; justify-content: center; }
@@ -721,6 +768,16 @@
       <span id="totalWords">0 words</span>
     </div>
 
+    <div class="sidebar-sync" id="sidebarSync">
+      <div class="sync-status">
+        <span class="sync-dot" id="syncDot"></span>
+        <span id="syncLabel">Folder sync: off</span>
+      </div>
+      <button class="btn-sync" id="syncBtn" data-action="connect-folder" title="Pick a folder to autosave notes into">
+        <span class="btn-icon">⇄</span><span class="btn-label"> Connect Folder</span>
+      </button>
+    </div>
+
     <div class="sidebar-backup">
       <button class="btn-backup" data-action="backup" title="Save all notes to a .json file">
         <span class="btn-icon">⬇</span><span class="btn-label"> Backup</span>
@@ -864,6 +921,7 @@ function init() {
   renderNotesList();
   if (notes.length > 0) selectNote(notes[0].id);
   updateFooter();
+  initFolderSync();
 }
 
 function setupEventListeners() {
@@ -881,6 +939,11 @@ function setupEventListeners() {
         case 'toggle-export-menu':       toggleExportMenu('exportMenu'); break;
         case 'toggle-export-menu-left':  toggleExportMenu('exportMenuLeft'); break;
         case 'toggle-export-menu-right': toggleExportMenu('exportMenuRight'); break;
+        case 'connect-folder':    connectFolder(); break;
+        case 'reconnect-folder':  reconnectFolder(); break;
+        case 'disconnect-folder':
+          if (confirm('Disconnect the synced folder?\n\nYour notes stay saved in this browser and in the folder — new changes just won\'t autosave there anymore.')) disconnectFolder();
+          break;
       }
     }
 
@@ -1273,7 +1336,11 @@ function onContentChange() {
   renderNotesList();
 }
 
-function save() { localStorage.setItem('notepad_notes', JSON.stringify(notes)); updateFooter(); }
+function save() {
+  localStorage.setItem('notepad_notes', JSON.stringify(notes));
+  updateFooter();
+  debounceFolderSync();
+}
 
 function debounceSave() {
   $('saveStatus').textContent = 'Saving…';
@@ -1441,6 +1508,193 @@ function formatDate(ts) {
   if (diff < 86400000) return Math.floor(diff / 3600000)  + 'h ago';
   if (diff < 604800000)return Math.floor(diff / 86400000) + 'd ago';
   return new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+// ══════════════════════════════════
+// FOLDER SYNC (File System Access API)
+// Lets a folder on disk (e.g. one on D:) act as the save location,
+// so notes are there automatically next time — no manual backup/restore.
+// Supported in Chrome/Edge; Firefox and Safari fall back to manual Backup/Restore.
+// ══════════════════════════════════
+const FS_SUPPORTED   = 'showDirectoryPicker' in window;
+const SYNC_FILENAME  = 'notepad-notes.json';
+let dirHandle         = null;
+let folderSyncTimeout = null;
+
+function idbOpen() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open('notepad_fs_db', 1);
+    req.onupgradeneeded = () => req.result.createObjectStore('handles');
+    req.onsuccess = () => resolve(req.result);
+    req.onerror   = () => reject(req.error);
+  });
+}
+async function idbGet(key) {
+  const db = await idbOpen();
+  return new Promise((resolve, reject) => {
+    const req = db.transaction('handles', 'readonly').objectStore('handles').get(key);
+    req.onsuccess = () => resolve(req.result || null);
+    req.onerror   = () => reject(req.error);
+  });
+}
+async function idbSet(key, val) {
+  const db = await idbOpen();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('handles', 'readwrite');
+    tx.objectStore('handles').put(val, key);
+    tx.oncomplete = () => resolve();
+    tx.onerror    = () => reject(tx.error);
+  });
+}
+async function idbDel(key) {
+  const db = await idbOpen();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('handles', 'readwrite');
+    tx.objectStore('handles').delete(key);
+    tx.oncomplete = () => resolve();
+    tx.onerror    = () => reject(tx.error);
+  });
+}
+
+async function verifyPermission(handle, mode = 'readwrite') {
+  const opts = { mode };
+  if ((await handle.queryPermission(opts)) === 'granted') return true;
+  try { if ((await handle.requestPermission(opts)) === 'granted') return true; } catch {}
+  return false;
+}
+
+function setSyncUI(state, name) {
+  const dot   = $('syncDot');
+  const label = $('syncLabel');
+  const btn   = $('syncBtn');
+  dot.className = 'sync-dot ' + state;
+
+  if (state === 'connected') {
+    label.textContent = 'Synced: ' + (name || 'folder');
+    btn.querySelector('.btn-label').textContent = ' Disconnect';
+    btn.dataset.action = 'disconnect-folder';
+    btn.style.display = '';
+  } else if (state === 'reconnect') {
+    label.textContent = 'Sync paused — click to resume';
+    btn.querySelector('.btn-label').textContent = ' Reconnect';
+    btn.dataset.action = 'reconnect-folder';
+    btn.style.display = '';
+  } else if (state === 'unsupported') {
+    label.textContent = 'Folder sync needs Chrome or Edge';
+    btn.style.display = 'none';
+  } else {
+    label.textContent = 'Folder sync: off';
+    btn.querySelector('.btn-label').textContent = ' Connect Folder';
+    btn.dataset.action = 'connect-folder';
+    btn.style.display = '';
+  }
+}
+
+// On startup: if a folder was connected before, try to resume silently.
+// (Browsers don't remember write permission across restarts, so this may
+// land on "reconnect" — one click, no folder picker, just a permission grant.)
+async function initFolderSync() {
+  if (!FS_SUPPORTED) { setSyncUI('unsupported'); return; }
+  let stored = null;
+  try { stored = await idbGet('dir'); } catch {}
+  if (!stored) { setSyncUI('off'); return; }
+
+  dirHandle = stored;
+  const granted = await dirHandle.queryPermission({ mode: 'readwrite' }).catch(() => 'prompt');
+  if (granted === 'granted') {
+    await reconcileFolder(false);
+  } else {
+    setSyncUI('reconnect', dirHandle.name);
+  }
+}
+
+async function connectFolder() {
+  if (!FS_SUPPORTED) return;
+  try {
+    const handle = await window.showDirectoryPicker({ mode: 'readwrite' });
+    dirHandle = handle;
+    await idbSet('dir', handle);
+    await reconcileFolder(true);
+  } catch (err) {
+    if (err.name !== 'AbortError') console.error('Folder connect failed', err);
+  }
+}
+
+async function reconnectFolder() {
+  if (!dirHandle) return;
+  const ok = await verifyPermission(dirHandle, 'readwrite');
+  if (ok) await reconcileFolder(false);
+  else alert('Permission wasn\'t granted. Click "Connect Folder" to choose the folder again.');
+}
+
+async function disconnectFolder() {
+  dirHandle = null;
+  clearTimeout(folderSyncTimeout);
+  try { await idbDel('dir'); } catch {}
+  setSyncUI('off');
+}
+
+// Reads whatever is currently in the synced file and decides what to do with it.
+// isFirstConnect=true -> just picked the folder, ask if it already has notes.
+// isFirstConnect=false -> app just opened, folder is treated as the source of truth.
+async function reconcileFolder(isFirstConnect) {
+  if (!dirHandle) return;
+  const ok = await verifyPermission(dirHandle, 'readwrite');
+  if (!ok) { setSyncUI('reconnect', dirHandle.name); return; }
+
+  let folderNotes = null;
+  try {
+    const fileHandle = await dirHandle.getFileHandle(SYNC_FILENAME);
+    const file   = await fileHandle.getFile();
+    const parsed = JSON.parse(await file.text());
+    folderNotes  = Array.isArray(parsed) ? parsed : parsed.notes;
+  } catch { /* file doesn't exist yet — that's fine */ }
+
+  if (isFirstConnect && folderNotes && folderNotes.length > 0) {
+    const useFolder = confirm(
+      `This folder already has ${folderNotes.length} saved note(s).\n\n` +
+      `OK = Load those notes (replaces what's currently open)\n` +
+      `Cancel = Keep what's open now and save it into this folder`
+    );
+    if (useFolder) { notes = folderNotes; save(); refreshAfterExternalLoad(); }
+    else await writeToFolder();
+  } else if (folderNotes) {
+    notes = folderNotes;
+    save();
+    refreshAfterExternalLoad();
+  } else {
+    await writeToFolder();
+  }
+
+  setSyncUI('connected', dirHandle.name);
+}
+
+function refreshAfterExternalLoad() {
+  renderNotesList();
+  if (isSplitMode) { renderSplitPane('left'); renderSplitPane('right'); }
+  else if (notes.length > 0) selectNote(notes[0].id);
+  else showEmpty();
+  updateFooter();
+}
+
+async function writeToFolder() {
+  if (!dirHandle) return;
+  const ok = await verifyPermission(dirHandle, 'readwrite');
+  if (!ok) { setSyncUI('reconnect', dirHandle.name); return; }
+  try {
+    const fileHandle = await dirHandle.getFileHandle(SYNC_FILENAME, { create: true });
+    const writable    = await fileHandle.createWritable();
+    await writable.write(JSON.stringify({ version: 1, exported: new Date().toISOString(), notes }, null, 2));
+    await writable.close();
+  } catch (err) {
+    console.error('Folder sync write failed', err);
+  }
+}
+
+function debounceFolderSync() {
+  if (!dirHandle) return;
+  clearTimeout(folderSyncTimeout);
+  folderSyncTimeout = setTimeout(writeToFolder, 500);
 }
 
 // ══════════════════════════════════
