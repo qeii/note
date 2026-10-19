@@ -373,6 +373,12 @@
 
   .btn-sync:hover { background: var(--accent-2); color: var(--bg); border-color: var(--accent-2); }
 
+  .sync-dot.reconnect { animation: syncPulse 0.9s infinite; }
+  .sync-status.warn { color: var(--danger); font-weight: 500; }
+  .btn-sync.alert { background: var(--danger); border-color: var(--danger); color: #fff; animation: alertPulse 1.1s infinite; }
+  @keyframes syncPulse  { 50% { transform: scale(1.5); opacity: 0.6; } }
+  @keyframes alertPulse { 50% { box-shadow: 0 0 0 5px rgba(196,92,74,0.28); } }
+
   .sidebar.collapsed .sidebar-sync { padding: 8px; align-items: center; }
   .sidebar.collapsed .sync-status { justify-content: center; }
   .sidebar.collapsed .sync-status span:not(.sync-dot) { display: none; }
@@ -1350,6 +1356,7 @@ function onContentChange() {
 
 function save() {
   localStorage.setItem('notepad_notes', JSON.stringify(notes));
+  localStorage.setItem('notepad_updated', String(Date.now()));   // marks "changed since last folder save"
   updateFooter();
   debounceFolderSync();
 }
@@ -1575,11 +1582,22 @@ async function verifyPermission(handle, mode = 'readwrite') {
   return false;
 }
 
+let syncLost = false, syncAutoTried = false;
+const BASE_TITLE = document.title;
+
 function setSyncUI(state, name) {
   const dot   = $('syncDot');
   const label = $('syncLabel');
   const btn   = $('syncBtn');
   dot.className = 'sync-dot ' + state;
+
+  // Loud warning when the browser has dropped folder permission (e.g. after sleep)
+  if (state === 'reconnect' && !syncLost) syncAutoTried = false;
+  syncLost = (state === 'reconnect');
+  btn.classList.toggle('alert', syncLost);
+  label.parentElement.classList.toggle('warn', syncLost);
+  document.title = (syncLost ? '⚠ ' : '') + BASE_TITLE;
+  btn.title = syncLost ? 'Your notes are safe in this browser. Click to resume saving to the folder.' : 'Pick a folder to autosave notes into';
 
   if (state === 'connected') {
     label.textContent = 'Synced: ' + (name || 'folder');
@@ -1587,8 +1605,8 @@ function setSyncUI(state, name) {
     btn.dataset.action = 'disconnect-folder';
     btn.style.display = '';
   } else if (state === 'reconnect') {
-    label.textContent = 'Sync paused — click to resume';
-    btn.querySelector('.btn-label').textContent = ' Reconnect';
+    label.textContent = '⚠ Not saved to folder';
+    btn.querySelector('.btn-label').textContent = ' Reconnect now';
     btn.dataset.action = 'reconnect-folder';
     btn.style.display = '';
   } else if (state === 'unsupported') {
@@ -1646,36 +1664,73 @@ async function disconnectFolder() {
   setSyncUI('off');
 }
 
-// Reads whatever is currently in the synced file and decides what to do with it.
-// isFirstConnect=true -> just picked the folder, ask if it already has notes.
-// isFirstConnect=false -> app just opened, folder is treated as the source of truth.
+async function readFolderFile() {
+  try {
+    const fh  = await dirHandle.getFileHandle(SYNC_FILENAME);
+    const txt = await (await fh.getFile()).text();
+    const parsed = JSON.parse(txt);
+    const list = Array.isArray(parsed) ? parsed : parsed.notes;
+    if (!Array.isArray(list)) return null;
+    return { notes: list, updatedAt: (!Array.isArray(parsed) && +parsed.updatedAt) || 0, txt };
+  } catch { return null; }   // no file yet — that's fine
+}
+
+function adoptFolderCopy(f) {
+  notes = f.notes;
+  localStorage.setItem('notepad_notes', JSON.stringify(notes));
+  localStorage.setItem('notepad_updated', String(f.updatedAt));
+  localStorage.setItem('notepad_synced',  String(f.updatedAt));
+  refreshAfterExternalLoad();
+}
+
+function backupLoser(text) {
+  try { localStorage.setItem('notepad_backup', text); localStorage.setItem('notepad_backup_time', new Date().toISOString()); } catch {}
+}
+
+// Never throw away what was typed while the folder was disconnected.
+// isFirstConnect=true  -> just picked the folder, ask if it already has notes.
+// isFirstConnect=false -> app opened / reconnected after sleep: keep local edits made since the last folder save.
 async function reconcileFolder(isFirstConnect) {
   if (!dirHandle) return;
   const ok = await verifyPermission(dirHandle, 'readwrite');
   if (!ok) { setSyncUI('reconnect', dirHandle.name); return; }
 
-  let folderNotes = null;
-  try {
-    const fileHandle = await dirHandle.getFileHandle(SYNC_FILENAME);
-    const file   = await fileHandle.getFile();
-    const parsed = JSON.parse(await file.text());
-    folderNotes  = Array.isArray(parsed) ? parsed : parsed.notes;
-  } catch { /* file doesn't exist yet — that's fine */ }
+  const f = await readFolderFile();
+  const sameContent = f && JSON.stringify(f.notes) === JSON.stringify(notes);
 
-  if (isFirstConnect && folderNotes && folderNotes.length > 0) {
+  if (!f) {
+    await writeToFolder();
+  } else if (sameContent) {
+    await writeToFolder();
+  } else if (isFirstConnect) {
     const useFolder = confirm(
-      `This folder already has ${folderNotes.length} saved note(s).\n\n` +
+      `This folder already has ${f.notes.length} saved note(s).\n\n` +
       `OK = Load those notes (replaces what's currently open)\n` +
       `Cancel = Keep what's open now and save it into this folder`
     );
-    if (useFolder) { notes = folderNotes; save(); refreshAfterExternalLoad(); }
-    else await writeToFolder();
-  } else if (folderNotes) {
-    notes = folderNotes;
-    save();
-    refreshAfterExternalLoad();
+    backupLoser(useFolder ? JSON.stringify({ notes }) : f.txt);
+    if (useFolder) adoptFolderCopy(f); else await writeToFolder();
   } else {
-    await writeToFolder();
+    const stamp  = +localStorage.getItem('notepad_updated') || 0;
+    const synced = +localStorage.getItem('notepad_synced')  || 0;
+    const localDirty  = stamp > synced;                             // typed since last folder save
+    const unknown     = stamp === 0 && synced === 0 && notes.length > 0;  // first run of this version
+    const fileChanged = f.updatedAt > synced;                       // folder edited elsewhere
+
+    if (!localDirty && !unknown) {
+      adoptFolderCopy(f);
+    } else {
+      let useFolder = false;                                        // normal after sleep: keep my text
+      if (unknown || fileChanged) {
+        useFolder = !confirm(
+          `The folder and this page both have changes the other doesn't.\n\n` +
+          `OK = Keep what's on this page (overwrites the folder copy)\n` +
+          `Cancel = Load the folder copy instead`
+        );
+      }
+      backupLoser(useFolder ? JSON.stringify({ notes }) : f.txt);   // safety copy of whichever version loses
+      if (useFolder) adoptFolderCopy(f); else await writeToFolder();
+    }
   }
 
   setSyncUI('connected', dirHandle.name);
@@ -1696,12 +1751,32 @@ async function writeToFolder() {
   try {
     const fileHandle = await dirHandle.getFileHandle(SYNC_FILENAME, { create: true });
     const writable    = await fileHandle.createWritable();
-    await writable.write(JSON.stringify({ version: 1, exported: new Date().toISOString(), notes }, null, 2));
+    const stamp = +localStorage.getItem('notepad_updated') || 0;
+    await writable.write(JSON.stringify({ version: 1, exported: new Date().toISOString(), updatedAt: stamp, notes }, null, 2));
     await writable.close();
+    localStorage.setItem('notepad_synced', String(stamp));
+    if (syncLost) setSyncUI('connected', dirHandle.name);
   } catch (err) {
     console.error('Folder sync write failed', err);
+    setSyncUI('reconnect', dirHandle ? dirHandle.name : '');
   }
 }
+
+async function checkFolderPermission() {
+  if (!dirHandle || syncLost) return;
+  try {
+    if ((await dirHandle.queryPermission({ mode: 'readwrite' })) !== 'granted') setSyncUI('reconnect', dirHandle.name);
+  } catch {}
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden) checkFolderPermission(); });
+window.addEventListener('focus', checkFolderPermission);
+setInterval(checkFolderPermission, 30000);
+// first click anywhere while disconnected -> pop the browser's permission prompt automatically
+document.addEventListener('pointerdown', async () => {
+  if (!syncLost || syncAutoTried || !dirHandle) return;
+  syncAutoTried = true;
+  if (await verifyPermission(dirHandle, 'readwrite')) await reconcileFolder(false);
+}, true);
 
 function debounceFolderSync() {
   if (!dirHandle) return;
