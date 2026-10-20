@@ -9,10 +9,76 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Gochi+Hand&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
 <style>
+/* ═══════════════════════════════════════════════════════════════
+   COLOR PALETTE — change any hex below (copy-paste #RRGGBB).
+   Everything on the page reads from these variables.
+   ═══════════════════════════════════════════════════════════════ */
 :root{
-  --paper:#FFFEF7; --ink:#453D5F; --ink2:#9A92B4; --line:#EADFC4;
-  --coral:#FF7460; --sun:#FFB525; --mint:#1FC79C; --sky:#2FAFFF;
-  --pink:#FF6FA5; --lilac:#9B78FF; --tang:#FF8E2B; --leaf:#6FBF3C;
+  /* main ink & paper */
+  --paper:#FFFEF7;        /* page paper */
+  --ink:#453D5F;          /* main text */
+  --ink2:#9A92B4;         /* soft text, labels */
+  --line:#EADFC4;         /* thin dotted lines */
+  --white:#FFFFFF;
+
+  /* accents */
+  --coral:#FF7460;        /* selected day, alerts */
+  --sun:#FFB525;
+  --mint:#1FC79C;
+  --sky:#2FAFFF;
+  --pink:#FF6FA5;
+  --lilac:#9B78FF;
+  --tang:#FF8E2B;
+  --leaf:#6FBF3C;
+
+  /* desk background */
+  --bg:#FFF6E0;
+  --glow-sun:#FFE082;     /* top-left glow */
+  --glow-pink:#FFBED6;    /* top-right glow */
+  --glow-sky:#A0E1FF;     /* bottom glow */
+  --bg-dot:#FF965A;       /* polka dots on the desk */
+  --paper-dot:#BEA878;    /* dot grid on the paper */
+
+  /* buttons, pills, cards */
+  --cream:#FFF2C9;        /* arrow buttons, day hover */
+  --pill-border:#F0E3C0;
+  --btn-bg:#FFFDF4;
+  --sun-bright:#FFD84D;   /* sun button top, text selection */
+  --sun-deep:#FFC01F;     /* sun button bottom */
+  --sun-edge:#E8A400;
+  --card-bg:#FFFDF2;
+  --card-border:#F1E2BC;
+
+  /* status */
+  --idle:#CFC7E2;
+  --danger:#D6402B;
+  --alert-a:#FF8A78;
+  --alert-b:#FF6450;
+
+  /* page details */
+  --spine-line:#D6C49A;
+  --placeholder:#C9BFA6;
+  --placeholder-2:#D3C9AC;
+  --hx:#D6B8B8;           /* remove-habit ×  */
+  --done-ink:#BCB4CE;     /* checked-off to-do text */
+  --now:#FFDE78;          /* current-hour highlight */
+  --now-ink:#DE8B00;
+  --row-hover:#FFE196;
+  --hl-lilac:#BEA0FF;     /* marker under "to-do & schedule" */
+  --hl-sun:#FFB43C;       /* marker under "paper days" */
+  --quote:#C77E2E;
+
+  /* washi tape stripes */
+  --tape1a:#FFD34D; --tape1b:#FFF4D0;
+  --tape2a:#8FDBFF; --tape2b:#E6F8FF;
+  --tape3a:#FFA3C4; --tape3b:#FFE7F0;
+  --tape4a:#9FE8C8; --tape4b:#EAFBF2;
+
+  /* shadows */
+  --shadow:#6E501E;       /* warm paper shadows */
+  --overlay:#463A64;      /* popup backdrop & shadow */
+}
+:root{
   --row:clamp(17px,2.3vh,22px);
   --hand:'Caveat',cursive; --cute:'Gochi Hand',cursive; --body:'Nunito',sans-serif;
 }
@@ -21,14 +87,14 @@ html,body{height:100%}
 body{
   font-family:var(--body);color:var(--ink);display:flex;flex-direction:column;overflow:hidden;
   background:
-    radial-gradient(1100px 520px at 6% -12%, rgba(255,224,130,.85), transparent 60%),
-    radial-gradient(900px 520px at 102% -6%, rgba(255,190,214,.8), transparent 55%),
-    radial-gradient(1100px 640px at 50% 118%, rgba(160,225,255,.8), transparent 62%),
-    #FFF6E0;
+    radial-gradient(1100px 520px at 6% -12%, color-mix(in srgb,var(--glow-sun) 85%,transparent), transparent 60%),
+    radial-gradient(900px 520px at 102% -6%, color-mix(in srgb,var(--glow-pink) 80%,transparent), transparent 55%),
+    radial-gradient(1100px 640px at 50% 118%, color-mix(in srgb,var(--glow-sky) 80%,transparent), transparent 62%),
+    var(--bg);
 }
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background-image:radial-gradient(rgba(255,150,90,.16) 1.5px, transparent 1.7px);background-size:34px 34px}
-::selection{background:#FFD84D}
+  background-image:radial-gradient(color-mix(in srgb,var(--bg-dot) 16%,transparent) 1.5px, transparent 1.7px);background-size:34px 34px}
+::selection{background:var(--sun-bright)}
 button{font-family:inherit}
 :focus-visible{outline:2px solid var(--sky);outline-offset:2px;border-radius:4px}
 
@@ -39,31 +105,25 @@ button{font-family:inherit}
 
 /* ---------- week nav & tools ---------- */
 @keyframes drop{from{opacity:0;transform:translateY(-10px)}}
-.weeknav{display:flex;align-items:center;gap:6px;background:#ffffffb8;border:1.5px solid #F0E3C0;
-  border-radius:999px;padding:4px 8px;box-shadow:0 2px 0 rgba(140,110,40,.08)}
-.nav{width:26px;height:26px;border-radius:50%;border:0;background:#FFF2C9;color:var(--ink);
+.weeknav{display:flex;align-items:center;gap:6px;background:color-mix(in srgb,var(--white) 72%,transparent);border:1.5px solid var(--pill-border);
+  border-radius:999px;padding:4px 8px;box-shadow:0 2px 0 color-mix(in srgb,var(--shadow) 8%,transparent)}
+.nav{width:26px;height:26px;border-radius:50%;border:0;background:var(--cream);color:var(--ink);
   font-weight:800;cursor:pointer;transition:.15s}
-.nav:hover{background:var(--sun);color:#fff;transform:scale(1.12)}
-.weeklabel{text-align:center;line-height:1.05;padding:0 6px}
-.weeklabel b{font-family:var(--cute);font-weight:400;font-size:14px;letter-spacing:.4px}
-.weeklabel i{display:block;font:800 9px var(--body);font-style:normal;color:var(--tang);letter-spacing:1.5px;text-transform:uppercase}
-.today{border:0;background:transparent;font:700 11px var(--body);color:var(--sky);cursor:pointer;
-  padding:4px 8px;border-radius:999px}
-.today:hover{background:#DDF1FF}
+.nav:hover{background:var(--sun);color:var(--white);transform:scale(1.12)}
 .actions{margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .status{display:flex;align-items:center;gap:6px;font:600 10.5px var(--body);color:var(--ink2)}
-.status .dot{width:8px;height:8px;border-radius:50%;background:#CFC7E2}
+.status .dot{width:8px;height:8px;border-radius:50%;background:var(--idle)}
 .status.saving .dot{background:var(--sun);animation:pulse 1s infinite}
 .status.saved .dot{background:var(--mint)}
-.status.warn{color:#D6402B;font-weight:800;max-width:none!important}
+.status.warn{color:var(--danger);font-weight:800;max-width:none!important}
 .status.warn .dot{background:var(--coral);animation:pulse .8s infinite}
-.btn.sun.alert,.btn.alert{background:linear-gradient(#FF8A78,#FF6450);color:#fff;border-color:#D6402B55;animation:alertpulse 1.1s infinite}
-@keyframes alertpulse{50%{box-shadow:0 0 0 6px rgba(255,100,80,.28)}}
+.btn.sun.alert,.btn.alert{background:linear-gradient(var(--alert-a),var(--alert-b));color:var(--white);border-color:color-mix(in srgb,var(--danger) 33%,transparent);animation:alertpulse 1.1s infinite}
+@keyframes alertpulse{50%{box-shadow:0 0 0 6px color-mix(in srgb,var(--coral) 28%,transparent)}}
 @keyframes pulse{50%{transform:scale(1.5);opacity:.5}}
-.btn{border:2px solid #4A416622;background:#FFFDF4;font:800 11px var(--body);letter-spacing:.3px;
-  color:var(--ink);padding:7px 13px;border-radius:999px;cursor:pointer;transition:.15s;box-shadow:0 2px 0 rgba(90,70,20,.10)}
-.btn:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(255,140,60,.3)}
-.btn.sun{background:linear-gradient(#FFD84D,#FFC01F);border-color:#E8A40044}
+.btn{border:2px solid color-mix(in srgb,var(--ink) 13%,transparent);background:var(--btn-bg);font:800 11px var(--body);letter-spacing:.3px;
+  color:var(--ink);padding:7px 13px;border-radius:999px;cursor:pointer;transition:.15s;box-shadow:0 2px 0 color-mix(in srgb,var(--shadow) 10%,transparent)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 14px color-mix(in srgb,var(--tang) 30%,transparent)}
+.btn.sun{background:linear-gradient(var(--sun-bright),var(--sun-deep));border-color:color-mix(in srgb,var(--sun-edge) 27%,transparent)}
 .btn.ghost{background:transparent}
 
 /* ---------- the spread ---------- */
@@ -71,31 +131,31 @@ button{font-family:inherit}
   width:min(1500px,calc(100% - clamp(18px,5vw,70px)));margin:clamp(16px,2.6vh,28px) auto clamp(10px,1.8vh,20px)}
 .page{flex:1;min-width:0;display:flex;flex-direction:column;gap:clamp(7px,1.5vh,15px);
   background:var(--paper);
-  background-image:radial-gradient(rgba(190,168,120,.34) 1px, transparent 1.4px);
+  background-image:radial-gradient(color-mix(in srgb,var(--paper-dot) 34%,transparent) 1px, transparent 1.4px);
   background-size:21px 21px;
   padding:clamp(12px,2vh,22px) clamp(14px,1.9vw,28px);
   overflow:auto;scrollbar-width:thin;position:relative}
-.page.left{border-radius:18px 5px 5px 18px;box-shadow:inset -16px 0 22px -16px rgba(95,70,25,.28),0 20px 44px rgba(140,95,35,.18)}
-.page.right{border-radius:5px 18px 18px 5px;box-shadow:inset 16px 0 22px -16px rgba(95,70,25,.28),0 20px 44px rgba(140,95,35,.18)}
+.page.left{border-radius:18px 5px 5px 18px;box-shadow:inset -16px 0 22px -16px color-mix(in srgb,var(--shadow) 28%,transparent),0 20px 44px color-mix(in srgb,var(--shadow) 18%,transparent)}
+.page.right{border-radius:5px 18px 18px 5px;box-shadow:inset 16px 0 22px -16px color-mix(in srgb,var(--shadow) 28%,transparent),0 20px 44px color-mix(in srgb,var(--shadow) 18%,transparent)}
 .spine{width:clamp(12px,1.5vw,22px);position:relative;
-  background:linear-gradient(90deg,rgba(110,80,30,.20),rgba(110,80,30,.02) 45% 55%,rgba(110,80,30,.20))}
+  background:linear-gradient(90deg,color-mix(in srgb,var(--shadow) 20%,transparent),color-mix(in srgb,var(--shadow) 2%,transparent) 45% 55%,color-mix(in srgb,var(--shadow) 20%,transparent))}
 .spine::before{content:'';position:absolute;left:50%;top:12px;bottom:12px;width:0;
-  border-left:2px dashed #D6C49A;transform:translateX(-50%)}
+  border-left:2px dashed var(--spine-line);transform:translateX(-50%)}
 
 /* washi tape */
 .tape{position:absolute;width:clamp(78px,8vw,116px);height:24px;z-index:6;opacity:.9;border-radius:2px;
-  box-shadow:0 3px 7px rgba(90,60,20,.18);animation:drop .8s both}
-.tape.t1{top:-11px;left:4%;transform:rotate(-7deg);background:repeating-linear-gradient(45deg,#FFD34D 0 9px,#FFF4D0 9px 18px)}
-.tape.t2{top:-11px;right:5%;transform:rotate(6deg);background:repeating-linear-gradient(45deg,#8FDBFF 0 9px,#E6F8FF 9px 18px);animation-delay:.1s}
-.tape.t3{bottom:-11px;left:9%;transform:rotate(5deg);background:repeating-linear-gradient(45deg,#FFA3C4 0 9px,#FFE7F0 9px 18px);animation-delay:.15s}
-.tape.t4{bottom:-11px;right:8%;transform:rotate(-6deg);background:repeating-linear-gradient(45deg,#9FE8C8 0 9px,#EAFBF2 9px 18px);animation-delay:.2s}
+  box-shadow:0 3px 7px color-mix(in srgb,var(--shadow) 18%,transparent);animation:drop .8s both}
+.tape.t1{top:-11px;left:4%;transform:rotate(-7deg);background:repeating-linear-gradient(45deg,var(--tape1a) 0 9px,var(--tape1b) 9px 18px)}
+.tape.t2{top:-11px;right:5%;transform:rotate(6deg);background:repeating-linear-gradient(45deg,var(--tape2a) 0 9px,var(--tape2b) 9px 18px);animation-delay:.1s}
+.tape.t3{bottom:-11px;left:9%;transform:rotate(5deg);background:repeating-linear-gradient(45deg,var(--tape3a) 0 9px,var(--tape3b) 9px 18px);animation-delay:.15s}
+.tape.t4{bottom:-11px;right:8%;transform:rotate(-6deg);background:repeating-linear-gradient(45deg,var(--tape4a) 0 9px,var(--tape4b) 9px 18px);animation-delay:.2s}
 
 /* ---------- sections ---------- */
 .sec{display:flex;flex-direction:column;gap:5px;min-height:0;animation:rise .55s both;animation-delay:var(--d,0s)}
 @keyframes rise{from{opacity:0;transform:translateY(12px)}}
 .chip{align-self:flex-start;font-family:var(--cute);font-size:clamp(12.5px,1.8vh,14.5px);letter-spacing:.5px;
-  color:var(--c);background:color-mix(in srgb,var(--c) 14%, white);
-  border:1.5px solid color-mix(in srgb,var(--c) 42%, white);
+  color:var(--c);background:color-mix(in srgb,var(--c) 14%, var(--white));
+  border:1.5px solid color-mix(in srgb,var(--c) 42%, var(--white));
   padding:1px 10px 2px;border-radius:9px;transform:rotate(-1.4deg);transition:.15s}
 .chip:hover{transform:rotate(1.2deg) scale(1.04)}
 .sub{font:italic 600 10.5px var(--body);color:var(--ink2)}
@@ -104,25 +164,25 @@ button{font-family:inherit}
 .fline{display:flex;align-items:center;gap:9px;height:calc(var(--row) + 7px)}
 .fline .star{color:var(--c);font-size:13px;flex:none;transform:rotate(-8deg)}
 .fline input{flex:1;min-width:0;border:0;background:transparent;outline:0;padding:0 2px;
-  border-bottom:2px dotted color-mix(in srgb,var(--c) 52%, white);
+  border-bottom:2px dotted color-mix(in srgb,var(--c) 52%, var(--white));
   font-family:var(--hand);font-weight:600;font-size:clamp(16px,2.35vh,20px);color:var(--ink)}
-.fline input::placeholder{color:#C9BFA6;font-weight:500}
+.fline input::placeholder{color:var(--placeholder);font-weight:500}
 .fline input:focus{border-bottom:2px solid var(--c)}
-.num{flex:none;width:19px;height:19px;border-radius:6px;background:var(--c);color:#fff;
-  display:grid;place-items:center;font:800 11px var(--body);transform:rotate(-5deg);box-shadow:0 2px 0 rgba(90,50,10,.15)}
+.num{flex:none;width:19px;height:19px;border-radius:6px;background:var(--c);color:var(--white);
+  display:grid;place-items:center;font:800 11px var(--body);transform:rotate(-5deg);box-shadow:0 2px 0 color-mix(in srgb,var(--shadow) 15%,transparent)}
 
 /* big three */
 .bline{display:flex;align-items:center;gap:10px;height:calc(var(--row) + 8px)}
 .ring{flex:none;width:24px;height:24px;border-radius:50%;border:2.5px solid var(--c);color:var(--c);
-  display:grid;place-items:center;font:800 12px var(--body);background:#fff}
+  display:grid;place-items:center;font:800 12px var(--body);background:var(--white)}
 .bline input{flex:1;min-width:0;border:0;outline:0;background:transparent;padding:0 3px;
-  border-bottom:2.5px dashed color-mix(in srgb,var(--c) 46%, white);
+  border-bottom:2.5px dashed color-mix(in srgb,var(--c) 46%, var(--white));
   font:700 clamp(12.5px,1.9vh,15px) var(--body);color:var(--ink)}
 .bline input:focus{border-bottom-color:var(--c)}
 
 /* habits */
 .hrow{display:grid;grid-template-columns:16px 1fr auto;align-items:center;gap:9px;height:calc(var(--row) + 2px)}
-.hx{border:0;background:transparent;color:#D6B8B8;font:800 13px var(--body);cursor:pointer;opacity:.25;transition:.15s;padding:0}
+.hx{border:0;background:transparent;color:var(--hx);font:800 13px var(--body);cursor:pointer;opacity:.25;transition:.15s;padding:0}
 .hrow:hover .hx{opacity:1;color:var(--coral)}
 .hx:hover{transform:scale(1.3)}
 .hname{border:0;outline:0;background:transparent;font:600 12px var(--body);color:var(--ink);
@@ -137,7 +197,7 @@ button{font-family:inherit}
 .hctl{display:flex;align-items:center;gap:10px;margin-top:2px}
 #addHabit{border:1.5px dashed var(--mint);background:transparent;color:var(--mint);font:800 10.5px var(--body);
   border-radius:999px;padding:3px 11px;cursor:pointer;transition:.15s}
-#addHabit:hover{background:var(--mint);color:#fff;transform:translateY(-1px)}
+#addHabit:hover{background:var(--mint);color:var(--white);transform:translateY(-1px)}
 .hint{font:italic 600 10px var(--body);color:var(--ink2)}
 
 /* ---------- right page ---------- */
@@ -148,75 +208,96 @@ button{font-family:inherit}
 .rhead .status{max-width:150px;white-space:nowrap}
 .rhead .status em{overflow:hidden;text-overflow:ellipsis}
 .rhead h2{font-family:var(--hand);font-weight:700;font-size:clamp(21px,3.3vh,30px);line-height:1;
-  background:linear-gradient(transparent 58%, rgba(190,160,255,.55) 58% 94%, transparent 94%)}
+  background:linear-gradient(transparent 58%, color-mix(in srgb,var(--hl-lilac) 55%,transparent) 58% 94%, transparent 94%)}
 .count{font-family:var(--cute);font-size:13.5px;color:var(--lilac);white-space:nowrap;
-  background:color-mix(in srgb,var(--lilac) 12%, white);border:1.5px solid color-mix(in srgb,var(--lilac) 38%, white);
+  background:color-mix(in srgb,var(--lilac) 12%, var(--white));border:1.5px solid color-mix(in srgb,var(--lilac) 38%, var(--white));
   padding:2px 11px;border-radius:999px}
 .count.popa{animation:cpop .3s}
 @keyframes cpop{40%{transform:scale(1.18) rotate(-3deg)}}
 
 .slots{display:flex;flex-direction:column}
 .slot{display:grid;grid-template-columns:44px 1fr 20px;align-items:center;gap:9px;height:var(--row);border-radius:6px;transition:background .15s}
-.slot:hover{background:rgba(255,225,150,.35)}
+.slot:hover{background:color-mix(in srgb,var(--row-hover) 35%,transparent)}
 .tlabel{font:800 9.5px var(--body);letter-spacing:.7px;color:var(--ink2);text-align:right;flex:none}
 .slot input{border:0;outline:0;background:transparent;min-width:0;padding:0 4px;height:100%;
   border-bottom:1.8px dotted var(--line);font:600 12.5px var(--body);color:var(--ink)}
 .slot input:focus{border-bottom:1.8px solid var(--sky)}
-.cb{width:16px;height:16px;border-radius:5px;border:2px solid var(--lilac);background:#fff;cursor:pointer;
+.cb{width:16px;height:16px;border-radius:5px;border:2px solid var(--lilac);background:var(--white);cursor:pointer;
   display:grid;place-items:center;padding:0;transition:.15s}
-.cb::after{content:'✓';font:800 10.5px var(--body);color:#fff;opacity:0;transform:scale(.2);transition:.15s}
+.cb::after{content:'✓';font:800 10.5px var(--body);color:var(--white);opacity:0;transform:scale(.2);transition:.15s}
 .cb:hover{transform:scale(1.2) rotate(-6deg)}
 .slot.done .cb{background:var(--lilac);border-color:var(--lilac);transform:rotate(-7deg)}
 .slot.done .cb::after{opacity:1;transform:scale(1)}
-.slot.done input{color:#BCB4CE;text-decoration:line-through;text-decoration-color:var(--coral);text-decoration-thickness:2px}
-.slot.now{background:linear-gradient(90deg,rgba(255,222,120,.75),transparent 75%)}
-.slot.now .tlabel{color:#DE8B00}
+.slot.done input{color:var(--done-ink);text-decoration:line-through;text-decoration-color:var(--coral);text-decoration-thickness:2px}
+.slot.now{background:linear-gradient(90deg,color-mix(in srgb,var(--now) 75%,transparent),transparent 75%)}
+.slot.now .tlabel{color:var(--now-ink)}
 .slot.now .tlabel::before{content:'▸ '}
 
 .duo{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,1.6vw,24px)}
 .mrow{display:flex;align-items:center;gap:8px;height:calc(var(--row) + 3px)}
-.tok{flex:none;width:17px;height:17px;border-radius:50%;background:var(--tc);color:#fff;
-  display:grid;place-items:center;font:800 8.5px var(--body);transform:rotate(-6deg);box-shadow:0 2px 0 rgba(90,50,10,.14)}
+.tok{flex:none;width:17px;height:17px;border-radius:50%;background:var(--tc);color:var(--white);
+  display:grid;place-items:center;font:800 8.5px var(--body);transform:rotate(-6deg);box-shadow:0 2px 0 color-mix(in srgb,var(--shadow) 14%,transparent)}
 .tok.g{border-radius:50% 50% 50% 4px;font-size:10px;background:none;color:var(--tc);box-shadow:none;border:0}
 .mrow input{flex:1;min-width:0;border:0;outline:0;background:transparent;padding:0 2px;
-  border-bottom:2px dotted color-mix(in srgb,var(--c) 45%, white);font:600 12px var(--body);color:var(--ink)}
-.mrow input::placeholder{color:#D3C9AC}
+  border-bottom:2px dotted color-mix(in srgb,var(--c) 45%, var(--white));font:600 12px var(--body);color:var(--ink)}
+.mrow input::placeholder{color:var(--placeholder-2)}
 .mrow input:focus{border-bottom-color:var(--c)}
 
 #notes{flex:1;min-height:56px;width:100%;border:0;outline:0;resize:none;background-attachment:local;padding:0 5px;
-  background:repeating-linear-gradient(transparent 0 calc(25px - 1.5px), color-mix(in srgb,var(--lilac) 32%, white) calc(25px - 1.5px) 25px);
+  background:repeating-linear-gradient(transparent 0 calc(25px - 1.5px), color-mix(in srgb,var(--lilac) 32%, var(--white)) calc(25px - 1.5px) 25px);
   font:600 clamp(15px,2.1vh,17.5px)/25px var(--hand);color:var(--ink)}
 #notes:focus{box-shadow:0 0 0 2.5px color-mix(in srgb,var(--lilac) 25%, transparent);border-radius:8px}
 .grow{flex:1}
 
 .quote{margin-top:auto;text-align:center;font-family:var(--cute);font-size:clamp(13px,1.9vh,15.5px);
-  letter-spacing:.6px;color:#C77E2E;animation:rise .6s .3s both}
+  letter-spacing:.6px;color:var(--quote);animation:rise .6s .3s both}
 .quote span{display:inline-block;animation:bob 5s ease-in-out infinite alternate;color:var(--pink)}
 
 /* masthead */
 .mast{display:flex;align-items:center;justify-content:space-between;gap:6px 12px;flex-wrap:wrap;
-  border-bottom:2.5px dotted var(--line);padding-bottom:6px}
+  border-bottom:2.5px dotted var(--line);padding-bottom:6px;position:relative;z-index:5}
 .brand{font-family:var(--hand);font-weight:700;font-size:clamp(19px,2.8vh,25px);line-height:1;
-  background:linear-gradient(transparent 58%, rgba(255,180,60,.55) 58% 94%, transparent 94%)}
+  background:linear-gradient(transparent 58%, color-mix(in srgb,var(--hl-sun) 55%,transparent) 58% 94%, transparent 94%)}
 .radiant{display:inline-block;margin-left:9px;font:800 9.5px var(--body);letter-spacing:1px;text-transform:uppercase;
-  color:#fff;background:linear-gradient(100deg,var(--sun),var(--coral));padding:3px 9px;border-radius:999px;
-  transform:rotate(-2deg) translateY(-3px);box-shadow:0 2px 0 rgba(150,80,10,.2)}
-.date{font-family:var(--cute);font-size:clamp(12px,1.8vh,14.5px);color:var(--ink2);text-align:right;line-height:1.1}
+  color:var(--white);background:linear-gradient(100deg,var(--sun),var(--coral));padding:3px 9px;border-radius:999px;
+  transform:rotate(-2deg) translateY(-3px);box-shadow:0 2px 0 color-mix(in srgb,var(--shadow) 20%,transparent)}
+.date{font-family:var(--cute);font-size:clamp(12px,1.8vh,14.5px);color:var(--ink2);text-align:left;line-height:1.1}
 .date b{color:var(--coral);font-weight:400}
 
-.mast-r{display:flex;align-items:center;gap:12px;margin-left:auto}
-.mast .weeknav{padding:2px 5px;gap:3px}
+.mast-l{display:flex;align-items:center;gap:6px 16px;flex-wrap:wrap;min-width:0}
+.mast .weeknav{padding:2px 5px;gap:3px;margin-left:auto}
 .mast .nav{width:22px;height:22px;font-size:12px}
-.mast .weeklabel{padding:0 3px}
-.mast .weeklabel b{font-size:13px}
-.mast .today{padding:3px 6px;font-size:10.5px}
 .mast .radiant{margin-left:6px}
 
+/* day pill  ‹ 19 20 21 22 23 24 25 › */
+.daybtns{display:flex;gap:2px}
+.dbtn{position:relative;width:26px;height:26px;border-radius:50%;border:2px solid transparent;background:transparent;
+  color:var(--ink);font:800 11px var(--body);cursor:pointer;padding:0;transition:.15s}
+.dbtn:hover:not(.sel){background:var(--cream);transform:scale(1.1)}
+.dbtn.today{border-color:var(--coral)}
+.dbtn.sel{background:var(--coral);border-color:var(--coral);color:var(--white)}
+.dbtn.sel.today{box-shadow:inset 0 0 0 2px var(--white)}
+.dbtn::after{content:attr(data-tip);position:absolute;top:calc(100% + 7px);left:50%;transform:translateX(-50%);
+  white-space:nowrap;background:var(--ink);color:var(--white);font:700 10px var(--body);letter-spacing:.3px;
+  padding:3px 8px;border-radius:7px;opacity:0;pointer-events:none;transition:opacity .12s;z-index:30}
+.dbtn:hover::after,.dbtn:focus-visible::after{opacity:1}
+.dbtn.tl::after{left:0;transform:none}
+.dbtn.tr::after{left:auto;right:0;transform:none}
+
+/* live clock */
+.clock{display:flex;align-items:center;gap:7px;font-family:var(--cute);font-size:clamp(12px,1.8vh,14.5px);
+  color:var(--ink2);white-space:nowrap;font-variant-numeric:tabular-nums}
+.clock #clockTxt{display:inline-block;min-width:5.9em}
+.clock small{font-size:.8em;margin-left:2px;color:var(--coral)}
+.pdot{position:relative;flex:none;width:8px;height:8px;border-radius:50%;background:var(--mint)}
+.pdot::after{content:'';position:absolute;inset:0;border-radius:50%;background:var(--mint);animation:ping 1.6s ease-out infinite}
+@keyframes ping{from{transform:scale(1);opacity:.7}to{transform:scale(3);opacity:0}}
+
 /* ---------- modal ---------- */
-.modal{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:rgba(70,58,100,.35);backdrop-filter:blur(3px)}
+.modal{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:color-mix(in srgb,var(--overlay) 35%,transparent);backdrop-filter:blur(3px)}
 .modal.hidden{display:none}
-.card{background:#FFFDF2;border:2px solid #F1E2BC;border-radius:20px;max-width:400px;width:calc(100% - 40px);
-  padding:28px 30px;text-align:center;box-shadow:0 34px 70px rgba(70,45,110,.35);animation:rise .4s both}
+.card{background:var(--card-bg);border:2px solid var(--card-border);border-radius:20px;max-width:400px;width:calc(100% - 40px);
+  padding:28px 30px;text-align:center;box-shadow:0 34px 70px color-mix(in srgb,var(--overlay) 35%,transparent);animation:rise .4s both}
 .card .sun-big{font-size:34px;display:inline-block;animation:bob 4s ease-in-out infinite alternate}
 .card h3{font-family:var(--hand);font-weight:700;font-size:27px;margin:6px 0 4px}
 .card p{font:600 12.5px/1.55 var(--body);color:var(--ink2);margin-bottom:16px}
@@ -226,13 +307,13 @@ button{font-family:inherit}
 @media (max-width:920px){
   body{overflow:auto}
   .spread{flex-direction:column;gap:16px;width:calc(100% - 24px)}
-  .spine{width:auto;height:14px;background:linear-gradient(180deg,rgba(110,80,30,.20),rgba(110,80,30,.02) 45% 55%,rgba(110,80,30,.20))}
-  .spine::before{left:12px;right:12px;top:50%;bottom:auto;width:auto;height:0;border-left:0;border-top:2px dashed #D6C49A;transform:translateY(-50%)}
+  .spine{width:auto;height:14px;background:linear-gradient(180deg,color-mix(in srgb,var(--shadow) 20%,transparent),color-mix(in srgb,var(--shadow) 2%,transparent) 45% 55%,color-mix(in srgb,var(--shadow) 20%,transparent))}
+  .spine::before{left:12px;right:12px;top:50%;bottom:auto;width:auto;height:0;border-left:0;border-top:2px dashed var(--spine-line);transform:translateY(-50%)}
   .page{border-radius:16px}
 }
 @media print{
   .weeknav,.actions,.sky,.tape,.modal{display:none!important}
-  body{overflow:visible;background:#fff}
+  body{overflow:visible;background:var(--white)}
   .spread{width:100%;filter:none}
   .page{overflow:visible;box-shadow:none}
 }
@@ -241,12 +322,12 @@ button{font-family:inherit}
 <body>
 
 <div class="sky" aria-hidden="true">
-  <b style="top:12%;left:3.5%;font-size:34px;color:#FFB525;--t:8s">☀</b>
-  <b style="top:70%;left:2.5%;font-size:22px;color:#FF6FA5;--t:11s">✿</b>
-  <b style="top:18%;right:4%;font-size:24px;color:#2FAFFF;--t:9s">✦</b>
-  <b style="top:78%;right:3%;font-size:30px;color:#1FC79C;--t:12s">✿</b>
-  <b style="top:45%;left:1.5%;font-size:16px;color:#9B78FF;--t:7s">✦</b>
-  <b style="top:50%;right:1.5%;font-size:18px;color:#FF8E2B;--t:10s">☺</b>
+  <b style="top:12%;left:3.5%;font-size:34px;color:var(--sun);--t:8s">☀</b>
+  <b style="top:70%;left:2.5%;font-size:22px;color:var(--pink);--t:11s">✿</b>
+  <b style="top:18%;right:4%;font-size:24px;color:var(--sky);--t:9s">✦</b>
+  <b style="top:78%;right:3%;font-size:30px;color:var(--mint);--t:12s">✿</b>
+  <b style="top:45%;left:1.5%;font-size:16px;color:var(--lilac);--t:7s">✦</b>
+  <b style="top:50%;right:1.5%;font-size:18px;color:var(--tang);--t:10s">☺</b>
 </div>
 
 <main class="spread">
@@ -255,20 +336,24 @@ button{font-family:inherit}
   <!-- ══════════ LEFT PAGE ══════════ -->
   <section class="page left">
     <div class="mast">
-      <div><span class="brand">paper days</span><span class="radiant">☀ feeling · radiant</span></div>
-      <div class="mast-r">
-        <div class="weeknav">
-          <button class="nav" id="prevW" title="previous week">‹</button>
-          <div class="weeklabel"><b id="wkRange">—</b><i id="wkNum">—</i></div>
-          <button class="nav" id="nextW" title="next week">›</button>
-          <button class="today" id="todayBtn">☀ today</button>
-        </div>
+      <div class="mast-l">
+        <div><span class="brand">paper days</span><span class="radiant">☀ feeling · radiant</span></div>
         <div class="date" id="dateLine">№ — · —</div>
+      </div>
+      <div class="weeknav" id="weekPill">
+        <button class="nav" id="prevW" title="previous week">‹</button>
+        <div class="daybtns" id="dayBtns"></div>
+        <button class="nav" id="nextW" title="next week">›</button>
       </div>
     </div>
 
+    <div class="sec" style="--c:var(--lilac);--d:.02s">
+      <span class="chip">✦ rules</span>
+      <div id="rulesBox"></div>
+    </div>
+
     <div class="sec" style="--c:var(--coral);--d:.05s">
-      <span class="chip">✶ monthly purpose</span>
+      <span class="chip">✶ monthly Everest</span>
       <div id="purposeBox"></div>
     </div>
 
@@ -294,11 +379,13 @@ button{font-family:inherit}
   <!-- ══════════ RIGHT PAGE ══════════ -->
   <section class="page right">
     <div class="rhead">
-      <div class="rtitle"><h2>to-do &amp; schedule</h2><span class="count" id="count">0/19</span></div>
+      <div class="rtitle"><h2>to-do &amp; schedule</h2><span class="count" id="count">0/19</span>
+        <div class="clock" aria-label="current time"><i class="pdot"></i><span id="clockTxt">--:--:--</span></div>
+      </div>
     <div class="actions">
       <span class="status" id="status"><i class="dot"></i><em id="statusTxt" style="font-style:normal">warming up…</em></span>
       <button class="btn sun" id="folderBtn">📁 choose folder</button>
-      <button class="btn ghost" id="resetBtn" title="clear this week's page">↺ reset</button>
+      <button class="btn ghost" id="resetBtn" title="clear the day you're viewing">↺ reset</button>
       <button class="btn ghost" id="printBtn" title="print">⎙</button>
     </div>
     </div>
@@ -317,7 +404,7 @@ button{font-family:inherit}
 
     <div class="sec grow" style="--c:var(--lilac);--d:.25s">
       <span class="chip">notes &amp; brain dump</span>
-      <p class="sub">review the day — what got accomplished? is it in step with this week's plan &amp; this month's purpose?</p>
+      <p class="sub">review the day — what got accomplished? is it in step with this week's plan &amp; this month's Everest?</p>
       <textarea id="notes" data-k="notes" placeholder="free write… anything else on your mind" spellcheck="false"></textarea>
     </div>
 
@@ -360,9 +447,14 @@ function wkNo(d){const x=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDat
   return 1+Math.round(((x-f)/864e5-3+((f.getUTCDay()+6)%7))/7);}
 
 let state; try{state=JSON.parse(localStorage.getItem(LS_KEY))||{};}catch(e){state={};}
-state.months=state.months||{}; state.weeks=state.weeks||{};
+function ensure(){state.months=state.months||{}; state.weeks=state.weeks||{};
+  if(!Array.isArray(state.rules))state.rules=[];
+  while(state.rules.length<3)state.rules.push('');}
+ensure();
 
+const todayIdx=()=>(new Date().getDay()+6)%7;
 let weekStart=monday(new Date());
+let selDay=todayIdx();                       /* 0 = monday … 6 = sunday */
 let dirHandle=null, bound=false, saveTimer=null, needsReconnect=false, autoTried=false;
 const BASE_TITLE=document.title;
 const $=id=>document.getElementById(id);
@@ -370,25 +462,51 @@ const key=()=>iso(weekStart);
 const mk =()=>weekStart.getFullYear()+'-'+pad(weekStart.getMonth()+1);
 const isCur=()=>iso(monday(new Date()))===key();
 
+function freshDay(){
+  return {slots:HOURS.map(()=>({t:'',done:false})),meals:['','',''],grat:['','',''],notes:''};
+}
 function freshWeek(){
   const names=(state.lastHabitNames&&state.lastHabitNames.length)?state.lastHabitNames:DEF_HABITS;
   return {big3:['','',''],weekly:['','','',''],
-    slots:HOURS.map(()=>({t:'',done:false})),
     habits:names.map(n=>({name:n,days:Array(7).fill(false)})),
-    meals:['','',''],grat:['','',''],notes:''};
+    days:Array.from({length:7},freshDay)};
 }
-function getWeek(){if(!state.weeks[key()])state.weeks[key()]=freshWeek();return state.weeks[key()];}
+function getWeek(){
+  let w=state.weeks[key()]; if(!w)w=state.weeks[key()]=freshWeek();
+  if(!w.days){                               /* older planner: one page per week → move it into one day */
+    w.days=Array.from({length:7},freshDay);
+    const old={slots:w.slots,meals:w.meals,grat:w.grat,notes:w.notes};
+    w.days[isCur()?todayIdx():0]=Object.assign(freshDay(),JSON.parse(JSON.stringify(old)));
+    delete w.slots;delete w.meals;delete w.grat;delete w.notes;
+  }
+  return w;
+}
+const getDay=()=>getWeek().days[selDay];
+const selDate=()=>addD(weekStart,selDay);
 function getPurpose(){if(!state.months[mk()])state.months[mk()]=['',''];return state.months[mk()];}
 
 /* ───────────────────────── render ───────────────────────── */
-function renderWeek(){
-  const w=getWeek(), p=getPurpose(), ref=isCur()?new Date():weekStart, end=addD(weekStart,6);
+function renderHead(){
+  const ref=selDate(), end=addD(weekStart,6), t=new Date(), tk=iso(t);
   const doy=Math.round((ref-new Date(ref.getFullYear(),0,0))/864e5);
-
   $('dateLine').innerHTML=`№ <b>${doy}</b> · ${DAY[ref.getDay()]}<br>${MON[ref.getMonth()]} ${ref.getDate()} · ${ref.getFullYear()}`;
-  $('wkRange').textContent=`${MON[weekStart.getMonth()]} ${weekStart.getDate()} → ${MON[end.getMonth()]} ${end.getDate()}`;
-  $('wkNum').textContent='week '+wkNo(weekStart);
+  $('weekPill').title=`week ${wkNo(weekStart)} · ${MON[weekStart.getMonth()]} ${weekStart.getDate()} → ${MON[end.getMonth()]} ${end.getDate()}`;
+  $('dayBtns').innerHTML=Array.from({length:7},(_,i)=>{
+    const d=addD(weekStart,i), tip=`${DAY[d.getDay()]} · ${MON[d.getMonth()]} ${d.getDate()}`;
+    return `<button class="dbtn${i===selDay?' sel':''}${iso(d)===tk?' today':''}${i<2?' tl':''}${i>4?' tr':''}" data-d="${i}" data-tip="${tip}" aria-label="${tip}" aria-pressed="${i===selDay}">${d.getDate()}</button>`;
+  }).join('');
+  const lab=`${DAY[ref.getDay()]} ${MON[ref.getMonth()]} ${ref.getDate()}`;
+  $('resetBtn').title=`clear ${lab}`;
+}
 
+function renderWeek(){
+  const w=getWeek();
+  renderHead();
+
+  $('rulesBox').innerHTML=state.rules.map((v,i)=>
+    `<div class="fline"><span class="num">${i+1}</span><input data-k="r${i}" value="${esc(v)}" placeholder="a rule i live by…" spellcheck="false"></div>`).join('');
+
+  const p=getPurpose();
   $('purposeBox').innerHTML=p.map((v,i)=>
     `<div class="fline"><span class="star">✶</span><input data-k="p${i}" value="${esc(v)}" placeholder="${i?'and it starts with…':'this month i intend to…'}" spellcheck="false"></div>`).join('');
 
@@ -399,8 +517,13 @@ function renderWeek(){
     `<div class="bline"><span class="ring">${i+1}</span><input data-k="b${i}" value="${esc(v)}" spellcheck="false"></div>`).join('');
 
   renderHabits();
+  renderDay();
+}
 
-  $('slots').innerHTML=w.slots.map((s,i)=>
+function renderDay(){
+  const D=getDay();
+
+  $('slots').innerHTML=D.slots.map((s,i)=>
     `<div class="slot${s.done?' done':''}" data-i="${i}">
        <span class="tlabel">${hourLab(HOURS[i])}</span>
        <input data-k="s${i}" value="${esc(s.t)}" spellcheck="false">
@@ -408,16 +531,16 @@ function renderWeek(){
      </div>`).join('');
 
   const B=['b','l','d'], BC=['var(--sun)','var(--leaf)','var(--pink)'];
-  $('mealBox').innerHTML=w.meals.map((v,i)=>
+  $('mealBox').innerHTML=D.meals.map((v,i)=>
     `<div class="mrow" style="--c:var(--tang)"><span class="tok" style="--tc:${BC[i]}">${B[i]}</span>
      <input data-k="m${i}" value="${esc(v)}" placeholder="…" spellcheck="false"></div>`).join('');
 
   const G=['✶','♥','✿'], GC=['var(--sun)','var(--pink)','var(--sky)'];
-  $('gratBox').innerHTML=w.grat.map((v,i)=>
+  $('gratBox').innerHTML=D.grat.map((v,i)=>
     `<div class="mrow" style="--c:var(--pink)"><span class="tok g" style="--tc:${GC[i]}">${G[i]}</span>
      <input data-k="g${i}" value="${esc(v)}" placeholder="…" spellcheck="false"></div>`).join('');
 
-  $('notes').value=w.notes;
+  $('notes').value=D.notes;
   updateCount(); markNow();
 }
 
@@ -435,13 +558,13 @@ function renderHabits(){
 }
 
 function updateCount(){
-  const w=getWeek(), n=w.slots.filter(s=>s.done).length, el=$('count');
+  const n=getDay().slots.filter(s=>s.done).length, el=$('count');
   el.textContent=n===19?'19/19 ✿ radiant!':n+'/19 done';
   el.classList.remove('popa'); void el.offsetWidth; el.classList.add('popa');
 }
 function markNow(){
   document.querySelectorAll('.slot.now').forEach(s=>s.classList.remove('now'));
-  if(!isCur())return;
+  if(!isCur()||selDay!==todayIdx())return;
   const h=new Date().getHours();
   if(h>=3&&h<=21){const el=document.querySelector(`.slot[data-i="${h-3}"]`);if(el)el.classList.add('now');}
 }
@@ -449,15 +572,16 @@ function markNow(){
 /* ───────────────────────── editing ───────────────────────── */
 document.addEventListener('input',e=>{
   const t=e.target,k=t.dataset.k; if(!k)return;
-  const w=getWeek();
-  if(k[0]==='p')getPurpose()[+k.slice(1)]=t.value;
+  const w=getWeek(), D=getDay();
+  if(k[0]==='r')state.rules[+k.slice(1)]=t.value;
+  else if(k[0]==='p')getPurpose()[+k.slice(1)]=t.value;
   else if(k[0]==='w')w.weekly[+k.slice(1)]=t.value;
   else if(k[0]==='b')w.big3[+k.slice(1)]=t.value;
-  else if(k[0]==='m')w.meals[+k.slice(1)]=t.value;
-  else if(k[0]==='g')w.grat[+k.slice(1)]=t.value;
-  else if(k==='notes')w.notes=t.value;
+  else if(k[0]==='m')D.meals[+k.slice(1)]=t.value;
+  else if(k[0]==='g')D.grat[+k.slice(1)]=t.value;
+  else if(k==='notes')D.notes=t.value;
   else if(k[0]==='h'&&k!=='h')w.habits[+k.slice(1)].name=t.value,rememberHabits();
-  else if(k[0]==='s')w.slots[+k.slice(1)].t=t.value;
+  else if(k[0]==='s')D.slots[+k.slice(1)].t=t.value;
   if(k[0]==='h')rememberHabits();
   scheduleSave();
 });
@@ -466,12 +590,14 @@ function rememberHabits(){state.lastHabitNames=getWeek().habits.map(h=>h.name);}
 document.addEventListener('click',e=>{
   const cb=e.target.closest('.cb');
   if(cb){
-    const i=+cb.closest('.slot').dataset.i, w=getWeek();
-    w.slots[i].done=!w.slots[i].done;
-    cb.closest('.slot').classList.toggle('done',w.slots[i].done);
-    cb.setAttribute('aria-pressed',w.slots[i].done);
+    const i=+cb.closest('.slot').dataset.i, D=getDay();
+    D.slots[i].done=!D.slots[i].done;
+    cb.closest('.slot').classList.toggle('done',D.slots[i].done);
+    cb.setAttribute('aria-pressed',D.slots[i].done);
     updateCount(); scheduleSave(); return;
   }
+  const db=e.target.closest('.dbtn');
+  if(db){selDay=+db.dataset.d; renderHead(); renderDay(); return;}
   const hd=e.target.closest('.hd');
   if(hd){
     const w=getWeek(),r=+hd.dataset.r,d=+hd.dataset.d;
@@ -495,15 +621,15 @@ $('addHabit').onclick=()=>{
 };
 
 /* week nav */
-$('prevW').onclick=()=>{weekStart=addD(weekStart,-7);renderWeek();scheduleSave();};
-$('nextW').onclick=()=>{weekStart=addD(weekStart,7);renderWeek();scheduleSave();};
-$('todayBtn').onclick=()=>{weekStart=monday(new Date());renderWeek();scheduleSave();};
+function goWeek(n){weekStart=addD(weekStart,n); if(isCur())selDay=todayIdx(); renderWeek(); scheduleSave();}
+$('prevW').onclick=()=>goWeek(-7);
+$('nextW').onclick=()=>goWeek(7);
 $('printBtn').onclick=()=>window.print();
 $('resetBtn').onclick=()=>{
-  if(!confirm('Reset this week’s page?\n(todos, habits dots, meals, notes — monthly purpose stays)'))return;
-  const names=getWeek().habits.map(h=>h.name);
-  state.weeks[key()]=freshWeek(); state.weeks[key()].habits=names.map(n=>({name:n,days:Array(7).fill(false)}));
-  renderWeek(); scheduleSave();
+  const d=selDate(), lab=`${DAY[d.getDay()]} ${MON[d.getMonth()]} ${d.getDate()}`;
+  if(!confirm(`Clear ${lab}?\n(to-dos, meals, grateful for & notes — nothing else is touched)`))return;
+  getWeek().days[selDay]=freshDay();
+  renderDay(); scheduleSave();
 };
 
 /* ───────────────────────── saving ───────────────────────── */
@@ -544,7 +670,7 @@ async function readFile(){
     return (data&&data.weeks)?{data,txt}:null;
   }catch(e){return null;}   /* no file yet — first autosave will create it */
 }
-const sameContent=(a,b)=>JSON.stringify([a.weeks,a.months])===JSON.stringify([b.weeks,b.months]);
+const sameContent=(a,b)=>JSON.stringify([a.weeks,a.months,a.rules])===JSON.stringify([b.weeks,b.months,b.rules]);
 
 /* Never throw away what was typed while the folder was disconnected. */
 async function bind(handle){
@@ -563,7 +689,7 @@ async function bind(handle){
       try{localStorage.setItem('pd.backup',useFile?JSON.stringify(state):f.txt);}catch(e){}  /* safety copy of the version that loses */
     }
     if(useFile){
-      state=f.data; state.months=state.months||{}; state.weeks=state.weeks||{};
+      state=f.data; ensure();
       localStorage.setItem(LS_KEY,JSON.stringify(state));
       localStorage.setItem('pd.synced',String(state.updated||0));
     }
@@ -625,9 +751,18 @@ $('folderBtn').onclick=async()=>{
 $('modalOpen').onclick=pickFolder;
 $('modalLater').onclick=()=>{localStorage.setItem('pd.dismissed','1');$('modal').classList.add('hidden');setStatus('saved','browser only');};
 
+/* ───────────────────────── clock ───────────────────────── */
+let lastDayKey=iso(new Date());
+function tickClock(){
+  const t=new Date(), h=t.getHours(), h12=h%12||12;
+  $('clockTxt').innerHTML=`${h12}:${pad(t.getMinutes())}:${pad(t.getSeconds())}<small>${h<12?'am':'pm'}</small>`;
+  const k=iso(t); if(k!==lastDayKey){lastDayKey=k; renderHead(); markNow();}   /* midnight rollover */
+}
+
 /* ───────────────────────── boot ───────────────────────── */
 (async function init(){
   renderWeek();
+  tickClock(); setInterval(tickClock,1000);
   setInterval(markNow,60000);
   if(supportsFS){
     const saved=await idbGet('fh');
