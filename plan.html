@@ -138,8 +138,8 @@ button{font-family:inherit}
 .page.left{border-radius:18px 5px 5px 18px;box-shadow:inset -16px 0 22px -16px color-mix(in srgb,var(--shadow) 28%,transparent),0 20px 44px color-mix(in srgb,var(--shadow) 18%,transparent)}
 .page.right{border-radius:5px 18px 18px 5px;box-shadow:inset 16px 0 22px -16px color-mix(in srgb,var(--shadow) 28%,transparent),0 20px 44px color-mix(in srgb,var(--shadow) 18%,transparent)}
 .page.left{gap:clamp(12px,2.2vh,24px)}
-.rbody{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(12px,1.8vw,26px);align-items:start}
-.rside{display:flex;flex-direction:column;gap:clamp(8px,1.6vh,16px)}
+.rbody{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(12px,1.8vw,26px);align-items:stretch}
+.rside{display:flex;flex-direction:column;justify-content:space-between;gap:clamp(8px,1.6vh,16px)}
 .spine{width:clamp(12px,1.5vw,22px);position:relative;
   background:linear-gradient(90deg,color-mix(in srgb,var(--shadow) 20%,transparent),color-mix(in srgb,var(--shadow) 2%,transparent) 45% 55%,color-mix(in srgb,var(--shadow) 20%,transparent))}
 .spine::before{content:'';position:absolute;left:50%;top:12px;bottom:12px;width:0;
@@ -246,10 +246,10 @@ button{font-family:inherit}
 .mrow input::placeholder{color:var(--placeholder-2)}
 .mrow input:focus{border-bottom-color:var(--c)}
 
-#notes{flex:1;min-height:56px;width:100%;border:0;outline:0;resize:none;background-attachment:local;padding:0 5px;
+#notes,#extra{flex:1;min-height:56px;width:100%;border:0;outline:0;resize:none;background-attachment:local;padding:0 5px;
   background:repeating-linear-gradient(transparent 0 calc(32px - 1.5px), color-mix(in srgb,var(--lilac) 32%, var(--white)) calc(32px - 1.5px) 32px);
   font:400 clamp(14px,2vh,16px)/32px var(--hand);color:var(--ink)}
-#notes:focus{box-shadow:0 0 0 2.5px color-mix(in srgb,var(--lilac) 25%, transparent);border-radius:8px}
+#notes:focus,#extra:focus{box-shadow:0 0 0 2.5px color-mix(in srgb,var(--lilac) 25%, transparent);border-radius:8px}
 .grow{flex:1}
 
 .quote{margin-top:auto;text-align:center;font-family:var(--cute);font-size:clamp(13px,1.9vh,15.5px);
@@ -378,6 +378,10 @@ button{font-family:inherit}
       </div>
     </div>
 
+    <div class="sec grow" style="--c:var(--lilac);--d:.3s">
+      <textarea id="extra" data-k="extra" aria-label="extra writing lines" spellcheck="false"></textarea>
+    </div>
+
     <div class="lfoot">
       <div class="date" id="dateLine">№ — · —</div>
       <span class="fsep">✿</span>
@@ -478,7 +482,7 @@ const mk =()=>weekStart.getFullYear()+'-'+pad(weekStart.getMonth()+1);
 const isCur=()=>iso(monday(new Date()))===key();
 
 function freshDay(){
-  return {slots:HOURS.map(()=>({t:'',done:false})),meals:['','',''],grat:['','',''],notes:''};
+  return {slots:HOURS.map(()=>({t:'',done:false})),meals:['','',''],grat:['','',''],notes:'',extra:''};
 }
 function freshWeek(){
   const names=(state.lastHabitNames&&state.lastHabitNames.length)?state.lastHabitNames:DEF_HABITS;
@@ -556,6 +560,7 @@ function renderDay(){
      <input data-k="g${i}" value="${esc(v)}" placeholder="…" spellcheck="false"></div>`).join('');
 
   $('notes').value=D.notes;
+  $('extra').value=D.extra||'';
   updateCount(); markNow();
 }
 
@@ -595,6 +600,7 @@ document.addEventListener('input',e=>{
   else if(k[0]==='m')D.meals[+k.slice(1)]=t.value;
   else if(k[0]==='g')D.grat[+k.slice(1)]=t.value;
   else if(k==='notes')D.notes=t.value;
+  else if(k==='extra')D.extra=t.value;
   else if(k[0]==='h'&&k!=='h')w.habits[+k.slice(1)].name=t.value,rememberHabits();
   else if(k[0]==='s')D.slots[+k.slice(1)].t=t.value;
   if(k[0]==='h')rememberHabits();
