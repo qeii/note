@@ -7,7 +7,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E🥑%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Edu+SA+Beginner:wght@400;500;600;700&family=Gochi+Hand&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Just+Another+Hand&family=Gochi+Hand&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════════════════════════
    COLOR PALETTE — change any hex below (copy-paste #RRGGBB).
@@ -80,7 +80,7 @@
 }
 :root{
   --row:clamp(17px,2.3vh,22px);
-  --hand:'Caveat',cursive; --cute:'Gochi Hand',cursive; --body:'Nunito',sans-serif;
+  --hand:'Just Another Hand',cursive; --cute:'Gochi Hand',cursive; --body:'Nunito',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
@@ -137,6 +137,10 @@ button{font-family:inherit}
   overflow:auto;scrollbar-width:thin;position:relative}
 .page.left{border-radius:18px 5px 5px 18px;box-shadow:inset -16px 0 22px -16px color-mix(in srgb,var(--shadow) 28%,transparent),0 20px 44px color-mix(in srgb,var(--shadow) 18%,transparent)}
 .page.right{border-radius:5px 18px 18px 5px;box-shadow:inset 16px 0 22px -16px color-mix(in srgb,var(--shadow) 28%,transparent),0 20px 44px color-mix(in srgb,var(--shadow) 18%,transparent)}
+.page.left{gap:clamp(14px,3vh,32px)}
+.page.left .hrow{height:calc(var(--row) + 8px)}
+.rbody{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(12px,1.8vw,26px);align-items:start}
+.rside{display:flex;flex-direction:column;gap:clamp(8px,1.6vh,16px)}
 .spine{width:clamp(12px,1.5vw,22px);position:relative;
   background:linear-gradient(90deg,color-mix(in srgb,var(--shadow) 20%,transparent),color-mix(in srgb,var(--shadow) 2%,transparent) 45% 55%,color-mix(in srgb,var(--shadow) 20%,transparent))}
 .spine::before{content:'';position:absolute;left:50%;top:12px;bottom:12px;width:0;
@@ -165,8 +169,8 @@ button{font-family:inherit}
 .fline .star{color:var(--c);font-size:13px;flex:none;transform:rotate(-8deg)}
 .fline input{flex:1;min-width:0;border:0;background:transparent;outline:0;padding:0 2px;
   border-bottom:2px dotted color-mix(in srgb,var(--c) 52%, var(--white));
-  font-family:var(--hand);font-weight:600;font-size:clamp(16px,2.35vh,20px);color:var(--ink)}
-.fline input::placeholder{color:var(--placeholder);font-weight:500}
+  font-family:var(--hand);font-weight:400;font-size:clamp(21px,3vh,26px);color:var(--ink)}
+.fline input::placeholder{color:var(--placeholder);font-weight:400}
 .fline input:focus{border-bottom:2px solid var(--c)}
 .num{flex:none;width:19px;height:19px;border-radius:6px;background:var(--c);color:var(--white);
   display:grid;place-items:center;font:800 11px var(--body);transform:rotate(-5deg);box-shadow:0 2px 0 color-mix(in srgb,var(--shadow) 15%,transparent)}
@@ -207,7 +211,7 @@ button{font-family:inherit}
 .rhead .btn{padding:5px 10px;font-size:10.5px;border-width:1.5px}
 .rhead .status{max-width:150px;white-space:nowrap}
 .rhead .status em{overflow:hidden;text-overflow:ellipsis}
-.rhead h2{font-family:var(--hand);font-weight:700;font-size:clamp(21px,3.3vh,30px);line-height:1;
+.rhead h2{font-family:var(--hand);font-weight:400;font-size:clamp(28px,4.2vh,38px);line-height:1;
   background:linear-gradient(transparent 58%, color-mix(in srgb,var(--hl-lilac) 55%,transparent) 58% 94%, transparent 94%)}
 .count{font-family:var(--cute);font-size:13.5px;color:var(--lilac);white-space:nowrap;
   background:color-mix(in srgb,var(--lilac) 12%, var(--white));border:1.5px solid color-mix(in srgb,var(--lilac) 38%, var(--white));
@@ -245,7 +249,7 @@ button{font-family:inherit}
 
 #notes{flex:1;min-height:56px;width:100%;border:0;outline:0;resize:none;background-attachment:local;padding:0 5px;
   background:repeating-linear-gradient(transparent 0 calc(25px - 1.5px), color-mix(in srgb,var(--lilac) 32%, var(--white)) calc(25px - 1.5px) 25px);
-  font:600 clamp(15px,2.1vh,17.5px)/25px var(--hand);color:var(--ink)}
+  font:400 clamp(20px,2.8vh,23px)/25px var(--hand);color:var(--ink)}
 #notes:focus{box-shadow:0 0 0 2.5px color-mix(in srgb,var(--lilac) 25%, transparent);border-radius:8px}
 .grow{flex:1}
 
@@ -256,7 +260,7 @@ button{font-family:inherit}
 /* masthead */
 .mast{display:flex;align-items:center;justify-content:space-between;gap:6px 12px;flex-wrap:wrap;
   border-bottom:2.5px dotted var(--line);padding-bottom:6px;position:relative;z-index:5}
-.brand{font-family:var(--hand);font-weight:700;font-size:clamp(19px,2.8vh,25px);line-height:1;
+.brand{font-family:var(--hand);font-weight:400;font-size:clamp(27px,3.8vh,34px);line-height:1;
   background:linear-gradient(transparent 58%, color-mix(in srgb,var(--hl-sun) 55%,transparent) 58% 94%, transparent 94%)}
 .radiant{display:inline-block;margin-left:9px;font:800 9.5px var(--body);letter-spacing:1px;text-transform:uppercase;
   color:var(--white);background:linear-gradient(100deg,var(--sun),var(--coral));padding:3px 9px;border-radius:999px;
@@ -299,7 +303,7 @@ button{font-family:inherit}
 .card{background:var(--card-bg);border:2px solid var(--card-border);border-radius:20px;max-width:400px;width:calc(100% - 40px);
   padding:28px 30px;text-align:center;box-shadow:0 34px 70px color-mix(in srgb,var(--overlay) 35%,transparent);animation:rise .4s both}
 .card .sun-big{font-size:34px;display:inline-block;animation:bob 4s ease-in-out infinite alternate}
-.card h3{font-family:var(--hand);font-weight:700;font-size:27px;margin:6px 0 4px}
+.card h3{font-family:var(--hand);font-weight:400;font-size:34px;margin:6px 0 4px}
 .card p{font:600 12.5px/1.55 var(--body);color:var(--ink2);margin-bottom:16px}
 .card .btn{display:block;width:100%;margin-top:8px}
 
@@ -310,6 +314,7 @@ button{font-family:inherit}
   .spine{width:auto;height:14px;background:linear-gradient(180deg,color-mix(in srgb,var(--shadow) 20%,transparent),color-mix(in srgb,var(--shadow) 2%,transparent) 45% 55%,color-mix(in srgb,var(--shadow) 20%,transparent))}
   .spine::before{left:12px;right:12px;top:50%;bottom:auto;width:auto;height:0;border-left:0;border-top:2px dashed var(--spine-line);transform:translateY(-50%)}
   .page{border-radius:16px}
+  .rbody{grid-template-columns:1fr}
 }
 @media print{
   .weeknav,.actions,.sky,.tape,.modal{display:none!important}
@@ -352,21 +357,6 @@ button{font-family:inherit}
       <div id="rulesBox"></div>
     </div>
 
-    <div class="sec" style="--c:var(--coral);--d:.05s">
-      <span class="chip">✶ monthly Everest</span>
-      <div id="purposeBox"></div>
-    </div>
-
-    <div class="sec" style="--c:var(--sky);--d:.12s">
-      <span class="chip">weekly breakdown ×4</span>
-      <div id="weekBox"></div>
-    </div>
-
-    <div class="sec" style="--c:var(--sun);--d:.19s">
-      <span class="chip">top priorities · the big three</span>
-      <div id="bigBox"></div>
-    </div>
-
     <div class="sec grow" style="--c:var(--mint);--d:.26s">
       <span class="chip">habit tracker · tap the dots</span>
       <div id="habitBox"></div>
@@ -389,7 +379,23 @@ button{font-family:inherit}
       <button class="btn ghost" id="printBtn" title="print">⎙</button>
     </div>
     </div>
-    <div class="slots" id="slots"></div>
+    <div class="rbody">
+      <div class="slots" id="slots"></div>
+      <div class="rside">
+    <div class="sec" style="--c:var(--coral);--d:.05s">
+      <span class="chip">✶ monthly Everest</span>
+      <div id="purposeBox"></div>
+    </div>
+    <div class="sec" style="--c:var(--sky);--d:.12s">
+      <span class="chip">weekly breakdown ×4</span>
+      <div id="weekBox"></div>
+    </div>
+    <div class="sec" style="--c:var(--sun);--d:.19s">
+      <span class="chip">top priorities · the big three</span>
+      <div id="bigBox"></div>
+    </div>
+      </div>
+    </div>
 
     <div class="duo">
       <div class="sec" style="--c:var(--tang);--d:.15s">
