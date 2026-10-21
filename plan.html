@@ -287,6 +287,11 @@ button{font-family:inherit}
 .dbtn.tl::after{left:0;transform:none}
 .dbtn.tr::after{left:auto;right:0;transform:none}
 
+/* footer: date + clock on one line */
+.lfoot{margin-top:auto;display:flex;align-items:center;justify-content:center;gap:6px 14px;flex-wrap:wrap;padding-top:6px;animation:rise .6s .3s both}
+.fsep{color:var(--pink);font-size:12px}
+.lfoot .date{white-space:nowrap}
+
 /* live clock */
 .clock{display:flex;align-items:center;gap:7px;font-family:var(--cute);font-size:clamp(12px,1.8vh,14.5px);
   color:var(--ink2);white-space:nowrap;font-variant-numeric:tabular-nums}
@@ -343,7 +348,6 @@ button{font-family:inherit}
     <div class="mast">
       <div class="mast-l">
         <div><span class="brand">paper days</span><span class="radiant">☀ feeling · radiant</span></div>
-        <div class="date" id="dateLine">№ — · —</div>
       </div>
       <div class="weeknav" id="weekPill">
         <button class="nav" id="prevW" title="previous week">‹</button>
@@ -373,6 +377,12 @@ button{font-family:inherit}
         <div id="gratBox"></div>
       </div>
     </div>
+
+    <div class="lfoot">
+      <div class="date" id="dateLine">№ — · —</div>
+      <span class="fsep">✿</span>
+      <div class="clock" aria-label="current time"><i class="pdot"></i><span id="clockTxt">--:--:--</span></div>
+    </div>
   </section>
 
   <div class="spine"></div>
@@ -381,7 +391,6 @@ button{font-family:inherit}
   <section class="page right">
     <div class="rhead">
       <div class="rtitle"><h2>to-do &amp; schedule</h2><span class="count" id="count">0/19</span>
-        <div class="clock" aria-label="current time"><i class="pdot"></i><span id="clockTxt">--:--:--</span></div>
       </div>
     <div class="actions">
       <span class="status" id="status"><i class="dot"></i><em id="statusTxt" style="font-style:normal">warming up…</em></span>
@@ -495,7 +504,7 @@ function getPurpose(){if(!state.months[mk()])state.months[mk()]=['',''];return s
 function renderHead(){
   const ref=selDate(), end=addD(weekStart,6), t=new Date(), tk=iso(t);
   const doy=Math.round((ref-new Date(ref.getFullYear(),0,0))/864e5);
-  $('dateLine').innerHTML=`№ <b>${doy}</b> · ${DAY[ref.getDay()]}<br>${MON[ref.getMonth()]} ${ref.getDate()} · ${ref.getFullYear()}`;
+  $('dateLine').innerHTML=`№ <b>${doy}</b> · ${DAY[ref.getDay()]} · ${MON[ref.getMonth()]} ${ref.getDate()} · ${ref.getFullYear()}`;
   $('weekPill').title=`week ${wkNo(weekStart)} · ${MON[weekStart.getMonth()]} ${weekStart.getDate()} → ${MON[end.getMonth()]} ${end.getDate()}`;
   $('dayBtns').innerHTML=Array.from({length:7},(_,i)=>{
     const d=addD(weekStart,i), tip=`${DAY[d.getDay()]} · ${MON[d.getMonth()]} ${d.getDate()}`;
