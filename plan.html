@@ -468,7 +468,15 @@ function wkNo(d){const x=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDat
 let state; try{state=JSON.parse(localStorage.getItem(LS_KEY))||{};}catch(e){state={};}
 function ensure(){state.months=state.months||{}; state.weeks=state.weeks||{};
   if(!Array.isArray(state.rules))state.rules=[];
-  while(state.rules.length<3)state.rules.push('');}
+  while(state.rules.length<3)state.rules.push('');
+  if(!state.plan||typeof state.plan!=='object'){          /* one-time: seed from the old weekly/monthly data */
+    const latest=(o,get)=>{for(const k of Object.keys(o).sort().reverse()){const v=get(o[k]);if(v&&v.some(Boolean))return v;}return null;};
+    const fill=(a,n)=>Array.from({length:n},(_,i)=>(a&&a[i])||'');
+    state.plan={'0000-00-00':{rules:fill(state.rules,3),
+      everest:fill(latest(state.months,m=>m),2),
+      weekly:fill(latest(state.weeks,w=>w.weekly),4),
+      big3:fill(latest(state.weeks,w=>w.big3),3)}};
+  }}
 ensure();
 
 const todayIdx=()=>(new Date().getDay()+6)%7;
@@ -502,6 +510,19 @@ function getWeek(){
 }
 const getDay=()=>getWeek().days[selDay];
 const selDate=()=>addD(weekStart,selDay);
+/* rules, monthly Everest, weekly breakdown & top priorities live PER DAY.
+   A day with no copy of its own shows the latest earlier copy (carry-forward);
+   the first edit on a day gives it its own copy, so past days keep their history. */
+function planFor(dk){
+  const keys=Object.keys(state.plan).sort(); let best=keys[0];
+  for(const k of keys){if(k<=dk)best=k;else break;}
+  return state.plan[best];
+}
+function ownPlan(){
+  const dk=iso(selDate());
+  if(!state.plan[dk])state.plan[dk]=JSON.parse(JSON.stringify(planFor(dk)));
+  return state.plan[dk];
+}
 function getPurpose(){if(!state.months[mk()])state.months[mk()]=['',''];return state.months[mk()];}
 
 /* ───────────────────────── render ───────────────────────── */
@@ -518,22 +539,27 @@ function renderHead(){
   $('resetBtn').title=`clear ${lab}`;
 }
 
+function renderPlan(){
+  const P=planFor(iso(selDate()));
+  $('rulesBox').innerHTML=P.rules.map((v,i)=>
+    `<div class="fline"><span class="num">${i+1}</span><input data-k="r${i}" value="${esc(v)}" placeholder="a rule i live by…" spellcheck="false"></div>`).join('');
+
+  $('purposeBox').innerHTML=P.everest.map((v,i)=>
+    `<div class="fline"><span class="star">✶</span><input data-k="p${i}" value="${esc(v)}" placeholder="${i?'and it starts with…':'this month i intend to…'}" spellcheck="false"></div>`).join('');
+
+  $('weekBox').innerHTML=P.weekly.map((v,i)=>
+    `<div class="fline"><span class="num">${i+1}</span><input data-k="w${i}" value="${esc(v)}" placeholder="one focus for this week…" spellcheck="false"></div>`).join('');
+
+  $('bigBox').innerHTML=P.big3.map((v,i)=>
+    `<div class="bline"><span class="ring">${i+1}</span><input data-k="b${i}" value="${esc(v)}" spellcheck="false"></div>`).join('');
+
+}
+
 function renderWeek(){
   const w=getWeek();
   renderHead();
 
-  $('rulesBox').innerHTML=state.rules.map((v,i)=>
-    `<div class="fline"><span class="num">${i+1}</span><input data-k="r${i}" value="${esc(v)}" placeholder="a rule i live by…" spellcheck="false"></div>`).join('');
-
-  const p=getPurpose();
-  $('purposeBox').innerHTML=p.map((v,i)=>
-    `<div class="fline"><span class="star">✶</span><input data-k="p${i}" value="${esc(v)}" placeholder="${i?'and it starts with…':'this month i intend to…'}" spellcheck="false"></div>`).join('');
-
-  $('weekBox').innerHTML=w.weekly.map((v,i)=>
-    `<div class="fline"><span class="num">${i+1}</span><input data-k="w${i}" value="${esc(v)}" placeholder="one focus for this week…" spellcheck="false"></div>`).join('');
-
-  $('bigBox').innerHTML=w.big3.map((v,i)=>
-    `<div class="bline"><span class="ring">${i+1}</span><input data-k="b${i}" value="${esc(v)}" spellcheck="false"></div>`).join('');
+  renderPlan();
 
   renderHabits();
   renderDay();
@@ -593,10 +619,10 @@ function markNow(){
 document.addEventListener('input',e=>{
   const t=e.target,k=t.dataset.k; if(!k)return;
   const w=getWeek(), D=getDay();
-  if(k[0]==='r')state.rules[+k.slice(1)]=t.value;
-  else if(k[0]==='p')getPurpose()[+k.slice(1)]=t.value;
-  else if(k[0]==='w')w.weekly[+k.slice(1)]=t.value;
-  else if(k[0]==='b')w.big3[+k.slice(1)]=t.value;
+  if(k[0]==='r')ownPlan().rules[+k.slice(1)]=t.value;
+  else if(k[0]==='p')ownPlan().everest[+k.slice(1)]=t.value;
+  else if(k[0]==='w')ownPlan().weekly[+k.slice(1)]=t.value;
+  else if(k[0]==='b')ownPlan().big3[+k.slice(1)]=t.value;
   else if(k[0]==='m')D.meals[+k.slice(1)]=t.value;
   else if(k[0]==='g')D.grat[+k.slice(1)]=t.value;
   else if(k==='notes')D.notes=t.value;
@@ -618,7 +644,7 @@ document.addEventListener('click',e=>{
     updateCount(); scheduleSave(); return;
   }
   const db=e.target.closest('.dbtn');
-  if(db){selDay=+db.dataset.d; renderHead(); renderDay(); return;}
+  if(db){selDay=+db.dataset.d; renderHead(); renderPlan(); renderDay(); return;}
   const hd=e.target.closest('.hd');
   if(hd){
     const w=getWeek(),r=+hd.dataset.r,d=+hd.dataset.d;
@@ -691,7 +717,7 @@ async function readFile(){
     return (data&&data.weeks)?{data,txt}:null;
   }catch(e){return null;}   /* no file yet — first autosave will create it */
 }
-const sameContent=(a,b)=>JSON.stringify([a.weeks,a.months,a.rules])===JSON.stringify([b.weeks,b.months,b.rules]);
+const sameContent=(a,b)=>JSON.stringify([a.weeks,a.months,a.rules,a.plan])===JSON.stringify([b.weeks,b.months,b.rules,b.plan]);
 
 /* Never throw away what was typed while the folder was disconnected. */
 async function bind(handle){
