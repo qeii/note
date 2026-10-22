@@ -92,6 +92,7 @@ body{
     radial-gradient(900px 520px at 102% -6%, color-mix(in srgb,var(--glow-pink) 80%,transparent), transparent 55%),
     radial-gradient(1100px 640px at 50% 118%, color-mix(in srgb,var(--glow-sky) 80%,transparent), transparent 62%),
     var(--bg);
+  background-attachment:fixed;   /* one backdrop for the whole scroll, no repeating */
 }
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   background-image:radial-gradient(color-mix(in srgb,var(--bg-dot) 16%,transparent) 1.5px, transparent 1.7px);background-size:34px 34px}
