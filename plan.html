@@ -80,12 +80,13 @@
 }
 :root{
   --row:clamp(21px,2.9vh,28px);
+  --mrow:calc(var(--row) - 2px);
   --hand:'Bad Script',cursive; --cute:'Gochi Hand',cursive; --body:'Nunito',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 body{
-  font-family:var(--body);color:var(--ink);display:flex;flex-direction:column;overflow:hidden;
+  font-family:var(--body);color:var(--ink);display:flex;flex-direction:column;overflow-x:hidden;overflow-y:auto;
   background:
     radial-gradient(1100px 520px at 6% -12%, color-mix(in srgb,var(--glow-sun) 85%,transparent), transparent 60%),
     radial-gradient(900px 520px at 102% -6%, color-mix(in srgb,var(--glow-pink) 80%,transparent), transparent 55%),
@@ -127,18 +128,18 @@ button{font-family:inherit}
 .btn.ghost{background:transparent}
 
 /* ---------- the spread ---------- */
-.spread{position:relative;z-index:3;flex:1;min-height:0;display:flex;
+.spread{position:relative;z-index:3;flex:1 0 auto;display:flex;
   width:min(1240px,calc(100% - clamp(18px,5vw,70px)));margin:clamp(16px,2.6vh,28px) auto clamp(10px,1.8vh,20px)}
 .page{flex:1;min-width:0;display:flex;flex-direction:column;gap:clamp(7px,1.5vh,15px);
   background:var(--paper);
   background-image:radial-gradient(color-mix(in srgb,var(--paper-dot) 34%,transparent) 1px, transparent 1.4px);
   background-size:21px 21px;
   padding:clamp(12px,2vh,22px) clamp(14px,1.9vw,28px);
-  overflow:auto;scrollbar-width:thin;position:relative}
+  position:relative}
 .page.left{border-radius:18px 5px 5px 18px;box-shadow:inset -16px 0 22px -16px color-mix(in srgb,var(--shadow) 28%,transparent),0 20px 44px color-mix(in srgb,var(--shadow) 18%,transparent)}
 .page.right{border-radius:5px 18px 18px 5px;box-shadow:inset 16px 0 22px -16px color-mix(in srgb,var(--shadow) 28%,transparent),0 20px 44px color-mix(in srgb,var(--shadow) 18%,transparent)}
-.page.left{gap:clamp(12px,2.2vh,24px)}
-.rbody{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(12px,1.8vw,26px);align-items:stretch}
+.page.left{gap:clamp(6px,1.1vh,10px)}
+.rbody{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(8px,1.5vh,15px) clamp(12px,1.8vw,26px);align-items:stretch}
 .rside{display:flex;flex-direction:column;justify-content:space-between;gap:clamp(8px,1.6vh,16px)}
 .spine{width:clamp(12px,1.5vw,22px);position:relative;
   background:linear-gradient(90deg,color-mix(in srgb,var(--shadow) 20%,transparent),color-mix(in srgb,var(--shadow) 2%,transparent) 45% 55%,color-mix(in srgb,var(--shadow) 20%,transparent))}
@@ -208,7 +209,8 @@ button{font-family:inherit}
 .rtitle{display:flex;align-items:center;gap:10px;min-width:0}
 .rhead .actions{gap:6px}
 .rhead .btn{padding:5px 10px;font-size:10.5px;border-width:1.5px}
-.rhead .status{max-width:150px;white-space:nowrap}
+.rhead .status{max-width:84px;white-space:nowrap;overflow:hidden}
+.rhead h2{white-space:nowrap}
 .rhead .status em{overflow:hidden;text-overflow:ellipsis}
 .rhead h2{font-family:var(--hand);font-weight:400;font-size:clamp(19px,2.8vh,25px);line-height:1;
   background:linear-gradient(transparent 58%, color-mix(in srgb,var(--hl-lilac) 55%,transparent) 58% 94%, transparent 94%)}
@@ -252,7 +254,7 @@ button{font-family:inherit}
 #notes:focus,#extra:focus{box-shadow:0 0 0 2.5px color-mix(in srgb,var(--lilac) 25%, transparent);border-radius:8px}
 .grow{flex:1}
 
-.quote{margin-top:auto;text-align:center;font-family:var(--cute);font-size:clamp(13px,1.9vh,15.5px);
+.quote{margin-top:auto;padding-top:2px;text-align:center;font-family:var(--cute);font-size:clamp(13px,1.9vh,15.5px);
   letter-spacing:.6px;color:var(--quote);animation:rise .6s .3s both}
 .quote span{display:inline-block;animation:bob 5s ease-in-out infinite alternate;color:var(--pink)}
 
@@ -301,6 +303,54 @@ button{font-family:inherit}
 .pdot::after{content:'';position:absolute;inset:0;border-radius:50%;background:var(--mint);animation:ping 1.6s ease-out infinite}
 @keyframes ping{from{transform:scale(1);opacity:.7}to{transform:scale(3);opacity:0}}
 
+/* ---------- left page: the month in days ---------- */
+.mtitle{display:flex;align-items:baseline;gap:4px 12px;flex-wrap:wrap}
+.mtitle h2{font-family:var(--hand);font-weight:400;font-size:clamp(18px,2.6vh,24px);line-height:1;
+  background:linear-gradient(transparent 58%, color-mix(in srgb,var(--sky) 45%,transparent) 58% 94%, transparent 94%)}
+.mbody{flex:1 0 auto;display:flex;flex-direction:column;gap:clamp(3px,.7vh,7px)}
+.wk{display:flex;flex-direction:column;flex:var(--g,1) 0 auto;animation:rise .55s both}
+.whead{display:flex;align-items:center;justify-content:flex-end;gap:8px;height:17px}
+.wchip{font-family:var(--cute);font-size:13px;letter-spacing:.5px;line-height:1.25;color:var(--c);
+  background:color-mix(in srgb,var(--c) 14%, var(--white));border:1.5px solid color-mix(in srgb,var(--c) 42%, var(--white));
+  padding:0 9px 1px;border-radius:9px;transform:rotate(-1.2deg)}
+.wrange{font:italic 600 10px var(--body);color:var(--ink2)}
+.wk .wt{flex:1 0 calc(var(--mrow) + 3px);height:auto;min-height:calc(var(--mrow) + 3px)}
+.wk .wt input{border-bottom:2.5px dashed color-mix(in srgb,var(--c) 62%, var(--white));font:700 clamp(12.5px,1.9vh,15px) var(--body)}
+.drow{flex:1 0 var(--mrow);min-height:var(--mrow);display:flex;align-items:center;gap:7px;border-radius:6px;transition:background .15s}
+.drow:hover{background:color-mix(in srgb,var(--row-hover) 30%,transparent)}
+.dn{flex:none;width:24px;height:17px;border-radius:6px;border:0;padding:0;cursor:pointer;display:grid;place-items:center;
+  background:color-mix(in srgb,var(--c) 16%, var(--white));color:var(--c);font:800 10.5px var(--body);transition:.15s}
+.dn:hover{background:var(--c);color:var(--white);transform:rotate(-5deg) scale(1.1)}
+.drow.sel .dn{background:var(--coral);color:var(--white)}
+.drow.today .dn{box-shadow:0 0 0 2px var(--paper),0 0 0 3.5px var(--coral)}
+.dw{flex:none;width:25px;font:800 8.5px var(--body);letter-spacing:.6px;text-transform:uppercase;color:var(--ink2)}
+.drow.wkend .dw{color:var(--coral)}
+.drow input{flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;padding:0 3px;
+  border-bottom:1.8px dotted var(--line);font:600 12.5px var(--body);color:var(--ink)}
+.drow input:focus{border-bottom:1.8px solid var(--c)}
+
+/* ---------- right page: Everest + two paths ---------- */
+.everest .fline input{font-size:clamp(15px,2.2vh,18px)}
+.path{min-width:0}
+.stack{display:flex;flex-direction:column;justify-content:space-between;gap:clamp(8px,1.5vh,15px)}
+.hours .slots{flex:1}
+.hours .slot{flex:1 1 calc(var(--row) - 3px);height:auto;min-height:calc(var(--row) - 3px)}
+.page>*{flex-shrink:0}
+.mhead{display:flex;align-items:baseline;justify-content:space-between;gap:4px 12px;flex-wrap:wrap}
+.mhead .lfoot{margin:0;padding:0;justify-content:flex-end}
+.mhead .fsep{display:none}
+.path .fline{height:calc(var(--row) + 1px)}
+.path .bline{height:calc(var(--row) + 1px)}
+.path .mrow{height:var(--row)}
+.path.sec,.path .sec{gap:3px}
+.path .hrow{height:var(--row);gap:6px;grid-template-columns:1fr auto}
+.path .dots{gap:4px}
+.path .hd{width:11px;height:11px}
+.path .dl span{width:11px;font-size:10px}
+.path .hx{font-size:12px}
+.path .sub{font-size:10px;line-height:1.3}
+.notes-full #notes{min-height:130px}
+
 /* ---------- modal ---------- */
 .modal{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:color-mix(in srgb,var(--overlay) 35%,transparent);backdrop-filter:blur(3px)}
 .modal.hidden{display:none}
@@ -312,7 +362,7 @@ button{font-family:inherit}
 .card .btn{display:block;width:100%;margin-top:8px}
 
 /* ---------- small screens & print ---------- */
-@media (max-width:1060px){.rbody{grid-template-columns:1fr}}
+@media (max-width:1060px){.rbody{grid-template-columns:1fr}.hours{order:1}.meals{order:2}.stack{order:3}.grat{order:4}}
 @media (max-width:920px){
   body{overflow:auto}
   .spread{flex-direction:column;gap:16px;width:calc(100% - 24px)}
@@ -356,37 +406,15 @@ button{font-family:inherit}
       </div>
     </div>
 
-    <div class="sec" style="--c:var(--lilac);--d:.02s">
-      <span class="chip">✦ rules</span>
-      <div id="rulesBox"></div>
-    </div>
-
-    <div class="sec" style="--c:var(--mint);--d:.26s">
-      <span class="chip">habit tracker · tap the dots</span>
-      <div id="habitBox"></div>
-      <div class="hctl"><button id="addHabit">+ add habit</button><span class="hint">tap a dot for each day you did it</span></div>
-    </div>
-
-    <div class="duo">
-      <div class="sec" style="--c:var(--tang);--d:.15s">
-        <span class="chip">meals · b l d</span>
-        <div id="mealBox"></div>
-      </div>
-      <div class="sec" style="--c:var(--pink);--d:.2s">
-        <span class="chip">grateful for</span>
-        <div id="gratBox"></div>
+    <div class="mhead">
+      <div class="mtitle" id="monthTitle"></div>
+      <div class="lfoot">
+        <div class="date" id="dateLine">№ — · —</div>
+        <span class="fsep">✿</span>
+        <div class="clock" aria-label="current time"><i class="pdot"></i><span id="clockTxt">--:--:--</span></div>
       </div>
     </div>
-
-    <div class="sec grow" style="--c:var(--lilac);--d:.3s">
-      <textarea id="extra" data-k="extra" aria-label="extra writing lines" spellcheck="false"></textarea>
-    </div>
-
-    <div class="lfoot">
-      <div class="date" id="dateLine">№ — · —</div>
-      <span class="fsep">✿</span>
-      <div class="clock" aria-label="current time"><i class="pdot"></i><span id="clockTxt">--:--:--</span></div>
-    </div>
+    <div class="mbody" id="monthBox"></div>
   </section>
 
   <div class="spine"></div>
@@ -403,27 +431,48 @@ button{font-family:inherit}
       <button class="btn ghost" id="printBtn" title="print">⎙</button>
     </div>
     </div>
-    <div class="rbody">
-      <div class="slots" id="slots"></div>
-      <div class="rside">
-    <div class="sec" style="--c:var(--coral);--d:.05s">
+    <!-- monthly Everest: one long full-width line -->
+    <div class="sec everest" style="--c:var(--coral);--d:.05s">
       <span class="chip">✶ monthly Everest</span>
       <div id="purposeBox"></div>
     </div>
-    <div class="sec" style="--c:var(--sky);--d:.12s">
-      <span class="chip">weekly breakdown ×4</span>
-      <div id="weekBox"></div>
-    </div>
-    <div class="sec" style="--c:var(--sun);--d:.19s">
-      <span class="chip">top priorities · the big three</span>
-      <div id="bigBox"></div>
-    </div>
+
+    <div class="rbody">
+      <!-- hours: as long as rules + top priorities + habits -->
+      <div class="sec path hours" style="--c:var(--sky);--d:.1s">
+        <span class="chip">hours</span>
+        <div class="slots" id="slots"></div>
+      </div>
+
+      <div class="path stack">
+        <div class="sec" style="--c:var(--lilac);--d:.12s">
+          <span class="chip">✦ rules</span>
+          <div id="rulesBox"></div>
+        </div>
+        <div class="sec" style="--c:var(--sun);--d:.16s">
+          <span class="chip">top priorities · the big three</span>
+          <div id="bigBox"></div>
+        </div>
+        <div class="sec" style="--c:var(--mint);--d:.2s">
+          <span class="chip">habits · tap the dots</span>
+          <div id="habitBox"></div>
+        </div>
+      </div>
+
+      <div class="sec path meals" style="--c:var(--tang);--d:.2s">
+        <span class="chip">meals · b l d</span>
+        <div id="mealBox"></div>
+      </div>
+
+      <div class="sec path grat" style="--c:var(--pink);--d:.24s">
+        <span class="chip">grateful for</span>
+        <div id="gratBox"></div>
       </div>
     </div>
 
-    <div class="sec grow" style="--c:var(--lilac);--d:.25s">
+    <!-- notes: full width, down to the bottom -->
+    <div class="sec grow notes-full" style="--c:var(--lilac);--d:.3s">
       <span class="chip">notes &amp; brain dump</span>
-      <p class="sub">review the day — what got accomplished? is it in step with this week's plan &amp; this month's Everest?</p>
       <textarea id="notes" data-k="notes" placeholder="free write… anything else on your mind" spellcheck="false"></textarea>
     </div>
 
@@ -449,7 +498,7 @@ button{font-family:inherit}
 const LS_KEY='paperdays.bright.v1';
 const HOURS=Array.from({length:19},(_,i)=>i+3);            /* 3 AM → 9 PM */
 const DEF_HABITS=['drink water','move 20 min','read 10 pages','sleep by 11'];
-const HPAL=['var(--coral)','var(--sky)','var(--mint)','var(--sun)','var(--pink)','var(--lilac)'];
+const HPAL=['var(--coral)','var(--sky)','var(--mint)','var(--sun)','var(--pink)','var(--lilac)','var(--leaf)'];
 const DAYS=['m','t','w','t','f','s','s'];
 
 const pad=n=>String(n).padStart(2,'0');
@@ -467,6 +516,7 @@ function wkNo(d){const x=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDat
 
 let state; try{state=JSON.parse(localStorage.getItem(LS_KEY))||{};}catch(e){state={};}
 function ensure(){state.months=state.months||{}; state.weeks=state.weeks||{};
+  state.mdata=state.mdata||{};
   if(!Array.isArray(state.rules))state.rules=[];
   while(state.rules.length<3)state.rules.push('');
   if(!state.plan||typeof state.plan!=='object'){          /* one-time: seed from the old weekly/monthly data */
@@ -523,7 +573,20 @@ function ownPlan(){
   if(!state.plan[dk])state.plan[dk]=JSON.parse(JSON.stringify(planFor(dk)));
   return state.plan[dk];
 }
-function getPurpose(){if(!state.months[mk()])state.months[mk()]=['',''];return state.months[mk()];}
+/* the month on screen: 31 day-lines, 5 weekly targets, 1 Everest line (first run: seeded from the old plan) */
+const MONF=['january','february','march','april','may','june','july','august','september','october','november','december'];
+const WPAL=['var(--coral)','var(--sky)','var(--mint)','var(--sun)','var(--pink)'];
+function monthData(){
+  const k=iso(selDate()).slice(0,7);
+  let M=state.mdata[k];
+  if(!M){
+    const first=!Object.keys(state.mdata).length, P=planFor(iso(selDate()));
+    M={days:Array(31).fill(''),targets:Array(5).fill(''),everest:first?((P.everest&&P.everest[0])||''):''};
+    if(first&&P.weekly)P.weekly.forEach((v,i)=>{if(i<5)M.targets[i]=v||'';});
+    state.mdata[k]=M;
+  }
+  return M;
+}
 
 /* ───────────────────────── render ───────────────────────── */
 function renderHead(){
@@ -544,15 +607,34 @@ function renderPlan(){
   $('rulesBox').innerHTML=P.rules.map((v,i)=>
     `<div class="fline"><span class="num">${i+1}</span><input data-k="r${i}" value="${esc(v)}" placeholder="a rule i live by…" spellcheck="false"></div>`).join('');
 
-  $('purposeBox').innerHTML=P.everest.map((v,i)=>
-    `<div class="fline"><span class="star">✶</span><input data-k="p${i}" value="${esc(v)}" placeholder="${i?'and it starts with…':'this month i intend to…'}" spellcheck="false"></div>`).join('');
-
-  $('weekBox').innerHTML=P.weekly.map((v,i)=>
-    `<div class="fline"><span class="num">${i+1}</span><input data-k="w${i}" value="${esc(v)}" placeholder="one focus for this week…" spellcheck="false"></div>`).join('');
+  $('purposeBox').innerHTML=`<div class="fline"><span class="star">✶</span><input data-k="e" value="${esc(monthData().everest)}" placeholder="this month i intend to…" spellcheck="false"></div>`;
 
   $('bigBox').innerHTML=P.big3.map((v,i)=>
     `<div class="bline"><span class="ring">${i+1}</span><input data-k="b${i}" value="${esc(v)}" spellcheck="false"></div>`).join('');
 
+  renderMonth();
+}
+
+function renderMonth(){
+  const ref=selDate(), y=ref.getFullYear(), m=ref.getMonth(), n=new Date(y,m+1,0).getDate();
+  const M=monthData(), tk=iso(new Date()), sk=iso(ref);
+  $('monthTitle').innerHTML=`<h2>${MONF[m]} ${y}</h2>`;
+  let h='';
+  for(let w=0;w*7<n;w++){
+    const a=w*7+1, b=Math.min(n,a+6);
+    h+=`<div class="wk" style="--c:${WPAL[w]};--g:${b-a+3}">
+      <div class="whead"><span class="wrange">${MON[m]} ${a}${b>a?' – '+b:''}</span><span class="wchip">week ${w+1}</span></div>
+      <div class="fline wt"><span class="star">✶</span><input data-k="t${w}" value="${esc(M.targets[w])}" placeholder="target for week ${w+1}…" spellcheck="false"></div>`;
+    for(let d=a;d<=b;d++){
+      const dt=new Date(y,m,d), dk=iso(dt), dow=dt.getDay(), lab=`${DAY[dow]} ${MON[m]} ${d}`;
+      h+=`<div class="drow${dk===sk?' sel':''}${dk===tk?' today':''}${dow===0||dow===6?' wkend':''}">
+        <button class="dn" data-y="${y}" data-m="${m}" data-d="${d}" title="go to ${lab}" aria-label="go to ${lab}">${d}</button>
+        <span class="dw">${DAY[dow].slice(0,3)}</span>
+        <input data-k="d${d-1}" value="${esc(M.days[d-1])}" spellcheck="false" aria-label="${lab}"></div>`;
+    }
+    h+='</div>';
+  }
+  $('monthBox').innerHTML=h;
 }
 
 function renderWeek(){
@@ -586,21 +668,20 @@ function renderDay(){
      <input data-k="g${i}" value="${esc(v)}" placeholder="…" spellcheck="false"></div>`).join('');
 
   $('notes').value=D.notes;
-  $('extra').value=D.extra||'';
   updateCount(); markNow();
 }
 
+const HABIT_LINES=7;
 function renderHabits(){
   const w=getWeek();
+  while(w.habits.length<HABIT_LINES)w.habits.push({name:'',days:Array(7).fill(false)});
   $('habitBox').innerHTML=
-    `<div class="hrow"><span></span><span></span><div class="dots dl">${DAYS.map(d=>`<span>${d}</span>`).join('')}</div></div>`+
-    w.habits.map((h,r)=>`
-      <div class="hrow" style="--c:${HPAL[r%6]}">
-        <button class="hx" data-r="${r}" title="remove">×</button>
-        <input class="hname" data-k="h${r}" value="${esc(h.name)}" placeholder="new habit…" spellcheck="false">
+    `<div class="hrow"><span></span><div class="dots dl">${DAYS.map(d=>`<span>${d}</span>`).join('')}</div></div>`+
+    w.habits.slice(0,HABIT_LINES).map((h,r)=>`
+      <div class="hrow" style="--c:${HPAL[r%HPAL.length]}">
+        <input class="hname" data-k="h${r}" value="${esc(h.name)}" placeholder="habit…" spellcheck="false">
         <div class="dots">${h.days.map((v,d)=>`<button class="hd${v?' on':''}" data-r="${r}" data-d="${d}" aria-label="day ${d+1}"></button>`).join('')}</div>
       </div>`).join('');
-  $('addHabit').style.display=w.habits.length>=6?'none':'';
 }
 
 function updateCount(){
@@ -619,14 +700,14 @@ function markNow(){
 document.addEventListener('input',e=>{
   const t=e.target,k=t.dataset.k; if(!k)return;
   const w=getWeek(), D=getDay();
-  if(k[0]==='r')ownPlan().rules[+k.slice(1)]=t.value;
-  else if(k[0]==='p')ownPlan().everest[+k.slice(1)]=t.value;
-  else if(k[0]==='w')ownPlan().weekly[+k.slice(1)]=t.value;
+  if(k==='e')monthData().everest=t.value;
+  else if(k[0]==='t')monthData().targets[+k.slice(1)]=t.value;
+  else if(k[0]==='d')monthData().days[+k.slice(1)]=t.value;
+  else if(k[0]==='r')ownPlan().rules[+k.slice(1)]=t.value;
   else if(k[0]==='b')ownPlan().big3[+k.slice(1)]=t.value;
   else if(k[0]==='m')D.meals[+k.slice(1)]=t.value;
   else if(k[0]==='g')D.grat[+k.slice(1)]=t.value;
   else if(k==='notes')D.notes=t.value;
-  else if(k==='extra')D.extra=t.value;
   else if(k[0]==='h'&&k!=='h')w.habits[+k.slice(1)].name=t.value,rememberHabits();
   else if(k[0]==='s')D.slots[+k.slice(1)].t=t.value;
   if(k[0]==='h')rememberHabits();
@@ -643,6 +724,8 @@ document.addEventListener('click',e=>{
     cb.setAttribute('aria-pressed',D.slots[i].done);
     updateCount(); scheduleSave(); return;
   }
+  const dn=e.target.closest('.dn');
+  if(dn){const d=new Date(+dn.dataset.y,+dn.dataset.m,+dn.dataset.d); weekStart=monday(d); selDay=(d.getDay()+6)%7; renderWeek(); scheduleSave(); return;}
   const db=e.target.closest('.dbtn');
   if(db){selDay=+db.dataset.d; renderHead(); renderPlan(); renderDay(); return;}
   const hd=e.target.closest('.hd');
@@ -652,20 +735,7 @@ document.addEventListener('click',e=>{
     hd.classList.toggle('on',w.habits[r].days[d]);
     scheduleSave(); return;
   }
-  const hx=e.target.closest('.hx');
-  if(hx){
-    const w=getWeek(); if(w.habits.length<=1)return;
-    w.habits.splice(+hx.dataset.r,1); rememberHabits(); renderHabits(); scheduleSave(); return;
-  }
 });
-
-$('addHabit').onclick=()=>{
-  const w=getWeek(); if(w.habits.length>=6)return;
-  w.habits.push({name:'',days:Array(7).fill(false)});
-  rememberHabits(); renderHabits(); scheduleSave();
-  const inputs=document.querySelectorAll('.hname');
-  inputs[inputs.length-1].focus();
-};
 
 /* week nav */
 function goWeek(n){weekStart=addD(weekStart,n); if(isCur())selDay=todayIdx(); renderWeek(); scheduleSave();}
@@ -717,7 +787,7 @@ async function readFile(){
     return (data&&data.weeks)?{data,txt}:null;
   }catch(e){return null;}   /* no file yet — first autosave will create it */
 }
-const sameContent=(a,b)=>JSON.stringify([a.weeks,a.months,a.rules,a.plan])===JSON.stringify([b.weeks,b.months,b.rules,b.plan]);
+const sameContent=(a,b)=>JSON.stringify([a.weeks,a.months,a.mdata,a.rules,a.plan])===JSON.stringify([b.weeks,b.months,b.mdata,b.rules,b.plan]);
 
 /* Never throw away what was typed while the folder was disconnected. */
 async function bind(handle){
