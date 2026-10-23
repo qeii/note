@@ -338,9 +338,10 @@ button{font-family:inherit}
 .rbody .stack .bline,.rbody .stack .mrow,.rbody .stack .hrow{height:auto;flex:1 1 var(--row);min-height:var(--row)}
 .rbody .stack #habitBox .hrow:first-child{flex:0 0 var(--row)}
 .hourscol{display:flex;flex-direction:column;gap:clamp(6px,1.2vh,12px);min-width:0}
-.hourscol .hours{flex:0 0 auto}
-.hourscol .notes-full{flex:1 1 auto}
-.hourscol .notes-full #notes{min-height:64px}
+.hourscol .big{flex:0 0 auto}
+.hourscol .big .bline{height:calc(var(--row) + 9px)}
+.hourscol .hours{flex:1 1 auto}
+.rbody .stack .notes-full #notes{min-height:64px}
 .right .rbody{flex:1 0 auto}
 @media (max-width:560px){.wpair{grid-template-columns:1fr}}
 
@@ -454,35 +455,35 @@ button{font-family:inherit}
     </div>
 
     <div class="rbody">
-      <!-- left column: hours, then notes below it -->
+      <!-- left column: top priorities, then hours -->
       <div class="hourscol">
-        <div class="sec path hours" style="--c:var(--sky);--d:.1s">
-          <span class="chip">hours</span>
-          <div class="slots" id="slots"></div>
-        </div>
-        <div class="sec path notes-full" style="--c:var(--lilac);--d:.3s">
-          <span class="chip">notes &amp; brain dump</span>
-          <textarea id="notes" data-k="notes" placeholder="free write… anything else on your mind" spellcheck="false"></textarea>
-        </div>
-      </div>
-
-      <!-- right column: one single path -->
-      <div class="path stack">
-        <div class="sec" style="--c:var(--sun);--d:.16s;--g:3">
+        <div class="sec path big" style="--c:var(--sun);--d:.1s">
           <span class="chip">top priorities · the big three</span>
           <div id="bigBox"></div>
         </div>
-        <div class="sec" style="--c:var(--mint);--d:.2s;--g:6">
+        <div class="sec path hours" style="--c:var(--sky);--d:.14s">
+          <span class="chip">hours</span>
+          <div class="slots" id="slots"></div>
+        </div>
+      </div>
+
+      <!-- right column: habits, meals, grateful, notes -->
+      <div class="path stack">
+        <div class="sec" style="--c:var(--mint);--d:.16s;--g:2">
           <span class="chip">habits · tap the dots</span>
           <div id="habitBox"></div>
         </div>
-        <div class="sec meals" style="--c:var(--tang);--d:.22s;--g:3">
+        <div class="sec meals" style="--c:var(--tang);--d:.2s;--g:1">
           <span class="chip">meals · b l d</span>
           <div id="mealBox"></div>
         </div>
-        <div class="sec grat" style="--c:var(--pink);--d:.24s;--g:3">
+        <div class="sec grat" style="--c:var(--pink);--d:.24s;--g:1">
           <span class="chip">grateful for</span>
           <div id="gratBox"></div>
+        </div>
+        <div class="sec notes-full" style="--c:var(--lilac);--d:.28s;--g:3">
+          <span class="chip">notes &amp; brain dump</span>
+          <textarea id="notes" data-k="notes" placeholder="free write… anything else on your mind" spellcheck="false"></textarea>
         </div>
       </div>
     </div>
