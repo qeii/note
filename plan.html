@@ -304,12 +304,25 @@ button{font-family:inherit}
 .pdot::after{content:'';position:absolute;inset:0;border-radius:50%;background:var(--mint);animation:ping 1.6s ease-out infinite}
 @keyframes ping{from{transform:scale(1);opacity:.7}to{transform:scale(3);opacity:0}}
 
+
+/* ---------- more menu (print / reset) ---------- */
+.more{position:relative}
+.more .btn{display:inline-flex;align-items:center;gap:5px}
+.menu{position:absolute;right:0;top:calc(100% + 6px);min-width:150px;z-index:40;display:none;flex-direction:column;gap:2px;padding:5px;
+  background:var(--white);border:1.5px solid var(--pill-border);border-radius:14px;box-shadow:0 12px 28px color-mix(in srgb,var(--shadow) 28%,transparent)}
+.more.open .menu{display:flex}
+.menu button{border:0;background:transparent;color:var(--ink);font:800 11px var(--body);text-align:left;padding:8px 11px;border-radius:9px;cursor:pointer;white-space:nowrap}
+.menu button:hover{background:var(--cream)}
+.menu hr{border:0;border-top:1.5px dotted var(--line);margin:3px 4px}
+.menu button.danger{color:var(--danger)}
+.menu button.danger:hover{background:color-mix(in srgb,var(--coral) 14%,var(--white))}
+
 /* ---------- left page: the month in days ---------- */
 .mtitle{display:flex;align-items:baseline;gap:4px 12px;flex-wrap:wrap}
 .mtitle h2{font-family:var(--hand);font-weight:400;font-size:clamp(18px,2.6vh,24px);line-height:1;
   background:linear-gradient(transparent 58%, color-mix(in srgb,var(--sky) 45%,transparent) 58% 94%, transparent 94%)}
 .mbody{flex:1 0 auto;display:flex;flex-direction:column;gap:clamp(3px,.7vh,7px)}
-.wk{display:flex;flex-direction:column;flex:var(--g,1) 0 auto;animation:rise .55s both}
+.wk{display:flex;flex-direction:column;flex:var(--g,1) 0 auto}
 .whead{display:flex;align-items:center;justify-content:flex-end;gap:8px;height:17px}
 .wchip{font-family:var(--cute);font-size:13px;letter-spacing:.5px;line-height:1.25;color:var(--c);
   background:color-mix(in srgb,var(--c) 14%, var(--white));border:1.5px solid color-mix(in srgb,var(--c) 42%, var(--white));
@@ -444,8 +457,14 @@ button{font-family:inherit}
     <div class="actions">
       <span class="status" id="status"><i class="dot"></i><em id="statusTxt" style="font-style:normal">warming up…</em></span>
       <button class="btn sun" id="folderBtn">📁 choose folder</button>
-      <button class="btn ghost" id="resetBtn" title="clear the day you're viewing">↺ reset</button>
-      <button class="btn ghost" id="printBtn" title="print">⎙</button>
+      <div class="more" id="moreWrap">
+        <button class="btn ghost" id="moreBtn" aria-haspopup="true" aria-expanded="false" title="print or reset">⋯ more ▾</button>
+        <div class="menu" id="moreMenu" role="menu">
+          <button id="printBtn" role="menuitem">⎙ print</button>
+          <hr>
+          <button id="resetBtn" class="danger" role="menuitem" title="clear the day you're viewing">↺ reset day…</button>
+        </div>
+      </div>
     </div>
     </div>
     <!-- monthly Everest: one long full-width line -->
@@ -611,7 +630,7 @@ function renderHead(){
     return `<button class="dbtn${i===selDay?' sel':''}${iso(d)===tk?' today':''}${i<2?' tl':''}${i>4?' tr':''}" data-d="${i}" data-tip="${tip}" aria-label="${tip}" aria-pressed="${i===selDay}">${d.getDate()}</button>`;
   }).join('');
   const lab=`${DAY[ref.getDay()]} ${MON[ref.getMonth()]} ${ref.getDate()}`;
-  $('resetBtn').title=`clear ${lab}`;
+  $('resetBtn').title=`clear ${lab}`;$('resetBtn').textContent=`↺ reset ${lab}…`;
 }
 
 function renderPlan(){
@@ -757,8 +776,14 @@ document.addEventListener('click',e=>{
 function goWeek(n){weekStart=addD(weekStart,n); if(isCur())selDay=todayIdx(); renderWeek(); scheduleSave();}
 $('prevW').onclick=()=>goWeek(-7);
 $('nextW').onclick=()=>goWeek(7);
-$('printBtn').onclick=()=>window.print();
+const moreWrap=$('moreWrap'),moreBtn=$('moreBtn');
+function setMore(o){moreWrap.classList.toggle('open',o);moreBtn.setAttribute('aria-expanded',o);}
+moreBtn.onclick=e=>{e.stopPropagation();setMore(!moreWrap.classList.contains('open'));};
+document.addEventListener('click',e=>{if(!moreWrap.contains(e.target))setMore(false);});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')setMore(false);});
+$('printBtn').onclick=()=>{setMore(false);window.print();};
 $('resetBtn').onclick=()=>{
+  setMore(false);
   const d=selDate(), lab=`${DAY[d.getDay()]} ${MON[d.getMonth()]} ${d.getDate()}`;
   if(!confirm(`Clear ${lab}?\n(to-dos, meals, grateful for & notes — nothing else is touched)`))return;
   getWeek().days[selDay]=freshDay();
