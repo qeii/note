@@ -507,6 +507,9 @@ body{overflow-y:auto}
 .labcol .slot:hover{background:transparent}
 .labcol .slot.now .tlabel::before{content:'▸'}
 
+/* breathing room + dotted rule between hours and meals */
+.col.day>.sec:last-child,.labcol>.sec:last-child{margin-top:14px;padding-top:8px;border-top:2.5px dotted var(--line)}  /* ← gap size / rule */
+
 /* faint vertical divider between days (hours & meals only) */
 .cols{--cg:clamp(8px,.9vw,14px);gap:var(--cg)}
 .col.day+.col.day>.sec.hours,.col.day+.col.day>.sec:last-child{position:relative}
@@ -679,7 +682,8 @@ function planFor(dk){
 }
 function ownPlan(di){
   const dk=iso(addD(weekStart,di));
-  if(!state.plan[dk]){state.plan[dk]=JSON.parse(JSON.stringify(planFor(dk)));state.plan[dk].done=[false,false,false];}
+  if(!state.plan[dk]){state.plan[dk]={big3:['','',''],done:[false,false,false]};}   /* each day starts empty — no copying from the day before */
+  if(!state.plan[dk].big3)state.plan[dk].big3=['','',''];
   if(!state.plan[dk].done)state.plan[dk].done=[false,false,false];
   return state.plan[dk];
 }
@@ -714,11 +718,11 @@ function renderPath1(){
 function renderDays(){
   const w=getWeek(), tk=iso(new Date());
   for(let i=0;i<7;i++){
-    const d=addD(weekStart,i), D=w.days[i], P=planFor(iso(d)), own=state.plan[iso(d)], dn=(own&&own.done)||[];
+    const d=addD(weekStart,i), D=w.days[i], own=state.plan[iso(d)], P={big3:(own&&own.big3)||['','','']}, dn=(own&&own.done)||[];
     const el=$('col'+i); el.className='col day'+(iso(d)===tk?' today':''); el.style.setProperty('--c',DPAL[i]);
     el.innerHTML=
      `<div class="dhead"><span class="dname">${DAY[d.getDay()]}</span><span class="ddate">${MON[d.getMonth()]} ${d.getDate()}</span></div>
-      <div class="sec" style="--c:var(--sun)"><div>${P.big3.map((v,j)=>
+      <div class="sec" style="--c:var(--sun)"><div>${P.big3.slice(0,2).map((v,j)=>
         `<div class="bline${dn[j]?' done':''}" data-d="${i}" data-j="${j}"><input data-k="b${i}_${j}" value="${esc(v)}" spellcheck="false"><button class="cb" title="done ✓" aria-pressed="${!!dn[j]}"></button></div>`).join('')}</div></div>
       <div class="sec hours" style="--c:var(--sky)"><div class="slots">${D.slots.map((s,j)=>
         `<div class="slot" data-d="${i}" data-i="${j}"><input data-k="s${i}_${j}" value="${esc(s.t)}" spellcheck="false"></div>`).join('')}</div></div>
@@ -731,7 +735,7 @@ function renderDays(){
 function renderLabels(){
   const BC=['var(--sun)','var(--leaf)','var(--pink)'];
   const html=`<div class="dhead" style="border-color:transparent"><span class="dname">&nbsp;</span></div>
-    <div class="sec" style="--c:var(--sun)"><div class="lrow"><span class="vcap">priorities</span><div class="lcol">${[1,2,3].map(n=>`<div class="bline"><span class="ring">${n}</span></div>`).join('')}</div></div></div>
+    <div class="sec" style="--c:var(--sun)"><div class="lrow"><span class="vcap">priorities</span><div class="lcol">${[1,2].map(n=>`<div class="bline"><span class="ring">${n}</span></div>`).join('')}</div></div></div>
     <div class="sec hours" style="--c:var(--sky)"><div class="lrow grow"><span class="vcap">hours</span><div class="slots">${HOURS.map((h,j)=>`<div class="slot" data-i="${j}"><span class="tlabel">${hourLab(h)}</span></div>`).join('')}</div></div></div>
     <div class="sec" style="--c:var(--tang)"><div class="lrow"><span class="vcap">meals</span><div class="lcol">${['b','l','d'].map((l,j)=>`<div class="mrow"><span class="tok" style="--tc:${BC[j]}">${l}</span></div>`).join('')}</div></div></div>`;
   $('lab0').innerHTML=html; $('lab1').innerHTML=html;
