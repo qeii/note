@@ -392,126 +392,207 @@ button{font-family:inherit}
 
 /* ---------- small screens & print ---------- */
 @media (max-width:1060px){.rbody{grid-template-columns:1fr}}
-@media (max-width:920px){
-  body{overflow:auto}
-  .spread{flex-direction:column;gap:16px;width:calc(100% - 24px)}
-  .spine{width:auto;height:14px;background:linear-gradient(180deg,color-mix(in srgb,var(--shadow) 20%,transparent),color-mix(in srgb,var(--shadow) 2%,transparent) 45% 55%,color-mix(in srgb,var(--shadow) 20%,transparent))}
-  .spine::before{left:12px;right:12px;top:50%;bottom:auto;width:auto;height:0;border-left:0;border-top:2px dashed var(--spine-line);transform:translateY(-50%)}
-  .page{border-radius:16px}
-  .rbody{grid-template-columns:1fr}
-}
 @media print{
   .weeknav,.actions,.sky,.tape,.modal{display:none!important}
   body{overflow:visible;background:var(--white)}
   .spread{width:100%;filter:none}
   .page{overflow:visible;box-shadow:none}
 }
+
+/* ═════════ WEEK-SPREAD LAYOUT (8 paths: 1 wide + 7 days) ═════════ */
+body{overflow-x:auto}
+.spread{width:min(1840px,calc(100% - 24px));min-width:1320px;flex-direction:row!important}
+.spine{width:clamp(12px,1.2vw,20px)!important;height:auto!important}
+.page{padding:clamp(10px,1.6vh,18px) clamp(10px,1vw,16px)}
+.cols{display:grid;gap:clamp(8px,.9vw,14px);flex:1 0 auto;align-items:stretch}
+.cols.L{grid-template-columns:1.5fr 1fr 1fr 1fr}      /* ← widths: first number = wide path, then Mon Tue Wed */
+.cols.R{grid-template-columns:repeat(4,1fr)}          /* ← Thu Fri Sat Sun */
+.col{display:flex;flex-direction:column;gap:7px;min-width:0}
+.col .sec{gap:3px}
+.col .chip{font-size:12.5px;padding:0 8px 1px}
+.dhead{display:flex;align-items:baseline;justify-content:space-between;gap:6px;border-bottom:2.5px solid var(--c);padding:0 3px 2px;border-radius:3px}
+.dname{font-family:var(--hand);font-size:clamp(16px,2.2vh,20px);color:var(--c);line-height:1.1}
+.ddate{font:800 10px var(--body);color:var(--ink2);letter-spacing:.5px;text-transform:uppercase}
+.col.today .dhead{background:color-mix(in srgb,var(--coral) 14%,transparent)}
+.col.today .ddate{color:var(--coral)}
+.col .bline{height:calc(var(--row) + 3px);gap:7px}
+.col .ring{width:20px;height:20px;font-size:11px;border-width:2px}
+.col .bline input{font-size:12px;border-bottom-width:2px}
+.col .slots{flex:1}
+.col .hours{flex:1 1 auto}
+.col .slot{grid-template-columns:34px 1fr 16px;gap:4px}
+.col .tlabel{font-size:9px;letter-spacing:.3px}
+.col .slot input{font-size:11.5px;padding:0 2px}
+.col .mrow{height:calc(var(--row) + 1px);gap:6px}
+.col .mrow input{font-size:11.5px}
+.col .tok{width:16px;height:16px}
+textarea.ev{width:100%;height:84px;border:0;outline:0;resize:none;padding:0 4px;overflow:hidden;
+  background:repeating-linear-gradient(transparent 0 26.5px,color-mix(in srgb,var(--coral) 48%,var(--white)) 26.5px 28px);
+  font:400 clamp(14px,2vh,16px)/28px var(--hand);color:var(--ink)}
+textarea.ev:focus{box-shadow:0 0 0 2.5px color-mix(in srgb,var(--coral) 22%,transparent);border-radius:8px}
+.p1 .fline{height:calc(var(--row) + 3px);gap:7px}
+.p1 .fline input{font-size:13.5px}
+.fline.cur .num{transform:rotate(-5deg) scale(1.2);box-shadow:0 0 0 2px color-mix(in srgb,var(--c) 30%,transparent)}
+.fline.cur input{font-weight:700}
+.p1 #notes{min-height:90px}
+/* habit tracker — rotated: icons across the top, days M T W T F S S down the side */
+.htab{display:grid;grid-template-columns:20px repeat(var(--n),1fr);grid-auto-rows:var(--row);align-items:center;justify-items:center}
+.hic{font-size:18px;line-height:1;cursor:default;filter:drop-shadow(0 1px 0 color-mix(in srgb,var(--c) 40%,transparent))}
+.hday{font-family:var(--cute);font-size:12px;color:var(--ink2)}
+.hday.tdy{color:var(--coral);font-weight:700}
+.htab .hd{width:14px;height:14px}
+
+/* ═════════ v2: one-page fit, header strip, calendar, priority checkboxes ═════════ */
+body{overflow-y:auto}
+:root{--row:clamp(17px,2.55vh,27px)}
+.spread{flex:none;height:calc(100dvh - 30px);min-height:620px;min-width:1440px;margin:14px auto 16px}
+.page{min-height:0}
+.cols{flex:1 1 0;min-height:0}
+.col{min-height:0}
+.mast,.rhead{height:36px;flex-wrap:nowrap;align-items:center;white-space:nowrap;
+  border-bottom:2.5px dotted var(--line);padding-bottom:6px;margin:0;position:relative;z-index:5}
+.mast-l{flex-wrap:nowrap;gap:10px;min-width:0}
+.mast .date,.mast .clock{font-size:clamp(11.5px,.92vw,14.5px)}
+.mast .date b{font-weight:400}
+.mast .radiant{margin:0 0 0 10px;font-size:8.5px;padding:3px 8px;transform:rotate(-2deg)}
+.rquote{font-family:var(--cute);font-size:clamp(12px,.95vw,14.5px);letter-spacing:.6px;color:var(--quote)}
+.rquote span{display:inline-block;animation:bob 5s ease-in-out infinite alternate;color:var(--pink)}
+.rhead .actions{flex-wrap:nowrap}
+.mast .fsep{display:inline}
+/* calendar */
+.calwrap{position:relative;flex:none}
+.calbtn{width:30px;height:30px;border-radius:10px;border:1.5px solid var(--pill-border);background:var(--btn-bg);font-size:16px;cursor:pointer;
+  transition:.15s;box-shadow:0 2px 0 color-mix(in srgb,var(--shadow) 10%,transparent)}
+.calbtn:hover{background:var(--cream);transform:translateY(-1px) rotate(-4deg)}
+.calpop{display:none;position:absolute;left:0;top:calc(100% + 8px);z-index:60;width:244px;padding:10px 12px 12px;
+  background:var(--white);border:1.5px solid var(--pill-border);border-radius:16px;box-shadow:0 14px 32px color-mix(in srgb,var(--shadow) 30%,transparent);white-space:normal}
+.calwrap.open .calpop{display:block}
+.calhd{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;font:800 12px var(--body);color:var(--ink)}
+.calhd button{width:24px;height:24px;border-radius:50%;border:0;background:var(--cream);color:var(--ink);font-weight:800;cursor:pointer}
+.calhd button:hover{background:var(--sun);color:var(--white)}
+.calg{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;justify-items:center;align-items:center}
+.cdw{font:11px var(--cute);color:var(--ink2);padding-bottom:2px}
+.cd{width:29px;height:26px;border:0;border-radius:8px;background:transparent;color:var(--ink);font:700 11.5px var(--body);cursor:pointer}
+.cd:hover{background:var(--cream)}
+.cd.inwk{background:color-mix(in srgb,var(--sun) 35%,var(--white))}
+.cd.today{box-shadow:inset 0 0 0 2px var(--coral)}
+.calt{display:block;margin:8px auto 0;border:1.5px dashed var(--coral);background:transparent;color:var(--coral);font:800 10.5px var(--body);border-radius:999px;padding:2px 12px;cursor:pointer}
+.calt:hover{background:var(--coral);color:var(--white)}
+/* hours: no checkbox, rows shrink to fit the screen */
+.col .hours,.col .slots{flex:1 1 0;min-height:0}
+.col .slot{grid-template-columns:34px 1fr;flex:1 1 0;min-height:0;height:auto}
+/* priorities: checkbox */
+.bline .cb{flex:none}
+.bline.done .cb{background:var(--lilac);border-color:var(--lilac);transform:rotate(-7deg)}
+.bline.done .cb::after{opacity:1;transform:scale(1)}
+.bline.done input{color:var(--done-ink);text-decoration:line-through;text-decoration-color:var(--coral);text-decoration-thickness:2px}
+.p1 #notes{min-height:60px;flex:1 1 0}
+.p1 .notes-full{flex:1 1 0;min-height:0}
+
+/* ═════════ v3: dedicated label paths, month highlight ═════════ */
+.cols.L{grid-template-columns:1.15fr 46px 1fr 1fr 1fr}   /* ← wide path · label path · Mon Tue Wed */
+.cols.R{grid-template-columns:46px repeat(4,1fr)}        /* ← label path · Thu Fri Sat Sun */
+.col .slot{grid-template-columns:1fr}
+.mh{font-family:var(--hand);font-size:clamp(17px,2.3vh,22px);line-height:1;padding:0 3px;color:var(--ink);
+  background:linear-gradient(transparent 58%,color-mix(in srgb,var(--hl-lilac) 55%,transparent) 58% 94%,transparent 94%)}
+.rhead .rtitle{gap:12px;flex-wrap:nowrap}
+.rhead .radiant{margin:0;transform:rotate(-2deg)}
+.lrow{display:flex;gap:2px;min-width:0}
+.lrow.grow{flex:1 1 0;min-height:0}
+.lcol{flex:1;min-width:0}
+.vcap{flex:none;width:13px;display:grid;place-items:center;writing-mode:vertical-rl;transform:rotate(180deg);
+  font:12px var(--cute);letter-spacing:.6px;color:var(--c);white-space:nowrap;overflow:hidden}
+.labcol .bline,.labcol .mrow{justify-content:center;gap:0}
+.labcol .tlabel{width:100%;text-align:right;padding-right:2px}
+.labcol .slot:hover{background:transparent}
+.labcol .slot.now .tlabel::before{content:'▸'}
+
+/* faint vertical divider between days (hours & meals only) */
+.cols{--cg:clamp(8px,.9vw,14px);gap:var(--cg)}
+.col.day+.col.day>.sec.hours,.col.day+.col.day>.sec:last-child{position:relative}
+.col.day+.col.day>.sec.hours::before,.col.day+.col.day>.sec:last-child::before{content:'';position:absolute;top:0;bottom:0;
+  left:calc(var(--cg) / -2);border-left:1px solid color-mix(in srgb,var(--line) 65%,transparent);pointer-events:none}  /* ← colour/strength of the divider */
+
+/* "now" hour: solid chip on the label, soft gradient only across the day lines */
+.labcol .slot.now{background:none}
+.labcol .slot.now .tlabel::before{content:none}
+.labcol .slot.now .tlabel{align-self:center;text-align:center;padding:0 3px;line-height:1.55;border-radius:7px;
+  background:var(--now);color:var(--now-ink);box-shadow:0 0 0 1.5px color-mix(in srgb,var(--now-ink) 28%,var(--white))}
 </style>
 </head>
 <body>
 
 <div class="sky" aria-hidden="true">
-  <b style="top:12%;left:3.5%;font-size:34px;color:var(--sun);--t:8s">☀</b>
-  <b style="top:70%;left:2.5%;font-size:22px;color:var(--pink);--t:11s">✿</b>
-  <b style="top:18%;right:4%;font-size:24px;color:var(--sky);--t:9s">✦</b>
-  <b style="top:78%;right:3%;font-size:30px;color:var(--mint);--t:12s">✿</b>
-  <b style="top:45%;left:1.5%;font-size:16px;color:var(--lilac);--t:7s">✦</b>
-  <b style="top:50%;right:1.5%;font-size:18px;color:var(--tang);--t:10s">☺</b>
+  <b style="top:12%;left:2%;font-size:34px;color:var(--sun);--t:8s">☀</b>
+  <b style="top:70%;left:1%;font-size:22px;color:var(--pink);--t:11s">✿</b>
+  <b style="top:18%;right:2%;font-size:24px;color:var(--sky);--t:9s">✦</b>
+  <b style="top:78%;right:1.5%;font-size:30px;color:var(--mint);--t:12s">✿</b>
 </div>
 
 <main class="spread">
   <span class="tape t1"></span><span class="tape t2"></span><span class="tape t3"></span><span class="tape t4"></span>
 
-  <!-- ══════════ LEFT PAGE ══════════ -->
+  <!-- ══════════ LEFT PAGE: wide path + Mon · Tue · Wed ══════════ -->
   <section class="page left">
     <div class="mast">
       <div class="mast-l">
-        <div><span class="brand">paper days</span><span class="radiant">☀ feeling · radiant</span></div>
+        <div class="calwrap" id="calWrap">
+          <button class="calbtn" id="calBtn" title="pick a date · jump to its week" aria-haspopup="true">📅</button>
+          <div class="calpop" id="calPop"></div>
+        </div>
+        <!-- header strip: month · year · week count · days of week · today's date · live time -->
+        <div class="date" id="weekLine"></div><span class="fsep">✿</span>
+        <div class="date" id="dateLine"></div>
       </div>
-      <div class="weeknav" id="weekPill">
-        <button class="nav" id="prevW" title="previous week">‹</button>
-        <div class="daybtns" id="dayBtns"></div>
-        <button class="nav" id="nextW" title="next week">›</button>
-      </div>
+      <div class="clock"><i class="pdot"></i><span id="clockTxt">--:--:--</span></div>
     </div>
 
-    <div class="mhead">
-      <div class="mtitle" id="monthTitle"></div>
-      <div class="lfoot">
-        <div class="date" id="dateLine">№ — · —</div>
-        <span class="fsep">✿</span>
-        <div class="clock" aria-label="current time"><i class="pdot"></i><span id="clockTxt">--:--:--</span></div>
+    <div class="cols L">
+      <!-- PATH 1 (wide): everest · week targets · notes · habit tracker -->
+      <div class="col p1" id="p1">
+        <div class="sec" style="--c:var(--coral)"><span class="chip">✶ monthly everest</span><textarea class="ev" id="everest" data-k="e" placeholder="this month i intend to…" spellcheck="false"></textarea></div>
+        <div class="sec" style="--c:var(--sky)"><span class="chip">targets · weeks 1–5</span><div id="tgtBox"></div></div>
+        <div class="sec grow notes-full" style="--c:var(--lilac)"><span class="chip">notes &amp; brain dump</span><textarea id="notes" data-k="notes" placeholder="free write…" spellcheck="false"></textarea></div>
+        <!-- ★ HABIT ICONS: edit the HABITS list near the top of the script section at the bottom of this file (search for HABITS) -->
+        <div class="sec" style="--c:var(--mint)"><span class="chip">habits · tap the dots</span><div id="habitBox"></div></div>
       </div>
+      <div class="col labcol" id="lab0"></div>
+      <div class="col day" id="col0"></div>
+      <div class="col day" id="col1"></div>
+      <div class="col day" id="col2"></div>
     </div>
-    <div class="mbody" id="monthBox"></div>
-
   </section>
 
   <div class="spine"></div>
 
-  <!-- ══════════ RIGHT PAGE ══════════ -->
+  <!-- ══════════ RIGHT PAGE: Thu · Fri · Sat · Sun ══════════ -->
   <section class="page right">
     <div class="rhead">
-      <div class="rtitle"><h2>to-do &amp; schedule</h2><span class="count" id="count">0/19</span>
-      </div>
-    <div class="actions">
-      <span class="status" id="status"><i class="dot"></i><em id="statusTxt" style="font-style:normal">warming up…</em></span>
-      <button class="btn sun" id="folderBtn">📁 choose folder</button>
-      <div class="more" id="moreWrap">
-        <button class="btn ghost" id="moreBtn" aria-haspopup="true" aria-expanded="false" title="print or reset">⋯ more ▾</button>
-        <div class="menu" id="moreMenu" role="menu">
-          <button id="printBtn" role="menuitem">⎙ print</button>
-          <hr>
-          <button id="resetBtn" class="danger" role="menuitem" title="clear the day you're viewing">↺ reset day…</button>
+      <div class="rtitle"><span class="radiant">☀ feeling · radiant</span>
+        <div class="rquote">“ small steps, every single day. ” <span>✿</span></div></div>
+      <div class="actions">
+        <span class="status" id="status"><i class="dot"></i><em id="statusTxt" style="font-style:normal">warming up…</em></span>
+        <button class="btn sun" id="folderBtn">📁 choose folder</button>
+        <div class="more" id="moreWrap">
+          <button class="btn ghost" id="moreBtn" aria-haspopup="true" aria-expanded="false">⋯ more ▾</button>
+          <div class="menu" id="moreMenu" role="menu">
+            <button id="printBtn" role="menuitem">⎙ print</button>
+            <hr>
+            <button id="resetBtn" class="danger" role="menuitem">↺ reset this week's days…</button>
+          </div>
         </div>
       </div>
     </div>
+    <div class="cols R">
+      <div class="col labcol" id="lab1"></div>
+      <div class="col day" id="col3"></div>
+      <div class="col day" id="col4"></div>
+      <div class="col day" id="col5"></div>
+      <div class="col day" id="col6"></div>
     </div>
-    <!-- monthly Everest: one long full-width line -->
-    <div class="sec everest" style="--c:var(--coral);--d:.05s">
-      <span class="chip">✶ monthly Everest</span>
-      <div id="purposeBox"></div>
-    </div>
-
-    <div class="rbody">
-      <!-- left column: top priorities, then hours -->
-      <div class="hourscol">
-        <div class="sec path big" style="--c:var(--sun);--d:.1s">
-          <span class="chip">top priorities · the big three</span>
-          <div id="bigBox"></div>
-        </div>
-        <div class="sec path hours" style="--c:var(--sky);--d:.14s">
-          <span class="chip">hours</span>
-          <div class="slots" id="slots"></div>
-        </div>
-      </div>
-
-      <!-- right column: habits, meals, grateful, notes -->
-      <div class="path stack">
-        <div class="sec" style="--c:var(--mint);--d:.16s;--g:2">
-          <span class="chip">habits · tap the dots</span>
-          <div id="habitBox"></div>
-        </div>
-        <div class="sec meals" style="--c:var(--tang);--d:.2s;--g:1">
-          <span class="chip">meals · b l d</span>
-          <div id="mealBox"></div>
-        </div>
-        <div class="sec grat" style="--c:var(--pink);--d:.24s;--g:1">
-          <span class="chip">grateful for</span>
-          <div id="gratBox"></div>
-        </div>
-        <div class="sec notes-full" style="--c:var(--lilac);--d:.28s;--g:3">
-          <span class="chip">notes &amp; brain dump</span>
-          <textarea id="notes" data-k="notes" placeholder="free write… anything else on your mind" spellcheck="false"></textarea>
-        </div>
-      </div>
-    </div>
-
-    <div class="quote">“ small steps, every single day. ” <span>✿</span></div>
   </section>
 </main>
 
-<!-- folder modal -->
 <div class="modal hidden" id="modal">
   <div class="card">
     <span class="sun-big">🌞</span>
@@ -522,21 +603,31 @@ button{font-family:inherit}
   </div>
 </div>
 
-<noscript><p style="text-align:center;padding:20px">Paper Days needs JavaScript to work ☀</p></noscript>
-
 <script>
 /* ───────────────────────── state ───────────────────────── */
 const LS_KEY='paperdays.bright.v1';
-const HOURS=Array.from({length:19},(_,i)=>i+3);            /* 3 AM → 9 PM */
-const DEF_HABITS=['drink water','move 20 min','read 10 pages','sleep by 11'];
+const HOURS=Array.from({length:19},(_,i)=>i+2);            /* 2 AM → 8 PM  (19 rows) */
+
+/* ★★★ HABIT ICONS — edit here! Each line = [icon, name shown on hover]. The icon is
+   any emoji (or a short letter). Add/remove lines to change the number of habit columns. */
+const HABITS=[
+  ['💧','drink water'],
+  ['🏃','move 20 min'],
+  ['📖','read 10 pages'],
+  ['😴','sleep by 11'],
+  ['🧘','mindful moment']
+];
 const HPAL=['var(--coral)','var(--sky)','var(--mint)','var(--sun)','var(--pink)','var(--lilac)','var(--leaf)'];
-const DAYS=['m','t','w','t','f','s','s'];
+const DPAL=['var(--coral)','var(--tang)','var(--sun)','var(--leaf)','var(--sky)','var(--lilac)','var(--pink)'];  /* Mon…Sun header colours */
+const WPAL=['var(--coral)','var(--sky)','var(--mint)','var(--sun)','var(--pink)'];
+const DOW='MTWTFSS';
 
 const pad=n=>String(n).padStart(2,'0');
 const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
 const monday=d=>{const x=new Date(d);x.setDate(x.getDate()-((x.getDay()+6)%7));x.setHours(0,0,0,0);return x;};
 const addD=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x;};
 const MON=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+const MONF=['january','february','march','april','may','june','july','august','september','october','november','december'];
 const DAY=['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
 const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
 const hourLab=h=>h<12?h+' AM':(h===12?'12 PM':(h-12)+' PM');
@@ -546,72 +637,57 @@ function wkNo(d){const x=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDat
   return 1+Math.round(((x-f)/864e5-3+((f.getUTCDay()+6)%7))/7);}
 
 let state; try{state=JSON.parse(localStorage.getItem(LS_KEY))||{};}catch(e){state={};}
-function ensure(){state.months=state.months||{}; state.weeks=state.weeks||{};
-  state.mdata=state.mdata||{};
+function ensure(){state.months=state.months||{}; state.weeks=state.weeks||{}; state.mdata=state.mdata||{};
   if(!Array.isArray(state.rules))state.rules=[];
   while(state.rules.length<3)state.rules.push('');
-  if(!state.plan||typeof state.plan!=='object'){          /* one-time: seed from the old weekly/monthly data */
+  if(!state.plan||typeof state.plan!=='object'){
     const latest=(o,get)=>{for(const k of Object.keys(o).sort().reverse()){const v=get(o[k]);if(v&&v.some(Boolean))return v;}return null;};
     const fill=(a,n)=>Array.from({length:n},(_,i)=>(a&&a[i])||'');
-    state.plan={'0000-00-00':{rules:fill(state.rules,3),
-      everest:fill(latest(state.months,m=>m),2),
-      weekly:fill(latest(state.weeks,w=>w.weekly),4),
-      big3:fill(latest(state.weeks,w=>w.big3),3)}};
+    state.plan={'0000-00-00':{rules:fill(state.rules,3),everest:fill(latest(state.months,m=>m),2),
+      weekly:fill(latest(state.weeks,w=>w.weekly),4),big3:fill(latest(state.weeks,w=>w.big3),3)}};
   }}
 ensure();
 
 const todayIdx=()=>(new Date().getDay()+6)%7;
 let weekStart=monday(new Date());
-let selDay=todayIdx();                       /* 0 = monday … 6 = sunday */
 let dirHandle=null, bound=false, saveTimer=null, needsReconnect=false, autoTried=false;
 const BASE_TITLE=document.title;
 const $=id=>document.getElementById(id);
 const key=()=>iso(weekStart);
-const mk =()=>weekStart.getFullYear()+'-'+pad(weekStart.getMonth()+1);
 const isCur=()=>iso(monday(new Date()))===key();
 
-function freshDay(){
-  return {slots:HOURS.map(()=>({t:'',done:false})),meals:['','',''],grat:['','',''],notes:'',extra:''};
-}
+function freshDay(){return {slots:HOURS.map(()=>({t:'',done:false})),meals:['','',''],grat:['','',''],notes:'',extra:'',h2:1};}
 function freshWeek(){
-  const names=(state.lastHabitNames&&state.lastHabitNames.length)?state.lastHabitNames:DEF_HABITS;
-  return {big3:['','',''],weekly:['','','',''],
-    habits:names.map(n=>({name:n,days:Array(7).fill(false)})),
+  return {big3:['','',''],weekly:['','','',''],notes:'',
+    habits:HABITS.map(h=>({name:h[1],days:Array(7).fill(false)})),
     days:Array.from({length:7},freshDay)};
 }
 function getWeek(){
   let w=state.weeks[key()]; if(!w)w=state.weeks[key()]=freshWeek();
-  if(!w.days){                               /* older planner: one page per week → move it into one day */
-    w.days=Array.from({length:7},freshDay);
-    const old={slots:w.slots,meals:w.meals,grat:w.grat,notes:w.notes};
-    w.days[isCur()?todayIdx():0]=Object.assign(freshDay(),JSON.parse(JSON.stringify(old)));
-    delete w.slots;delete w.meals;delete w.grat;delete w.notes;
-  }
+  if(!w.days){w.days=Array.from({length:7},freshDay);}
+  w.days.forEach(d=>{       /* hours used to be 3 AM–9 PM; shift old entries so they stay on the right hour */
+    if(!d.h2){d.slots.unshift({t:'',done:false});d.slots.length=HOURS.length;d.h2=1;}
+  });
+  if(w.notes===undefined)w.notes=w.days.map(d=>d.notes).filter(Boolean).join('\n');
+  while(w.habits.length<HABITS.length)w.habits.push({name:HABITS[w.habits.length][1],days:Array(7).fill(false)});
   return w;
 }
-const getDay=()=>getWeek().days[selDay];
-const selDate=()=>addD(weekStart,selDay);
-/* rules, monthly Everest, weekly breakdown & top priorities live PER DAY.
-   A day with no copy of its own shows the latest earlier copy (carry-forward);
-   the first edit on a day gives it its own copy, so past days keep their history. */
 function planFor(dk){
   const keys=Object.keys(state.plan).sort(); let best=keys[0];
   for(const k of keys){if(k<=dk)best=k;else break;}
   return state.plan[best];
 }
-function ownPlan(){
-  const dk=iso(selDate());
-  if(!state.plan[dk])state.plan[dk]=JSON.parse(JSON.stringify(planFor(dk)));
+function ownPlan(di){
+  const dk=iso(addD(weekStart,di));
+  if(!state.plan[dk]){state.plan[dk]=JSON.parse(JSON.stringify(planFor(dk)));state.plan[dk].done=[false,false,false];}
+  if(!state.plan[dk].done)state.plan[dk].done=[false,false,false];
   return state.plan[dk];
 }
-/* the month on screen: 31 day-lines, 5 weekly targets, 1 Everest line (first run: seeded from the old plan) */
-const MONF=['january','february','march','april','may','june','july','august','september','october','november','december'];
-const WPAL=['var(--coral)','var(--sky)','var(--mint)','var(--sun)','var(--pink)'];
 function monthData(){
-  const k=iso(selDate()).slice(0,7);
+  const k=iso(weekStart).slice(0,7);
   let M=state.mdata[k];
   if(!M){
-    const first=!Object.keys(state.mdata).length, P=planFor(iso(selDate()));
+    const first=!Object.keys(state.mdata).length, P=planFor(iso(weekStart));
     M={days:Array(31).fill(''),targets:Array(5).fill(''),everest:first?((P.everest&&P.everest[0])||''):''};
     if(first&&P.weekly)P.weekly.forEach((v,i)=>{if(i<5)M.targets[i]=v||'';});
     state.mdata[k]=M;
@@ -621,148 +697,91 @@ function monthData(){
 
 /* ───────────────────────── render ───────────────────────── */
 function renderHead(){
-  const ref=selDate(), end=addD(weekStart,6), t=new Date(), tk=iso(t);
-  const doy=Math.round((ref-new Date(ref.getFullYear(),0,0))/864e5);
-  $('dateLine').innerHTML=`№ <b>${doy}</b> · ${DAY[ref.getDay()]} · ${MON[ref.getMonth()]} ${ref.getDate()} · ${ref.getFullYear()}`;
-  $('weekPill').title=`week ${wkNo(weekStart)} · ${MON[weekStart.getMonth()]} ${weekStart.getDate()} → ${MON[end.getMonth()]} ${end.getDate()}`;
-  $('dayBtns').innerHTML=Array.from({length:7},(_,i)=>{
-    const d=addD(weekStart,i), tip=`${DAY[d.getDay()]} · ${MON[d.getMonth()]} ${d.getDate()}`;
-    return `<button class="dbtn${i===selDay?' sel':''}${iso(d)===tk?' today':''}${i<2?' tl':''}${i>4?' tr':''}" data-d="${i}" data-tip="${tip}" aria-label="${tip}" aria-pressed="${i===selDay}">${d.getDate()}</button>`;
-  }).join('');
-  const lab=`${DAY[ref.getDay()]} ${MON[ref.getMonth()]} ${ref.getDate()}`;
-  $('resetBtn').title=`clear ${lab}`;$('resetBtn').textContent=`↺ reset ${lab}…`;
+  const end=addD(weekStart,6), t=new Date();
+  const doy=Math.round((new Date(t.getFullYear(),t.getMonth(),t.getDate())-new Date(t.getFullYear(),0,0))/864e5);
+  $('weekLine').innerHTML=`<span class="mh">${MONF[weekStart.getMonth()]} ${weekStart.getFullYear()}</span> · week <b>${wkNo(weekStart)}</b> · ${MON[weekStart.getMonth()]} ${weekStart.getDate()} → ${MON[end.getMonth()]} ${end.getDate()}`;
+  $('dateLine').innerHTML=`№ <b>${doy}</b> · ${DAY[t.getDay()]} · ${MON[t.getMonth()]} ${t.getDate()} · ${t.getFullYear()}`;
 }
-
-function renderPlan(){
-  const P=planFor(iso(selDate()));
-  $('purposeBox').innerHTML=`<div class="fline"><span class="star">✶</span><input data-k="e" value="${esc(monthData().everest)}" placeholder="this month i intend to…" spellcheck="false"></div>`;
-
-  $('bigBox').innerHTML=P.big3.map((v,i)=>
-    `<div class="bline"><span class="ring">${i+1}</span><input data-k="b${i}" value="${esc(v)}" spellcheck="false"></div>`).join('');
-
-  renderMonth();
+function renderPath1(){
+  const M=monthData(), w=getWeek();
+  $('everest').value=M.everest;
+  $('notes').value=w.notes;
+  const cur=Math.min(4,Math.floor((weekStart.getDate()-1)/7));
+  $('tgtBox').innerHTML=M.targets.map((v,i)=>
+    `<div class="fline${i===cur?' cur':''}" style="--c:${WPAL[i]}"><span class="num">${i+1}</span>
+     <input data-k="t${i}" value="${esc(v)}" placeholder="week ${i+1} target…" spellcheck="false"></div>`).join('');
 }
-
-function renderMonth(){
-  const ref=selDate(), y=ref.getFullYear(), m=ref.getMonth(), n=new Date(y,m+1,0).getDate();
-  const M=monthData(), tk=iso(new Date()), sk=iso(ref);
-  $('monthTitle').innerHTML=`<h2>${MONF[m]} ${y}</h2>`;
-  const wks=[];
-  for(let w=0;w*7<n;w++){
-    const a=w*7+1, b=Math.min(n,a+6);
-    let h=`<div class="wk" style="--c:${WPAL[w]};--g:${b-a+3}">
-      <div class="whead"><span class="wrange">${MON[m]} ${a}${b>a?' – '+b:''}</span><span class="wchip">week ${w+1}</span></div>
-      <div class="fline wt"><span class="star">✶</span><input data-k="t${w}" value="${esc(M.targets[w])}" placeholder="target for week ${w+1}…" spellcheck="false"></div>`;
-    for(let d=a;d<=b;d++){
-      const dt=new Date(y,m,d), dk=iso(dt), dow=dt.getDay(), lab=`${DAY[dow]} ${MON[m]} ${d}`;
-      h+=`<div class="drow${dk===sk?' sel':''}${dk===tk?' today':''}${dow===0||dow===6?' wkend':''}">
-        <button class="dn" data-y="${y}" data-m="${m}" data-d="${d}" title="go to ${lab}" aria-label="go to ${lab}">${d}</button>
-        <span class="dw">${DAY[dow].slice(0,3)}</span>
-        <input data-k="d${d-1}" value="${esc(M.days[d-1])}" spellcheck="false" aria-label="${lab}"></div>`;
-    }
-    h+='</div>';
-    wks.push(h);
+function renderDays(){
+  const w=getWeek(), tk=iso(new Date());
+  for(let i=0;i<7;i++){
+    const d=addD(weekStart,i), D=w.days[i], P=planFor(iso(d)), own=state.plan[iso(d)], dn=(own&&own.done)||[];
+    const el=$('col'+i); el.className='col day'+(iso(d)===tk?' today':''); el.style.setProperty('--c',DPAL[i]);
+    el.innerHTML=
+     `<div class="dhead"><span class="dname">${DAY[d.getDay()]}</span><span class="ddate">${MON[d.getMonth()]} ${d.getDate()}</span></div>
+      <div class="sec" style="--c:var(--sun)"><div>${P.big3.map((v,j)=>
+        `<div class="bline${dn[j]?' done':''}" data-d="${i}" data-j="${j}"><input data-k="b${i}_${j}" value="${esc(v)}" spellcheck="false"><button class="cb" title="done ✓" aria-pressed="${!!dn[j]}"></button></div>`).join('')}</div></div>
+      <div class="sec hours" style="--c:var(--sky)"><div class="slots">${D.slots.map((s,j)=>
+        `<div class="slot" data-d="${i}" data-i="${j}"><input data-k="s${i}_${j}" value="${esc(s.t)}" spellcheck="false"></div>`).join('')}</div></div>
+      <div class="sec" style="--c:var(--tang)"><div>${D.meals.map((v,j)=>
+        `<div class="mrow" style="--c:var(--tang)"><input data-k="m${i}_${j}" value="${esc(v)}" placeholder="…" spellcheck="false"></div>`).join('')}</div></div>`;
   }
-  /* weeks 1+2 side by side, weeks 3+4 side by side, week 5 full width */
-  let out='';
-  for(let i=0;i<wks.length;){
-    if(i<4&&wks[i+1]){out+=`<div class="wpair">${wks[i]}${wks[i+1]}</div>`;i+=2;}
-    else{out+=wks[i];i++;}
-  }
-  $('monthBox').innerHTML=out;
+  renderLabels(); markNow();
 }
-
-function renderWeek(){
-  const w=getWeek();
-  renderHead();
-
-  renderPlan();
-
-  renderHabits();
-  renderDay();
+/* ★ the shared labels (priorities 1 2 3 · hours · meals b l d) — one path on each page */
+function renderLabels(){
+  const BC=['var(--sun)','var(--leaf)','var(--pink)'];
+  const html=`<div class="dhead" style="border-color:transparent"><span class="dname">&nbsp;</span></div>
+    <div class="sec" style="--c:var(--sun)"><div class="lrow"><span class="vcap">priorities</span><div class="lcol">${[1,2,3].map(n=>`<div class="bline"><span class="ring">${n}</span></div>`).join('')}</div></div></div>
+    <div class="sec hours" style="--c:var(--sky)"><div class="lrow grow"><span class="vcap">hours</span><div class="slots">${HOURS.map((h,j)=>`<div class="slot" data-i="${j}"><span class="tlabel">${hourLab(h)}</span></div>`).join('')}</div></div></div>
+    <div class="sec" style="--c:var(--tang)"><div class="lrow"><span class="vcap">meals</span><div class="lcol">${['b','l','d'].map((l,j)=>`<div class="mrow"><span class="tok" style="--tc:${BC[j]}">${l}</span></div>`).join('')}</div></div></div>`;
+  $('lab0').innerHTML=html; $('lab1').innerHTML=html;
 }
-
-function renderDay(){
-  const D=getDay();
-
-  $('slots').innerHTML=D.slots.map((s,i)=>
-    `<div class="slot${s.done?' done':''}" data-i="${i}">
-       <span class="tlabel">${hourLab(HOURS[i])}</span>
-       <input data-k="s${i}" value="${esc(s.t)}" spellcheck="false">
-       <button class="cb" title="done ✓" aria-pressed="${s.done}"></button>
-     </div>`).join('');
-
-  const B=['b','l','d'], BC=['var(--sun)','var(--leaf)','var(--pink)'];
-  $('mealBox').innerHTML=D.meals.map((v,i)=>
-    `<div class="mrow" style="--c:var(--tang)"><span class="tok" style="--tc:${BC[i]}">${B[i]}</span>
-     <input data-k="m${i}" value="${esc(v)}" placeholder="…" spellcheck="false"></div>`).join('');
-
-  const G=['✶','♥','✿'], GC=['var(--sun)','var(--pink)','var(--sky)'];
-  $('gratBox').innerHTML=D.grat.map((v,i)=>
-    `<div class="mrow" style="--c:var(--pink)"><span class="tok g" style="--tc:${GC[i]}">${G[i]}</span>
-     <input data-k="g${i}" value="${esc(v)}" placeholder="…" spellcheck="false"></div>`).join('');
-
-  $('notes').value=D.notes;
-  updateCount(); markNow();
-}
-
-const HABIT_LINES=5;
 function renderHabits(){
-  const w=getWeek();
-  while(w.habits.length<HABIT_LINES)w.habits.push({name:'',days:Array(7).fill(false)});
-  $('habitBox').innerHTML=
-    `<div class="hrow"><span></span><div class="dots dl">${DAYS.map(d=>`<span>${d}</span>`).join('')}</div></div>`+
-    w.habits.slice(0,HABIT_LINES).map((h,r)=>`
-      <div class="hrow" style="--c:${HPAL[r%HPAL.length]}">
-        <input class="hname" data-k="h${r}" value="${esc(h.name)}" placeholder="habit…" spellcheck="false">
-        <div class="dots">${h.days.map((v,d)=>`<button class="hd${v?' on':''}" data-r="${r}" data-d="${d}" aria-label="day ${d+1}"></button>`).join('')}</div>
-      </div>`).join('');
+  const w=getWeek(), tdx=isCur()?todayIdx():-1;
+  let h=`<div class="htab" style="--n:${HABITS.length}"><span></span>`+
+    HABITS.map((x,r)=>`<span class="hic" style="--c:${HPAL[r%HPAL.length]}" title="${esc(x[1])}">${x[0]}</span>`).join('');
+  DOW.split('').forEach((L,d)=>{
+    h+=`<span class="hday${d===tdx?' tdy':''}">${L}</span>`+HABITS.map((x,r)=>
+      `<button class="hd${w.habits[r].days[d]?' on':''}" style="--c:${HPAL[r%HPAL.length]}" data-r="${r}" data-d="${d}" aria-label="${esc(x[1])} ${d+1}"></button>`).join('');
+  });
+  $('habitBox').innerHTML=h+'</div>';
 }
-
-function updateCount(){
-  const n=getDay().slots.filter(s=>s.done).length, el=$('count');
-  el.textContent=n===19?'19/19 ✿ radiant!':n+'/19 done';
-  el.classList.remove('popa'); void el.offsetWidth; el.classList.add('popa');
-}
+function renderWeek(){renderHead();renderPath1();renderDays();renderHabits();}
 function markNow(){
   document.querySelectorAll('.slot.now').forEach(s=>s.classList.remove('now'));
-  if(!isCur()||selDay!==todayIdx())return;
-  const h=new Date().getHours();
-  if(h>=3&&h<=21){const el=document.querySelector(`.slot[data-i="${h-3}"]`);if(el)el.classList.add('now');}
+  if(!isCur())return;
+  const h=new Date().getHours(); if(h<2||h>20)return;
+  const el=document.querySelector(`#col${todayIdx()} .slot[data-i="${h-2}"]`); if(el)el.classList.add('now');
+  document.querySelectorAll(`.labcol .slot[data-i="${h-2}"]`).forEach(x=>x.classList.add('now'));
 }
 
 /* ───────────────────────── editing ───────────────────────── */
 document.addEventListener('input',e=>{
   const t=e.target,k=t.dataset.k; if(!k)return;
-  const w=getWeek(), D=getDay();
+  const w=getWeek();
   if(k==='e')monthData().everest=t.value;
+  else if(k==='notes')w.notes=t.value;
   else if(k[0]==='t')monthData().targets[+k.slice(1)]=t.value;
-  else if(k[0]==='d')monthData().days[+k.slice(1)]=t.value;
-  else if(k[0]==='r')ownPlan().rules[+k.slice(1)]=t.value;
-  else if(k[0]==='b')ownPlan().big3[+k.slice(1)]=t.value;
-  else if(k[0]==='m')D.meals[+k.slice(1)]=t.value;
-  else if(k[0]==='g')D.grat[+k.slice(1)]=t.value;
-  else if(k==='notes')D.notes=t.value;
-  else if(k[0]==='h'&&k!=='h')w.habits[+k.slice(1)].name=t.value,rememberHabits();
-  else if(k[0]==='s')D.slots[+k.slice(1)].t=t.value;
-  if(k[0]==='h')rememberHabits();
+  else{
+    const [a,b]=k.slice(1).split('_').map(Number);
+    if(k[0]==='b')ownPlan(a).big3[b]=t.value;
+    else if(k[0]==='m')w.days[a].meals[b]=t.value;
+    else if(k[0]==='s')w.days[a].slots[b].t=t.value;
+  }
   scheduleSave();
 });
-function rememberHabits(){state.lastHabitNames=getWeek().habits.map(h=>h.name);}
-
 document.addEventListener('click',e=>{
   const cb=e.target.closest('.cb');
   if(cb){
-    const i=+cb.closest('.slot').dataset.i, D=getDay();
-    D.slots[i].done=!D.slots[i].done;
-    cb.closest('.slot').classList.toggle('done',D.slots[i].done);
-    cb.setAttribute('aria-pressed',D.slots[i].done);
-    updateCount(); scheduleSave(); return;
+    const bl=cb.closest('.bline'), P=ownPlan(+bl.dataset.d), j=+bl.dataset.j;
+    P.done[j]=!P.done[j];
+    bl.classList.toggle('done',P.done[j]); cb.setAttribute('aria-pressed',P.done[j]);
+    scheduleSave(); return;
   }
-  const dn=e.target.closest('.dn');
-  if(dn){const d=new Date(+dn.dataset.y,+dn.dataset.m,+dn.dataset.d); weekStart=monday(d); selDay=(d.getDay()+6)%7; renderWeek(); scheduleSave(); return;}
-  const db=e.target.closest('.dbtn');
-  if(db){selDay=+db.dataset.d; renderHead(); renderPlan(); renderDay(); return;}
+  const cm=e.target.closest('[data-cm]');
+  if(cm){const v=+cm.dataset.cm; calM=v?new Date(calM.getFullYear(),calM.getMonth()+v,1):new Date(new Date().getFullYear(),new Date().getMonth(),1); renderCal(); return;}
+  const cd=e.target.closest('[data-cd]');
+  if(cd){const [y,m,d]=cd.dataset.cd.split('-').map(Number); weekStart=monday(new Date(y,m-1,d)); setCal(false); renderWeek(); return;}
   const hd=e.target.closest('.hd');
   if(hd){
     const w=getWeek(),r=+hd.dataset.r,d=+hd.dataset.d;
@@ -771,23 +790,32 @@ document.addEventListener('click',e=>{
     scheduleSave(); return;
   }
 });
-
-/* week nav */
-function goWeek(n){weekStart=addD(weekStart,n); if(isCur())selDay=todayIdx(); renderWeek(); scheduleSave();}
-$('prevW').onclick=()=>goWeek(-7);
-$('nextW').onclick=()=>goWeek(7);
+/* calendar: click a date → the planner shows the week around it */
+let calM=new Date();
+const calWrap=$('calWrap');
+function renderCal(){
+  const y=calM.getFullYear(), m=calM.getMonth(), off=(new Date(y,m,1).getDay()+6)%7, n=new Date(y,m+1,0).getDate();
+  const tk=iso(new Date()), ws=iso(weekStart), we=iso(addD(weekStart,6));
+  let h=`<div class="calhd"><button data-cm="-1" aria-label="previous month">‹</button><span>${MONF[m]} ${y}</span><button data-cm="1" aria-label="next month">›</button></div><div class="calg">`+
+    DOW.split('').map(l=>`<span class="cdw">${l}</span>`).join('')+'<span></span>'.repeat(off);
+  for(let d=1;d<=n;d++){const k=iso(new Date(y,m,d));
+    h+=`<button class="cd${k===tk?' today':''}${k>=ws&&k<=we?' inwk':''}" data-cd="${k}">${d}</button>`;}
+  $('calPop').innerHTML=h+'</div><button class="calt" data-cm="0">today</button>';
+}
+function setCal(o){calWrap.classList.toggle('open',o); if(o){calM=new Date(weekStart.getFullYear(),weekStart.getMonth(),1);renderCal();}}
+$('calBtn').onclick=e=>{e.stopPropagation();setCal(!calWrap.classList.contains('open'));};
+document.addEventListener('click',e=>{if(!e.composedPath().includes(calWrap))setCal(false);});
 const moreWrap=$('moreWrap'),moreBtn=$('moreBtn');
 function setMore(o){moreWrap.classList.toggle('open',o);moreBtn.setAttribute('aria-expanded',o);}
 moreBtn.onclick=e=>{e.stopPropagation();setMore(!moreWrap.classList.contains('open'));};
 document.addEventListener('click',e=>{if(!moreWrap.contains(e.target))setMore(false);});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')setMore(false);});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){setMore(false);setCal(false);}});
 $('printBtn').onclick=()=>{setMore(false);window.print();};
 $('resetBtn').onclick=()=>{
   setMore(false);
-  const d=selDate(), lab=`${DAY[d.getDay()]} ${MON[d.getMonth()]} ${d.getDate()}`;
-  if(!confirm(`Clear ${lab}?\n(to-dos, meals, grateful for & notes — nothing else is touched)`))return;
-  getWeek().days[selDay]=freshDay();
-  renderDay(); scheduleSave();
+  if(!confirm('Clear hours & meals for all 7 days of this week?\n(priorities, habits, everest, targets & notes are not touched)'))return;
+  getWeek().days=Array.from({length:7},freshDay);
+  renderDays(); scheduleSave();
 };
 
 /* ───────────────────────── saving ───────────────────────── */
