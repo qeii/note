@@ -26,6 +26,7 @@
     --accent-2: #5f7d6b;
     --accent-2-dim: #4f6b5a;
     --accent-2-glow: rgba(95, 125, 107, 0.12);
+    --paper-line: rgba(42, 37, 32, 0.13);
   }
 
   [data-theme="dark"] {
@@ -45,6 +46,7 @@
     --accent-2: #8fbf9f;
     --accent-2-dim: #78a888;
     --accent-2-glow: rgba(143, 191, 159, 0.10);
+    --paper-line: rgba(232, 226, 214, 0.11);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -172,6 +174,13 @@
     display: flex;
     gap: 8px;
     transition: padding 0.3s ease;
+  }
+
+  .new-wrap {
+    position: relative;
+    flex: 1 1 0;
+    display: flex;
+    min-width: 0;
   }
 
   .btn-new {
@@ -389,6 +398,7 @@
   .sidebar.collapsed .sidebar-header { padding: 14px 4px; justify-content: center; }
   .sidebar.collapsed .sidebar-header h1 { opacity: 0; width: 0; margin: 0; }
   .sidebar.collapsed .sidebar-actions { padding: 8px; flex-direction: column; align-items: center; gap: 8px; }
+  .sidebar.collapsed .new-wrap { flex: none; }
   .sidebar.collapsed .btn-new,
   .sidebar.collapsed .btn-import,
   .sidebar.collapsed .btn-backup,
@@ -441,7 +451,7 @@
   .editor-toolbar {
     padding: 12px 32px;
     border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
     background: var(--bg); min-height: 48px;
     transition: background 0.35s ease, border-color 0.35s ease;
   }
@@ -468,7 +478,7 @@
     width: 100%; height: 100%;
     background: var(--bg); color: var(--text);
     font-family: 'DM Mono', monospace;
-    font-size: 14px; line-height: 1.85;
+    font-size: 14px; line-height: 26px;
     border: none; outline: none; resize: none;
     padding: 32px 40px; tab-size: 4;
     transition: background 0.35s ease, color 0.35s ease;
@@ -602,6 +612,36 @@
   @media (max-width: 900px) { .quad-grid { grid-template-columns: 1fr; } }
   @media (max-width: 700px) { .quad-area { padding: 16px; } }
 
+  /* ══ PAPER STYLES (blank / lined / quad) ══
+     Ruled lines are pure CSS backgrounds on the textarea.
+     background-attachment: local makes them scroll WITH the text,
+     and the offsets keep every rule locked under its text row:
+       editor  → line grid 26px, padding-top 32px → shift 5px
+       split   → line grid 24px, padding-top 24px → shift 23px
+     (mobile paddings handled in the media query below)            */
+
+  .editor-textarea.paper-lined,
+  .split-pane-textarea.paper-lined {
+    background-image: repeating-linear-gradient(to bottom,
+      var(--paper-line) 0 1px, transparent 1px 26px);
+    background-attachment: local;
+    background-repeat: repeat;
+  }
+
+  .editor-textarea.paper-quad,
+  .split-pane-textarea.paper-quad {
+    background-image:
+      repeating-linear-gradient(to bottom, var(--paper-line) 0 1px, transparent 1px 26px),
+      repeating-linear-gradient(to right,  var(--paper-line) 0 1px, transparent 1px 26px);
+    background-attachment: local;
+    background-repeat: repeat;
+  }
+
+  .editor-textarea.paper-lined       { background-position: 0 5px; }
+  .editor-textarea.paper-quad        { background-position: 0 5px, 14px 0; }
+  .split-pane-textarea.paper-lined   { background-position: 0 23px; }
+  .split-pane-textarea.paper-quad    { background-position: 0 23px, 2px 0; }
+
   /* ══ GRAIN ══ */
   body::after {
     content: '';
@@ -625,6 +665,8 @@
     .sidebar-toggle-mobile { display: flex !important; }
     .sidebar-toggle-header { display: none !important; }
     .editor-textarea { padding: 20px; font-size: 13px; }
+    .editor-textarea.paper-lined { background-position: 0 19px; }
+    .editor-textarea.paper-quad  { background-position: 0 19px, 20px 0; }
     .editor-toolbar { padding: 10px 16px; }
     .status-bar { padding: 6px 16px; }
     #splitContainer { flex-direction: column !important; }
@@ -632,6 +674,8 @@
     .split-divider::after { width: 28px; height: 2px; }
     .split-pane-toolbar { padding: 10px 16px; }
     .split-pane-textarea { padding: 16px; }
+    .split-pane-textarea.paper-lined { background-position: 0 15px; }
+    .split-pane-textarea.paper-quad  { background-position: 0 15px, 16px 0; }
   }
 
   .sidebar-toggle-mobile {
@@ -650,7 +694,7 @@
   .overlay.show { display: block; }
 
   /* ══════════════════════════════════
-     EXPORT MENU
+     EXPORT MENU / DROPDOWNS
   ══════════════════════════════════ */
 
   .btn-export {
@@ -692,6 +736,35 @@
   }
 
   .export-menu-item:hover { background: var(--accent-glow); color: var(--accent); }
+  .export-menu-item.row { display: flex; align-items: center; gap: 2px; }
+  .export-menu-item.active { background: var(--accent-glow); color: var(--accent); }
+
+  /* New-note dropdown (paper style picker) */
+  .new-menu {
+    left: 0; right: 0; top: calc(100% + 6px);
+    min-width: 156px;
+  }
+
+  .sidebar.collapsed .new-menu {
+    left: calc(100% + 8px); right: auto; top: 0;
+  }
+
+  .paper-swatch {
+    display: inline-block; width: 22px; height: 15px; flex-shrink: 0;
+    border: 1px solid var(--border); border-radius: 2px;
+    background-color: var(--bg); margin-right: 8px;
+  }
+
+  .paper-swatch.sw-lined {
+    background-image: repeating-linear-gradient(to bottom,
+      var(--paper-line) 0 1px, transparent 1px 5px);
+  }
+
+  .paper-swatch.sw-quad {
+    background-image:
+      repeating-linear-gradient(to bottom, var(--paper-line) 0 1px, transparent 1px 5px),
+      repeating-linear-gradient(to right,  var(--paper-line) 0 1px, transparent 1px 5px);
+  }
 
   /* ══════════════════════════════════
      SPLIT VIEW
@@ -752,7 +825,7 @@
     flex: 1; width: 100%;
     background: var(--bg); color: var(--text);
     font-family: 'DM Mono', monospace;
-    font-size: 13px; line-height: 1.8;
+    font-size: 13px; line-height: 24px;
     border: none; outline: none; resize: none;
     padding: 24px 28px; tab-size: 4;
     transition: background 0.35s ease, color 0.35s ease;
@@ -830,7 +903,7 @@
         <a class="icon-btn" href="https://sharesizer.pages.dev/" target="_blank" rel="noopener" title="Sharesizer (opens in new tab)">
           <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
         </a>
-        
+
         <!-- Open planner in a new tab -->
         <a class="icon-btn" href="plan.html" target="_blank" rel="noopener" title="Planner (opens in new tab)">
           <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg>
@@ -866,9 +939,22 @@
     </div>
 
     <div class="sidebar-actions">
-      <button class="btn-new" data-action="new-note" title="Ctrl+N">
-        <span class="btn-icon">+</span><span class="btn-label"> New Note</span>
-      </button>
+      <div class="new-wrap" id="newWrap">
+        <button class="btn-new" data-action="new-note" title="New note — pick a paper style (Ctrl+N)">
+          <span class="btn-icon">+</span><span class="btn-label"> New Note</span>
+        </button>
+        <div class="export-menu new-menu" id="newNoteMenu">
+          <button class="export-menu-item row paper-option" data-paper="blank" title="Plain blank page">
+            <span class="paper-swatch"></span> Blank
+          </button>
+          <button class="export-menu-item row paper-option" data-paper="lined" title="Ruled paper — one line per row">
+            <span class="paper-swatch sw-lined"></span> Lined
+          </button>
+          <button class="export-menu-item row paper-option" data-paper="quad" title="Quadrille / grid paper">
+            <span class="paper-swatch sw-quad"></span> Quad
+          </button>
+        </div>
+      </div>
       <button class="btn-import" data-action="import" title="Import .txt, .md or .html">
         <span class="btn-icon">↓</span><span class="btn-label"> Import</span>
       </button>
@@ -923,6 +1009,22 @@
         <div class="editor-title-wrap">
           <button class="sidebar-toggle-mobile" data-action="toggle-sidebar" title="Toggle sidebar">☰</button>
           <input type="text" class="editor-title" id="editorTitle" placeholder="Untitled">
+        </div>
+        <div class="export-wrap" id="paperWrap" title="Paper style of this note">
+          <button class="btn-export" data-action="toggle-paper-menu">
+            <span class="btn-icon" id="paperIcon">▭</span><span class="btn-label" id="paperLabel"> Blank</span>
+          </button>
+          <div class="export-menu" id="paperMenu">
+            <button class="export-menu-item row paper-option" data-paper="blank">
+              <span class="paper-swatch"></span> Blank
+            </button>
+            <button class="export-menu-item row paper-option" data-paper="lined">
+              <span class="paper-swatch sw-lined"></span> Lined
+            </button>
+            <button class="export-menu-item row paper-option" data-paper="quad">
+              <span class="paper-swatch sw-quad"></span> Quad
+            </button>
+          </div>
         </div>
         <div class="export-wrap" id="exportWrap">
           <button class="btn-export" data-action="toggle-export-menu" title="Export this note">
@@ -1033,6 +1135,46 @@ function toggleTheme() { applyTheme(getStoredTheme() === 'dark' ? 'light' : 'dar
 applyTheme(getStoredTheme());
 
 // ══════════════════════════════════
+// PAPER STYLES  (blank / lined / quad)
+// ══════════════════════════════════
+const PAPERS = ['blank', 'lined', 'quad'];
+const paperOf = n => (n && PAPERS.includes(n.paper)) ? n.paper : 'blank';
+const defaultPaper = () => {
+  const p = localStorage.getItem('notepad_paper_default');
+  return PAPERS.includes(p) ? p : 'blank';
+};
+const PAPER_ICONS = { blank: '▭', lined: '≡', quad: '▦' };
+
+function applyPaperToTextarea(ta, note) {
+  ta.classList.remove('paper-lined', 'paper-quad');
+  const p = paperOf(note);
+  if (p === 'lined') ta.classList.add('paper-lined');
+  else if (p === 'quad') ta.classList.add('paper-quad');
+}
+
+function updatePaperUI(note) {
+  const wrap = $('paperWrap');
+  if (!wrap) return;
+  wrap.style.display = isQuadNote(note) ? 'none' : '';   // quad pages replace the writing area
+  const p = paperOf(note);
+  $('paperLabel').textContent = ' ' + p.charAt(0).toUpperCase() + p.slice(1);
+  $('paperIcon').textContent  = PAPER_ICONS[p];
+  document.querySelectorAll('#paperMenu .paper-option').forEach(b =>
+    b.classList.toggle('active', b.dataset.paper === p));
+}
+
+function setNotePaper(paper) {
+  const note = notes.find(n => n.id === activeNoteId);
+  if (!note || isQuadNote(note)) return;
+  note.paper  = paper;
+  note.updated = Date.now();
+  localStorage.setItem('notepad_paper_default', paper);
+  applyPaperToTextarea($('editorTextarea'), note);
+  updatePaperUI(note);
+  debounceSave();
+}
+
+// ══════════════════════════════════
 // INIT
 // ══════════════════════════════════
 function init() {
@@ -1051,7 +1193,7 @@ function setupEventListeners() {
     const btn = e.target.closest('[data-action]');
     if (btn) {
       switch (btn.dataset.action) {
-        case 'new-note':       createNote(); break;
+        case 'new-note':       toggleExportMenu('newNoteMenu'); break;
         case 'import':         $('importFile').click(); break;
         case 'toggle-theme':   toggleTheme(); break;
         case 'toggle-sidebar': toggleSidebar(); break;
@@ -1062,12 +1204,28 @@ function setupEventListeners() {
         case 'toggle-export-menu':       toggleExportMenu('exportMenu'); break;
         case 'toggle-export-menu-left':  toggleExportMenu('exportMenuLeft'); break;
         case 'toggle-export-menu-right': toggleExportMenu('exportMenuRight'); break;
+        case 'toggle-paper-menu':        toggleExportMenu('paperMenu'); break;
         case 'connect-folder':    connectFolder(); break;
         case 'reconnect-folder':  reconnectFolder(); break;
         case 'disconnect-folder':
           if (confirm('Disconnect the synced folder?\n\nYour notes stay saved in this browser and in the folder — new changes just won\'t autosave there anymore.')) disconnectFolder();
           break;
       }
+    }
+
+    // Paper style options (new-note dropdown + per-note dropdown)
+    const paperOpt = e.target.closest('.paper-option');
+    if (paperOpt) {
+      const paper = paperOpt.dataset.paper;
+      if (paperOpt.closest('#newNoteMenu')) {
+        localStorage.setItem('notepad_paper_default', paper);
+        createNote(paper);
+      } else {
+        localStorage.setItem('notepad_paper_default', paper);
+        setNotePaper(paper);
+      }
+      closeAllExportMenus();
+      return;
     }
 
     const exportItem = e.target.closest('.export-menu-item');
@@ -1080,7 +1238,7 @@ function setupEventListeners() {
       return;
     }
 
-    if (!e.target.closest('.export-wrap')) closeAllExportMenus();
+    if (!e.target.closest('.export-wrap') && !e.target.closest('.new-wrap')) closeAllExportMenus();
   });
 
   $('notesList').addEventListener('click', e => {
@@ -1202,6 +1360,7 @@ function renderSplitPane(pane) {
     paneEl.classList.add('is-empty');
     titleEl.value = '';
     taEl.value = '';
+    applyPaperToTextarea(taEl, null);
     updateSplitStatus(pane);
     return;
   }
@@ -1209,6 +1368,7 @@ function renderSplitPane(pane) {
   paneEl.classList.remove('is-empty');
   titleEl.value = note.title;
   taEl.value = note.content;
+  applyPaperToTextarea(taEl, note);
   updateSplitStatus(pane);
 }
 
@@ -1399,7 +1559,7 @@ function parseQuad(text) {
     if ((m = line.match(/^##\s*(?:\d+\.\s?)?(.*)$/))) {
       cur = { title: m[1].trim(), steps: [] };
       goals.push(cur);
-    } else if (cur && (m = line.match(/^\s*[-*]\s*\[( |x|X)\]\s?(.*)$/))) {
+    } else if (cur && (m = line.match(/^\s*[-*]\s*$$( |x|X)$$\s?(.*)$/))) {
       cur.steps.push({ done: m[1] !== ' ', t: m[2] });
     }
   });
@@ -1429,7 +1589,7 @@ const quadIsEmpty = note => parseQuad(note.content).every(g => !g.title.trim() &
 // plain text of a note without the checklist markup (used for word counts)
 function noteText(n) {
   const c = (n && n.content) || '';
-  return isQuadNote(n) ? c.replace(/^##\s*\d+\.\s?/gm, '').replace(/^\s*[-*]\s*\[[ xX]\]\s?/gm, '') : c;
+  return isQuadNote(n) ? c.replace(/^##\s*\d+\.\s?/gm, '').replace(/^\s*[-*]\s*$$[ xX]$$\s?/gm, '') : c;
 }
 const wordsOf = text => text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
 const escapeAttr = text => escapeHtml(text).replace(/"/g, '&quot;');
@@ -1563,10 +1723,11 @@ function setupQuadEvents() {
 // ══════════════════════════════════
 // NOTES CRUD
 // ══════════════════════════════════
-function createNote() {
+function createNote(paper) {
   const note = {
     id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
     title: '', content: '',
+    paper: PAPERS.includes(paper) ? paper : defaultPaper(),
     created: Date.now(), updated: Date.now()
   };
   notes.unshift(note);
@@ -1619,6 +1780,8 @@ function selectNote(id) {
   $('quadArea').style.display   = quad ? 'block' : 'none';
   if (quad) { quadModel = parseQuad(note.content); renderQuad(); }
   else      { quadModel = null; $('editorTextarea').value = note.content; }
+  applyPaperToTextarea($('editorTextarea'), note);
+  updatePaperUI(note);
   updateStats();
   updateCursorPos();
   renderNotesList();
@@ -1801,6 +1964,7 @@ function handleImport(e) {
       id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
       title: file.name.replace(/\.[^/.]+$/, ''),
       content: ev.target.result,
+      paper: 'blank',
       created: Date.now(), updated: Date.now()
     };
     notes.unshift(note); save(); renderNotesList(); selectNote(note.id); e.target.value = '';
@@ -2102,7 +2266,8 @@ function debounceFolderSync() {
 // KEYBOARD SHORTCUTS
 // ══════════════════════════════════
 document.addEventListener('keydown', e => {
-  if (e.ctrlKey && e.key === 'n') { e.preventDefault(); createNote(); }
+  if (e.key === 'Escape') closeAllExportMenus();
+  if (e.ctrlKey && e.key === 'n') { e.preventDefault(); createNote(defaultPaper()); }
   if (e.ctrlKey && e.key === 's') {
     e.preventDefault();
     save();
