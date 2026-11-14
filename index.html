@@ -13,7 +13,9 @@
     --surface: #ebe6dc;
     --surface-hover: #e2ddd2;
     --surface-active: #d9d3c6;
+    --sheet: #fdfbf7;
     --border: #ccc6b8;
+    --rule-strong: rgba(42, 37, 32, 0.38);
     --accent: #b07820;
     --accent-dim: #9a6a1a;
     --accent-glow: rgba(176, 120, 32, 0.1);
@@ -27,6 +29,12 @@
     --accent-2-dim: #4f6b5a;
     --accent-2-glow: rgba(95, 125, 107, 0.12);
     --paper-line: rgba(42, 37, 32, 0.13);
+
+    /* Quadrant section accents: 1 top-left · 2 top-right · 3 bottom-left · 4 bottom-right */
+    --q1: #38647d;  --q1-glow: rgba(56, 100, 125, 0.13);
+    --q2: #4e7a62;  --q2-glow: rgba(78, 122, 98, 0.13);
+    --q3: #a9563c;  --q3-glow: rgba(169, 86, 60, 0.13);
+    --q4: #6d5490;  --q4-glow: rgba(109, 84, 144, 0.13);
   }
 
   [data-theme="dark"] {
@@ -34,7 +42,9 @@
     --surface: #151412;
     --surface-hover: #1d1b18;
     --surface-active: #252320;
+    --sheet: #121110;
     --border: #2a2825;
+    --rule-strong: rgba(232, 226, 214, 0.30);
     --accent: #d4a853;
     --accent-dim: #b8923f;
     --accent-glow: rgba(212, 168, 83, 0.08);
@@ -47,6 +57,11 @@
     --accent-2-dim: #78a888;
     --accent-2-glow: rgba(143, 191, 159, 0.10);
     --paper-line: rgba(232, 226, 214, 0.11);
+
+    --q1: #7db1cb;  --q1-glow: rgba(125, 177, 203, 0.13);
+    --q2: #8fbf9f;  --q2-glow: rgba(143, 191, 159, 0.13);
+    --q3: #cf8a6c;  --q3-glow: rgba(207, 138, 108, 0.13);
+    --q4: #b195cb;  --q4-glow: rgba(177, 149, 203, 0.13);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -523,124 +538,162 @@
     font-family: 'DM Mono', monospace; font-size: 10px; margin: 0 2px;
   }
 
-  /* ══ QUAD CHECKLIST PAGE ══ */
+  /* ══ QUADRANT TEMPLATE ══
+     One sheet split into 4 sections (2 × 2). Each section: a title with
+     a rule under it (that fills up as lines get ticked, in the section's
+     own accent color), then checkbox lines ruled like paper.
+     Rows are 32px tall so the empty filler below keeps the same rhythm. */
   .quad-area {
     flex: 1; min-height: 0; overflow-y: auto;
-    padding: 28px 32px 36px; background: var(--bg);
+    padding: 28px 32px 40px; background: var(--bg);
     transition: background 0.35s ease;
   }
-  .quad-grid {
-    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px; max-width: 1100px; margin: 0 auto;
-  }
-  .quad {
-    --q: var(--accent); --q-glow: var(--accent-glow);
-    display: flex; flex-direction: column; gap: 10px;
-    min-height: 280px; padding: 16px 18px 14px;
-    background: var(--surface);
-    border: 1px solid var(--border); border-top: 2px solid var(--q);
-    border-radius: 6px;
+
+  .quad-page {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 1080px; margin: 0 auto;
+    background: var(--sheet);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    box-shadow: 0 26px 60px rgba(28, 22, 14, 0.14), 0 2px 8px rgba(28, 22, 14, 0.06);
+    overflow: hidden;
     transition: background 0.35s ease, border-color 0.35s ease;
   }
-  .quad.q2, .quad.q3 { --q: var(--accent-2); --q-glow: var(--accent-2-glow); }
+
+  .quad {
+    --q: var(--q1); --q-glow: var(--q1-glow);
+    display: flex; flex-direction: column;
+    min-height: 340px; padding: 30px 34px 22px;
+    transition: border-color 0.35s ease;
+  }
+  .quad.q2 { --q: var(--q2); --q-glow: var(--q2-glow); }
+  .quad.q3 { --q: var(--q3); --q-glow: var(--q3-glow); }
+  .quad.q4 { --q: var(--q4); --q-glow: var(--q4-glow); }
+
+  .quad.q2, .quad.q4 { border-left: 1px solid var(--border); }
+  .quad.q3, .quad.q4 { border-top: 1px solid var(--border); }
+
   .quad-head { display: flex; align-items: center; gap: 10px; }
-  .quad-num {
-    width: 22px; height: 22px; flex-shrink: 0; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700;
-    color: var(--q); border: 1px solid var(--q); background: var(--q-glow);
-  }
+
   .quad-goal {
-    flex: 1; min-width: 0; padding: 4px 0;
+    flex: 1; min-width: 0;
     background: none; border: none; outline: none;
-    border-bottom: 1px solid var(--border);
-    font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 600; color: var(--text);
-    transition: border-color 0.2s ease, color 0.35s ease;
+    padding: 2px 0 9px;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--text);
+    transition: color 0.35s ease;
   }
-  .quad-goal:focus { border-bottom-color: var(--q); }
-  .quad-goal::placeholder { color: var(--text-dim); font-weight: 400; }
-  .quad-meta {
-    display: flex; justify-content: space-between;
-    font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim);
+  .quad-goal::placeholder { color: var(--text-dim); letter-spacing: 0.18em; font-weight: 600; }
+
+  .quad-count {
+    padding-bottom: 9px;
+    font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-dim); white-space: nowrap;
   }
-  .quad-prog { height: 2px; border-radius: 2px; background: var(--border); overflow: hidden; margin-top: -4px; }
-  .quad-prog i { display: block; height: 100%; width: 0; background: var(--q); transition: width 0.25s ease; }
-  .quad-steps { display: flex; flex-direction: column; flex: 1; }
+
+  .quad-rule { position: relative; height: 1px; background: var(--rule-strong); }
+  .quad-rule i {
+    position: absolute; left: 0; top: -0.5px; height: 2px; width: 0;
+    background: var(--q); border-radius: 2px;
+    transition: width 0.25s ease;
+  }
+
+  .quad-steps { display: flex; flex-direction: column; margin-top: 3px; }
+
   .qstep {
-    display: flex; align-items: center; gap: 10px; min-height: 34px;
-    border-bottom: 1px dashed var(--border);
+    display: flex; align-items: center; gap: 11px;
+    height: 32px;
+    border-bottom: 1px solid var(--paper-line);
+    cursor: text;
   }
+
   .qcheck {
-    width: 16px; height: 16px; flex-shrink: 0; position: relative; cursor: pointer;
-    background: transparent; border: 1.5px solid var(--text-dim); border-radius: 3px;
+    width: 15px; height: 15px; flex-shrink: 0; position: relative; cursor: pointer;
+    background: transparent; border: 1px solid var(--text-dim); border-radius: 2px;
     transition: all 0.15s ease;
   }
-  .qcheck:hover { border-color: var(--q); }
+  .qcheck:hover { border-color: var(--q); background: var(--q-glow); }
   .qstep.done .qcheck { background: var(--q); border-color: var(--q); }
   .qstep.done .qcheck::after {
-    content: ''; position: absolute; left: 4px; top: 0.5px; width: 4px; height: 8px;
-    border: solid var(--bg); border-width: 0 2px 2px 0; transform: rotate(45deg);
+    content: ''; position: absolute; left: 4.5px; top: 1.5px; width: 4px; height: 8px;
+    border: solid var(--sheet); border-width: 0 1.5px 1.5px 0; transform: rotate(45deg);
   }
+
   .qtext {
-    flex: 1; min-width: 0; padding: 7px 0;
+    flex: 1; min-width: 0; height: 100%; padding: 0;
     background: none; border: none; outline: none;
     font-family: 'DM Mono', monospace; font-size: 13px; color: var(--text);
     transition: color 0.2s ease;
   }
-  .qtext::placeholder { color: var(--text-dim); }
   .qstep.done .qtext { color: var(--text-dim); text-decoration: line-through; }
+
   .qdel {
-    width: 18px; height: 18px; flex-shrink: 0; border: none; background: none;
-    color: var(--text-dim); font-size: 14px; line-height: 18px; cursor: pointer;
+    width: 20px; height: 20px; flex-shrink: 0; border: none; background: none;
+    color: var(--text-dim); font-size: 14px; line-height: 20px; cursor: pointer;
     border-radius: 3px; opacity: 0; transition: all 0.15s ease;
   }
   .qstep:hover .qdel, .qdel:focus-visible { opacity: 1; }
   .qdel:hover { color: var(--danger); background: rgba(196,92,74,0.1); }
-  .qadd {
-    align-self: flex-start; margin-top: 4px; padding: 5px 10px; cursor: pointer;
-    background: transparent; border: 1px dashed var(--border); border-radius: 4px;
-    color: var(--text-muted); font-family: 'DM Mono', monospace; font-size: 10px;
-    text-transform: uppercase; letter-spacing: 0.07em; transition: all 0.2s ease;
+
+  /* empty ruled area — clicking it adds a line */
+  .quad-filler {
+    flex: 1 1 auto; min-height: 48px; cursor: text;
+    background-image: repeating-linear-gradient(to bottom,
+      transparent 0 31px, var(--paper-line) 31px 32px);
+    transition: background-color 0.2s ease;
   }
-  .qadd:hover { color: var(--q); border-color: var(--q); background: var(--q-glow); }
+  .quad-filler:hover { background-color: var(--q-glow); }
+
+  .qadd {
+    align-self: flex-start; margin-top: 12px; padding: 3px 0;
+    background: none; border: none; cursor: pointer;
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    opacity: 0.5; transition: all 0.2s ease;
+  }
+  .quad:hover .qadd, .qadd:focus-visible { opacity: 1; }
+  .qadd:hover { color: var(--q); }
+
   .type-badge {
     display: inline-block; margin-right: 6px; vertical-align: middle;
     padding: 1px 5px; border-radius: 8px;
     font-family: 'Syne', sans-serif; font-size: 9px; font-weight: 700;
     color: var(--accent-2); border: 1px solid var(--accent-2-dim); background: var(--accent-2-glow);
   }
-  @media (max-width: 900px) { .quad-grid { grid-template-columns: 1fr; } }
-  @media (max-width: 700px) { .quad-area { padding: 16px; } }
 
-  /* ══ PAPER STYLES (blank / lined / quad) ══
+  @media (max-width: 900px) {
+    .quad-page { grid-template-columns: 1fr; }
+    .quad.q2, .quad.q3, .quad.q4 { border-left: 0; border-top: 1px solid var(--border); }
+    .quad.q1 { border-top: 0; }
+    .quad { min-height: 300px; }
+  }
+
+  /* ══ LINED TEMPLATE ══
      Ruled lines are pure CSS backgrounds on the textarea.
      background-attachment: local makes them scroll WITH the text,
      and the offsets keep every rule locked under its text row:
-       editor  → line grid 26px, padding-top 32px → shift 5px
-       split   → line grid 24px, padding-top 24px → shift 23px
-     (mobile paddings handled in the media query below)            */
+       editor  → grid 26px, padding-top 32px → shift 6px
+       split   → grid 24px, padding-top 24px → shift 0px            */
 
-  .editor-textarea.paper-lined,
-  .split-pane-textarea.paper-lined {
+  .editor-textarea.paper-lined {
     background-image: repeating-linear-gradient(to bottom,
       var(--paper-line) 0 1px, transparent 1px 26px);
     background-attachment: local;
     background-repeat: repeat;
+    background-position: 0 6px;
   }
 
-  .editor-textarea.paper-quad,
-  .split-pane-textarea.paper-quad {
-    background-image:
-      repeating-linear-gradient(to bottom, var(--paper-line) 0 1px, transparent 1px 26px),
-      repeating-linear-gradient(to right,  var(--paper-line) 0 1px, transparent 1px 26px);
+  .split-pane-textarea.paper-lined {
+    background-image: repeating-linear-gradient(to bottom,
+      var(--paper-line) 0 1px, transparent 1px 24px);
     background-attachment: local;
     background-repeat: repeat;
+    background-position: 0 0;
   }
-
-  .editor-textarea.paper-lined       { background-position: 0 5px; }
-  .editor-textarea.paper-quad        { background-position: 0 5px, 14px 0; }
-  .split-pane-textarea.paper-lined   { background-position: 0 23px; }
-  .split-pane-textarea.paper-quad    { background-position: 0 23px, 2px 0; }
 
   /* ══ GRAIN ══ */
   body::after {
@@ -665,17 +718,17 @@
     .sidebar-toggle-mobile { display: flex !important; }
     .sidebar-toggle-header { display: none !important; }
     .editor-textarea { padding: 20px; font-size: 13px; }
-    .editor-textarea.paper-lined { background-position: 0 19px; }
-    .editor-textarea.paper-quad  { background-position: 0 19px, 20px 0; }
+    .editor-textarea.paper-lined { background-position: 0 20px; }
     .editor-toolbar { padding: 10px 16px; }
     .status-bar { padding: 6px 16px; }
+    .quad-area { padding: 14px; }
+    .quad { padding: 22px 20px 18px; }
     #splitContainer { flex-direction: column !important; }
     .split-divider { width: 100% !important; height: 6px !important; cursor: row-resize; }
     .split-divider::after { width: 28px; height: 2px; }
     .split-pane-toolbar { padding: 10px 16px; }
     .split-pane-textarea { padding: 16px; }
-    .split-pane-textarea.paper-lined { background-position: 0 15px; }
-    .split-pane-textarea.paper-quad  { background-position: 0 15px, 16px 0; }
+    .split-pane-textarea.paper-lined { background-position: 0 16px; }
   }
 
   .sidebar-toggle-mobile {
@@ -739,15 +792,9 @@
   .export-menu-item.row { display: flex; align-items: center; gap: 2px; }
   .export-menu-item.active { background: var(--accent-glow); color: var(--accent); }
 
-  /* New-note dropdown (paper style picker) */
-  .new-menu {
-    left: 0; right: 0; top: calc(100% + 6px);
-    min-width: 156px;
-  }
-
-  .sidebar.collapsed .new-menu {
-    left: calc(100% + 8px); right: auto; top: 0;
-  }
+  /* New-note dropdown (template picker) */
+  .new-menu { left: 0; right: auto; top: calc(100% + 6px); min-width: 186px; }
+  .sidebar.collapsed .new-menu { left: calc(100% + 8px); top: 0; }
 
   .paper-swatch {
     display: inline-block; width: 22px; height: 15px; flex-shrink: 0;
@@ -760,10 +807,13 @@
       var(--paper-line) 0 1px, transparent 1px 5px);
   }
 
-  .paper-swatch.sw-quad {
+  .paper-swatch.sw-quadrant {
     background-image:
-      repeating-linear-gradient(to bottom, var(--paper-line) 0 1px, transparent 1px 5px),
-      repeating-linear-gradient(to right,  var(--paper-line) 0 1px, transparent 1px 5px);
+      linear-gradient(to bottom, var(--text-dim) 0 2px, transparent 2px 5px),
+      repeating-linear-gradient(to bottom, var(--paper-line) 0 1px, transparent 1px 5px);
+    background-size: 3px 5px, 100% 5px;
+    background-repeat: repeat-y, repeat;
+    background-position: 2px 1px, 0 0;
   }
 
   /* ══════════════════════════════════
@@ -911,17 +961,6 @@
 
         <button class="sidebar-toggle-header" data-action="toggle-sidebar" title="Toggle sidebar">☰</button>
 
-        <!-- Quad Checklist page (new page: 4 goals + mini steps) -->
-        <button class="icon-btn" id="quadBtn" data-action="new-quad" title="New Quad Checklist page (4 goals + mini steps)">
-          <svg viewBox="0 0 24 24" style="position:absolute;">
-            <rect x="3" y="3" width="8" height="8" rx="1.5"/>
-            <rect x="13" y="3" width="8" height="8" rx="1.5"/>
-            <rect x="3" y="13" width="8" height="8" rx="1.5"/>
-            <rect x="13" y="13" width="8" height="8" rx="1.5"/>
-            <polyline points="5.5 7.2 7 8.7 9.5 5.5"/>
-          </svg>
-        </button>
-
         <!-- Split view toggle -->
         <button class="icon-btn" id="splitToggleBtn" data-action="toggle-split" title="Compare two notes side by side">
           <svg viewBox="0 0 24 24" style="position:absolute;">
@@ -940,18 +979,18 @@
 
     <div class="sidebar-actions">
       <div class="new-wrap" id="newWrap">
-        <button class="btn-new" data-action="new-note" title="New note — pick a paper style (Ctrl+N)">
+        <button class="btn-new" data-action="new-note" title="New note — pick a template (Ctrl+N)">
           <span class="btn-icon">+</span><span class="btn-label"> New Note</span>
         </button>
         <div class="export-menu new-menu" id="newNoteMenu">
-          <button class="export-menu-item row paper-option" data-paper="blank" title="Plain blank page">
+          <button class="export-menu-item row template-option" data-template="blank" title="Plain blank page">
             <span class="paper-swatch"></span> Blank
           </button>
-          <button class="export-menu-item row paper-option" data-paper="lined" title="Ruled paper — one line per row">
+          <button class="export-menu-item row template-option" data-template="lined" title="Ruled paper — one line per row">
             <span class="paper-swatch sw-lined"></span> Lined
           </button>
-          <button class="export-menu-item row paper-option" data-paper="quad" title="Quadrille / grid paper">
-            <span class="paper-swatch sw-quad"></span> Quad
+          <button class="export-menu-item row template-option" data-template="quadrant" title="Four sections, each with a title and checkbox lines">
+            <span class="paper-swatch sw-quadrant"></span> Quadrant
           </button>
         </div>
       </div>
@@ -1004,25 +1043,26 @@
     </div>
 
     <!-- Note editor -->
-    <div id="editorContainer" style="display:none; flex:1; flex-direction:column; height:100%;">
+    <div id="editorContainer" data-template="blank" style="display:none; flex:1; flex-direction:column; height:100%;">
       <div class="editor-toolbar">
         <div class="editor-title-wrap">
           <button class="sidebar-toggle-mobile" data-action="toggle-sidebar" title="Toggle sidebar">☰</button>
           <input type="text" class="editor-title" id="editorTitle" placeholder="Untitled">
         </div>
-        <div class="export-wrap" id="paperWrap" title="Paper style of this note">
-          <button class="btn-export" data-action="toggle-paper-menu">
-            <span class="btn-icon" id="paperIcon">▭</span><span class="btn-label" id="paperLabel"> Blank</span>
+        <!-- Template switcher for the active note -->
+        <div class="export-wrap" id="tplWrap" title="Template of this note">
+          <button class="btn-export" data-action="toggle-template-menu">
+            <span class="btn-icon" id="tplIcon">▭</span><span class="btn-label" id="tplLabel"> Blank</span>
           </button>
-          <div class="export-menu" id="paperMenu">
-            <button class="export-menu-item row paper-option" data-paper="blank">
+          <div class="export-menu" id="tplMenu">
+            <button class="export-menu-item row template-option" data-template="blank">
               <span class="paper-swatch"></span> Blank
             </button>
-            <button class="export-menu-item row paper-option" data-paper="lined">
+            <button class="export-menu-item row template-option" data-template="lined">
               <span class="paper-swatch sw-lined"></span> Lined
             </button>
-            <button class="export-menu-item row paper-option" data-paper="quad">
-              <span class="paper-swatch sw-quad"></span> Quad
+            <button class="export-menu-item row template-option" data-template="quadrant">
+              <span class="paper-swatch sw-quadrant"></span> Quadrant
             </button>
           </div>
         </div>
@@ -1036,13 +1076,17 @@
           </div>
         </div>
       </div>
+
+      <!-- Template: Blank / Lined -->
       <div class="editor-area" id="editorArea">
         <textarea class="editor-textarea" id="editorTextarea" placeholder="Start writing..."></textarea>
       </div>
-      <!-- Quad Checklist page: replaces the writing area for notes of type "quad" -->
+
+      <!-- Template: Quadrant -->
       <div class="quad-area" id="quadArea" style="display:none">
-        <div class="quad-grid" id="quadGrid"></div>
+        <div class="quad-page" id="quadGrid"></div>
       </div>
+
       <div class="status-bar">
         <div class="status-left">
           <span><span class="save-indicator" id="saveIndicator"></span><span id="saveStatus">Saved</span></span>
@@ -1135,42 +1179,76 @@ function toggleTheme() { applyTheme(getStoredTheme() === 'dark' ? 'light' : 'dar
 applyTheme(getStoredTheme());
 
 // ══════════════════════════════════
-// PAPER STYLES  (blank / lined / quad)
+// NOTE TEMPLATES  (blank / lined / quadrant)
+// Each note carries its own template and renders only that layout —
+// no layered canvases. Legacy notes keep working:
+//   paper:"quad" / type:"quad"  →  template "quadrant"
 // ══════════════════════════════════
-const PAPERS = ['blank', 'lined', 'quad'];
-const paperOf = n => (n && PAPERS.includes(n.paper)) ? n.paper : 'blank';
-const defaultPaper = () => {
-  const p = localStorage.getItem('notepad_paper_default');
-  return PAPERS.includes(p) ? p : 'blank';
+const TEMPLATES = ['blank', 'lined', 'quadrant'];
+
+const templateOf = n => {
+  if (!n) return 'blank';
+  const raw = n.template || n.paper || (n.type === 'quad' ? 'quad' : '');
+  return raw === 'quad' ? 'quadrant' : (TEMPLATES.includes(raw) ? raw : 'blank');
 };
-const PAPER_ICONS = { blank: '▭', lined: '≡', quad: '▦' };
 
-function applyPaperToTextarea(ta, note) {
-  ta.classList.remove('paper-lined', 'paper-quad');
-  const p = paperOf(note);
-  if (p === 'lined') ta.classList.add('paper-lined');
-  else if (p === 'quad') ta.classList.add('paper-quad');
+const defaultTemplate = () => {
+  const raw = localStorage.getItem('notepad_paper_default');
+  return raw === 'quad' ? 'quadrant' : (TEMPLATES.includes(raw) ? raw : 'blank');
+};
+
+const TEMPLATE_ICONS = { blank: '▭', lined: '≡', quadrant: '⊞' };
+const TEMPLATE_NAMES = { blank: 'Blank', lined: 'Lined', quadrant: 'Quadrant' };
+
+function applyTemplateToTextarea(ta, note) {
+  // ruled styling for lined notes; in split view a Quadrant note shows its
+  // markdown source, which reads best on rules too
+  const t = templateOf(note);
+  ta.classList.toggle('paper-lined', t === 'lined' || t === 'quadrant');
 }
 
-function updatePaperUI(note) {
-  const wrap = $('paperWrap');
-  if (!wrap) return;
-  wrap.style.display = isQuadNote(note) ? 'none' : '';   // quad pages replace the writing area
-  const p = paperOf(note);
-  $('paperLabel').textContent = ' ' + p.charAt(0).toUpperCase() + p.slice(1);
-  $('paperIcon').textContent  = PAPER_ICONS[p];
-  document.querySelectorAll('#paperMenu .paper-option').forEach(b =>
-    b.classList.toggle('active', b.dataset.paper === p));
+function updateTemplateUI(note) {
+  const t = templateOf(note);
+  $('tplLabel').textContent = ' ' + TEMPLATE_NAMES[t];
+  $('tplIcon').textContent  = TEMPLATE_ICONS[t];
+  document.querySelectorAll('#tplMenu .template-option').forEach(b =>
+    b.classList.toggle('active', b.dataset.template === t));
 }
 
-function setNotePaper(paper) {
+function updateNewMenuDefault() {
+  const d = defaultTemplate();
+  document.querySelectorAll('#newNoteMenu .template-option').forEach(b =>
+    b.classList.toggle('active', b.dataset.template === d));
+}
+
+const isQuadContent = t => /^##\s*(?:\d+\.\s?)?/m.test(String(t || ''));
+
+// plain text lines -> checklist lines inside the first section
+function textToQuad(text) {
+  const goals = blankQuad();
+  const lines = String(text || '').split('\n').map(s => s.trim()).filter(Boolean);
+  goals[0].steps = lines.length ? lines.map(t => ({ t, done: false })) : [newStep()];
+  return goals;
+}
+
+// already-saved quadrant markdown parses back exactly; plain text becomes
+// checklist lines in section 1
+const contentToQuad = text => isQuadContent(text) ? parseQuad(text) : textToQuad(text);
+
+function setNoteTemplate(tpl) {
   const note = notes.find(n => n.id === activeNoteId);
-  if (!note || isQuadNote(note)) return;
-  note.paper  = paper;
-  note.updated = Date.now();
-  localStorage.setItem('notepad_paper_default', paper);
-  applyPaperToTextarea($('editorTextarea'), note);
-  updatePaperUI(note);
+  if (!note || templateOf(note) === tpl) return;
+
+  if (tpl === 'quadrant' && !isQuadContent(note.content) && (note.content || '').trim()) {
+    if (!confirm('Switch this note to Quadrant?\n\nIts text becomes checklist lines in the first section.')) return;
+    note.content = serializeQuad(contentToQuad(note.content));
+  }
+
+  note.template = tpl;
+  note.updated  = Date.now();
+  localStorage.setItem('notepad_paper_default', tpl);
+  updateNewMenuDefault();
+  selectNote(note.id);
   debounceSave();
 }
 
@@ -1182,6 +1260,7 @@ function init() {
   if (savedCollapsed === '1' && window.innerWidth > 700) $('sidebar').classList.add('collapsed');
 
   setupEventListeners();
+  updateNewMenuDefault();
   renderNotesList();
   if (notes.length > 0) selectNote(notes[0].id);
   updateFooter();
@@ -1198,13 +1277,12 @@ function setupEventListeners() {
         case 'toggle-theme':   toggleTheme(); break;
         case 'toggle-sidebar': toggleSidebar(); break;
         case 'toggle-split':   toggleSplitMode(); break;
-        case 'new-quad':       createQuadNote(); break;
         case 'backup':         backupNotes(); break;
         case 'restore':        $('restoreFile').click(); break;
         case 'toggle-export-menu':       toggleExportMenu('exportMenu'); break;
         case 'toggle-export-menu-left':  toggleExportMenu('exportMenuLeft'); break;
         case 'toggle-export-menu-right': toggleExportMenu('exportMenuRight'); break;
-        case 'toggle-paper-menu':        toggleExportMenu('paperMenu'); break;
+        case 'toggle-template-menu':     toggleExportMenu('tplMenu'); break;
         case 'connect-folder':    connectFolder(); break;
         case 'reconnect-folder':  reconnectFolder(); break;
         case 'disconnect-folder':
@@ -1213,17 +1291,14 @@ function setupEventListeners() {
       }
     }
 
-    // Paper style options (new-note dropdown + per-note dropdown)
-    const paperOpt = e.target.closest('.paper-option');
-    if (paperOpt) {
-      const paper = paperOpt.dataset.paper;
-      if (paperOpt.closest('#newNoteMenu')) {
-        localStorage.setItem('notepad_paper_default', paper);
-        createNote(paper);
-      } else {
-        localStorage.setItem('notepad_paper_default', paper);
-        setNotePaper(paper);
-      }
+    // Template options (new-note dropdown + per-note switcher)
+    const tplOpt = e.target.closest('.template-option');
+    if (tplOpt) {
+      const tpl = tplOpt.dataset.template;
+      localStorage.setItem('notepad_paper_default', tpl);
+      updateNewMenuDefault();
+      if (tplOpt.closest('#newNoteMenu')) createNote(tpl);
+      else setNoteTemplate(tpl);
       closeAllExportMenus();
       return;
     }
@@ -1360,7 +1435,7 @@ function renderSplitPane(pane) {
     paneEl.classList.add('is-empty');
     titleEl.value = '';
     taEl.value = '';
-    applyPaperToTextarea(taEl, null);
+    applyTemplateToTextarea(taEl, null);
     updateSplitStatus(pane);
     return;
   }
@@ -1368,7 +1443,7 @@ function renderSplitPane(pane) {
   paneEl.classList.remove('is-empty');
   titleEl.value = note.title;
   taEl.value = note.content;
-  applyPaperToTextarea(taEl, note);
+  applyTemplateToTextarea(taEl, note);
   updateSplitStatus(pane);
 }
 
@@ -1534,19 +1609,19 @@ function handleDrop(e) {
 }
 
 // ══════════════════════════════════
-// QUAD CHECKLIST PAGE
-// A note with type "quad": 4 goals, each with a mini-step checklist.
-// The page is stored as plain markdown in note.content, so search, backup,
-// folder sync, export and compare view all keep working:
-//   ## 1. Goal title
-//   - [ ] mini step
-//   - [x] finished step
+// QUADRANT TEMPLATE
+// A sheet split into 4 sections, each with a title and checkbox lines.
+// Stored as plain markdown in note.content, so search, backup, folder
+// sync, export and compare view all keep working:
+//   ## 1. Section title
+//   - [ ] line
+//   - [x] ticked line
 // ══════════════════════════════════
 const QUAD_GOALS = 4;
 const QUAD_START_STEPS = 6;
-let quadModel = null;   // parsed goals of the open quad page
+let quadModel = null;   // parsed sections of the open quadrant page
 
-const isQuadNote = n => !!n && n.type === 'quad';
+const isQuadNote = n => !!n && templateOf(n) === 'quadrant';
 const newStep = () => ({ t: '', done: false });
 const blankQuad = () => Array.from({ length: QUAD_GOALS }, () => ({
   title: '', steps: Array.from({ length: QUAD_START_STEPS }, newStep)
@@ -1596,22 +1671,22 @@ const escapeAttr = text => escapeHtml(text).replace(/"/g, '&quot;');
 
 function quadStepHtml(gi, si, st) {
   return `<div class="qstep${st.done ? ' done' : ''}" data-g="${gi}" data-s="${si}">` +
-    `<button class="qcheck" title="Done ✓" aria-label="Mark step done"></button>` +
-    `<input class="qtext" value="${escapeAttr(st.t)}" placeholder="Mini step…" spellcheck="false">` +
-    `<button class="qdel" title="Remove step" aria-label="Remove step">×</button></div>`;
+    `<button class="qcheck" title="Done ✓" aria-label="Mark line done"></button>` +
+    `<input class="qtext" value="${escapeAttr(st.t)}" aria-label="Checklist line" spellcheck="false">` +
+    `<button class="qdel" title="Remove line" aria-label="Remove line">×</button></div>`;
 }
 
 function renderQuad() {
   $('quadGrid').innerHTML = quadModel.map((g, gi) => `
     <section class="quad q${gi + 1}" data-g="${gi}">
       <div class="quad-head">
-        <span class="quad-num">${gi + 1}</span>
-        <input class="quad-goal" value="${escapeAttr(g.title)}" placeholder="Goal ${gi + 1}…" spellcheck="false">
+        <input class="quad-goal" value="${escapeAttr(g.title)}" placeholder="Section title…" spellcheck="false">
+        <span class="quad-count"></span>
       </div>
-      <div class="quad-meta"><span>Mini steps</span><span class="quad-count"></span></div>
-      <div class="quad-prog"><i></i></div>
+      <div class="quad-rule"><i></i></div>
       <div class="quad-steps">${g.steps.map((st, si) => quadStepHtml(gi, si, st)).join('')}</div>
-      <button class="qadd" title="Add a mini step">+ add step</button>
+      <div class="quad-filler" title="Click to add a line"></div>
+      <button class="qadd" title="Add a line">+ add line</button>
     </section>`).join('');
   quadModel.forEach((_, gi) => quadProgress(gi));
 }
@@ -1627,8 +1702,8 @@ function quadProgress(gi) {
   if (!box) return;
   const st = quadModel[gi].steps.filter(x => x.t.trim() || x.done);
   const done = st.filter(x => x.done).length;
-  box.querySelector('.quad-count').textContent = `${done}/${st.length} done`;
-  box.querySelector('.quad-prog i').style.width = (st.length ? (done / st.length) * 100 : 0) + '%';
+  box.querySelector('.quad-count').textContent = st.length ? `${done}/${st.length}` : '';
+  box.querySelector('.quad-rule i').style.width = (st.length ? (done / st.length) * 100 : 0) + '%';
 }
 
 function quadFocus(gi, si) {
@@ -1644,26 +1719,6 @@ function quadCommit() {
   updateStats();
   debounceSave();
   renderNotesList();
-}
-
-function createQuadNote() {
-  if (isSplitMode) toggleSplitMode(false);
-  // reuse an untouched quad page instead of piling up empty ones
-  const empty = notes.find(n => isQuadNote(n) && quadIsEmpty(n));
-  let note = empty;
-  if (!note) {
-    note = {
-      id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
-      type: 'quad', title: 'Quad Checklist', content: serializeQuad(blankQuad()),
-      created: Date.now(), updated: Date.now()
-    };
-    notes.unshift(note);
-    save();
-  }
-  selectNote(note.id);
-  const g = document.querySelector('.quad-goal');
-  if (g) g.focus();
-  closeSidebar();
 }
 
 function setupQuadEvents() {
@@ -1696,15 +1751,25 @@ function setupQuadEvents() {
     } else if (e.target.closest('.qdel') && row) {
       if (g.steps.length > 1) g.steps.splice(+row.dataset.s, 1); else g.steps[0] = newStep();
       renderQuadSteps(gi); quadCommit();
-    } else if (e.target.closest('.qadd')) {
+    } else if (e.target.closest('.qadd') || e.target.closest('.quad-filler')) {
       g.steps.push(newStep());
       renderQuadSteps(gi); quadCommit();
       quadFocus(gi, g.steps.length - 1);
+    } else if (row) {
+      const inp = row.querySelector('.qtext');
+      if (inp && e.target !== inp) inp.focus();
     }
   });
 
-  // Enter = next step (adds one at the end) · Backspace on an empty step = remove it
+  // Enter = next line (adds one at the end) · Backspace on an empty line = remove it
   grid.addEventListener('keydown', e => {
+    if (e.target.classList.contains('quad-goal')) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        quadFocus(+e.target.closest('.quad').dataset.g, 0);
+      }
+      return;
+    }
     if (!e.target.classList.contains('qtext') || !quadModel) return;
     const row = e.target.closest('.qstep'), gi = +row.dataset.g, si = +row.dataset.s, g = quadModel[gi];
     if (e.key === 'Enter') {
@@ -1723,15 +1788,25 @@ function setupQuadEvents() {
 // ══════════════════════════════════
 // NOTES CRUD
 // ══════════════════════════════════
-function createNote(paper) {
-  const note = {
-    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
-    title: '', content: '',
-    paper: PAPERS.includes(paper) ? paper : defaultPaper(),
-    created: Date.now(), updated: Date.now()
-  };
-  notes.unshift(note);
-  save();
+function createNote(tpl) {
+  const t = TEMPLATES.includes(tpl) ? tpl : defaultTemplate();
+
+  // reuse an untouched quadrant sheet instead of piling up empty ones
+  let note = null;
+  if (t === 'quadrant') {
+    note = notes.find(n => isQuadNote(n) && quadIsEmpty(n)) || null;
+  }
+
+  if (!note) {
+    note = {
+      id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+      title: '', content: t === 'quadrant' ? serializeQuad(blankQuad()) : '',
+      template: t,
+      created: Date.now(), updated: Date.now()
+    };
+    notes.unshift(note);
+    save();
+  }
   renderNotesList();
 
   if (isSplitMode) {
@@ -1740,7 +1815,12 @@ function createNote(paper) {
     $(targetPane === 'left' ? 'splitTitleLeft' : 'splitTitleRight').focus();
   } else {
     selectNote(note.id);
-    $('editorTitle').focus();
+    if (t === 'quadrant') {
+      const g = document.querySelector('.quad-goal');
+      if (g) g.focus(); else $('editorTitle').focus();
+    } else {
+      $('editorTitle').focus();
+    }
   }
   closeSidebar();
 }
@@ -1768,20 +1848,36 @@ function deleteNote(id, e) {
   updateFooter();
 }
 
+// Renders EXACTLY the layout the note's template asks for —
+// blank/lined = textarea, quadrant = the 4-section sheet. Never both.
+function renderEditorBody(note) {
+  const t = templateOf(note);
+  $('editorContainer').dataset.template = t;
+
+  if (t === 'quadrant') {
+    $('editorArea').style.display = 'none';
+    $('quadArea').style.display   = '';
+    quadModel = parseQuad(note.content);
+    renderQuad();
+  } else {
+    $('quadArea').style.display   = 'none';
+    $('editorArea').style.display = '';
+    quadModel = null;
+    const ta = $('editorTextarea');
+    ta.value = note.content;
+    applyTemplateToTextarea(ta, note);
+  }
+  updateTemplateUI(note);
+}
+
 function selectNote(id) {
   activeNoteId = id;
   const note = notes.find(n => n.id === id);
   if (!note) return;
   $('emptyState').style.display = 'none';
   $('editorContainer').style.display = 'flex';
-  $('editorTitle').value   = note.title;
-  const quad = isQuadNote(note);
-  $('editorArea').style.display = quad ? 'none' : '';
-  $('quadArea').style.display   = quad ? 'block' : 'none';
-  if (quad) { quadModel = parseQuad(note.content); renderQuad(); }
-  else      { quadModel = null; $('editorTextarea').value = note.content; }
-  applyPaperToTextarea($('editorTextarea'), note);
-  updatePaperUI(note);
+  $('editorTitle').value = note.title;
+  renderEditorBody(note);
   updateStats();
   updateCursorPos();
   renderNotesList();
@@ -1836,8 +1932,8 @@ function updateStats() {
   const cur = notes.find(n => n.id === activeNoteId);
   if (isQuadNote(cur) && quadModel) {
     const q = quadStats(quadModel);
-    $('charCount').textContent = `${q.done}/${q.total} steps done`;
-    $('wordCount').textContent = `${q.filled}/${QUAD_GOALS} goals`;
+    $('charCount').textContent = `${q.done}/${q.total} lines done`;
+    $('wordCount').textContent = `${q.filled}/${QUAD_GOALS} sections`;
     $('lineCount').textContent = (q.total ? Math.round(q.done / q.total * 100) : 0) + '% complete';
     $('cursorPos').textContent = '';
     return;
@@ -1884,11 +1980,11 @@ function renderNotesList() {
     let preview;
     if (isQuadNote(note)) {
       const g = parseQuad(note.content), q = quadStats(g);
-      preview = `${q.done}/${q.total} steps · ` + (g.map(x => x.title.trim()).filter(Boolean).join(' · ') || 'no goals yet');
+      preview = `${q.done}/${q.total} lines · ` + (g.map(x => x.title.trim()).filter(Boolean).join(' · ') || 'no sections yet');
     } else {
       preview = (note.content || '').replace(/\n/g, ' ').substring(0, 60) || 'Empty note';
     }
-    const typeBadge = isQuadNote(note) ? '<span class="type-badge">QUAD</span>' : '';
+    const typeBadge = isQuadNote(note) ? '<span class="type-badge">QUADRANT</span>' : '';
 
     let cls = '';
     let badge = '';
@@ -1964,7 +2060,7 @@ function handleImport(e) {
       id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
       title: file.name.replace(/\.[^/.]+$/, ''),
       content: ev.target.result,
-      paper: 'blank',
+      template: 'blank',
       created: Date.now(), updated: Date.now()
     };
     notes.unshift(note); save(); renderNotesList(); selectNote(note.id); e.target.value = '';
@@ -2267,7 +2363,7 @@ function debounceFolderSync() {
 // ══════════════════════════════════
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeAllExportMenus();
-  if (e.ctrlKey && e.key === 'n') { e.preventDefault(); createNote(defaultPaper()); }
+  if (e.ctrlKey && e.key === 'n') { e.preventDefault(); createNote(defaultTemplate()); }
   if (e.ctrlKey && e.key === 's') {
     e.preventDefault();
     save();
