@@ -545,19 +545,17 @@
      Rows are 32px tall so the empty filler below keeps the same rhythm. */
   .quad-area {
     flex: 1; min-height: 0; overflow-y: auto;
-    padding: 28px 32px 40px; background: var(--bg);
+    display: flex; flex-direction: column;
+    padding: 0; background: var(--bg);
     transition: background 0.35s ease;
   }
 
   .quad-page {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    max-width: 1080px; margin: 0 auto;
-    background: var(--sheet);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    box-shadow: 0 26px 60px rgba(28, 22, 14, 0.14), 0 2px 8px rgba(28, 22, 14, 0.06);
-    overflow: hidden;
+    flex: 1 0 auto; width: 100%;
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    background: var(--bg);
     transition: background 0.35s ease, border-color 0.35s ease;
   }
 
@@ -619,7 +617,7 @@
   .qstep.done .qcheck { background: var(--q); border-color: var(--q); }
   .qstep.done .qcheck::after {
     content: ''; position: absolute; left: 4.5px; top: 1.5px; width: 4px; height: 8px;
-    border: solid var(--sheet); border-width: 0 1.5px 1.5px 0; transform: rotate(45deg);
+    border: solid var(--bg); border-width: 0 1.5px 1.5px 0; transform: rotate(45deg);
   }
 
   .qtext {
@@ -666,7 +664,7 @@
   }
 
   @media (max-width: 900px) {
-    .quad-page { grid-template-columns: 1fr; }
+    .quad-page { grid-template-columns: 1fr; grid-template-rows: none; }
     .quad.q2, .quad.q3, .quad.q4 { border-left: 0; border-top: 1px solid var(--border); }
     .quad.q1 { border-top: 0; }
     .quad { min-height: 300px; }
@@ -721,7 +719,6 @@
     .editor-textarea.paper-lined { background-position: 0 20px; }
     .editor-toolbar { padding: 10px 16px; }
     .status-bar { padding: 6px 16px; }
-    .quad-area { padding: 14px; }
     .quad { padding: 22px 20px 18px; }
     #splitContainer { flex-direction: column !important; }
     .split-divider { width: 100% !important; height: 6px !important; cursor: row-resize; }
@@ -1049,23 +1046,6 @@
           <button class="sidebar-toggle-mobile" data-action="toggle-sidebar" title="Toggle sidebar">☰</button>
           <input type="text" class="editor-title" id="editorTitle" placeholder="Untitled">
         </div>
-        <!-- Template switcher for the active note -->
-        <div class="export-wrap" id="tplWrap" title="Template of this note">
-          <button class="btn-export" data-action="toggle-template-menu">
-            <span class="btn-icon" id="tplIcon">▭</span><span class="btn-label" id="tplLabel"> Blank</span>
-          </button>
-          <div class="export-menu" id="tplMenu">
-            <button class="export-menu-item row template-option" data-template="blank">
-              <span class="paper-swatch"></span> Blank
-            </button>
-            <button class="export-menu-item row template-option" data-template="lined">
-              <span class="paper-swatch sw-lined"></span> Lined
-            </button>
-            <button class="export-menu-item row template-option" data-template="quadrant">
-              <span class="paper-swatch sw-quadrant"></span> Quadrant
-            </button>
-          </div>
-        </div>
         <div class="export-wrap" id="exportWrap">
           <button class="btn-export" data-action="toggle-export-menu" title="Export this note">
             <span class="btn-icon">↑</span><span class="btn-label"> Export</span>
@@ -1207,14 +1187,6 @@ function applyTemplateToTextarea(ta, note) {
   ta.classList.toggle('paper-lined', t === 'lined' || t === 'quadrant');
 }
 
-function updateTemplateUI(note) {
-  const t = templateOf(note);
-  $('tplLabel').textContent = ' ' + TEMPLATE_NAMES[t];
-  $('tplIcon').textContent  = TEMPLATE_ICONS[t];
-  document.querySelectorAll('#tplMenu .template-option').forEach(b =>
-    b.classList.toggle('active', b.dataset.template === t));
-}
-
 function updateNewMenuDefault() {
   const d = defaultTemplate();
   document.querySelectorAll('#newNoteMenu .template-option').forEach(b =>
@@ -1234,23 +1206,6 @@ function textToQuad(text) {
 // already-saved quadrant markdown parses back exactly; plain text becomes
 // checklist lines in section 1
 const contentToQuad = text => isQuadContent(text) ? parseQuad(text) : textToQuad(text);
-
-function setNoteTemplate(tpl) {
-  const note = notes.find(n => n.id === activeNoteId);
-  if (!note || templateOf(note) === tpl) return;
-
-  if (tpl === 'quadrant' && !isQuadContent(note.content) && (note.content || '').trim()) {
-    if (!confirm('Switch this note to Quadrant?\n\nIts text becomes checklist lines in the first section.')) return;
-    note.content = serializeQuad(contentToQuad(note.content));
-  }
-
-  note.template = tpl;
-  note.updated  = Date.now();
-  localStorage.setItem('notepad_paper_default', tpl);
-  updateNewMenuDefault();
-  selectNote(note.id);
-  debounceSave();
-}
 
 // ══════════════════════════════════
 // INIT
@@ -1282,7 +1237,6 @@ function setupEventListeners() {
         case 'toggle-export-menu':       toggleExportMenu('exportMenu'); break;
         case 'toggle-export-menu-left':  toggleExportMenu('exportMenuLeft'); break;
         case 'toggle-export-menu-right': toggleExportMenu('exportMenuRight'); break;
-        case 'toggle-template-menu':     toggleExportMenu('tplMenu'); break;
         case 'connect-folder':    connectFolder(); break;
         case 'reconnect-folder':  reconnectFolder(); break;
         case 'disconnect-folder':
@@ -1297,8 +1251,7 @@ function setupEventListeners() {
       const tpl = tplOpt.dataset.template;
       localStorage.setItem('notepad_paper_default', tpl);
       updateNewMenuDefault();
-      if (tplOpt.closest('#newNoteMenu')) createNote(tpl);
-      else setNoteTemplate(tpl);
+      createNote(tpl);
       closeAllExportMenus();
       return;
     }
@@ -1867,7 +1820,6 @@ function renderEditorBody(note) {
     ta.value = note.content;
     applyTemplateToTextarea(ta, note);
   }
-  updateTemplateUI(note);
 }
 
 function selectNote(id) {
