@@ -21,7 +21,7 @@
     --text-muted: #7a7468;
     --text-dim: #a09888;
     --danger: #c45c4a;
-    --sidebar-w: 280px;
+    --sidebar-w: 300px;
     --grain-opacity: 0.025;
     --accent-2: #5f7d6b;
     --accent-2-dim: #4f6b5a;
@@ -112,7 +112,7 @@
   .header-actions {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
     transition: flex-direction 0.3s ease, gap 0.3s ease;
   }
 
@@ -513,6 +513,95 @@
     font-family: 'DM Mono', monospace; font-size: 10px; margin: 0 2px;
   }
 
+  /* ══ QUAD CHECKLIST PAGE ══ */
+  .quad-area {
+    flex: 1; min-height: 0; overflow-y: auto;
+    padding: 28px 32px 36px; background: var(--bg);
+    transition: background 0.35s ease;
+  }
+  .quad-grid {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px; max-width: 1100px; margin: 0 auto;
+  }
+  .quad {
+    --q: var(--accent); --q-glow: var(--accent-glow);
+    display: flex; flex-direction: column; gap: 10px;
+    min-height: 280px; padding: 16px 18px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border); border-top: 2px solid var(--q);
+    border-radius: 6px;
+    transition: background 0.35s ease, border-color 0.35s ease;
+  }
+  .quad.q2, .quad.q3 { --q: var(--accent-2); --q-glow: var(--accent-2-glow); }
+  .quad-head { display: flex; align-items: center; gap: 10px; }
+  .quad-num {
+    width: 22px; height: 22px; flex-shrink: 0; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700;
+    color: var(--q); border: 1px solid var(--q); background: var(--q-glow);
+  }
+  .quad-goal {
+    flex: 1; min-width: 0; padding: 4px 0;
+    background: none; border: none; outline: none;
+    border-bottom: 1px solid var(--border);
+    font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 600; color: var(--text);
+    transition: border-color 0.2s ease, color 0.35s ease;
+  }
+  .quad-goal:focus { border-bottom-color: var(--q); }
+  .quad-goal::placeholder { color: var(--text-dim); font-weight: 400; }
+  .quad-meta {
+    display: flex; justify-content: space-between;
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim);
+  }
+  .quad-prog { height: 2px; border-radius: 2px; background: var(--border); overflow: hidden; margin-top: -4px; }
+  .quad-prog i { display: block; height: 100%; width: 0; background: var(--q); transition: width 0.25s ease; }
+  .quad-steps { display: flex; flex-direction: column; flex: 1; }
+  .qstep {
+    display: flex; align-items: center; gap: 10px; min-height: 34px;
+    border-bottom: 1px dashed var(--border);
+  }
+  .qcheck {
+    width: 16px; height: 16px; flex-shrink: 0; position: relative; cursor: pointer;
+    background: transparent; border: 1.5px solid var(--text-dim); border-radius: 3px;
+    transition: all 0.15s ease;
+  }
+  .qcheck:hover { border-color: var(--q); }
+  .qstep.done .qcheck { background: var(--q); border-color: var(--q); }
+  .qstep.done .qcheck::after {
+    content: ''; position: absolute; left: 4px; top: 0.5px; width: 4px; height: 8px;
+    border: solid var(--bg); border-width: 0 2px 2px 0; transform: rotate(45deg);
+  }
+  .qtext {
+    flex: 1; min-width: 0; padding: 7px 0;
+    background: none; border: none; outline: none;
+    font-family: 'DM Mono', monospace; font-size: 13px; color: var(--text);
+    transition: color 0.2s ease;
+  }
+  .qtext::placeholder { color: var(--text-dim); }
+  .qstep.done .qtext { color: var(--text-dim); text-decoration: line-through; }
+  .qdel {
+    width: 18px; height: 18px; flex-shrink: 0; border: none; background: none;
+    color: var(--text-dim); font-size: 14px; line-height: 18px; cursor: pointer;
+    border-radius: 3px; opacity: 0; transition: all 0.15s ease;
+  }
+  .qstep:hover .qdel, .qdel:focus-visible { opacity: 1; }
+  .qdel:hover { color: var(--danger); background: rgba(196,92,74,0.1); }
+  .qadd {
+    align-self: flex-start; margin-top: 4px; padding: 5px 10px; cursor: pointer;
+    background: transparent; border: 1px dashed var(--border); border-radius: 4px;
+    color: var(--text-muted); font-family: 'DM Mono', monospace; font-size: 10px;
+    text-transform: uppercase; letter-spacing: 0.07em; transition: all 0.2s ease;
+  }
+  .qadd:hover { color: var(--q); border-color: var(--q); background: var(--q-glow); }
+  .type-badge {
+    display: inline-block; margin-right: 6px; vertical-align: middle;
+    padding: 1px 5px; border-radius: 8px;
+    font-family: 'Syne', sans-serif; font-size: 9px; font-weight: 700;
+    color: var(--accent-2); border: 1px solid var(--accent-2-dim); background: var(--accent-2-glow);
+  }
+  @media (max-width: 900px) { .quad-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 700px) { .quad-area { padding: 16px; } }
+
   /* ══ GRAIN ══ */
   body::after {
     content: '';
@@ -749,6 +838,17 @@
 
         <button class="sidebar-toggle-header" data-action="toggle-sidebar" title="Toggle sidebar">☰</button>
 
+        <!-- Quad Checklist page (new page: 4 goals + mini steps) -->
+        <button class="icon-btn" id="quadBtn" data-action="new-quad" title="New Quad Checklist page (4 goals + mini steps)">
+          <svg viewBox="0 0 24 24" style="position:absolute;">
+            <rect x="3" y="3" width="8" height="8" rx="1.5"/>
+            <rect x="13" y="3" width="8" height="8" rx="1.5"/>
+            <rect x="3" y="13" width="8" height="8" rx="1.5"/>
+            <rect x="13" y="13" width="8" height="8" rx="1.5"/>
+            <polyline points="5.5 7.2 7 8.7 9.5 5.5"/>
+          </svg>
+        </button>
+
         <!-- Split view toggle -->
         <button class="icon-btn" id="splitToggleBtn" data-action="toggle-split" title="Compare two notes side by side">
           <svg viewBox="0 0 24 24" style="position:absolute;">
@@ -834,8 +934,12 @@
           </div>
         </div>
       </div>
-      <div class="editor-area">
+      <div class="editor-area" id="editorArea">
         <textarea class="editor-textarea" id="editorTextarea" placeholder="Start writing..."></textarea>
+      </div>
+      <!-- Quad Checklist page: replaces the writing area for notes of type "quad" -->
+      <div class="quad-area" id="quadArea" style="display:none">
+        <div class="quad-grid" id="quadGrid"></div>
       </div>
       <div class="status-bar">
         <div class="status-left">
@@ -952,6 +1056,7 @@ function setupEventListeners() {
         case 'toggle-theme':   toggleTheme(); break;
         case 'toggle-sidebar': toggleSidebar(); break;
         case 'toggle-split':   toggleSplitMode(); break;
+        case 'new-quad':       createQuadNote(); break;
         case 'backup':         backupNotes(); break;
         case 'restore':        $('restoreFile').click(); break;
         case 'toggle-export-menu':       toggleExportMenu('exportMenu'); break;
@@ -1014,6 +1119,7 @@ function setupEventListeners() {
   $('splitPaneRight').addEventListener('click', () => setSplitActivePane('right'));
 
   setupSplitDivider();
+  setupQuadEvents();
 
   window.addEventListener('resize', () => {
     if (isSplitMode) {
@@ -1111,7 +1217,7 @@ function updateSplitStatus(pane) {
   const statusEl = $(pane === 'left' ? 'splitStatusLeft' : 'splitStatusRight');
   const note    = notes.find(n => n.id === id);
   if (!note) { statusEl.textContent = ''; return; }
-  const words = note.content.trim() === '' ? 0 : note.content.trim().split(/\s+/).length;
+  const words = wordsOf(noteText(note));
   statusEl.textContent = words + ' words · updated ' + formatDate(note.updated);
 }
 
@@ -1268,6 +1374,193 @@ function handleDrop(e) {
 }
 
 // ══════════════════════════════════
+// QUAD CHECKLIST PAGE
+// A note with type "quad": 4 goals, each with a mini-step checklist.
+// The page is stored as plain markdown in note.content, so search, backup,
+// folder sync, export and compare view all keep working:
+//   ## 1. Goal title
+//   - [ ] mini step
+//   - [x] finished step
+// ══════════════════════════════════
+const QUAD_GOALS = 4;
+const QUAD_START_STEPS = 6;
+let quadModel = null;   // parsed goals of the open quad page
+
+const isQuadNote = n => !!n && n.type === 'quad';
+const newStep = () => ({ t: '', done: false });
+const blankQuad = () => Array.from({ length: QUAD_GOALS }, () => ({
+  title: '', steps: Array.from({ length: QUAD_START_STEPS }, newStep)
+}));
+
+function parseQuad(text) {
+  const goals = [];
+  let cur = null, m;
+  String(text || '').split('\n').forEach(line => {
+    if ((m = line.match(/^##\s*(?:\d+\.\s?)?(.*)$/))) {
+      cur = { title: m[1].trim(), steps: [] };
+      goals.push(cur);
+    } else if (cur && (m = line.match(/^\s*[-*]\s*\[( |x|X)\]\s?(.*)$/))) {
+      cur.steps.push({ done: m[1] !== ' ', t: m[2] });
+    }
+  });
+  goals.length = Math.min(goals.length, QUAD_GOALS);
+  while (goals.length < QUAD_GOALS) goals.push({ title: '', steps: [] });
+  goals.forEach(g => { if (g.steps.length === 0) g.steps.push(newStep()); });
+  return goals;
+}
+
+function serializeQuad(goals) {
+  return goals.map((g, i) =>
+    `## ${i + 1}. ${g.title}\n` + g.steps.map(s => `- [${s.done ? 'x' : ' '}] ${s.t}`).join('\n')
+  ).join('\n\n') + '\n';
+}
+
+function quadStats(goals) {
+  let total = 0, done = 0, filled = 0;
+  goals.forEach(g => {
+    if (g.title.trim()) filled++;
+    g.steps.forEach(s => { if (s.t.trim() || s.done) { total++; if (s.done) done++; } });
+  });
+  return { total, done, filled };
+}
+
+const quadIsEmpty = note => parseQuad(note.content).every(g => !g.title.trim() && g.steps.every(s => !s.t.trim() && !s.done));
+
+// plain text of a note without the checklist markup (used for word counts)
+function noteText(n) {
+  const c = (n && n.content) || '';
+  return isQuadNote(n) ? c.replace(/^##\s*\d+\.\s?/gm, '').replace(/^\s*[-*]\s*\[[ xX]\]\s?/gm, '') : c;
+}
+const wordsOf = text => text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+const escapeAttr = text => escapeHtml(text).replace(/"/g, '&quot;');
+
+function quadStepHtml(gi, si, st) {
+  return `<div class="qstep${st.done ? ' done' : ''}" data-g="${gi}" data-s="${si}">` +
+    `<button class="qcheck" title="Done ✓" aria-label="Mark step done"></button>` +
+    `<input class="qtext" value="${escapeAttr(st.t)}" placeholder="Mini step…" spellcheck="false">` +
+    `<button class="qdel" title="Remove step" aria-label="Remove step">×</button></div>`;
+}
+
+function renderQuad() {
+  $('quadGrid').innerHTML = quadModel.map((g, gi) => `
+    <section class="quad q${gi + 1}" data-g="${gi}">
+      <div class="quad-head">
+        <span class="quad-num">${gi + 1}</span>
+        <input class="quad-goal" value="${escapeAttr(g.title)}" placeholder="Goal ${gi + 1}…" spellcheck="false">
+      </div>
+      <div class="quad-meta"><span>Mini steps</span><span class="quad-count"></span></div>
+      <div class="quad-prog"><i></i></div>
+      <div class="quad-steps">${g.steps.map((st, si) => quadStepHtml(gi, si, st)).join('')}</div>
+      <button class="qadd" title="Add a mini step">+ add step</button>
+    </section>`).join('');
+  quadModel.forEach((_, gi) => quadProgress(gi));
+}
+
+function renderQuadSteps(gi) {
+  document.querySelector(`.quad[data-g="${gi}"] .quad-steps`).innerHTML =
+    quadModel[gi].steps.map((st, si) => quadStepHtml(gi, si, st)).join('');
+  quadProgress(gi);
+}
+
+function quadProgress(gi) {
+  const box = document.querySelector(`.quad[data-g="${gi}"]`);
+  if (!box) return;
+  const st = quadModel[gi].steps.filter(x => x.t.trim() || x.done);
+  const done = st.filter(x => x.done).length;
+  box.querySelector('.quad-count').textContent = `${done}/${st.length} done`;
+  box.querySelector('.quad-prog i').style.width = (st.length ? (done / st.length) * 100 : 0) + '%';
+}
+
+function quadFocus(gi, si) {
+  const el = document.querySelector(`.qstep[data-g="${gi}"][data-s="${si}"] .qtext`);
+  if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); }
+}
+
+function quadCommit() {
+  const note = notes.find(n => n.id === activeNoteId);
+  if (!note || !isQuadNote(note)) return;
+  note.content = serializeQuad(quadModel);
+  note.updated = Date.now();
+  updateStats();
+  debounceSave();
+  renderNotesList();
+}
+
+function createQuadNote() {
+  if (isSplitMode) toggleSplitMode(false);
+  // reuse an untouched quad page instead of piling up empty ones
+  const empty = notes.find(n => isQuadNote(n) && quadIsEmpty(n));
+  let note = empty;
+  if (!note) {
+    note = {
+      id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+      type: 'quad', title: 'Quad Checklist', content: serializeQuad(blankQuad()),
+      created: Date.now(), updated: Date.now()
+    };
+    notes.unshift(note);
+    save();
+  }
+  selectNote(note.id);
+  const g = document.querySelector('.quad-goal');
+  if (g) g.focus();
+  closeSidebar();
+}
+
+function setupQuadEvents() {
+  const grid = $('quadGrid');
+
+  grid.addEventListener('input', e => {
+    const box = e.target.closest('.quad');
+    if (!box || !quadModel) return;
+    const gi = +box.dataset.g;
+    if (e.target.classList.contains('quad-goal')) {
+      quadModel[gi].title = e.target.value;
+    } else if (e.target.classList.contains('qtext')) {
+      quadModel[gi].steps[+e.target.closest('.qstep').dataset.s].t = e.target.value;
+      quadProgress(gi);
+    } else return;
+    quadCommit();
+  });
+
+  grid.addEventListener('click', e => {
+    const box = e.target.closest('.quad');
+    if (!box || !quadModel) return;
+    const gi = +box.dataset.g, g = quadModel[gi];
+    const row = e.target.closest('.qstep');
+
+    if (e.target.closest('.qcheck') && row) {
+      const st = g.steps[+row.dataset.s];
+      st.done = !st.done;
+      row.classList.toggle('done', st.done);
+      quadProgress(gi); quadCommit();
+    } else if (e.target.closest('.qdel') && row) {
+      if (g.steps.length > 1) g.steps.splice(+row.dataset.s, 1); else g.steps[0] = newStep();
+      renderQuadSteps(gi); quadCommit();
+    } else if (e.target.closest('.qadd')) {
+      g.steps.push(newStep());
+      renderQuadSteps(gi); quadCommit();
+      quadFocus(gi, g.steps.length - 1);
+    }
+  });
+
+  // Enter = next step (adds one at the end) · Backspace on an empty step = remove it
+  grid.addEventListener('keydown', e => {
+    if (!e.target.classList.contains('qtext') || !quadModel) return;
+    const row = e.target.closest('.qstep'), gi = +row.dataset.g, si = +row.dataset.s, g = quadModel[gi];
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (si === g.steps.length - 1) { g.steps.push(newStep()); renderQuadSteps(gi); quadCommit(); }
+      quadFocus(gi, si + 1);
+    } else if (e.key === 'Backspace' && e.target.value === '' && g.steps.length > 1) {
+      e.preventDefault();
+      g.steps.splice(si, 1);
+      renderQuadSteps(gi); quadCommit();
+      quadFocus(gi, Math.max(0, si - 1));
+    }
+  });
+}
+
+// ══════════════════════════════════
 // NOTES CRUD
 // ══════════════════════════════════
 function createNote() {
@@ -1321,7 +1614,11 @@ function selectNote(id) {
   $('emptyState').style.display = 'none';
   $('editorContainer').style.display = 'flex';
   $('editorTitle').value   = note.title;
-  $('editorTextarea').value = note.content;
+  const quad = isQuadNote(note);
+  $('editorArea').style.display = quad ? 'none' : '';
+  $('quadArea').style.display   = quad ? 'block' : 'none';
+  if (quad) { quadModel = parseQuad(note.content); renderQuad(); }
+  else      { quadModel = null; $('editorTextarea').value = note.content; }
   updateStats();
   updateCursorPos();
   renderNotesList();
@@ -1373,6 +1670,15 @@ function debounceSave() {
 }
 
 function updateStats() {
+  const cur = notes.find(n => n.id === activeNoteId);
+  if (isQuadNote(cur) && quadModel) {
+    const q = quadStats(quadModel);
+    $('charCount').textContent = `${q.done}/${q.total} steps done`;
+    $('wordCount').textContent = `${q.filled}/${QUAD_GOALS} goals`;
+    $('lineCount').textContent = (q.total ? Math.round(q.done / q.total * 100) : 0) + '% complete';
+    $('cursorPos').textContent = '';
+    return;
+  }
   const text = $('editorTextarea').value;
   $('charCount').textContent = text.length + ' chars';
   $('wordCount').textContent = (text.trim() === '' ? 0 : text.trim().split(/\s+/).length) + ' words';
@@ -1380,6 +1686,7 @@ function updateStats() {
 }
 
 function updateCursorPos() {
+  if (isQuadNote(notes.find(n => n.id === activeNoteId))) return;
   const ta   = $('editorTextarea');
   const text = ta.value.substring(0, ta.selectionStart);
   const lines = text.split('\n');
@@ -1388,7 +1695,7 @@ function updateCursorPos() {
 
 function updateFooter() {
   $('noteCount').textContent = notes.length + ' note' + (notes.length !== 1 ? 's' : '');
-  const total = notes.reduce((s, n) => s + (n.content.trim() === '' ? 0 : n.content.trim().split(/\s+/).length), 0);
+  const total = notes.reduce((s, n) => s + wordsOf(noteText(n)), 0);
   $('totalWords').textContent = total + ' words total';
 }
 
@@ -1411,7 +1718,14 @@ function renderNotesList() {
 
   list.innerHTML = filtered.map(note => {
     const title   = note.title || 'Untitled';
-    const preview = (note.content || '').replace(/\n/g, ' ').substring(0, 60) || 'Empty note';
+    let preview;
+    if (isQuadNote(note)) {
+      const g = parseQuad(note.content), q = quadStats(g);
+      preview = `${q.done}/${q.total} steps · ` + (g.map(x => x.title.trim()).filter(Boolean).join(' · ') || 'no goals yet');
+    } else {
+      preview = (note.content || '').replace(/\n/g, ' ').substring(0, 60) || 'Empty note';
+    }
+    const typeBadge = isQuadNote(note) ? '<span class="type-badge">QUAD</span>' : '';
 
     let cls = '';
     let badge = '';
@@ -1426,7 +1740,7 @@ function renderNotesList() {
       <div class="note-item ${cls}"
            data-id="${note.id}" title="${escapeHtml(title)}" draggable="true">
         <span class="note-abbrev">${escapeHtml(title.slice(0, 3))}</span>
-        <div class="note-item-title">${badge}${escapeHtml(title)}</div>
+        <div class="note-item-title">${badge}${typeBadge}${escapeHtml(title)}</div>
         <div class="note-item-preview">${escapeHtml(preview)}</div>
         <div class="note-item-date">${formatDate(note.updated)}</div>
         <button class="delete-btn" title="Delete">×</button>

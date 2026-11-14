@@ -7,7 +7,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E🍿%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bad+Script&family=Gochi+Hand&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&family=Gochi+Hand&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════════════════════════
    COLOR PALETTE — change any hex below (copy-paste #RRGGBB).
@@ -81,7 +81,7 @@
 :root{
   --row:clamp(21px,2.9vh,28px);
   --mrow:calc(var(--row) - 2px);
-  --hand:'Bad Script',cursive; --cute:'Gochi Hand',cursive; --body:'Nunito',sans-serif;
+  --hand:'Lobster Two',cursive; --cute:'Gochi Hand',cursive; --body:'Nunito',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;min-height:100dvh}
@@ -349,7 +349,6 @@ button{font-family:inherit}
 .stack>.sec{flex:var(--g,1) 1 auto}
 .stack>.sec>div{flex:1;display:flex;flex-direction:column;min-height:0}
 .rbody .stack .bline,.rbody .stack .mrow,.rbody .stack .hrow{height:auto;flex:1 1 var(--row);min-height:var(--row)}
-.rbody .stack #habitBox .hrow:first-child{flex:0 0 var(--row)}
 .hourscol{display:flex;flex-direction:column;gap:clamp(6px,1.2vh,12px);min-width:0}
 .hourscol .big{flex:0 0 auto}
 .hourscol .big .bline{height:calc(var(--row) + 9px)}
@@ -435,13 +434,6 @@ textarea.ev:focus{box-shadow:0 0 0 2.5px color-mix(in srgb,var(--coral) 22%,tran
 .fline.cur .num{transform:rotate(-5deg) scale(1.2);box-shadow:0 0 0 2px color-mix(in srgb,var(--c) 30%,transparent)}
 .fline.cur input{font-weight:700}
 .p1 #notes{min-height:90px}
-/* habit tracker — rotated: icons across the top, days M T W T F S S down the side */
-.htab{display:grid;grid-template-columns:20px repeat(var(--n),1fr);grid-auto-rows:var(--row);align-items:center;justify-items:center}
-.hic{font-size:18px;line-height:1;cursor:default;filter:drop-shadow(0 1px 0 color-mix(in srgb,var(--c) 40%,transparent))}
-.hday{font-family:var(--cute);font-size:12px;color:var(--ink2)}
-.hday.tdy{color:var(--coral);font-weight:700}
-.htab .hd{width:14px;height:14px}
-
 /* ═════════ v2: one-page fit, header strip, calendar, priority checkboxes ═════════ */
 body{overflow-y:auto}
 :root{--row:clamp(17px,2.55vh,27px)}
@@ -490,10 +482,10 @@ body{overflow-y:auto}
 .p1 .notes-full{flex:1 1 0;min-height:0}
 
 /* ═════════ v3: dedicated label paths, month highlight ═════════ */
-.cols.L{grid-template-columns:1.15fr 46px 1fr 1fr 1fr}   /* ← wide path · label path · Mon Tue Wed */
-.cols.R{grid-template-columns:46px repeat(4,1fr)}        /* ← label path · Thu Fri Sat Sun */
+.cols.L{grid-template-columns:46px repeat(4,1fr)}        /* ← label path · Mon Tue Wed Thu */
+.cols.R{grid-template-columns:46px repeat(3,1fr) 1.25fr}  /* ← label path · Fri Sat Sun · everest & notes (far right) */
 .col .slot{grid-template-columns:1fr}
-.mh{font-family:var(--hand);font-size:clamp(17px,2.3vh,22px);line-height:1;padding:0 3px;color:var(--ink);
+.mh{font-family:var(--hand);font-size:clamp(15px,2vh,19px);line-height:1;padding:0 3px;color:var(--ink);
   background:linear-gradient(transparent 58%,color-mix(in srgb,var(--hl-lilac) 55%,transparent) 58% 94%,transparent 94%)}
 .rhead .rtitle{gap:12px;flex-wrap:nowrap}
 .rhead .radiant{margin:0;transform:rotate(-2deg)}
@@ -507,17 +499,17 @@ body{overflow-y:auto}
 .labcol .slot:hover{background:transparent}
 .labcol .slot.now .tlabel::before{content:'▸'}
 
-/* breathing room + dotted rule between hours and meals */
-.col.day>.sec:last-child,.labcol>.sec:last-child{margin-top:14px;padding-top:8px;margin-bottom:16px;border-top:2.5px dotted var(--line)}  /* ← margin-top = gap above meals · margin-bottom = how high meals sit */
+/* breathing room around the hours block */
+.col.day>.sec.hours,.labcol>.sec.hours{margin-top:6px;margin-bottom:4px}  /* ← breathing room around the hours block */
 
 /* header: put the month line and the date line on the same text baseline */
 .mast-l{align-items:baseline}
 .mast-l .calwrap{align-self:center}
 
-/* faint vertical divider between days (hours & meals only) */
+/* faint vertical divider between days (hours only) */
 .cols{--cg:clamp(8px,.9vw,14px);gap:var(--cg)}
-.col.day+.col.day>.sec.hours,.col.day+.col.day>.sec:last-child{position:relative}
-.col.day+.col.day>.sec.hours::before,.col.day+.col.day>.sec:last-child::before{content:'';position:absolute;top:0;bottom:0;
+.col.day+.col.day>.sec.hours{position:relative}
+.col.day+.col.day>.sec.hours::before{content:'';position:absolute;top:0;bottom:0;
   left:calc(var(--cg) / -2);border-left:1px solid color-mix(in srgb,var(--line) 65%,transparent);pointer-events:none}  /* ← colour/strength of the divider */
 
 /* "now" hour: solid chip on the label, soft gradient only across the day lines */
@@ -525,6 +517,17 @@ body{overflow-y:auto}
 .labcol .slot.now .tlabel::before{content:none}
 .labcol .slot.now .tlabel{align-self:center;text-align:center;padding:0 3px;line-height:1.55;border-radius:7px;
   background:var(--now);color:var(--now-ink);box-shadow:0 0 0 1.5px color-mix(in srgb,var(--now-ink) 28%,var(--white))}
+
+/* ═════════ v4: 3 priorities, roomier lines for priorities + hours ═════════ */
+.col .bline,.labcol .bline{height:calc(var(--row) + 10px);gap:8px}        /* ← priority line height */
+.col .ring{width:21px;height:21px;font-size:11.5px}
+.col .bline input{font-size:13px;border-bottom-width:2px}
+.col .slot{min-height:calc(var(--row) - 1px)}                          /* ← hour line minimum height (rows stretch to fill the page) */
+.col .slot input{font-size:12.5px;border-bottom:1.8px dotted var(--line)}
+.labcol .tlabel{font-size:9.5px}
+.col.p1{gap:10px}
+.p1 textarea.ev{height:calc(28px * 4)}
+.p1 #notes{min-height:120px}
 </style>
 </head>
 <body>
@@ -555,18 +558,11 @@ body{overflow-y:auto}
     </div>
 
     <div class="cols L">
-      <!-- PATH 1 (wide): everest · week targets · notes · habit tracker -->
-      <div class="col p1" id="p1">
-        <div class="sec" style="--c:var(--coral)"><span class="chip">✶ monthly everest</span><textarea class="ev" id="everest" data-k="e" placeholder="this month i intend to…" spellcheck="false"></textarea></div>
-        <div class="sec" style="--c:var(--sky)"><span class="chip">targets · weeks 1–5</span><div id="tgtBox"></div></div>
-        <div class="sec grow notes-full" style="--c:var(--lilac)"><span class="chip">notes &amp; brain dump</span><textarea id="notes" data-k="notes" placeholder="free write…" spellcheck="false"></textarea></div>
-        <!-- ★ HABIT ICONS: edit the HABITS list near the top of the script section at the bottom of this file (search for HABITS) -->
-        <div class="sec" style="--c:var(--mint)"><span class="chip">habits · tap the dots</span><div id="habitBox"></div></div>
-      </div>
       <div class="col labcol" id="lab0"></div>
       <div class="col day" id="col0"></div>
       <div class="col day" id="col1"></div>
       <div class="col day" id="col2"></div>
+      <div class="col day" id="col3"></div>
     </div>
   </section>
 
@@ -592,10 +588,15 @@ body{overflow-y:auto}
     </div>
     <div class="cols R">
       <div class="col labcol" id="lab1"></div>
-      <div class="col day" id="col3"></div>
       <div class="col day" id="col4"></div>
       <div class="col day" id="col5"></div>
       <div class="col day" id="col6"></div>
+      <!-- far-right column: monthly everest + long notes (targets & habits removed) -->
+      <div class="col p1" id="p1">
+        <div class="dhead" style="border-color:transparent"><span class="dname">&nbsp;</span></div>
+        <div class="sec" style="--c:var(--coral)"><span class="chip">✶ monthly everest</span><textarea class="ev" id="everest" data-k="e" placeholder="this month i intend to…" spellcheck="false"></textarea></div>
+        <div class="sec grow notes-full" style="--c:var(--lilac)"><span class="chip">notes &amp; brain dump</span><textarea id="notes" data-k="notes" placeholder="free write…" spellcheck="false"></textarea></div>
+      </div>
     </div>
   </section>
 </main>
@@ -615,18 +616,7 @@ body{overflow-y:auto}
 const LS_KEY='paperdays.bright.v1';
 const HOURS=Array.from({length:19},(_,i)=>i+2);            /* 2 AM → 8 PM  (19 rows) */
 
-/* ★★★ HABIT ICONS — edit here! Each line = [icon, name shown on hover]. The icon is
-   any emoji (or a short letter). Add/remove lines to change the number of habit columns. */
-const HABITS=[
-  ['💧','drink water'],
-  ['🏃','move 20 min'],
-  ['📖','read 10 pages'],
-  ['😴','sleep by 11'],
-  ['🧘','mindful moment']
-];
-const HPAL=['var(--coral)','var(--sky)','var(--mint)','var(--sun)','var(--pink)','var(--lilac)','var(--leaf)'];
 const DPAL=['var(--coral)','var(--tang)','var(--sun)','var(--leaf)','var(--sky)','var(--lilac)','var(--pink)'];  /* Mon…Sun header colours */
-const WPAL=['var(--coral)','var(--sky)','var(--mint)','var(--sun)','var(--pink)'];
 const DOW='MTWTFSS';
 
 const pad=n=>String(n).padStart(2,'0');
@@ -663,10 +653,9 @@ const $=id=>document.getElementById(id);
 const key=()=>iso(weekStart);
 const isCur=()=>iso(monday(new Date()))===key();
 
-function freshDay(){return {slots:HOURS.map(()=>({t:'',done:false})),meals:['','',''],grat:['','',''],notes:'',extra:'',h2:1};}
+function freshDay(){return {slots:HOURS.map(()=>({t:'',done:false})),notes:'',extra:'',h2:1};}
 function freshWeek(){
   return {big3:['','',''],weekly:['','','',''],notes:'',
-    habits:HABITS.map(h=>({name:h[1],days:Array(7).fill(false)})),
     days:Array.from({length:7},freshDay)};
 }
 function getWeek(){
@@ -676,7 +665,6 @@ function getWeek(){
     if(!d.h2){d.slots.unshift({t:'',done:false});d.slots.length=HOURS.length;d.h2=1;}
   });
   if(w.notes===undefined)w.notes=w.days.map(d=>d.notes).filter(Boolean).join('\n');
-  while(w.habits.length<HABITS.length)w.habits.push({name:HABITS[w.habits.length][1],days:Array(7).fill(false)});
   return w;
 }
 function planFor(dk){
@@ -714,10 +702,6 @@ function renderPath1(){
   const M=monthData(), w=getWeek();
   $('everest').value=M.everest;
   $('notes').value=w.notes;
-  const cur=Math.min(4,Math.floor((weekStart.getDate()-1)/7));
-  $('tgtBox').innerHTML=M.targets.map((v,i)=>
-    `<div class="fline${i===cur?' cur':''}" style="--c:${WPAL[i]}"><span class="num">${i+1}</span>
-     <input data-k="t${i}" value="${esc(v)}" placeholder="week ${i+1} target…" spellcheck="false"></div>`).join('');
 }
 function renderDays(){
   const w=getWeek(), tk=iso(new Date());
@@ -726,35 +710,21 @@ function renderDays(){
     const el=$('col'+i); el.className='col day'+(iso(d)===tk?' today':''); el.style.setProperty('--c',DPAL[i]);
     el.innerHTML=
      `<div class="dhead"><span class="dname">${DAY[d.getDay()]}</span><span class="ddate">${MON[d.getMonth()]} ${d.getDate()}</span></div>
-      <div class="sec" style="--c:var(--sun)"><div>${P.big3.slice(0,2).map((v,j)=>
+      <div class="sec" style="--c:var(--sun)"><div>${P.big3.slice(0,3).map((v,j)=>
         `<div class="bline${dn[j]?' done':''}" data-d="${i}" data-j="${j}"><input data-k="b${i}_${j}" value="${esc(v)}" spellcheck="false"><button class="cb" title="done ✓" aria-pressed="${!!dn[j]}"></button></div>`).join('')}</div></div>
       <div class="sec hours" style="--c:var(--sky)"><div class="slots">${D.slots.map((s,j)=>
-        `<div class="slot" data-d="${i}" data-i="${j}"><input data-k="s${i}_${j}" value="${esc(s.t)}" spellcheck="false"></div>`).join('')}</div></div>
-      <div class="sec" style="--c:var(--tang)"><div>${D.meals.map((v,j)=>
-        `<div class="mrow" style="--c:var(--tang)"><input data-k="m${i}_${j}" value="${esc(v)}" placeholder="…" spellcheck="false"></div>`).join('')}</div></div>`;
+        `<div class="slot" data-d="${i}" data-i="${j}"><input data-k="s${i}_${j}" value="${esc(s.t)}" spellcheck="false"></div>`).join('')}</div></div>`;
   }
   renderLabels(); markNow();
 }
-/* ★ the shared labels (priorities 1 2 3 · hours · meals b l d) — one path on each page */
+/* ★ the shared labels (priorities 1 2 3 · hours) — one path on each page */
 function renderLabels(){
-  const BC=['var(--sun)','var(--leaf)','var(--pink)'];
   const html=`<div class="dhead" style="border-color:transparent"><span class="dname">&nbsp;</span></div>
-    <div class="sec" style="--c:var(--sun)"><div class="lrow"><span class="vcap">priorities</span><div class="lcol">${[1,2].map(n=>`<div class="bline"><span class="ring">${n}</span></div>`).join('')}</div></div></div>
-    <div class="sec hours" style="--c:var(--sky)"><div class="lrow grow"><span class="vcap">hours</span><div class="slots">${HOURS.map((h,j)=>`<div class="slot" data-i="${j}"><span class="tlabel">${hourLab(h)}</span></div>`).join('')}</div></div></div>
-    <div class="sec" style="--c:var(--tang)"><div class="lrow"><span class="vcap">meals</span><div class="lcol">${['b','l','d'].map((l,j)=>`<div class="mrow"><span class="tok" style="--tc:${BC[j]}">${l}</span></div>`).join('')}</div></div></div>`;
+    <div class="sec" style="--c:var(--sun)"><div class="lrow"><span class="vcap">priorities</span><div class="lcol">${[1,2,3].map(n=>`<div class="bline"><span class="ring">${n}</span></div>`).join('')}</div></div></div>
+    <div class="sec hours" style="--c:var(--sky)"><div class="lrow grow"><span class="vcap">hours</span><div class="slots">${HOURS.map((h,j)=>`<div class="slot" data-i="${j}"><span class="tlabel">${hourLab(h)}</span></div>`).join('')}</div></div></div>`;
   $('lab0').innerHTML=html; $('lab1').innerHTML=html;
 }
-function renderHabits(){
-  const w=getWeek(), tdx=isCur()?todayIdx():-1;
-  let h=`<div class="htab" style="--n:${HABITS.length}"><span></span>`+
-    HABITS.map((x,r)=>`<span class="hic" style="--c:${HPAL[r%HPAL.length]}" title="${esc(x[1])}">${x[0]}</span>`).join('');
-  DOW.split('').forEach((L,d)=>{
-    h+=`<span class="hday${d===tdx?' tdy':''}">${L}</span>`+HABITS.map((x,r)=>
-      `<button class="hd${w.habits[r].days[d]?' on':''}" style="--c:${HPAL[r%HPAL.length]}" data-r="${r}" data-d="${d}" aria-label="${esc(x[1])} ${d+1}"></button>`).join('');
-  });
-  $('habitBox').innerHTML=h+'</div>';
-}
-function renderWeek(){renderHead();renderPath1();renderDays();renderHabits();}
+function renderWeek(){renderHead();renderPath1();renderDays();}
 function markNow(){
   document.querySelectorAll('.slot.now').forEach(s=>s.classList.remove('now'));
   if(!isCur())return;
@@ -769,11 +739,9 @@ document.addEventListener('input',e=>{
   const w=getWeek();
   if(k==='e')monthData().everest=t.value;
   else if(k==='notes')w.notes=t.value;
-  else if(k[0]==='t')monthData().targets[+k.slice(1)]=t.value;
   else{
     const [a,b]=k.slice(1).split('_').map(Number);
     if(k[0]==='b')ownPlan(a).big3[b]=t.value;
-    else if(k[0]==='m')w.days[a].meals[b]=t.value;
     else if(k[0]==='s')w.days[a].slots[b].t=t.value;
   }
   scheduleSave();
@@ -790,13 +758,6 @@ document.addEventListener('click',e=>{
   if(cm){const v=+cm.dataset.cm; calM=v?new Date(calM.getFullYear(),calM.getMonth()+v,1):new Date(new Date().getFullYear(),new Date().getMonth(),1); renderCal(); return;}
   const cd=e.target.closest('[data-cd]');
   if(cd){const [y,m,d]=cd.dataset.cd.split('-').map(Number); weekStart=monday(new Date(y,m-1,d)); setCal(false); renderWeek(); return;}
-  const hd=e.target.closest('.hd');
-  if(hd){
-    const w=getWeek(),r=+hd.dataset.r,d=+hd.dataset.d;
-    w.habits[r].days[d]=!w.habits[r].days[d];
-    hd.classList.toggle('on',w.habits[r].days[d]);
-    scheduleSave(); return;
-  }
 });
 /* calendar: click a date → the planner shows the week around it */
 let calM=new Date();
@@ -821,7 +782,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){setMore(false);setC
 $('printBtn').onclick=()=>{setMore(false);window.print();};
 $('resetBtn').onclick=()=>{
   setMore(false);
-  if(!confirm('Clear hours & meals for all 7 days of this week?\n(priorities, habits, everest, targets & notes are not touched)'))return;
+  if(!confirm('Clear the hours for all 7 days of this week?\n(priorities, everest & notes are not touched)'))return;
   getWeek().days=Array.from({length:7},freshDay);
   renderDays(); scheduleSave();
 };
