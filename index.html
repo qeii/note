@@ -1587,7 +1587,7 @@ function parseQuad(text) {
     if ((m = line.match(/^##\s*(?:\d+\.\s?)?(.*)$/))) {
       cur = { title: m[1].trim(), steps: [] };
       goals.push(cur);
-    } else if (cur && (m = line.match(/^\s*[-*]\s*$$( |x|X)$$\s?(.*)$/))) {
+    } else if (cur && (m = line.match(/^\s*[-*]\s*\[( |x|X)\]\s?(.*)$/))) {
       cur.steps.push({ done: m[1] !== ' ', t: m[2] });
     }
   });
@@ -1617,7 +1617,7 @@ const quadIsEmpty = note => parseQuad(note.content).every(g => !g.title.trim() &
 // plain text of a note without the checklist markup (used for word counts)
 function noteText(n) {
   const c = (n && n.content) || '';
-  return isQuadNote(n) ? c.replace(/^##\s*\d+\.\s?/gm, '').replace(/^\s*[-*]\s*$$[ xX]$$\s?/gm, '') : c;
+  return isQuadNote(n) ? c.replace(/^##\s*\d+\.\s?/gm, '').replace(/^\s*[-*]\s*\[[ xX]\]\s?/gm, '') : c;
 }
 const wordsOf = text => text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
 const escapeAttr = text => escapeHtml(text).replace(/"/g, '&quot;');
